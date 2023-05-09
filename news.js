@@ -18,5 +18,5 @@ var news = [
     title:"Bring On The Happy Vase of Flowers in Elizabethtown, KY - ELIZABETHTOWN FLORIST & GREENHOUSE",
     image:"https://cdn.atwilltech.com/flowerdatabase/b/bring-on-the-happy-vase-of-flowers-VA02512.425.jpg",
     text:"Your flowers will be hand picked on the day by one of our expert florists, hand tied together and presented in either a gift box or a glass vase."
-  },   
+  }
 ];
