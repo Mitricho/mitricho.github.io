@@ -1,22 +1,22 @@
 var news = [
   {
-    title:"Marjorie Taylor Greene",
-    image:"https://media1.faz.net/ppmedia/aktuell/3171325626/1.8846631/amtseinfuehrung-joe-biden-wird.jpg",
-    text:"Marjorie Taylor Greene claims Biden a criminal 'mastermind' after calling him 'mentally incompetent'"
+    title:"sushi",
+    image:"https://img.freepik.com/free-photo/maki-sushi-isolated-white_2829-5653.jpg?w=1060&t=st=1684247641~exp=1684248241~hmac=dac897dfe25e6895fcd387b7f33b6441b5ebae3aa00f8af2094183ab1b747546",
+    text:"Sushi is a Japanese dish of prepared vinegared rice (鮨飯, sushi-meshi), usually with some sugar and salt, accompanied by a variety of ingredients"
   },
   {
-    title:"Red Roses for Mothers Day",
-    image:"https://m.media-amazon.com/images/I/71zNWbTHzxL.jpg",
+    title:"Mixed sushi set",
+    image:"https://img.freepik.com/free-photo/mixed-sushi-set-japanese-food_1339-3610.jpg?w=1800&t=st=1684247742~exp=1684248342~hmac=8b4f8adfa8e750e788ce0d50a757c910dd98bba4f969da78ab861c465279f88d",
     text:"Red Roses for Mothers Day- 50 Fresh Cut Flowers- Beautiful Gift"
   },  
   {
-    title:"White Flowers for Your Garden",
-    image:"https://www.thespruce.com/thmb/6KsyQ85ioELI6CE3WsKcx85LGvs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/white-flowers-for-your-garden-4122501-01-54dac903a41b4244951ac801f7f0d5b9.JPG",
-    text:"White flowers take the guesswork out of a garden design. Shades of cream, ivory, silver, and pure snow blossoms layer seamlessly to form a peaceful landscape that glows in the evening. White flowers for fragrance, for cutting, and for wildlife will make your flower garden a respite, no matter your climate. "
+    title:"Salmon sashimi",
+    image:"https://img.freepik.com/free-photo/japanese-food_1203-6844.jpg?w=1480&t=st=1684247843~exp=1684248443~hmac=4480679876ab75410bce03730393dadd9beaa371d132c89e4e0b6a79df67d90b",
+    text:"Soy sauce, ponzu sauce, wasabi, pickled ginger, lemon"
   },  
   {
-    title:"Bring On The Happy Vase of Flowers in Elizabethtown, KY - ELIZABETHTOWN FLORIST & GREENHOUSE",
-    image:"https://cdn.atwilltech.com/flowerdatabase/b/bring-on-the-happy-vase-of-flowers-VA02512.425.jpg",
-    text:"Your flowers will be hand picked on the day by one of our expert florists, hand tied together and presented in either a gift box or a glass vase."
+    title:"Sushi Nigiri",
+    image:"https://img.freepik.com/premium-photo/group-rolls-maki-isolated-white-background_185193-73954.jpg?w=1480",
+    text:"Nigiri sushi is that familiar style of sushi made up of an oval-shaped mound of rice with a slice of (usually) raw fish on top."
   }
 ];
