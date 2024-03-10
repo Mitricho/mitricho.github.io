@@ -24,9 +24,6 @@
   <div class="grid-sizer"></div>  
 </div>
 
-<dialog class="dialog" onclick="this.close()">
-</dialog>
-
 <script src='https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js'></script>
 <script src='https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js'></script>
 <script src='https://mitricho.github.io/images/data.js'></script>
@@ -35,28 +32,11 @@
 	function $(s){
 		return document.querySelector(s);
 	}
-	function dialog(url){
-		var d = $('.dialog');
-		    d.innerHTML = '<img src="' + url + '" width="600px">';
-		    d.showModal();
-	}	
-	
+
 	var grid = $('.grid');	
 	for(var i=0;i<data.length;i++){
 		grid.innerHTML += '<div class="grid-item"><img lazy="true" src="' + data[i] + '" onclick="dialog(\'' + data[i] + '\')"/></div>';
 	}
-
-	var masonry = new Masonry( grid, {
-	  itemSelector: '.grid-item',
-	  columnWidth: '.grid-sizer',
-	  percentPosition: true
-	});
-
-	
-	imagesLoaded( grid ).on( 'progress', function() {
-	  masonry.layout();
-	});
-	
 
 </script>
 
