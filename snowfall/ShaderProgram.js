@@ -149,6 +149,7 @@ class ShaderProgram {
     canvas.height = height * dpi
     canvas.style.width = width + 'px'
     canvas.style.height = height + 'px'
+    canvas.pointerEvents = 'none'
 
     gl.viewport( 0, 0, width * dpi, height * dpi )
     gl.clearColor( 0, 0, 0, 0 )
