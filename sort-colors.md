@@ -109,4 +109,3 @@ Implement a function in JavaScript that converts the HEXA color codes to RGB num
 Sorting Colors in JavaScript. [tomekdev]↩
 W3C Color Model. [W3C]↩
 
-Answer Provided by www.iAsk.ai – Ask AI.
