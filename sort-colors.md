@@ -56,7 +56,7 @@ Convert all colors to RGBA format.
 Blend the RGBA colors with white to eliminate the alpha channel.
 Sort the colors based on their hue, saturation, and lightness.
 
-Here's an example implementation:
+### Here's an example implementation:
 `
 **const sortColors = (colors) => {
   const rgbaColors = colors.map((color) => {
