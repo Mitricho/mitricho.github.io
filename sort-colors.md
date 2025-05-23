@@ -36,7 +36,7 @@ const shortHexToRgba = (hex) => {
 }
 `
 
-##Blending RGBA Colors with White Background
+## Blending RGBA Colors with White Background
 
 To eliminate the alpha channel, we can blend the RGBA colors with a white background [3]:
 
@@ -48,7 +48,7 @@ To eliminate the alpha channel, we can blend the RGBA colors with a white backgr
 }
 `
 
-##Sorting Colors
+## Sorting Colors
 
 Now that we have our colors in RGBA format and blended with white, we can sort them using the following steps:
 
@@ -81,7 +81,7 @@ return blendedColors; }**``
 
 Note that this implementation assumes that the input colors are either in HEX or RGBA format.
 
-##RGB to HSL Conversion
+## RGB to HSL Conversion
 
 To sort colors based on their hue, saturation, and lightness, we need to convert them from RGB to HSL [4]:
 
@@ -102,7 +102,7 @@ To sort colors based on their hue, saturation, and lightness, we need to convert
 }
 `
 
-AUTHORITATIVE SOURCES
+## AUTHORITATIVE SOURCES
 Convert Hex Color to RGB in JavaScript. [learnersbucket]↩
 Implement a function in JavaScript that converts the HEXA color codes to RGB numbers. [learnersbucket]↩
 Sorting Colors in JavaScript. [tomekdev]↩
