@@ -74,10 +74,19 @@ Sort the colors based on their hue, saturation, and lightness.
   });
 `
 
-``const blendedColors = rgbaColors.map(blendWithWhite);
+`
+const blendedColors = rgbaColors.map(blendWithWhite);
 
-// Sort by hue, saturation, and lightness blendedColors.sort((a, b) => { const hslA = rgbToHsl(a.r / 255, a.g / 255, a.b / 255); const hslB = rgbToHsl(b.r / 255, b.g / 255, b.b / 255); if (hslA.h !== hslB.h) return hslA.h - hslB.h; if (hslA.s !== hslB.s) return hslA.s - hslB.s; return `hslA.l - hslB.l; });
-return blendedColors; }**``
+blendedColors.sort((a, b) => { 
+const hslA = rgbToHsl(a.r / 255, a.g / 255, a.b / 255); 
+const hslB = rgbToHsl(b.r / 255, b.g / 255, b.b / 255); 
+if (hslA.h !== hslB.h) return hslA.h - hslB.h; 
+if (hslA.s !== hslB.s) return hslA.s - hslB.s; 
+
+return  hslA.l - hslB.l; });
+
+return blendedColors; }
+`
 
 Note that this implementation assumes that the input colors are either in HEX or RGBA format.
 
