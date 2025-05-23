@@ -23,7 +23,8 @@ This function works by using a regular expression to extract the red, green, and
 
 If the HEX code is in short form (e.g., #fff), we need to convert it to the full form first [2]:
 
-``const shortHexToRgba = (hex) => {
+`
+const shortHexToRgba = (hex) => {
   let r = hex.slice(1, 2);
   let g = hex.slice(2, 3);
   let b = hex.slice(3, 4);
@@ -32,6 +33,7 @@ If the HEX code is in short form (e.g., #fff), we need to convert it to the full
   b = parseInt(b + b, 16);
   return { r, g, b, a: 1 };
 }
+`
 
 ##Blending RGBA Colors with White Background
 
