@@ -5,10 +5,12 @@ To suppress the -Wclass-memaccess warning with the GCC compiler, you can use var
 ## Understanding -Wclass-memaccess
 
 The -Wclass-memaccess warning is triggered when the compiler detects potentially unsafe or non-trivial operations on objects of class type, such as using memcpy or memset on them. This warning is part of GCC's efforts to help developers avoid common pitfalls that can lead to bugs or undefined behavior [1].
-``
-Methods to Suppress -Wclass-memaccess
+
+## Methods to Suppress -Wclass-memaccess
 Using -Wno-class-memaccess Compiler Flag You can disable this specific warning by using the -Wno-class-memaccess flag when compiling your code with GCC. This method suppresses the warning for the entire compilation unit [2].
+
 Pragma Directives GCC allows you to use #pragma directives to control diagnostics for specific parts of your code. You can push the current diagnostic settings, ignore the -Wclass-memaccess warning, and then pop back to the previous settings around the code that triggers the warning.
+``
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
 // Code that triggers -Wclass-memaccess warning
