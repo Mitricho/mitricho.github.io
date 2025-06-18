@@ -1,4 +1,9 @@
-You can access CacheStorage through the 'Window.caches' property in windows or through the 'WorkerGlobalScope.caches' property in workers.
+
+You can access CacheStorage through the `Window.caches` property in windows or through the `WorkerGlobalScope.caches` property in workers.
+```
+if ('caches' in window)...
+if ('caches' in self)...
+```
 
 Here's the rewritten code with all functions returning Promises to enable proper chaining of execution:
 
