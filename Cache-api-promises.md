@@ -1,4 +1,26 @@
-
+```
+    if(canvasAvailable)
+    {
+        const img = new Image();
+        img.src = window.URL.createObjectURL(blob);
+        img.onload = function()
+        {
+            let _w = Math.min(img.width,maxPicWidth);
+            const scaleFactor = _w / img.width;
+            const elem = document.createElement('canvas');
+                  elem.width = _w;
+                  elem.height = img.height * scaleFactor;
+            const ctx = elem.getContext('2d');// img.width and img.height will contain the original dimensions
+            ctx.drawImage(img, 0, 0, _w, img.height * scaleFactor);
+            const base64 = ctx.canvas.toDataURL(mime,0.8);
+            localforage.setItem(imgname,base64).then(function(value){
+                listOfImages.push(imgname);
+            }).catch(function(err){
+                console.log(err);
+            });
+        }
+    }
+```
 You can access CacheStorage through the `Window.caches` property in windows or through the `WorkerGlobalScope.caches` property in workers.
 ```
 if ('caches' in window)...
