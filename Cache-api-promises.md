@@ -1,4 +1,4 @@
-```
+```javascript
     if(canvasAvailable)
     {
         const img = new Image();
