@@ -237,3 +237,143 @@ cp <Qt6>/lib/libQt6Widgets.so.6 ./lib/  # If using Qt Widgets
 
 Would you like a sample `install.sh` script or a Docker-based testing setup?
 
+
+
+Here’s a **sample `install.sh` script** for deploying a Qt6 QML application on Linux. This script handles library bundling, platform plugins, QML imports, and sets up proper environment variables for execution.
+
+---
+
+### **`install.sh` – Linux Qt6 QML Deployment Script**
+```bash
+#!/bin/bash
+
+# ==============================================
+# Qt6 QML Application Installer for Linux
+# ==============================================
+
+# --- Configurable Variables ---
+APP_NAME="YourApp"                  # Your application name
+EXECUTABLE="your_application"       # Your binary name
+QT_DIR="/opt/Qt/6.6.0/gcc_64"       # Path to your Qt installation
+DEPLOY_DIR="./deploy"               # Where to bundle files
+QML_SRC_DIR="./qml"                 # Your project's QML files
+
+# --- Clean Previous Deployment ---
+rm -rf "$DEPLOY_DIR"
+mkdir -p "$DEPLOY_DIR"
+
+# --- Copy Executable ---
+echo "Copying executable..."
+cp "$EXECUTABLE" "$DEPLOY_DIR/"
+
+# --- Copy Qt Libraries ---
+echo "Copying Qt libraries..."
+mkdir -p "$DEPLOY_DIR/lib"
+QT_LIBS=(
+  "Core" "Gui" "Qml" "Quick" "QuickControls2" "Widgets" "Network" "OpenGL"
+)
+for LIB in "${QT_LIBS[@]}"; do
+  cp "$QT_DIR/lib/libQt6${LIB}.so.6" "$DEPLOY_DIR/lib/"
+done
+
+# --- Copy Platform Plugin (XCB by default) ---
+echo "Copying platform plugins..."
+mkdir -p "$DEPLOY_DIR/plugins/platforms"
+cp "$QT_DIR/plugins/platforms/libqxcb.so" "$DEPLOY_DIR/plugins/platforms/"
+
+# --- Copy QML Imports ---
+echo "Copying QML imports..."
+mkdir -p "$DEPLOY_DIR/qml"
+QML_IMPORTS=(
+  "QtQuick" "QtQuick/Controls" "QtQuick/Layouts" "QtQuick/Window"
+)
+for IMPORT in "${QML_IMPORTS[@]}"; do
+  cp -r "$QT_DIR/qml/$IMPORT" "$DEPLOY_DIR/qml/"
+done
+
+# --- Copy Project QML Files (if needed) ---
+if [ -d "$QML_SRC_DIR" ]; then
+  echo "Copying project QML files..."
+  cp -r "$QML_SRC_DIR" "$DEPLOY_DIR/"
+fi
+
+# --- Create a Launch Script ---
+echo "Creating launch script..."
+cat > "$DEPLOY_DIR/run.sh" <<EOF
+#!/bin/bash
+
+# Set library paths
+export LD_LIBRARY_PATH="\$(dirname "\$(readlink -f "\$0")")/lib:\$LD_LIBRARY_PATH"
+export QT_QPA_PLATFORM_PLUGIN_PATH="\$(dirname "\$(readlink -f "\$0")")/plugins"
+
+# Run the application
+cd "\$(dirname "\$0")"
+./"$EXECUTABLE" "\$@"
+EOF
+
+chmod +x "$DEPLOY_DIR/run.sh"
+
+# --- Summary ---
+echo ""
+echo "===================================="
+echo "Deployment completed in: $DEPLOY_DIR"
+echo "To run your app, execute:"
+echo "  $DEPLOY_DIR/run.sh"
+echo "===================================="
+```
+
+---
+
+### **Key Features of the Script**
+1. **Copies Required Qt Libraries**  
+   - Automatically grabs `libQt6Core.so.6`, `libQt6Quick.so.6`, etc.
+2. **Deploys Platform Plugin (`libqxcb.so` for X11)**  
+   - Ensures the app can launch with the correct GUI backend.
+3. **Bundles QML Imports**  
+   - Copies `QtQuick`, `QtQuick/Controls`, and other necessary QML modules.
+4. **Generates a `run.sh` Launcher**  
+   - Sets `LD_LIBRARY_PATH` and `QT_QPA_PLATFORM_PLUGIN_PATH` automatically.
+5. **Optional: Copies Project QML Files**  
+   - If your app has custom QML files, they’re included.
+
+---
+
+### **How to Use the Script**
+1. **Make it executable**:
+   ```bash
+   chmod +x install.sh
+   ```
+2. **Run it**:
+   ```bash
+   ./install.sh
+   ```
+3. **Test the deployment**:
+   ```bash
+   cd deploy/
+   ./run.sh
+   ```
+
+---
+
+### **Advanced Customizations**
+- **For Wayland Support**: Replace `libqxcb.so` with `libqwayland.so`.
+- **AppImage Packaging**: Use `linuxdeployqt` after running this script:
+  ```bash
+  linuxdeployqt ./deploy/run.sh -qmldir=./qml -appimage
+  ```
+- **Docker Testing**: To validate dependencies, run:
+  ```bash
+  docker run --rm -v "$PWD/deploy:/app" ubuntu:latest /app/run.sh
+  ```
+
+---
+
+### **Troubleshooting**
+- **Missing Libraries?**  
+  Run `ldd ./deploy/your_application` to identify unresolved dependencies.
+- **GUI Not Launching?**  
+  Ensure `libxcb` packages are installed on the target system (see [previous section](#3-handling-system-dependencies)).
+
+Would you like a version of this script that packages everything into a `.deb` or `AppImage`?
+
+
