@@ -374,6 +374,179 @@ echo "===================================="
 - **GUI Not Launching?**  
   Ensure `libxcb` packages are installed on the target system (see [previous section](#3-handling-system-dependencies)).
 
-Would you like a version of this script that packages everything into a `.deb` or `AppImage`?
 
+Here’s an enhanced version of the `install.sh` script that packages your Qt6 QML application into a **`.deb` file** for easy distribution on Debian/Ubuntu-based systems:
+
+---
+
+### **`package-deb.sh` – Qt6 QML to .deb Packager**
+```bash
+#!/bin/bash
+
+# ==============================================
+# Qt6 QML Application .deb Packager for Linux
+# ==============================================
+
+# --- Configurable Variables ---
+APP_NAME="YourApp"                  # Application name (lowercase, no spaces)
+APP_VERSION="1.0.0"                 # Version number
+EXECUTABLE="your_application"       # Your binary name
+QT_DIR="/opt/Qt/6.6.0/gcc_64"       # Path to Qt installation
+QML_SRC_DIR="./qml"                 # Your project's QML files
+DEB_DIR="./deb-build"               # Temporary .deb build directory
+INSTALL_DIR="/opt/$APP_NAME"        # Installation path on target system
+
+# --- Clean Previous Build ---
+rm -rf "$DEB_DIR"
+mkdir -p "$DEB_DIR"
+
+# --- Step 1: Bundle Files (Same as Before) ---
+echo "[1/4] Bundling application files..."
+DEPLOY_DIR="$DEB_DIR/$APP_NAME"
+mkdir -p "$DEPLOY_DIR"
+
+# Copy executable
+cp "$EXECUTABLE" "$DEPLOY_DIR/"
+
+# Copy Qt libraries
+mkdir -p "$DEPLOY_DIR/lib"
+QT_LIBS=("Core" "Gui" "Qml" "Quick" "QuickControls2" "Widgets" "Network")
+for LIB in "${QT_LIBS[@]}"; do
+  cp "$QT_DIR/lib/libQt6${LIB}.so.6" "$DEPLOY_DIR/lib/"
+done
+
+# Copy platform plugin (XCB)
+mkdir -p "$DEPLOY_DIR/plugins/platforms"
+cp "$QT_DIR/plugins/platforms/libqxcb.so" "$DEPLOY_DIR/plugins/platforms/"
+
+# Copy QML imports
+mkdir -p "$DEPLOY_DIR/qml"
+QML_IMPORTS=("QtQuick" "QtQuick/Controls" "QtQuick/Layouts")
+for IMPORT in "${QML_IMPORTS[@]}"; do
+  cp -r "$QT_DIR/qml/$IMPORT" "$DEPLOY_DIR/qml/"
+done
+
+# Copy project QML files (if any)
+if [ -d "$QML_SRC_DIR" ]; then
+  cp -r "$QML_SRC_DIR" "$DEPLOY_DIR/"
+fi
+
+# --- Step 2: Create .deb File Structure ---
+echo "[2/4] Creating .deb structure..."
+DEB_ROOT="$DEB_DIR/deb-root"
+mkdir -p "$DEB_ROOT$INSTALL_DIR"
+mkdir -p "$DEB_ROOT/usr/share/applications"
+
+# Copy bundled files to /opt/YourApp
+cp -r "$DEPLOY_DIR"/* "$DEB_ROOT$INSTALL_DIR/"
+
+# Create desktop entry (for app launcher)
+cat > "$DEB_ROOT/usr/share/applications/$APP_NAME.desktop" <<EOF
+[Desktop Entry]
+Name=$APP_NAME
+Exec=$INSTALL_DIR/run.sh
+Icon=$INSTALL_DIR/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;
+EOF
+
+# Create launcher script (sets LD_LIBRARY_PATH)
+cat > "$DEB_ROOT$INSTALL_DIR/run.sh" <<EOF
+#!/bin/bash
+export LD_LIBRARY_PATH="$INSTALL_DIR/lib:\$LD_LIBRARY_PATH"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$INSTALL_DIR/plugins"
+cd "$INSTALL_DIR"
+./"$EXECUTABLE" "\$@"
+EOF
+chmod +x "$DEB_ROOT$INSTALL_DIR/run.sh"
+
+# --- Step 3: Generate Debian Control Files ---
+echo "[3/4] Generating Debian control files..."
+mkdir -p "$DEB_ROOT/DEBIAN"
+
+# Control file (metadata)
+cat > "$DEB_ROOT/DEBIAN/control" <<EOF
+Package: $APP_NAME
+Version: $APP_VERSION
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Your Name <your.email@example.com>
+Description: Your Qt6 QML Application
+ A brief description of your application.
+EOF
+
+# Post-install script (optional: install dependencies)
+cat > "$DEB_ROOT/DEBIAN/postinst" <<EOF
+#!/bin/bash
+# Install required system libraries
+apt-get update
+apt-get install -y libxcb-xinerama0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1
+EOF
+chmod +x "$DEB_ROOT/DEBIAN/postinst"
+
+# --- Step 4: Build the .deb Package ---
+echo "[4/4] Building .deb package..."
+dpkg-deb --build --root-owner-group "$DEB_ROOT" "$APP_NAME-$APP_VERSION.deb"
+
+echo ""
+echo "===================================="
+echo ".deb package created: $(realpath "$APP_NAME-$APP_VERSION.deb")"
+echo "Install with:"
+echo "  sudo apt install ./$APP_NAME-$APP_VERSION.deb"
+echo "===================================="
+```
+
+---
+
+### **Key Features**
+1. **Standard .deb Structure**  
+   - Installs to `/opt/YourApp` (to avoid polluting `/usr/bin`).
+   - Includes a `.desktop` file for desktop integration.
+2. **Automatic Dependency Handling**  
+   - The `postinst` script installs required `libxcb` packages.
+3. **Library Isolation**  
+   - All Qt libraries are bundled in `/opt/YourApp/lib`.
+4. **Launcher Script**  
+   - Sets `LD_LIBRARY_PATH` and `QT_QPA_PLATFORM_PLUGIN_PATH` automatically.
+
+---
+
+### **How to Use**
+1. **Make the script executable**:
+   ```bash
+   chmod +x package-deb.sh
+   ```
+2. **Run it**:
+   ```bash
+   ./package-deb.sh
+   ```
+3. **Install the generated .deb**:
+   ```bash
+   sudo apt install ./YourApp-1.0.0.deb
+   ```
+4. **Run your app**:
+   - Via desktop launcher, or
+   - Terminal: `/opt/YourApp/run.sh`
+
+---
+
+### **Customizations**
+- **Icons**: Add an `icon.png` to `$DEPLOY_DIR/` and update the `.desktop` file.
+- **Dependencies**: Add more packages to `postinst` if needed (e.g., `libgl1-mesa-dev`).
+- **AppArmor/Sandboxing**: For advanced security, add an AppArmor profile.
+
+---
+
+### **Troubleshooting**
+- **`dpkg-deb` missing?** Install it:
+  ```bash
+  sudo apt install dpkg-dev
+  ```
+- **Missing libraries after install?** Check `ldd /opt/YourApp/your_application`.
+- **Desktop entry not appearing?** Run:
+  ```bash
+  sudo update-desktop-database
+  ```
 
