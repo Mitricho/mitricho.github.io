@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qfilesystemmodel.cpp -->
+  <meta name="description" content="The QFileSystemModel class provides a data model for the local filesystem.">
+  <title>QFileSystemModel Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QFileSystemModel</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#reimplemented-protected-functions">Reimplemented Protected Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#example-usage">Example Usage</a></li>
+<li class="level2"><a href="#caching-and-performance">Caching and Performance</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QFileSystemModel Class</h1>
+<!-- $$$QFileSystemModel-brief -->
+<p>The QFileSystemModel class provides a data model for the local filesystem. <a href="#details">More...</a></p>
+<!-- @@@QFileSystemModel -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QFileSystemModel&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qabstractitemmodel.html" translate="no">QAbstractItemModel</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qfilesystemmodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#Option-enum" translate="no">Option</a></b> { DontWatchForChanges, DontResolveSymlinks, DontUseCustomDirectoryIcons }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#Option-enum" translate="no">Options</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#Roles-enum" translate="no">Roles</a></b> { FileIconRole, FilePathRole, FileNameRole, FilePermissions, FileInfoRole }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qfilesystemmodel.html#nameFilterDisables-prop" translate="no">nameFilterDisables</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qfilesystemmodel.html#options-prop" translate="no">options</a></b> : Options</li>
+<li class="fn" translate="no"><b><a href="qfilesystemmodel.html#readOnly-prop" translate="no">readOnly</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qfilesystemmodel.html#resolveSymlinks-prop" translate="no">resolveSymlinks</a></b> : bool</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#QFileSystemModel" translate="no">QFileSystemModel</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#dtor.QFileSystemModel" translate="no">~QFileSystemModel</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QIcon </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#fileIcon" translate="no">fileIcon</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QFileInfo </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#fileInfo" translate="no">fileInfo</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#fileName" translate="no">fileName</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#filePath" translate="no">filePath</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDir::Filters </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#filter" translate="no">filter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QAbstractFileIconProvider *</td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#iconProvider" translate="no">iconProvider</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#index-1" translate="no">index</a></b>(const QString &amp;<i>path</i>, int <i>column</i> = 0) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#isDir" translate="no">isDir</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#readOnly-prop" translate="no">isReadOnly</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#lastModified" translate="no">lastModified</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#lastModified-1" translate="no">lastModified</a></b>(const QModelIndex &amp;<i>index</i>, const QTimeZone &amp;<i>tz</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#mkdir" translate="no">mkdir</a></b>(const QModelIndex &amp;<i>parent</i>, const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#myComputer" translate="no">myComputer</a></b>(int <i>role</i> = Qt::DisplayRole) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#nameFilterDisables-prop" translate="no">nameFilterDisables</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#nameFilters" translate="no">nameFilters</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QFileSystemModel::Options </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#options-prop" translate="no">options</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QFileDevice::Permissions </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#permissions" translate="no">permissions</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#remove" translate="no">remove</a></b>(const QModelIndex &amp;<i>index</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#resolveSymlinks-prop" translate="no">resolveSymlinks</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#rmdir" translate="no">rmdir</a></b>(const QModelIndex &amp;<i>index</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDir </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#rootDirectory" translate="no">rootDirectory</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#rootPath" translate="no">rootPath</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setFilter" translate="no">setFilter</a></b>(QDir::Filters <i>filters</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setIconProvider" translate="no">setIconProvider</a></b>(QAbstractFileIconProvider *<i>provider</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#nameFilterDisables-prop" translate="no">setNameFilterDisables</a></b>(bool <i>enable</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setNameFilters" translate="no">setNameFilters</a></b>(const QStringList &amp;<i>filters</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setOption" translate="no">setOption</a></b>(QFileSystemModel::Option <i>option</i>, bool <i>on</i> = true)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#options-prop" translate="no">setOptions</a></b>(QFileSystemModel::Options <i>options</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#readOnly-prop" translate="no">setReadOnly</a></b>(bool <i>enable</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#resolveSymlinks-prop" translate="no">setResolveSymlinks</a></b>(bool <i>enable</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setRootPath" translate="no">setRootPath</a></b>(const QString &amp;<i>newPath</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#size" translate="no">size</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#testOption" translate="no">testOption</a></b>(QFileSystemModel::Option <i>option</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#type" translate="no">type</a></b>(const QModelIndex &amp;<i>index</i>) const</td></tr>
+</table></div>
+<h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#canFetchMore" translate="no">canFetchMore</a></b>(const QModelIndex &amp;<i>parent</i>) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual int </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#columnCount" translate="no">columnCount</a></b>(const QModelIndex &amp;<i>parent</i> = QModelIndex()) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QVariant </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#data" translate="no">data</a></b>(const QModelIndex &amp;<i>index</i>, int <i>role</i> = Qt::DisplayRole) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#dropMimeData" translate="no">dropMimeData</a></b>(const QMimeData *<i>data</i>, Qt::DropAction <i>action</i>, int <i>row</i>, int <i>column</i>, const QModelIndex &amp;<i>parent</i>) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#fetchMore" translate="no">fetchMore</a></b>(const QModelIndex &amp;<i>parent</i>) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual Qt::ItemFlags </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#flags" translate="no">flags</a></b>(const QModelIndex &amp;<i>index</i>) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#hasChildren" translate="no">hasChildren</a></b>(const QModelIndex &amp;<i>parent</i> = QModelIndex()) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QVariant </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#headerData" translate="no">headerData</a></b>(int <i>section</i>, Qt::Orientation <i>orientation</i>, int <i>role</i> = Qt::DisplayRole) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#index" translate="no">index</a></b>(int <i>row</i>, int <i>column</i>, const QModelIndex &amp;<i>parent</i> = QModelIndex()) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QMimeData *</td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#mimeData" translate="no">mimeData</a></b>(const QModelIndexList &amp;<i>indexes</i>) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QStringList </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#mimeTypes" translate="no">mimeTypes</a></b>() const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#parent" translate="no">parent</a></b>(const QModelIndex &amp;<i>index</i>) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QHash&lt;int, QByteArray&gt; </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#roleNames" translate="no">roleNames</a></b>() const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual int </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#rowCount" translate="no">rowCount</a></b>(const QModelIndex &amp;<i>parent</i> = QModelIndex()) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#setData" translate="no">setData</a></b>(const QModelIndex &amp;<i>idx</i>, const QVariant &amp;<i>value</i>, int <i>role</i> = Qt::EditRole) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QModelIndex </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#sibling" translate="no">sibling</a></b>(int <i>row</i>, int <i>column</i>, const QModelIndex &amp;<i>idx</i>) const override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#sort" translate="no">sort</a></b>(int <i>column</i>, Qt::SortOrder <i>order</i> = Qt::AscendingOrder) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual Qt::DropActions </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#supportedDropActions" translate="no">supportedDropActions</a></b>() const override</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#directoryLoaded" translate="no">directoryLoaded</a></b>(const QString &amp;<i>path</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#fileRenamed" translate="no">fileRenamed</a></b>(const QString &amp;<i>path</i>, const QString &amp;<i>oldName</i>, const QString &amp;<i>newName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#rootPathChanged" translate="no">rootPathChanged</a></b>(const QString &amp;<i>newPath</i>)</td></tr>
+</table></div>
+<h2 id="reimplemented-protected-functions">Reimplemented Protected Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#event" translate="no">event</a></b>(QEvent *<i>event</i>) override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qfilesystemmodel.html#timerEvent" translate="no">timerEvent</a></b>(QTimerEvent *<i>event</i>) override</td></tr>
+</table></div>
+<!-- $$$QFileSystemModel-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>This class provides access to the local filesystem, providing functions for renaming and removing files and directories, and for creating new directories. In the simplest case, it can be used with a suitable display widget as part of a browser or filter.</p>
+<p>QFileSystemModel can be accessed using the standard interface provided by <a href="../qtcore/qabstractitemmodel.html" translate="no">QAbstractItemModel</a>, but it also provides some convenience functions that are specific to a directory model. The <a href="qfilesystemmodel.html#fileInfo" translate="no">fileInfo</a>(), <a href="qfilesystemmodel.html#isDir" translate="no">isDir</a>(), <a href="qfilesystemmodel.html#fileName" translate="no">fileName</a>() and <a href="qfilesystemmodel.html#filePath" translate="no">filePath</a>() functions provide information about the underlying files and directories related to items in the model. Directories can be created and removed using <a href="qfilesystemmodel.html#mkdir" translate="no">mkdir</a>(), <a href="qfilesystemmodel.html#rmdir" translate="no">rmdir</a>().</p>
+<h3 id="example-usage">Example Usage</h3>
+<p>A directory model that displays the contents of a default directory is usually constructed with a parent object:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qfilesystemmodel.html#QFileSystemModel" translate="no">QFileSystemModel</a></span> <span class="operator">*</span>model <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qfilesystemmodel.html#QFileSystemModel" translate="no">QFileSystemModel</a></span>;
+     model<span class="operator">-</span><span class="operator">&gt;</span>setRootPath(<span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span><span class="operator">::</span>currentPath());
+</pre>
+<p>A tree view can be used to display the contents of the model</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtwidgets/qtreeview.html" translate="no">QTreeView</a></span> <span class="operator">*</span>tree <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qtreeview.html" translate="no">QTreeView</a></span>(splitter);
+     tree<span class="operator">-</span><span class="operator">&gt;</span>setModel(model);
+</pre>
+<p>and the contents of a particular directory can be displayed by setting the tree view's root index:</p>
+<pre class="cpp" translate="no">
+     tree<span class="operator">-</span><span class="operator">&gt;</span>setRootIndex(model<span class="operator">-</span><span class="operator">&gt;</span>index(<span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span><span class="operator">::</span>currentPath()));
+</pre>
+<p>The view's root index can be used to control how much of a hierarchical model is displayed. QFileSystemModel provides a convenience function that returns a suitable model index for a path to a directory within the model.</p>
+<h3 id="caching-and-performance">Caching and Performance</h3>
+<p>QFileSystemModel uses a separate thread to populate itself, so it will not cause the main thread to hang as the file system is being queried. Calls to <a href="qfilesystemmodel.html#rowCount" translate="no">rowCount</a>() will return <code translate="no">0</code> until the model populates a directory. The thread in which the QFileSystemModel lives needs to run an event loop to process the incoming data.</p>
+<p>QFileSystemModel will not start populating itself until <a href="qfilesystemmodel.html#setRootPath" translate="no">setRootPath</a>() is called. This prevents any unnecessary querying of the system's root file system, such as enumerating the drives on Windows, until that point.</p>
+<p>QFileSystemModel keeps a cache with file information. The cache is automatically kept up to date using the <a href="../qtcore/qfilesystemwatcher.html" translate="no">QFileSystemWatcher</a>.</p>
+</div>
+<p><b>See also </b><a href="../qtwidgets/model-view-programming.html#model-classes">Model Classes</a>.</p>
+<!-- @@@QFileSystemModel -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Option$$$DontWatchForChanges$$$DontResolveSymlinks$$$DontUseCustomDirectoryIcons -->
+<h3 class="flags" id="Option-enum">enum QFileSystemModel::<span class="name">Option</span><br/>flags QFileSystemModel::<span class="name">Options</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::DontWatchForChanges</code></td><td class="topAlign tblval"><code translate="no">0x00000001</code></td><td class="topAlign">Do not add file watchers to the paths. This reduces overhead when using the model for simple tasks like line edit completion.</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::DontResolveSymlinks</code></td><td class="topAlign tblval"><code translate="no">0x00000002</code></td><td class="topAlign">Don't resolve symlinks in the file system model. By default, symlinks are resolved.</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::DontUseCustomDirectoryIcons</code></td><td class="topAlign tblval"><code translate="no">0x00000004</code></td><td class="topAlign">Always use the default directory icon. Some platforms allow the user to set a different icon. Custom icon lookup causes a big performance impact over network or removable drives. This sets the QFileIconProvider::DontUseCustomDirectoryIcons option in the icon provider accordingly.</td></tr>
+</table></div>
+<p>The Options type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;Option&gt;. It stores an OR combination of Option values.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#resolveSymlinks-prop" translate="no">resolveSymlinks</a>.</p>
+<!-- @@@Option -->
+<!-- $$$Roles$$$FileIconRole$$$FileInfoRole$$$FilePathRole$$$FileNameRole$$$FilePermissions -->
+<h3 class="fn" translate="no" id="Roles-enum">enum QFileSystemModel::<span class="name">Roles</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::FileIconRole</code></td><td class="topAlign tblval"><code translate="no">Qt::DecorationRole</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::FilePathRole</code></td><td class="topAlign tblval"><code translate="no">Qt::UserRole + 1</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::FileNameRole</code></td><td class="topAlign tblval"><code translate="no">Qt::UserRole + 2</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::FilePermissions</code></td><td class="topAlign tblval"><code translate="no">Qt::UserRole + 3</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QFileSystemModel::FileInfoRole</code></td><td class="topAlign tblval"><code translate="no">Qt::UserRole - 4</code></td><td class="topAlign">The <a href="../qtcore/qfileinfo.html" translate="no">QFileInfo</a> object for the index</td></tr>
+</table></div>
+<!-- @@@Roles -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$nameFilterDisables-prop$$$nameFilterDisables$$$setNameFilterDisablesbool -->
+<h3 class="fn" translate="no" id="nameFilterDisables-prop"><span class="name">nameFilterDisables</span> : <span class="type">bool</span></h3>
+<p>This property holds whether files that don't pass the name filter are hidden or disabled</p>
+<p>This property is <code translate="no">true</code> by default</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>nameFilterDisables</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setNameFilterDisables</b></span>(bool <i>enable</i>)</td></tr>
+</table></div>
+<!-- @@@nameFilterDisables -->
+<!-- $$$options-prop$$$options$$$setOptionsQFileSystemModel::Options -->
+<h3 class="fn" translate="no" id="options-prop"><span class="name">options</span> : <span class="type"><a href="qfilesystemmodel.html#Option-enum" translate="no">Options</a></span></h3>
+<p>This property holds the various options that affect the model</p>
+<p>By default, all options are disabled.</p>
+<p>Options should be set before changing properties.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QFileSystemModel::Options </td><td class="memItemRight bottomAlign"><span class="name"><b>options</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setOptions</b></span>(QFileSystemModel::Options <i>options</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qfilesystemmodel.html#setOption" translate="no">setOption</a>() and <a href="qfilesystemmodel.html#testOption" translate="no">testOption</a>().</p>
+<!-- @@@options -->
+<!-- $$$readOnly-prop$$$isReadOnly$$$setReadOnlybool -->
+<h3 class="fn" translate="no" id="readOnly-prop"><span class="name">readOnly</span> : <span class="type">bool</span></h3>
+<p>This property holds whether the directory model allows writing to the file system</p>
+<p>If this property is set to false, the directory model will allow renaming, copying and deleting of files and directories.</p>
+<p>This property is <code translate="no">true</code> by default</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isReadOnly</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setReadOnly</b></span>(bool <i>enable</i>)</td></tr>
+</table></div>
+<!-- @@@readOnly -->
+<!-- $$$resolveSymlinks-prop$$$resolveSymlinks$$$setResolveSymlinksbool -->
+<h3 class="fn" translate="no" id="resolveSymlinks-prop"><span class="name">resolveSymlinks</span> : <span class="type">bool</span></h3>
+<p>This property holds whether the directory model should resolve symbolic links</p>
+<p>This is only relevant on Windows.</p>
+<p>By default, this property is <code translate="no">true</code>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>resolveSymlinks</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setResolveSymlinks</b></span>(bool <i>enable</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qfilesystemmodel.html#Option-enum" translate="no">QFileSystemModel::Options</a>.</p>
+<!-- @@@resolveSymlinks -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QFileSystemModel[overload1]$$$QFileSystemModelQObject* -->
+<h3 class="fn" translate="no" id="QFileSystemModel"><code class="details extra" translate="no">[explicit]</code> QFileSystemModel::<span class="name">QFileSystemModel</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a file system model with the given <i translate="no">parent</i>.</p>
+<!-- @@@QFileSystemModel -->
+<!-- $$$~QFileSystemModel[overload1]$$$~QFileSystemModel -->
+<h3 class="fn" translate="no" id="dtor.QFileSystemModel"><code class="details extra" translate="no">[virtual noexcept]</code> QFileSystemModel::<span class="name">~QFileSystemModel</span>()</h3>
+<p>Destroys this file system model.</p>
+<!-- @@@~QFileSystemModel -->
+<!-- $$$canFetchMore[overload1]$$$canFetchMoreconstQModelIndex& -->
+<h3 class="fn" translate="no" id="canFetchMore"><code class="details extra" translate="no">[override virtual]</code> <span class="type">bool</span> QFileSystemModel::<span class="name">canFetchMore</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i>) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#canFetchMore" translate="no">QAbstractItemModel::canFetchMore</a>(const QModelIndex &amp;parent) const.</p>
+<!-- @@@canFetchMore -->
+<!-- $$$columnCount[overload1]$$$columnCountconstQModelIndex& -->
+<h3 class="fn" translate="no" id="columnCount"><code class="details extra" translate="no">[override virtual]</code> <span class="type">int</span> QFileSystemModel::<span class="name">columnCount</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i> = QModelIndex()) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#columnCount" translate="no">QAbstractItemModel::columnCount</a>(const QModelIndex &amp;parent) const.</p>
+<!-- @@@columnCount -->
+<!-- $$$data[overload1]$$$dataconstQModelIndex&int -->
+<h3 class="fn" translate="no" id="data"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QFileSystemModel::<span class="name">data</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>, <span class="type">int</span> <i>role</i> = Qt::DisplayRole) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#data" translate="no">QAbstractItemModel::data</a>(const QModelIndex &amp;index, int role) const.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#setData" translate="no">setData</a>().</p>
+<!-- @@@data -->
+<!-- $$$directoryLoaded[overload1]$$$directoryLoadedconstQString& -->
+<h3 class="fn" translate="no" id="directoryLoaded"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QFileSystemModel::<span class="name">directoryLoaded</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>path</i>)</h3>
+<p>This signal is emitted when the gatherer thread has finished to load the <i translate="no">path</i>.</p>
+<!-- @@@directoryLoaded -->
+<!-- $$$dropMimeData[overload1]$$$dropMimeDataconstQMimeData*Qt::DropActionintintconstQModelIndex& -->
+<h3 class="fn" translate="no" id="dropMimeData"><code class="details extra" translate="no">[override virtual]</code> <span class="type">bool</span> QFileSystemModel::<span class="name">dropMimeData</span>(const <span class="type"><a href="../qtcore/qmimedata.html" translate="no">QMimeData</a></span> *<i>data</i>, <span class="type"><a href="../qtcore/qt.html#DropAction-enum" translate="no">Qt::DropAction</a></span> <i>action</i>, <span class="type">int</span> <i>row</i>, <span class="type">int</span> <i>column</i>, const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i>)</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#dropMimeData" translate="no">QAbstractItemModel::dropMimeData</a>(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &amp;parent).</p>
+<p>Handles the <i translate="no">data</i> supplied by a drag and drop operation that ended with the given <i translate="no">action</i> over the row in the model specified by the <i translate="no">row</i> and <i translate="no">column</i> and by the <i translate="no">parent</i> index. Returns true if the operation was successful.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#supportedDropActions" translate="no">supportedDropActions</a>().</p>
+<!-- @@@dropMimeData -->
+<!-- $$$event[overload1]$$$eventQEvent* -->
+<h3 class="fn" translate="no" id="event"><code class="details extra" translate="no">[override virtual protected]</code> <span class="type">bool</span> QFileSystemModel::<span class="name">event</span>(<span class="type"><a href="../qtcore/qevent.html" translate="no">QEvent</a></span> *<i>event</i>)</h3>
+<p>Reimplements: <a href="../qtcore/qobject.html#event" translate="no">QObject::event</a>(QEvent *e).</p>
+<!-- @@@event -->
+<!-- $$$fetchMore[overload1]$$$fetchMoreconstQModelIndex& -->
+<h3 class="fn" translate="no" id="fetchMore"><code class="details extra" translate="no">[override virtual]</code> <span class="type">void</span> QFileSystemModel::<span class="name">fetchMore</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i>)</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#fetchMore" translate="no">QAbstractItemModel::fetchMore</a>(const QModelIndex &amp;parent).</p>
+<!-- @@@fetchMore -->
+<!-- $$$fileIcon[overload1]$$$fileIconconstQModelIndex& -->
+<h3 class="fn" translate="no" id="fileIcon"><span class="type"><a href="qicon.html" translate="no">QIcon</a></span> QFileSystemModel::<span class="name">fileIcon</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the icon for the item stored in the model under the given <i translate="no">index</i>.</p>
+<!-- @@@fileIcon -->
+<!-- $$$fileInfo[overload1]$$$fileInfoconstQModelIndex& -->
+<h3 class="fn" translate="no" id="fileInfo"><span class="type"><a href="../qtcore/qfileinfo.html" translate="no">QFileInfo</a></span> QFileSystemModel::<span class="name">fileInfo</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the <a href="../qtcore/qfileinfo.html" translate="no">QFileInfo</a> for the item stored in the model under the given <i translate="no">index</i>.</p>
+<!-- @@@fileInfo -->
+<!-- $$$fileName[overload1]$$$fileNameconstQModelIndex& -->
+<h3 class="fn" translate="no" id="fileName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QFileSystemModel::<span class="name">fileName</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the file name for the item stored in the model under the given <i translate="no">index</i>.</p>
+<!-- @@@fileName -->
+<!-- $$$filePath[overload1]$$$filePathconstQModelIndex& -->
+<h3 class="fn" translate="no" id="filePath"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QFileSystemModel::<span class="name">filePath</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the path of the item stored in the model under the <i translate="no">index</i> given.</p>
+<!-- @@@filePath -->
+<!-- $$$fileRenamed[overload1]$$$fileRenamedconstQString&constQString&constQString& -->
+<h3 class="fn" translate="no" id="fileRenamed"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QFileSystemModel::<span class="name">fileRenamed</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>path</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>oldName</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>newName</i>)</h3>
+<p>This signal is emitted whenever a file with the <i translate="no">oldName</i> is successfully renamed to <i translate="no">newName</i>. The file is located in the directory <i translate="no">path</i>.</p>
+<!-- @@@fileRenamed -->
+<!-- $$$filter[overload1]$$$filter -->
+<h3 class="fn" translate="no" id="filter"><span class="type"><a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::Filters</a></span> QFileSystemModel::<span class="name">filter</span>() const</h3>
+<p>Returns the filter specified for the directory model.</p>
+<p>If a filter has not been set, the default filter is <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::AllEntries</a> | <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::NoDotAndDotDot</a> | <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::AllDirs</a>.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#setFilter" translate="no">setFilter</a>() and <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::Filters</a>.</p>
+<!-- @@@filter -->
+<!-- $$$flags[overload1]$$$flagsconstQModelIndex& -->
+<h3 class="fn" translate="no" id="flags"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qt.html#ItemFlag-enum" translate="no">Qt::ItemFlags</a></span> QFileSystemModel::<span class="name">flags</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#flags" translate="no">QAbstractItemModel::flags</a>(const QModelIndex &amp;index) const.</p>
+<!-- @@@flags -->
+<!-- $$$hasChildren[overload1]$$$hasChildrenconstQModelIndex& -->
+<h3 class="fn" translate="no" id="hasChildren"><code class="details extra" translate="no">[override virtual]</code> <span class="type">bool</span> QFileSystemModel::<span class="name">hasChildren</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i> = QModelIndex()) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#hasChildren" translate="no">QAbstractItemModel::hasChildren</a>(const QModelIndex &amp;parent) const.</p>
+<!-- @@@hasChildren -->
+<!-- $$$headerData[overload1]$$$headerDataintQt::Orientationint -->
+<h3 class="fn" translate="no" id="headerData"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QFileSystemModel::<span class="name">headerData</span>(<span class="type">int</span> <i>section</i>, <span class="type"><a href="../qtcore/qt.html#Orientation-enum" translate="no">Qt::Orientation</a></span> <i>orientation</i>, <span class="type">int</span> <i>role</i> = Qt::DisplayRole) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#headerData" translate="no">QAbstractItemModel::headerData</a>(int section, Qt::Orientation orientation, int role) const.</p>
+<!-- @@@headerData -->
+<!-- $$$iconProvider[overload1]$$$iconProvider -->
+<h3 class="fn" translate="no" id="iconProvider"><span class="type"><a href="qabstractfileiconprovider.html" translate="no">QAbstractFileIconProvider</a></span> *QFileSystemModel::<span class="name">iconProvider</span>() const</h3>
+<p>Returns the file icon provider for this directory model.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#setIconProvider" translate="no">setIconProvider</a>().</p>
+<!-- @@@iconProvider -->
+<!-- $$$index[overload1]$$$indexintintconstQModelIndex& -->
+<h3 class="fn" translate="no" id="index"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">index</span>(<span class="type">int</span> <i>row</i>, <span class="type">int</span> <i>column</i>, const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i> = QModelIndex()) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#index" translate="no">QAbstractItemModel::index</a>(int row, int column, const QModelIndex &amp;parent) const.</p>
+<!-- @@@index -->
+<!-- $$$index$$$indexconstQString&int -->
+<h3 class="fn" translate="no" id="index-1"><span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">index</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>path</i>, <span class="type">int</span> <i>column</i> = 0) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the model item index for the given <i translate="no">path</i> and <i translate="no">column</i>.</p>
+<!-- @@@index -->
+<!-- $$$isDir[overload1]$$$isDirconstQModelIndex& -->
+<h3 class="fn" translate="no" id="isDir"><span class="type">bool</span> QFileSystemModel::<span class="name">isDir</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the model item <i translate="no">index</i> represents a directory; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isDir -->
+<!-- $$$lastModified[overload1]$$$lastModifiedconstQModelIndex& -->
+<h3 class="fn" translate="no" id="lastModified"><span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> QFileSystemModel::<span class="name">lastModified</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the date and time (in local time) when <i translate="no">index</i> was last modified.</p>
+<p>This is an overloaded function, equivalent to calling:</p>
+<pre class="cpp" translate="no">
+ lastModified(index<span class="operator">,</span> <span class="type"><a href="../qtcore/qtimezone.html" translate="no">QTimeZone</a></span><span class="operator">::</span>LocalTime);
+</pre>
+<p>If <i translate="no">index</i> is invalid, a default constructed <a href="../qtcore/qdatetime.html" translate="no">QDateTime</a> is returned.</p>
+<!-- @@@lastModified -->
+<!-- $$$lastModified$$$lastModifiedconstQModelIndex&constQTimeZone& -->
+<h3 class="fn" translate="no" id="lastModified-1"><code class="details extra" translate="no">[since 6.6]</code> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> QFileSystemModel::<span class="name">lastModified</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>, const <span class="type"><a href="../qtcore/qtimezone.html" translate="no">QTimeZone</a></span> &amp;<i>tz</i>) const</h3>
+<p>Returns the date and time, in the time zone <i translate="no">tz</i>, when <i translate="no">index</i> was last modified.</p>
+<p>Typical arguments for <i translate="no">tz</i> are <code translate="no">QTimeZone::UTC</code> or <code translate="no">QTimeZone::LocalTime</code>. UTC does not require any conversion from the time returned by the native file system API, therefore getting the time in UTC is potentially faster. LocalTime is typically chosen if the time is shown to the user.</p>
+<p>If <i translate="no">index</i> is invalid, a default constructed <a href="../qtcore/qdatetime.html" translate="no">QDateTime</a> is returned.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<!-- @@@lastModified -->
+<!-- $$$mimeData[overload1]$$$mimeDataconstQModelIndexList& -->
+<h3 class="fn" translate="no" id="mimeData"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qmimedata.html" translate="no">QMimeData</a></span> *QFileSystemModel::<span class="name">mimeData</span>(const <span class="type"><a href="../qtcore/qmodelindex.html#QModelIndexList-typedef" translate="no">QModelIndexList</a></span> &amp;<i>indexes</i>) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#mimeData" translate="no">QAbstractItemModel::mimeData</a>(const QModelIndexList &amp;indexes) const.</p>
+<p>Returns an object that contains a serialized description of the specified <i translate="no">indexes</i>. The format used to describe the items corresponding to the indexes is obtained from the <a href="qfilesystemmodel.html#mimeTypes" translate="no">mimeTypes</a>() function.</p>
+<p>If the list of indexes is empty, <code translate="no">nullptr</code> is returned rather than a serialized empty list.</p>
+<!-- @@@mimeData -->
+<!-- $$$mimeTypes[overload1]$$$mimeTypes -->
+<h3 class="fn" translate="no" id="mimeTypes"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QFileSystemModel::<span class="name">mimeTypes</span>() const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#mimeTypes" translate="no">QAbstractItemModel::mimeTypes</a>() const.</p>
+<p>Returns a list of MIME types that can be used to describe a list of items in the model.</p>
+<!-- @@@mimeTypes -->
+<!-- $$$mkdir[overload1]$$$mkdirconstQModelIndex&constQString& -->
+<h3 class="fn" translate="no" id="mkdir"><span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">mkdir</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>Create a directory with the <i translate="no">name</i> in the <i translate="no">parent</i> model index.</p>
+<!-- @@@mkdir -->
+<!-- $$$myComputer[overload1]$$$myComputerint -->
+<h3 class="fn" translate="no" id="myComputer"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QFileSystemModel::<span class="name">myComputer</span>(<span class="type">int</span> <i>role</i> = Qt::DisplayRole) const</h3>
+<p>Returns the data stored under the given <i translate="no">role</i> for the item &quot;My Computer&quot;.</p>
+<p><b>See also </b><a href="../qtcore/qt.html#ItemDataRole-enum" translate="no">Qt::ItemDataRole</a>.</p>
+<!-- @@@myComputer -->
+<!-- $$$nameFilters[overload1]$$$nameFilters -->
+<h3 class="fn" translate="no" id="nameFilters"><span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QFileSystemModel::<span class="name">nameFilters</span>() const</h3>
+<p>Returns a list of filters applied to the names in the model.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#setNameFilters" translate="no">setNameFilters</a>().</p>
+<!-- @@@nameFilters -->
+<!-- $$$parent[overload1]$$$parentconstQModelIndex& -->
+<h3 class="fn" translate="no" id="parent"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">parent</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#parent" translate="no">QAbstractItemModel::parent</a>(const QModelIndex &amp;index) const.</p>
+<!-- @@@parent -->
+<!-- $$$permissions[overload1]$$$permissionsconstQModelIndex& -->
+<h3 class="fn" translate="no" id="permissions"><span class="type"><a href="../qtcore/qfiledevice.html#Permission-enum" translate="no">QFileDevice::Permissions</a></span> QFileSystemModel::<span class="name">permissions</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the complete OR-ed together combination of QFile::Permission for the <i translate="no">index</i>.</p>
+<!-- @@@permissions -->
+<!-- $$$remove[overload1]$$$removeconstQModelIndex& -->
+<h3 class="fn" translate="no" id="remove"><span class="type">bool</span> QFileSystemModel::<span class="name">remove</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>)</h3>
+<p>Removes the model item <i translate="no">index</i> from the file system model and <b>deletes the corresponding file from the file system</b>, returning true if successful. If the item cannot be removed, false is returned.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This function deletes files from the file system; it does <b>not</b> move them to a location where they can be recovered.</p>
+</div>
+<p><b>See also </b><a href="qfilesystemmodel.html#rmdir" translate="no">rmdir</a>().</p>
+<!-- @@@remove -->
+<!-- $$$rmdir[overload1]$$$rmdirconstQModelIndex& -->
+<h3 class="fn" translate="no" id="rmdir"><span class="type">bool</span> QFileSystemModel::<span class="name">rmdir</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>)</h3>
+<p>Removes the directory corresponding to the model item <i translate="no">index</i> in the file system model and <b>deletes the corresponding directory from the file system</b>, returning true if successful. If the directory cannot be removed, false is returned.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This function deletes directories from the file system; it does <b>not</b> move them to a location where they can be recovered.</p>
+</div>
+<p><b>See also </b><a href="qfilesystemmodel.html#remove" translate="no">remove</a>().</p>
+<!-- @@@rmdir -->
+<!-- $$$roleNames[overload1]$$$roleNames -->
+<h3 class="fn" translate="no" id="roleNames"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qhash.html" translate="no">QHash</a></span>&lt;<span class="type">int</span>, <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span>&gt; QFileSystemModel::<span class="name">roleNames</span>() const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#roleNames" translate="no">QAbstractItemModel::roleNames</a>() const.</p>
+<!-- @@@roleNames -->
+<!-- $$$rootDirectory[overload1]$$$rootDirectory -->
+<h3 class="fn" translate="no" id="rootDirectory"><span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span> QFileSystemModel::<span class="name">rootDirectory</span>() const</h3>
+<p>The currently set directory</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#rootPath" translate="no">rootPath</a>().</p>
+<!-- @@@rootDirectory -->
+<!-- $$$rootPath[overload1]$$$rootPath -->
+<h3 class="fn" translate="no" id="rootPath"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QFileSystemModel::<span class="name">rootPath</span>() const</h3>
+<p>The currently set root path</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#setRootPath" translate="no">setRootPath</a>() and <a href="qfilesystemmodel.html#rootDirectory" translate="no">rootDirectory</a>().</p>
+<!-- @@@rootPath -->
+<!-- $$$rootPathChanged[overload1]$$$rootPathChangedconstQString& -->
+<h3 class="fn" translate="no" id="rootPathChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QFileSystemModel::<span class="name">rootPathChanged</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>newPath</i>)</h3>
+<p>This signal is emitted whenever the root path has been changed to a <i translate="no">newPath</i>.</p>
+<!-- @@@rootPathChanged -->
+<!-- $$$rowCount[overload1]$$$rowCountconstQModelIndex& -->
+<h3 class="fn" translate="no" id="rowCount"><code class="details extra" translate="no">[override virtual]</code> <span class="type">int</span> QFileSystemModel::<span class="name">rowCount</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>parent</i> = QModelIndex()) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#rowCount" translate="no">QAbstractItemModel::rowCount</a>(const QModelIndex &amp;parent) const.</p>
+<!-- @@@rowCount -->
+<!-- $$$setData[overload1]$$$setDataconstQModelIndex&constQVariant&int -->
+<h3 class="fn" translate="no" id="setData"><code class="details extra" translate="no">[override virtual]</code> <span class="type">bool</span> QFileSystemModel::<span class="name">setData</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>idx</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>, <span class="type">int</span> <i>role</i> = Qt::EditRole)</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#setData" translate="no">QAbstractItemModel::setData</a>(const QModelIndex &amp;index, const QVariant &amp;value, int role).</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#data" translate="no">data</a>().</p>
+<!-- @@@setData -->
+<!-- $$$setFilter[overload1]$$$setFilterQDir::Filters -->
+<h3 class="fn" translate="no" id="setFilter"><span class="type">void</span> QFileSystemModel::<span class="name">setFilter</span>(<span class="type"><a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::Filters</a></span> <i>filters</i>)</h3>
+<p>Sets the directory model's filter to that specified by <i translate="no">filters</i>.</p>
+<p>Note that the filter you set should always include the <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::AllDirs</a> enum value, otherwise <a href="qfilesystemmodel.html" translate="no">QFileSystemModel</a> won't be able to read the directory structure.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#filter" translate="no">filter</a>() and <a href="../qtcore/qdir.html#Filter-enum" translate="no">QDir::Filters</a>.</p>
+<!-- @@@setFilter -->
+<!-- $$$setIconProvider[overload1]$$$setIconProviderQAbstractFileIconProvider* -->
+<h3 class="fn" translate="no" id="setIconProvider"><span class="type">void</span> QFileSystemModel::<span class="name">setIconProvider</span>(<span class="type"><a href="qabstractfileiconprovider.html" translate="no">QAbstractFileIconProvider</a></span> *<i>provider</i>)</h3>
+<p>Sets the <i translate="no">provider</i> of file icons for the directory model.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#iconProvider" translate="no">iconProvider</a>().</p>
+<!-- @@@setIconProvider -->
+<!-- $$$setNameFilters[overload1]$$$setNameFiltersconstQStringList& -->
+<h3 class="fn" translate="no" id="setNameFilters"><span class="type">void</span> QFileSystemModel::<span class="name">setNameFilters</span>(const <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> &amp;<i>filters</i>)</h3>
+<p>Sets the name <i translate="no">filters</i> to apply against the existing files.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#nameFilters" translate="no">nameFilters</a>().</p>
+<!-- @@@setNameFilters -->
+<!-- $$$setOption[overload1]$$$setOptionQFileSystemModel::Optionbool -->
+<h3 class="fn" translate="no" id="setOption"><span class="type">void</span> QFileSystemModel::<span class="name">setOption</span>(<span class="type"><a href="qfilesystemmodel.html#Option-enum" translate="no">QFileSystemModel::Option</a></span> <i>option</i>, <span class="type">bool</span> <i>on</i> = true)</h3>
+<p>Sets the given <i translate="no">option</i> to be enabled if <i translate="no">on</i> is true; otherwise, clears the given <i translate="no">option</i>.</p>
+<p>Options should be set before changing properties.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#options-prop" translate="no">options</a> and <a href="qfilesystemmodel.html#testOption" translate="no">testOption</a>().</p>
+<!-- @@@setOption -->
+<!-- $$$setRootPath[overload1]$$$setRootPathconstQString& -->
+<h3 class="fn" translate="no" id="setRootPath"><span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">setRootPath</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>newPath</i>)</h3>
+<p>Sets the directory that is being watched by the model to <i translate="no">newPath</i> by installing a <a href="../qtcore/qfilesystemwatcher.html" translate="no">file system watcher</a> on it. Any changes to files and directories within this directory will be reflected in the model.</p>
+<p>If the path is changed, the <a href="qfilesystemmodel.html#rootPathChanged" translate="no">rootPathChanged</a>() signal will be emitted.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function does not change the structure of the model or modify the data available to views. In other words, the &quot;root&quot; of the model is <i>not</i> changed to include only files and directories within the directory specified by <i translate="no">newPath</i> in the file system.</p>
+</div>
+<p><b>See also </b><a href="qfilesystemmodel.html#rootPath" translate="no">rootPath</a>(), <a href="../qtwidgets/qtreeview.html#setRootIndex" translate="no">QTreeView::setRootIndex</a>(), and <a href="../qtquick/qml-qtquick-treeview.html#rootIndex-prop" translate="no">TreeView::rootIndex</a>.</p>
+<!-- @@@setRootPath -->
+<!-- $$$sibling[overload1]$$$siblingintintconstQModelIndex& -->
+<h3 class="fn" translate="no" id="sibling"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> QFileSystemModel::<span class="name">sibling</span>(<span class="type">int</span> <i>row</i>, <span class="type">int</span> <i>column</i>, const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>idx</i>) const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#sibling" translate="no">QAbstractItemModel::sibling</a>(int row, int column, const QModelIndex &amp;index) const.</p>
+<!-- @@@sibling -->
+<!-- $$$size[overload1]$$$sizeconstQModelIndex& -->
+<h3 class="fn" translate="no" id="size"><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> QFileSystemModel::<span class="name">size</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the size in bytes of <i translate="no">index</i>. If the file does not exist, 0 is returned.</p>
+<!-- @@@size -->
+<!-- $$$sort[overload1]$$$sortintQt::SortOrder -->
+<h3 class="fn" translate="no" id="sort"><code class="details extra" translate="no">[override virtual]</code> <span class="type">void</span> QFileSystemModel::<span class="name">sort</span>(<span class="type">int</span> <i>column</i>, <span class="type"><a href="../qtcore/qt.html#SortOrder-enum" translate="no">Qt::SortOrder</a></span> <i>order</i> = Qt::AscendingOrder)</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#sort" translate="no">QAbstractItemModel::sort</a>(int column, Qt::SortOrder order).</p>
+<!-- @@@sort -->
+<!-- $$$supportedDropActions[overload1]$$$supportedDropActions -->
+<h3 class="fn" translate="no" id="supportedDropActions"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="../qtcore/qt.html#DropAction-enum" translate="no">Qt::DropActions</a></span> QFileSystemModel::<span class="name">supportedDropActions</span>() const</h3>
+<p>Reimplements: <a href="../qtcore/qabstractitemmodel.html#supportedDropActions" translate="no">QAbstractItemModel::supportedDropActions</a>() const.</p>
+<!-- @@@supportedDropActions -->
+<!-- $$$testOption[overload1]$$$testOptionQFileSystemModel::Option -->
+<h3 class="fn" translate="no" id="testOption"><span class="type">bool</span> QFileSystemModel::<span class="name">testOption</span>(<span class="type"><a href="qfilesystemmodel.html#Option-enum" translate="no">QFileSystemModel::Option</a></span> <i>option</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the given <i translate="no">option</i> is enabled; otherwise, returns false.</p>
+<p><b>See also </b><a href="qfilesystemmodel.html#options-prop" translate="no">options</a> and <a href="qfilesystemmodel.html#setOption" translate="no">setOption</a>().</p>
+<!-- @@@testOption -->
+<!-- $$$timerEvent[overload1]$$$timerEventQTimerEvent* -->
+<h3 class="fn" translate="no" id="timerEvent"><code class="details extra" translate="no">[override virtual protected]</code> <span class="type">void</span> QFileSystemModel::<span class="name">timerEvent</span>(<span class="type"><a href="../qtcore/qtimerevent.html" translate="no">QTimerEvent</a></span> *<i>event</i>)</h3>
+<p>Reimplements: <a href="../qtcore/qobject.html#timerEvent" translate="no">QObject::timerEvent</a>(QTimerEvent *event).</p>
+<!-- @@@timerEvent -->
+<!-- $$$type[overload1]$$$typeconstQModelIndex& -->
+<h3 class="fn" translate="no" id="type"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QFileSystemModel::<span class="name">type</span>(const <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> &amp;<i>index</i>) const</h3>
+<p>Returns the type of file <i translate="no">index</i> such as &quot;Directory&quot; or &quot;JPEG file&quot;.</p>
+<!-- @@@type -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

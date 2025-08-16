@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuaauthenticationinformation.cpp -->
+  <meta name="description" content="The OPC UA authentication information.">
+  <title>QOpcUaAuthenticationInformation Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaAuthenticationInformation</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaAuthenticationInformation Class</h1>
+<!-- $$$QOpcUaAuthenticationInformation-brief -->
+<p>The OPC UA authentication information. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaAuthenticationInformation -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaAuthenticationInformation&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> QtOpcUa 5.13</td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuaauthenticationinformation-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation-1" translate="no">QOpcUaAuthenticationInformation</a></b>(const QOpcUaAuthenticationInformation &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const QVariant &amp;</td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#authenticationData" translate="no">authenticationData</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaUserTokenPolicy::TokenType </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#authenticationType" translate="no">authenticationType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#setAnonymousAuthentication" translate="no">setAnonymousAuthentication</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#setCertificateAuthentication" translate="no">setCertificateAuthentication</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#setCertificateAuthentication-1" translate="no">setCertificateAuthentication</a></b>(const QString &amp;<i>certificatePath</i>, const QString &amp;<i>privateKeyPath</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#setUsernameAuthentication" translate="no">setUsernameAuthentication</a></b>(const QString &amp;<i>username</i>, const QString &amp;<i>password</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaAuthenticationInformation &amp;</td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#operator-eq" translate="no">operator=</a></b>(const QOpcUaAuthenticationInformation &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuaauthenticationinformation.html#operator-eq-eq" translate="no">operator==</a></b>(const QOpcUaAuthenticationInformation &amp;<i>rhs</i>) const</td></tr>
+</table></div>
+<!-- $$$QOpcUaAuthenticationInformation-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>This class holds the information necessary to perform a login on a server. Supported authentication mechanisms are</p>
+<ul>
+<li>Anonymous</li>
+<li>Username</li>
+<li>Certificate</li>
+</ul>
+<p>The anonymous method is used by default but also can be set manually.</p>
+<p>This is an example authentication using username and password.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></span> authInfo;
+ authInfo<span class="operator">.</span>setUsernameAuthentication(<span class="string">&quot;user&quot;</span><span class="operator">,</span> <span class="string">&quot;password&quot;</span>);
+
+ m_client<span class="operator">-</span><span class="operator">&gt;</span>setAuthenticationInformation(authInfo);
+ m_client<span class="operator">-</span><span class="operator">&gt;</span>connectToEndpoint(endpoint);
+</pre>
+</div>
+<p><b>See also </b><a href="qopcuaauthenticationinformation.html#setAnonymousAuthentication" translate="no">setAnonymousAuthentication</a>(), <a href="qopcuaauthenticationinformation.html#setUsernameAuthentication" translate="no">setUsernameAuthentication</a>(), and <a href="qopcuaauthenticationinformation.html#setCertificateAuthentication" translate="no">setCertificateAuthentication</a>().</p>
+<!-- @@@QOpcUaAuthenticationInformation -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QOpcUaAuthenticationInformation[overload1]$$$QOpcUaAuthenticationInformation -->
+<h3 class="fn" translate="no" id="QOpcUaAuthenticationInformation">QOpcUaAuthenticationInformation::<span class="name">QOpcUaAuthenticationInformation</span>()</h3>
+<p>Default constructs an authentication information with no parameters set.</p>
+<!-- @@@QOpcUaAuthenticationInformation -->
+<!-- $$$QOpcUaAuthenticationInformation$$$QOpcUaAuthenticationInformationconstQOpcUaAuthenticationInformation& -->
+<h3 class="fn" translate="no" id="QOpcUaAuthenticationInformation-1">QOpcUaAuthenticationInformation::<span class="name">QOpcUaAuthenticationInformation</span>(const <span class="type"><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></span> &amp;<i>rhs</i>)</h3>
+<p>Constructs an authentication information from <i translate="no">rhs</i>.</p>
+<!-- @@@QOpcUaAuthenticationInformation -->
+<!-- $$$authenticationData[overload1]$$$authenticationData -->
+<h3 class="fn" translate="no" id="authenticationData">const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;QOpcUaAuthenticationInformation::<span class="name">authenticationData</span>() const</h3>
+<p>The content of the <a href="../qtcore/qvariant.html" translate="no">QVariant</a> returned by this method depends on the currently selected authentication method.</p>
+<!-- @@@authenticationData -->
+<!-- $$$authenticationType[overload1]$$$authenticationType -->
+<h3 class="fn" translate="no" id="authenticationType"><code class="details extra" translate="no">[invokable]</code> <span class="type"><a href="qopcuausertokenpolicy.html#TokenType-enum" translate="no">QOpcUaUserTokenPolicy::TokenType</a></span> QOpcUaAuthenticationInformation::<span class="name">authenticationType</span>() const</h3>
+<p>Returns the current authentication type.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p><b>See also </b><a href="qopcuausertokenpolicy.html#TokenType-enum" translate="no">QOpcUaUserTokenPolicy::TokenType</a>.</p>
+<!-- @@@authenticationType -->
+<!-- $$$setAnonymousAuthentication[overload1]$$$setAnonymousAuthentication -->
+<h3 class="fn" translate="no" id="setAnonymousAuthentication"><code class="details extra" translate="no">[invokable]</code> <span class="type">void</span> QOpcUaAuthenticationInformation::<span class="name">setAnonymousAuthentication</span>()</h3>
+<p>Sets the authentication method to anonymous.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@setAnonymousAuthentication -->
+<!-- $$$setCertificateAuthentication[overload1]$$$setCertificateAuthentication -->
+<h3 class="fn" translate="no" id="setCertificateAuthentication"><code class="details extra" translate="no">[invokable]</code> <span class="type">void</span> QOpcUaAuthenticationInformation::<span class="name">setCertificateAuthentication</span>()</h3>
+<p>Sets the authentication method to use certificates.</p>
+<p>When using this authentication type a proper configured <a href="qopcuapkiconfiguration.html" translate="no">QOpcUaPkiConfiguration</a> has to be set to the <a href="qopcuaclient.html" translate="no">QOpcUaClient</a>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p><b>See also </b><a href="qopcuapkiconfiguration.html" translate="no">QOpcUaPkiConfiguration</a> and <a href="qopcuaclient.html#setPkiConfiguration" translate="no">QOpcUaClient::setPkiConfiguration</a>().</p>
+<!-- @@@setCertificateAuthentication -->
+<!-- $$$setCertificateAuthentication$$$setCertificateAuthenticationconstQString&constQString& -->
+<h3 class="fn" translate="no" id="setCertificateAuthentication-1"><code class="details extra" translate="no">[invokable, since 6.9]</code> <span class="type">void</span> QOpcUaAuthenticationInformation::<span class="name">setCertificateAuthentication</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>certificatePath</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>privateKeyPath</i>)</h3>
+<p>Sets the authentication method to certificate authentication with a certificate different from the client certificate.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p>This function was introduced in Qt 6.9.</p>
+<!-- @@@setCertificateAuthentication -->
+<!-- $$$setUsernameAuthentication[overload1]$$$setUsernameAuthenticationconstQString&constQString& -->
+<h3 class="fn" translate="no" id="setUsernameAuthentication"><code class="details extra" translate="no">[invokable]</code> <span class="type">void</span> QOpcUaAuthenticationInformation::<span class="name">setUsernameAuthentication</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>username</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>password</i>)</h3>
+<p>Sets the authentication method to username, using the given <i translate="no">username</i> and <i translate="no">password</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@setUsernameAuthentication -->
+<!-- $$$operator=[overload1]$$$operator=constQOpcUaAuthenticationInformation& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></span> &amp;QOpcUaAuthenticationInformation::<span class="name">operator=</span>(const <span class="type"><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></span> &amp;<i>rhs</i>)</h3>
+<p>Sets the values from <i translate="no">rhs</i> in this authentication information.</p>
+<!-- @@@operator= -->
+<!-- $$$operator==[overload1]$$$operator==constQOpcUaAuthenticationInformation& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><span class="type">bool</span> QOpcUaAuthenticationInformation::<span class="name">operator==</span>(const <span class="type"><a href="qopcuaauthenticationinformation.html#QOpcUaAuthenticationInformation" translate="no">QOpcUaAuthenticationInformation</a></span> &amp;<i>rhs</i>) const</h3>
+<p>Returns <code translate="no">true</code> if this authentication information has the same value as <i translate="no">rhs</i>.</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

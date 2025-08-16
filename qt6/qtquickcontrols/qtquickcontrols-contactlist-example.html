@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-contactlist.qdoc -->
+  <meta name="description" content="A QML app using Qt Quick Controls and a C++ class that implements a simple contact list.">
+  <title>Qt Quick Controls - Contact List | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-examples.html">Qt Quick Controls Examples</a></li>
+<li>Qt Quick Controls - Contact List</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#c-backend">C++ Backend</a></li>
+<li class="level1"><a href="#designer-support">Designer Support</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick Controls - Contact List</h1>
+<!-- $$$contactlist-brief -->
+<p>A QML app using Qt Quick Controls and a C++ class that implements a simple contact list.</p>
+<!-- @@@contactlist -->
+<!-- $$$contactlist-description -->
+<div class="descr" id="details">
+<p>The <i>Contact List Example</i> shows how to integrate a C++ backend in a way that is compatible with Qt Quick Designer. For the declarative parts of the UI, .ui.qml files are used that can be edited visually in the Qt Quick Designer.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-contactlist.png" alt="" /></p><h4 id="c-backend">C++ Backend</h4>
+<p>The contact list application allows the user to add, edit, and remove contacts. The actual implementation is done in C++ and exposed as a <a href="../qtcore/qabstractlistmodel.html" translate="no">QAbstractListModel</a>.</p>
+<p>The ContactModel C++ class is registered under a namespace and later imported and instantiated by <i>MainForm.ui.qml</i>. For more information about registering C++ classes as QML types, see <a href="../qtqml/qtqml-cppintegration-definetypes.html">Defining QML Types from C++</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QtQml/qqml.h&gt;</span>
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ qmlRegisterType<span class="operator">&lt;</span>ContactModel<span class="operator">&gt;</span>(<span class="string">&quot;Backend&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;ContactModel&quot;</span>);
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+</pre>
+<h4 id="designer-support">Designer Support</h4>
+<p>In the designer subdirectory, we create a plugin that replaces the ContactModel in Qt Quick Designer. For this to work we add the following line to <i>contactlist.pro</i>.</p>
+<pre class="cpp" translate="no">
+ QML_DESIGNER_IMPORT_PATH <span class="operator">=</span> $$PWD<span class="operator">/</span>designer
+</pre>
+<p>Because Qt Quick Designer cannot instantiate the ContactModel C++ class, we define a mockup using a <a href="../qtqmlmodels/qml-qtqml-models-listmodel.html" translate="no">ListModel</a>. This ensures that the <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a> using the model shows something in Qt Quick Designer.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quickcontrols/contactlist?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@contactlist -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

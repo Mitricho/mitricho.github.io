@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qrect.cpp -->
+  <meta name="description" content="The QRectF class defines a finite rectangle in the plane using floating point precision.">
+  <title>QRectF Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QRectF</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#rendering">Rendering</a></li>
+<li class="level2"><a href="#coordinates">Coordinates</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QRectF Class</h1>
+<!-- $$$QRectF-brief -->
+<p>The QRectF class defines a finite rectangle in the plane using floating point precision. <a href="#details">More...</a></p>
+<!-- @@@QRectF -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QRectF&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qrectf-members.html">List of all members, including inherited members</a></li>
+<li>QRectF is part of <a href="../qtgui/painting.html">Painting Classes</a>.</li>
+</ul>
+<p>This class is <i>equality-comparable</i>.</p>
+<p>This class is <b>equality-comparable</b> with <a href="qrect.html" translate="no">QRect</a>.</p>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#QRectF" translate="no">QRectF</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#QRectF-1" translate="no">QRectF</a></b>(const QRect &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#QRectF-2" translate="no">QRectF</a></b>(const QPointF &amp;<i>topLeft</i>, const QPointF &amp;<i>bottomRight</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#QRectF-3" translate="no">QRectF</a></b>(const QPointF &amp;<i>topLeft</i>, const QSizeF &amp;<i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#QRectF-4" translate="no">QRectF</a></b>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#adjust" translate="no">adjust</a></b>(qreal <i>dx1</i>, qreal <i>dy1</i>, qreal <i>dx2</i>, qreal <i>dy2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#adjusted" translate="no">adjusted</a></b>(qreal <i>dx1</i>, qreal <i>dy1</i>, qreal <i>dx2</i>, qreal <i>dy2</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#bottom" translate="no">bottom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#bottomLeft" translate="no">bottomLeft</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#bottomRight" translate="no">bottomRight</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#center" translate="no">center</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#contains" translate="no">contains</a></b>(const QPointF &amp;<i>point</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#contains-1" translate="no">contains</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#contains-2" translate="no">contains</a></b>(qreal <i>x</i>, qreal <i>y</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#getCoords" translate="no">getCoords</a></b>(qreal *<i>x1</i>, qreal *<i>y1</i>, qreal *<i>x2</i>, qreal *<i>y2</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#getRect" translate="no">getRect</a></b>(qreal *<i>x</i>, qreal *<i>y</i>, qreal *<i>width</i>, qreal *<i>height</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#height" translate="no">height</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#intersected" translate="no">intersected</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#intersects" translate="no">intersects</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#isEmpty" translate="no">isEmpty</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#left" translate="no">left</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#marginsAdded" translate="no">marginsAdded</a></b>(const QMarginsF &amp;<i>margins</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#marginsRemoved" translate="no">marginsRemoved</a></b>(const QMarginsF &amp;<i>margins</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveBottom" translate="no">moveBottom</a></b>(qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveBottomLeft" translate="no">moveBottomLeft</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveBottomRight" translate="no">moveBottomRight</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveCenter" translate="no">moveCenter</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveLeft" translate="no">moveLeft</a></b>(qreal <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveRight" translate="no">moveRight</a></b>(qreal <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveTo" translate="no">moveTo</a></b>(qreal <i>x</i>, qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveTo-1" translate="no">moveTo</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveTop" translate="no">moveTop</a></b>(qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveTopLeft" translate="no">moveTopLeft</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#moveTopRight" translate="no">moveTopRight</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#normalized" translate="no">normalized</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#right" translate="no">right</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setBottom" translate="no">setBottom</a></b>(qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setBottomLeft" translate="no">setBottomLeft</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setBottomRight" translate="no">setBottomRight</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setCoords" translate="no">setCoords</a></b>(qreal <i>x1</i>, qreal <i>y1</i>, qreal <i>x2</i>, qreal <i>y2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setHeight" translate="no">setHeight</a></b>(qreal <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setLeft" translate="no">setLeft</a></b>(qreal <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setRect" translate="no">setRect</a></b>(qreal <i>x</i>, qreal <i>y</i>, qreal <i>width</i>, qreal <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setRight" translate="no">setRight</a></b>(qreal <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setSize" translate="no">setSize</a></b>(const QSizeF &amp;<i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setTop" translate="no">setTop</a></b>(qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setTopRight" translate="no">setTopRight</a></b>(const QPointF &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setWidth" translate="no">setWidth</a></b>(qreal <i>width</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setX" translate="no">setX</a></b>(qreal <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#setY" translate="no">setY</a></b>(qreal <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSizeF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#size" translate="no">size</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#toAlignedRect" translate="no">toAlignedRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CGRect </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#toCGRect" translate="no">toCGRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.5)</code> emscripten::val </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#toDOMRect" translate="no">toDOMRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#toRect" translate="no">toRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#top" translate="no">top</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#topLeft" translate="no">topLeft</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#topRight" translate="no">topRight</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#translate" translate="no">translate</a></b>(qreal <i>dx</i>, qreal <i>dy</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#translate-1" translate="no">translate</a></b>(const QPointF &amp;<i>offset</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#translated" translate="no">translated</a></b>(qreal <i>dx</i>, qreal <i>dy</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#translated-1" translate="no">translated</a></b>(const QPointF &amp;<i>offset</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#transposed" translate="no">transposed</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#united" translate="no">united</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#width" translate="no">width</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#x" translate="no">x</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#y" translate="no">y</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-and" translate="no">operator&amp;</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-and-eq" translate="no">operator&amp;=</a></b>(const QRectF &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-2b-eq" translate="no">operator+=</a></b>(const QMarginsF &amp;<i>margins</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator--eq" translate="no">operator-=</a></b>(const QMarginsF &amp;<i>margins</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-7c" translate="no">operator|</a></b>(const QRectF &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-7c-eq" translate="no">operator|=</a></b>(const QRectF &amp;<i>rectangle</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#fromCGRect" translate="no">fromCGRect</a></b>(CGRect <i>rect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.5)</code> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#fromDOMRect" translate="no">fromDOMRect</a></b>(emscripten::val <i>domRect</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#qFuzzyCompare" translate="no">qFuzzyCompare</a></b>(const QRectF &amp;<i>lhs</i>, const QRectF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#qFuzzyIsNull" translate="no">qFuzzyIsNull</a></b>(const QRectF &amp;<i>rect</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-not-eq" translate="no">operator!=</a></b>(const QRectF &amp;<i>lhs</i>, const QRectF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-2b" translate="no">operator+</a></b>(const QMarginsF &amp;<i>lhs</i>, const QRectF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-2b-1" translate="no">operator+</a></b>(const QRectF &amp;<i>lhs</i>, const QMarginsF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator--7" translate="no">operator-</a></b>(const QRectF &amp;<i>lhs</i>, const QMarginsF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-lt-lt-20" translate="no">operator&lt;&lt;</a></b>(QDataStream &amp;<i>stream</i>, const QRectF &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-eq-eq" translate="no">operator==</a></b>(const QRectF &amp;<i>lhs</i>, const QRectF &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrectf.html#operator-gt-gt-19" translate="no">operator&gt;&gt;</a></b>(QDataStream &amp;<i>stream</i>, QRectF &amp;<i>rectangle</i>)</td></tr>
+</table></div>
+<!-- $$$QRectF-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A rectangle is normally expressed as a top-left corner and a size. The size (width and height) of a QRectF is always equivalent to the mathematical rectangle that forms the basis for its rendering.</p>
+<p>A QRectF can be constructed with a set of left, top, width and height coordinates, or from a <a href="qpointf.html" translate="no">QPointF</a> and a <a href="qsizef.html" translate="no">QSizeF</a>. The following code creates two identical rectangles.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> r1(<span class="number">100.0</span><span class="operator">,</span> <span class="number">200.1</span><span class="operator">,</span> <span class="number">11.2</span><span class="operator">,</span> <span class="number">16.3</span>);
+ <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> r2(<span class="type"><a href="qpointf.html" translate="no">QPointF</a></span>(<span class="number">100.0</span><span class="operator">,</span> <span class="number">200.1</span>)<span class="operator">,</span> <span class="type"><a href="qsizef.html" translate="no">QSizeF</a></span>(<span class="number">11.2</span><span class="operator">,</span> <span class="number">16.3</span>));
+</pre>
+<p>There is also a third constructor creating a QRectF from a <a href="qrect.html" translate="no">QRect</a>, and a corresponding <a href="qrectf.html#toRect" translate="no">toRect</a>() function that returns a <a href="qrect.html" translate="no">QRect</a> object based on the values of this rectangle (note that the coordinates in the returned rectangle are rounded to the nearest integer).</p>
+<p>The QRectF class provides a collection of functions that return the various rectangle coordinates, and enable manipulation of these. QRectF also provides functions to move the rectangle relative to the various coordinates. In addition there is a <a href="qrectf.html#moveTo" translate="no">moveTo</a>() function that moves the rectangle, leaving its top left corner at the given coordinates. Alternatively, the <a href="qrectf.html#translate" translate="no">translate</a>() function moves the rectangle the given offset relative to the current position, and the <a href="qrectf.html#translated" translate="no">translated</a>() function returns a translated copy of this rectangle.</p>
+<p>The <a href="qrectf.html#size" translate="no">size</a>() function returns the rectangle's dimensions as a <a href="qsizef.html" translate="no">QSizeF</a>. The dimensions can also be retrieved separately using the <a href="qrectf.html#width" translate="no">width</a>() and <a href="qrectf.html#height" translate="no">height</a>() functions. To manipulate the dimensions use the <a href="qrectf.html#setSize" translate="no">setSize</a>(), <a href="qrectf.html#setWidth" translate="no">setWidth</a>() or <a href="qrectf.html#setHeight" translate="no">setHeight</a>() functions. Alternatively, the size can be changed by applying either of the functions setting the rectangle coordinates, for example, <a href="qrectf.html#setBottom" translate="no">setBottom</a>() or <a href="qrectf.html#setRight" translate="no">setRight</a>().</p>
+<p>The <a href="qrectf.html#contains" translate="no">contains</a>() function tells whether a given point is inside the rectangle or not, and the <a href="qrectf.html#intersects" translate="no">intersects</a>() function returns <code translate="no">true</code> if this rectangle intersects with a given rectangle (otherwise false). The QRectF class also provides the <a href="qrectf.html#intersected" translate="no">intersected</a>() function which returns the intersection rectangle, and the <a href="qrectf.html#united" translate="no">united</a>() function which returns the rectangle that encloses the given rectangle and this:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><img src="images/qrect-intersect.png" alt="" /></td><td ><img src="images/qrect-unite.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td ><a href="qrectf.html#intersected" translate="no">intersected</a>()</td><td ><a href="qrectf.html#united" translate="no">united</a>()</td></tr>
+</table></div>
+<p>The <a href="qrectf.html#isEmpty" translate="no">isEmpty</a>() function returns <code translate="no">true</code> if the rectangle's width or height is less than, or equal to, 0. Note that an empty rectangle is not valid: The <a href="qrectf.html#isValid" translate="no">isValid</a>() function returns <code translate="no">true</code> if both width and height is larger than 0. A null rectangle (<a href="qrectf.html#isNull" translate="no">isNull</a>() == true) on the other hand, has both width and height set to 0.</p>
+<p>Note that due to the way <a href="qrect.html" translate="no">QRect</a> and QRectF are defined, an empty QRectF is defined in essentially the same way as <a href="qrect.html" translate="no">QRect</a>.</p>
+<p>Finally, QRectF objects can be streamed as well as compared.</p>
+<h3 id="rendering">Rendering</h3>
+<p>When using an <a href="../qtgui/qpainter.html#RenderHint-enum" translate="no">anti-aliased</a> painter, the boundary line of a QRectF will be rendered symmetrically on both sides of the mathematical rectangle's boundary line. But when using an aliased painter (the default) other rules apply.</p>
+<p>Then, when rendering with a one pixel wide pen the QRectF's boundary line will be rendered to the right and below the mathematical rectangle's boundary line.</p>
+<p>When rendering with a two pixels wide pen the boundary line will be split in the middle by the mathematical rectangle. This will be the case whenever the pen is set to an even number of pixels, while rendering with a pen with an odd number of pixels, the spare pixel will be rendered to the right and below the mathematical rectangle as in the one pixel case.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><img src="images/qrect-diagram-zero.png" alt="" /></td><td ><img src="images/qrectf-diagram-one.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td >Logical representation</td><td >One pixel wide pen</td></tr>
+<tr valign="top" class="odd"><td ><img src="images/qrectf-diagram-two.png" alt="" /></td><td ><img src="images/qrectf-diagram-three.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td >Two pixel wide pen</td><td >Three pixel wide pen</td></tr>
+</table></div>
+<h3 id="coordinates">Coordinates</h3>
+<p>The QRectF class provides a collection of functions that return the various rectangle coordinates, and enable manipulation of these. QRectF also provides functions to move the rectangle relative to the various coordinates.</p>
+<p>For example: the <a href="qrectf.html#bottom" translate="no">bottom</a>(), <a href="qrectf.html#setBottom" translate="no">setBottom</a>() and <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>() functions: <a href="qrectf.html#bottom" translate="no">bottom</a>() returns the y-coordinate of the rectangle's bottom edge, <a href="qrectf.html#setBottom" translate="no">setBottom</a>() sets the bottom edge of the rectangle to the given y coordinate (it may change the height, but will never change the rectangle's top edge) and <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>() moves the entire rectangle vertically, leaving the rectangle's bottom edge at the given y coordinate and its size unchanged.</p>
+<p class="centerAlign"><img src="images/qrectf-coordinates.png" alt="" /></p><p>It is also possible to add offsets to this rectangle's coordinates using the <a href="qrectf.html#adjust" translate="no">adjust</a>() function, as well as retrieve a new rectangle based on adjustments of the original one using the <a href="qrectf.html#adjusted" translate="no">adjusted</a>() function. If either of the width and height is negative, use the <a href="qrectf.html#normalized" translate="no">normalized</a>() function to retrieve a rectangle where the corners are swapped.</p>
+<p>In addition, QRectF provides the <a href="qrectf.html#getCoords" translate="no">getCoords</a>() function which extracts the position of the rectangle's top-left and bottom-right corner, and the <a href="qrectf.html#getRect" translate="no">getRect</a>() function which extracts the rectangle's top-left corner, width and height. Use the <a href="qrectf.html#setCoords" translate="no">setCoords</a>() and <a href="qrectf.html#setRect" translate="no">setRect</a>() function to manipulate the rectangle's coordinates and dimensions in one go.</p>
+</div>
+<p><b>See also </b><a href="qrect.html" translate="no">QRect</a> and <a href="../qtgui/qregion.html" translate="no">QRegion</a>.</p>
+<!-- @@@QRectF -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QRectF[overload1]$$$QRectF -->
+<h3 class="fn" translate="no" id="QRectF"><code class="details extra" translate="no">[constexpr noexcept]</code> QRectF::<span class="name">QRectF</span>()</h3>
+<p>Constructs a null rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#isNull" translate="no">isNull</a>().</p>
+<!-- @@@QRectF -->
+<!-- $$$QRectF$$$QRectFconstQRect& -->
+<h3 class="fn" translate="no" id="QRectF-1"><code class="details extra" translate="no">[constexpr noexcept]</code> QRectF::<span class="name">QRectF</span>(const <span class="type"><a href="qrect.html" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Constructs a QRectF rectangle from the given <a href="qrect.html" translate="no">QRect</a> <i translate="no">rectangle</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function, like <a href="qrect.html#toRectF" translate="no">QRect::toRectF</a>(), preserves the <a href="qrectf.html#size" translate="no">size</a>() of <i translate="no">rectangle</i>, not its <a href="qrectf.html#bottomRight" translate="no">bottomRight</a>() corner.</p>
+</div>
+<p><b>See also </b><a href="qrectf.html#toRect" translate="no">toRect</a>() and <a href="qrect.html#toRectF" translate="no">QRect::toRectF</a>().</p>
+<!-- @@@QRectF -->
+<!-- $$$QRectF$$$QRectFconstQPointF&constQPointF& -->
+<h3 class="fn" translate="no" id="QRectF-2"><code class="details extra" translate="no">[constexpr noexcept]</code> QRectF::<span class="name">QRectF</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>topLeft</i>, const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>bottomRight</i>)</h3>
+<p>Constructs a rectangle with the given <i translate="no">topLeft</i> and <i translate="no">bottomRight</i> corners.</p>
+<p><b>See also </b><a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>() and <a href="qrectf.html#setBottomRight" translate="no">setBottomRight</a>().</p>
+<!-- @@@QRectF -->
+<!-- $$$QRectF$$$QRectFconstQPointF&constQSizeF& -->
+<h3 class="fn" translate="no" id="QRectF-3"><code class="details extra" translate="no">[constexpr noexcept]</code> QRectF::<span class="name">QRectF</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>topLeft</i>, const <span class="type"><a href="qsizef.html" translate="no">QSizeF</a></span> &amp;<i>size</i>)</h3>
+<p>Constructs a rectangle with the given <i translate="no">topLeft</i> corner and the given <i translate="no">size</i>.</p>
+<p><b>See also </b><a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>() and <a href="qrectf.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@QRectF -->
+<!-- $$$QRectF$$$QRectFqrealqrealqrealqreal -->
+<h3 class="fn" translate="no" id="QRectF-4"><code class="details extra" translate="no">[constexpr noexcept]</code> QRectF::<span class="name">QRectF</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>width</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>height</i>)</h3>
+<p>Constructs a rectangle with (<i translate="no">x</i>, <i translate="no">y</i>) as its top-left corner and the given <i translate="no">width</i> and <i translate="no">height</i>. All parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@QRectF -->
+<!-- $$$adjust[overload1]$$$adjustqrealqrealqrealqreal -->
+<h3 class="fn" translate="no" id="adjust"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">adjust</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx2</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy2</i>)</h3>
+<p>Adds <i translate="no">dx1</i>, <i translate="no">dy1</i>, <i translate="no">dx2</i> and <i translate="no">dy2</i> respectively to the existing coordinates of the rectangle. All parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#adjusted" translate="no">adjusted</a>() and <a href="qrectf.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@adjust -->
+<!-- $$$adjusted[overload1]$$$adjustedqrealqrealqrealqreal -->
+<h3 class="fn" translate="no" id="adjusted"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">adjusted</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx2</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy2</i>) const</h3>
+<p>Returns a new rectangle with <i translate="no">dx1</i>, <i translate="no">dy1</i>, <i translate="no">dx2</i> and <i translate="no">dy2</i> added respectively to the existing coordinates of this rectangle. All parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#adjust" translate="no">adjust</a>().</p>
+<!-- @@@adjusted -->
+<!-- $$$bottom[overload1]$$$bottom -->
+<h3 class="fn" translate="no" id="bottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">bottom</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's bottom edge.</p>
+<p><b>See also </b><a href="qrectf.html#setBottom" translate="no">setBottom</a>(), <a href="qrectf.html#bottomLeft" translate="no">bottomLeft</a>(), and <a href="qrectf.html#bottomRight" translate="no">bottomRight</a>().</p>
+<!-- @@@bottom -->
+<!-- $$$bottomLeft[overload1]$$$bottomLeft -->
+<h3 class="fn" translate="no" id="bottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> QRectF::<span class="name">bottomLeft</span>() const</h3>
+<p>Returns the position of the rectangle's bottom-left corner.</p>
+<p><b>See also </b><a href="qrectf.html#setBottomLeft" translate="no">setBottomLeft</a>(), <a href="qrectf.html#bottom" translate="no">bottom</a>(), and <a href="qrectf.html#left" translate="no">left</a>().</p>
+<!-- @@@bottomLeft -->
+<!-- $$$bottomRight[overload1]$$$bottomRight -->
+<h3 class="fn" translate="no" id="bottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> QRectF::<span class="name">bottomRight</span>() const</h3>
+<p>Returns the position of the rectangle's bottom-right corner.</p>
+<p><b>See also </b><a href="qrectf.html#setBottomRight" translate="no">setBottomRight</a>(), <a href="qrectf.html#bottom" translate="no">bottom</a>(), and <a href="qrectf.html#right" translate="no">right</a>().</p>
+<!-- @@@bottomRight -->
+<!-- $$$center[overload1]$$$center -->
+<h3 class="fn" translate="no" id="center"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> QRectF::<span class="name">center</span>() const</h3>
+<p>Returns the center point of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#moveCenter" translate="no">moveCenter</a>().</p>
+<!-- @@@center -->
+<!-- $$$contains[overload1]$$$containsconstQPointF& -->
+<h3 class="fn" translate="no" id="contains"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">contains</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>point</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the given <i translate="no">point</i> is inside or on the edge of the rectangle; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qrectf.html#intersects" translate="no">intersects</a>().</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsconstQRectF& -->
+<h3 class="fn" translate="no" id="contains-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">contains</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the given <i translate="no">rectangle</i> is inside this rectangle; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsqrealqreal -->
+<h3 class="fn" translate="no" id="contains-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">contains</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the point (<i translate="no">x</i>, <i translate="no">y</i>) is inside or on the edge of the rectangle; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@contains -->
+<!-- $$$fromCGRect[overload1]$$$fromCGRectCGRect -->
+<h3 class="fn" translate="no" id="fromCGRect"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">fromCGRect</span>(<span class="type">CGRect</span> <i>rect</i>)</h3>
+<p>Creates a <a href="qrectf.html" translate="no">QRectF</a> from CGRect <i translate="no">rect</i>.</p>
+<p><b>See also </b><a href="qrectf.html#toCGRect" translate="no">toCGRect</a>().</p>
+<!-- @@@fromCGRect -->
+<!-- $$$fromDOMRect[overload1]$$$fromDOMRectemscripten::val -->
+<h3 class="fn" translate="no" id="fromDOMRect"><code class="details extra" translate="no">[static, since 6.5]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">fromDOMRect</span>(<span class="type">emscripten::val</span> <i>domRect</i>)</h3>
+<p>Converts the DOMRect (https://www.w3.org/TR/geometry-1/) <i translate="no">domRect</i> to <a href="qrectf.html" translate="no">QRectF</a>. The behavior is undefined if the provided parameter is not a DOMRect.</p>
+<p>This function was introduced in Qt 6.5.</p>
+<p><b>See also </b><a href="qrectf.html#toDOMRect" translate="no">toDOMRect</a>().</p>
+<!-- @@@fromDOMRect -->
+<!-- $$$getCoords[overload1]$$$getCoordsqreal*qreal*qreal*qreal* -->
+<h3 class="fn" translate="no" id="getCoords"><code class="details extra" translate="no">[constexpr]</code> <span class="type">void</span> QRectF::<span class="name">getCoords</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>x1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>y1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>x2</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>y2</i>) const</h3>
+<p>Extracts the position of the rectangle's top-left corner to *<i translate="no">x1</i> and *<i translate="no">y1</i>, and the position of the bottom-right corner to *<i translate="no">x2</i> and *<i translate="no">y2</i>.</p>
+<p><b>See also </b><a href="qrectf.html#setCoords" translate="no">setCoords</a>() and <a href="qrectf.html#getRect" translate="no">getRect</a>().</p>
+<!-- @@@getCoords -->
+<!-- $$$getRect[overload1]$$$getRectqreal*qreal*qreal*qreal* -->
+<h3 class="fn" translate="no" id="getRect"><code class="details extra" translate="no">[constexpr]</code> <span class="type">void</span> QRectF::<span class="name">getRect</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>x</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>y</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>width</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> *<i>height</i>) const</h3>
+<p>Extracts the position of the rectangle's top-left corner to *<i translate="no">x</i> and *<i translate="no">y</i>, and its dimensions to *<i translate="no">width</i> and *<i translate="no">height</i>.</p>
+<p><b>See also </b><a href="qrectf.html#setRect" translate="no">setRect</a>() and <a href="qrectf.html#getCoords" translate="no">getCoords</a>().</p>
+<!-- @@@getRect -->
+<!-- $$$height[overload1]$$$height -->
+<h3 class="fn" translate="no" id="height"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">height</span>() const</h3>
+<p>Returns the height of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#setHeight" translate="no">setHeight</a>(), <a href="qrectf.html#width" translate="no">width</a>(), and <a href="qrectf.html#size" translate="no">size</a>().</p>
+<!-- @@@height -->
+<!-- $$$intersected[overload1]$$$intersectedconstQRectF& -->
+<h3 class="fn" translate="no" id="intersected"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">intersected</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the intersection of this rectangle and the given <i translate="no">rectangle</i>. Note that <code translate="no">r.intersected(s)</code> is equivalent to <code translate="no">r &amp; s</code>.</p>
+<p class="centerAlign"><img src="images/qrect-intersect.png" alt="" /></p><p><b>See also </b><a href="qrectf.html#intersects" translate="no">intersects</a>(), <a href="qrectf.html#united" translate="no">united</a>(), and <a href="qrectf.html#operator-and-eq" translate="no">operator&amp;=</a>().</p>
+<!-- @@@intersected -->
+<!-- $$$intersects[overload1]$$$intersectsconstQRectF& -->
+<h3 class="fn" translate="no" id="intersects"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">intersects</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns <code translate="no">true</code> if this rectangle intersects with the given <i translate="no">rectangle</i> (i.e. there is a non-empty area of overlap between them), otherwise returns <code translate="no">false</code>.</p>
+<p>The intersection rectangle can be retrieved using the <a href="qrectf.html#intersected" translate="no">intersected</a>() function.</p>
+<p><b>See also </b><a href="qrectf.html#contains" translate="no">contains</a>().</p>
+<!-- @@@intersects -->
+<!-- $$$isEmpty[overload1]$$$isEmpty -->
+<h3 class="fn" translate="no" id="isEmpty"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">isEmpty</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is empty, otherwise returns <code translate="no">false</code>.</p>
+<p>An empty rectangle has <a href="qrectf.html#width" translate="no">width</a>() &lt;= 0 or <a href="qrectf.html#height" translate="no">height</a>() &lt;= 0. An empty rectangle is not valid (i.e., isEmpty() == !<a href="qrectf.html#isValid" translate="no">isValid</a>()).</p>
+<p>Use the <a href="qrectf.html#normalized" translate="no">normalized</a>() function to retrieve a rectangle where the corners are swapped.</p>
+<p><b>See also </b><a href="qrectf.html#isNull" translate="no">isNull</a>(), <a href="qrectf.html#isValid" translate="no">isValid</a>(), and <a href="qrectf.html#normalized" translate="no">normalized</a>().</p>
+<!-- @@@isEmpty -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is a null rectangle, otherwise returns <code translate="no">false</code>.</p>
+<p>A null rectangle has both the width and the height set to 0. A null rectangle is also empty, and hence not valid.</p>
+<p><b>See also </b><a href="qrectf.html#isEmpty" translate="no">isEmpty</a>() and <a href="qrectf.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@isNull -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRectF::<span class="name">isValid</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is valid, otherwise returns <code translate="no">false</code>.</p>
+<p>A valid rectangle has a <a href="qrectf.html#width" translate="no">width</a>() &gt; 0 and <a href="qrectf.html#height" translate="no">height</a>() &gt; 0. Note that non-trivial operations like intersections are not defined for invalid rectangles. A valid rectangle is not empty (i.e., isValid() == !<a href="qrectf.html#isEmpty" translate="no">isEmpty</a>()).</p>
+<p><b>See also </b><a href="qrectf.html#isNull" translate="no">isNull</a>(), <a href="qrectf.html#isEmpty" translate="no">isEmpty</a>(), and <a href="qrectf.html#normalized" translate="no">normalized</a>().</p>
+<!-- @@@isValid -->
+<!-- $$$left[overload1]$$$left -->
+<h3 class="fn" translate="no" id="left"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">left</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's left edge. Equivalent to <a href="qrectf.html#x" translate="no">x</a>().</p>
+<p><b>See also </b><a href="qrectf.html#setLeft" translate="no">setLeft</a>(), <a href="qrectf.html#topLeft" translate="no">topLeft</a>(), and <a href="qrectf.html#bottomLeft" translate="no">bottomLeft</a>().</p>
+<!-- @@@left -->
+<!-- $$$marginsAdded[overload1]$$$marginsAddedconstQMarginsF& -->
+<h3 class="fn" translate="no" id="marginsAdded"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">marginsAdded</span>(const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>margins</i>) const</h3>
+<p>Returns a rectangle grown by the <i translate="no">margins</i>.</p>
+<p><b>See also </b><a href="qrectf.html#operator-2b-eq" translate="no">operator+=</a>(), <a href="qrectf.html#marginsRemoved" translate="no">marginsRemoved</a>(), and <a href="qrectf.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@marginsAdded -->
+<!-- $$$marginsRemoved[overload1]$$$marginsRemovedconstQMarginsF& -->
+<h3 class="fn" translate="no" id="marginsRemoved"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">marginsRemoved</span>(const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>margins</i>) const</h3>
+<p>Removes the <i translate="no">margins</i> from the rectangle, shrinking it.</p>
+<p><b>See also </b><a href="qrectf.html#marginsAdded" translate="no">marginsAdded</a>(), <a href="qrectf.html#operator-2b-eq" translate="no">operator+=</a>(), and <a href="qrectf.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@marginsRemoved -->
+<!-- $$$moveBottom[overload1]$$$moveBottomqreal -->
+<h3 class="fn" translate="no" id="moveBottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveBottom</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Moves the rectangle vertically, leaving the rectangle's bottom edge at the given finite <i translate="no">y</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#bottom" translate="no">bottom</a>(), <a href="qrectf.html#setBottom" translate="no">setBottom</a>(), and <a href="qrectf.html#moveTop" translate="no">moveTop</a>().</p>
+<!-- @@@moveBottom -->
+<!-- $$$moveBottomLeft[overload1]$$$moveBottomLeftconstQPointF& -->
+<h3 class="fn" translate="no" id="moveBottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveBottomLeft</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the bottom-left corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#setBottomLeft" translate="no">setBottomLeft</a>(), <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>(), and <a href="qrectf.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveBottomLeft -->
+<!-- $$$moveBottomRight[overload1]$$$moveBottomRightconstQPointF& -->
+<h3 class="fn" translate="no" id="moveBottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveBottomRight</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the bottom-right corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#setBottomRight" translate="no">setBottomRight</a>(), <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>(), and <a href="qrectf.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@moveBottomRight -->
+<!-- $$$moveCenter[overload1]$$$moveCenterconstQPointF& -->
+<h3 class="fn" translate="no" id="moveCenter"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveCenter</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the center point at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#center" translate="no">center</a>().</p>
+<!-- @@@moveCenter -->
+<!-- $$$moveLeft[overload1]$$$moveLeftqreal -->
+<h3 class="fn" translate="no" id="moveLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveLeft</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>)</h3>
+<p>Moves the rectangle horizontally, leaving the rectangle's left edge at the given finite <i translate="no">x</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#left" translate="no">left</a>(), <a href="qrectf.html#setLeft" translate="no">setLeft</a>(), and <a href="qrectf.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@moveLeft -->
+<!-- $$$moveRight[overload1]$$$moveRightqreal -->
+<h3 class="fn" translate="no" id="moveRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveRight</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>)</h3>
+<p>Moves the rectangle horizontally, leaving the rectangle's right edge at the given finite <i translate="no">x</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#right" translate="no">right</a>(), <a href="qrectf.html#setRight" translate="no">setRight</a>(), and <a href="qrectf.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveRight -->
+<!-- $$$moveTo[overload1]$$$moveToqrealqreal -->
+<h3 class="fn" translate="no" id="moveTo"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveTo</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Moves the rectangle, leaving the top-left corner at the given position (<i translate="no">x</i>, <i translate="no">y</i>). The rectangle's size is unchanged. Both parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#translate" translate="no">translate</a>() and <a href="qrectf.html#moveTopLeft" translate="no">moveTopLeft</a>().</p>
+<!-- @@@moveTo -->
+<!-- $$$moveTo$$$moveToconstQPointF& -->
+<h3 class="fn" translate="no" id="moveTo-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveTo</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Moves the rectangle, leaving the top-left corner at the given <i translate="no">position</i>.</p>
+<!-- @@@moveTo -->
+<!-- $$$moveTop[overload1]$$$moveTopqreal -->
+<h3 class="fn" translate="no" id="moveTop"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveTop</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Moves the rectangle vertically, leaving the rectangle's top line at the given finite <i translate="no">y</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#top" translate="no">top</a>(), <a href="qrectf.html#setTop" translate="no">setTop</a>(), and <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>().</p>
+<!-- @@@moveTop -->
+<!-- $$$moveTopLeft[overload1]$$$moveTopLeftconstQPointF& -->
+<h3 class="fn" translate="no" id="moveTopLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveTopLeft</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the top-left corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>(), <a href="qrectf.html#moveTop" translate="no">moveTop</a>(), and <a href="qrectf.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveTopLeft -->
+<!-- $$$moveTopRight[overload1]$$$moveTopRightconstQPointF& -->
+<h3 class="fn" translate="no" id="moveTopRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">moveTopRight</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the top-right corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrectf.html#setTopRight" translate="no">setTopRight</a>(), <a href="qrectf.html#moveTop" translate="no">moveTop</a>(), and <a href="qrectf.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@moveTopRight -->
+<!-- $$$normalized[overload1]$$$normalized -->
+<h3 class="fn" translate="no" id="normalized"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">normalized</span>() const</h3>
+<p>Returns a normalized rectangle; i.e., a rectangle that has a non-negative width and height.</p>
+<p>If <a href="qrectf.html#width" translate="no">width</a>() &lt; 0 the function swaps the left and right corners, and it swaps the top and bottom corners if <a href="qrectf.html#height" translate="no">height</a>() &lt; 0.</p>
+<p><b>See also </b><a href="qrectf.html#isValid" translate="no">isValid</a>() and <a href="qrectf.html#isEmpty" translate="no">isEmpty</a>().</p>
+<!-- @@@normalized -->
+<!-- $$$right[overload1]$$$right -->
+<h3 class="fn" translate="no" id="right"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">right</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's right edge.</p>
+<p><b>See also </b><a href="qrectf.html#setRight" translate="no">setRight</a>(), <a href="qrectf.html#topRight" translate="no">topRight</a>(), and <a href="qrectf.html#bottomRight" translate="no">bottomRight</a>().</p>
+<!-- @@@right -->
+<!-- $$$setBottom[overload1]$$$setBottomqreal -->
+<h3 class="fn" translate="no" id="setBottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setBottom</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Sets the bottom edge of the rectangle to the given finite <i translate="no">y</i> coordinate. May change the height, but will never change the top edge of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#bottom" translate="no">bottom</a>() and <a href="qrectf.html#moveBottom" translate="no">moveBottom</a>().</p>
+<!-- @@@setBottom -->
+<!-- $$$setBottomLeft[overload1]$$$setBottomLeftconstQPointF& -->
+<h3 class="fn" translate="no" id="setBottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setBottomLeft</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Set the bottom-left corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the top-right corner of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#bottomLeft" translate="no">bottomLeft</a>() and <a href="qrectf.html#moveBottomLeft" translate="no">moveBottomLeft</a>().</p>
+<!-- @@@setBottomLeft -->
+<!-- $$$setBottomRight[overload1]$$$setBottomRightconstQPointF& -->
+<h3 class="fn" translate="no" id="setBottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setBottomRight</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Set the bottom-right corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the top-left corner of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#bottomRight" translate="no">bottomRight</a>() and <a href="qrectf.html#moveBottomRight" translate="no">moveBottomRight</a>().</p>
+<!-- @@@setBottomRight -->
+<!-- $$$setCoords[overload1]$$$setCoordsqrealqrealqrealqreal -->
+<h3 class="fn" translate="no" id="setCoords"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setCoords</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y1</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x2</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y2</i>)</h3>
+<p>Sets the coordinates of the rectangle's top-left corner to (<i translate="no">x1</i>, <i translate="no">y1</i>), and the coordinates of its bottom-right corner to (<i translate="no">x2</i>, <i translate="no">y2</i>). All parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#getCoords" translate="no">getCoords</a>() and <a href="qrectf.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@setCoords -->
+<!-- $$$setHeight[overload1]$$$setHeightqreal -->
+<h3 class="fn" translate="no" id="setHeight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setHeight</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>height</i>)</h3>
+<p>Sets the height of the rectangle to the given finite <i translate="no">height</i>. The bottom edge is changed, but not the top one.</p>
+<p><b>See also </b><a href="qrectf.html#height" translate="no">height</a>() and <a href="qrectf.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@setHeight -->
+<!-- $$$setLeft[overload1]$$$setLeftqreal -->
+<h3 class="fn" translate="no" id="setLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setLeft</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>)</h3>
+<p>Sets the left edge of the rectangle to the given finite <i translate="no">x</i> coordinate. May change the width, but will never change the right edge of the rectangle.</p>
+<p>Equivalent to <a href="qrectf.html#setX" translate="no">setX</a>().</p>
+<p><b>See also </b><a href="qrectf.html#left" translate="no">left</a>() and <a href="qrectf.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@setLeft -->
+<!-- $$$setRect[overload1]$$$setRectqrealqrealqrealqreal -->
+<h3 class="fn" translate="no" id="setRect"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setRect</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>width</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>height</i>)</h3>
+<p>Sets the coordinates of the rectangle's top-left corner to (<i translate="no">x</i>, <i translate="no">y</i>), and its size to the given <i translate="no">width</i> and <i translate="no">height</i>. All parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#getRect" translate="no">getRect</a>() and <a href="qrectf.html#setCoords" translate="no">setCoords</a>().</p>
+<!-- @@@setRect -->
+<!-- $$$setRight[overload1]$$$setRightqreal -->
+<h3 class="fn" translate="no" id="setRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setRight</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>)</h3>
+<p>Sets the right edge of the rectangle to the given finite <i translate="no">x</i> coordinate. May change the width, but will never change the left edge of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#right" translate="no">right</a>() and <a href="qrectf.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@setRight -->
+<!-- $$$setSize[overload1]$$$setSizeconstQSizeF& -->
+<h3 class="fn" translate="no" id="setSize"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setSize</span>(const <span class="type"><a href="qsizef.html" translate="no">QSizeF</a></span> &amp;<i>size</i>)</h3>
+<p>Sets the size of the rectangle to the given finite <i translate="no">size</i>. The top-left corner is not moved.</p>
+<p><b>See also </b><a href="qrectf.html#size" translate="no">size</a>(), <a href="qrectf.html#setWidth" translate="no">setWidth</a>(), and <a href="qrectf.html#setHeight" translate="no">setHeight</a>().</p>
+<!-- @@@setSize -->
+<!-- $$$setTop[overload1]$$$setTopqreal -->
+<h3 class="fn" translate="no" id="setTop"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setTop</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Sets the top edge of the rectangle to the given finite <i translate="no">y</i> coordinate. May change the height, but will never change the bottom edge of the rectangle.</p>
+<p>Equivalent to <a href="qrectf.html#setY" translate="no">setY</a>().</p>
+<p><b>See also </b><a href="qrectf.html#top" translate="no">top</a>() and <a href="qrectf.html#moveTop" translate="no">moveTop</a>().</p>
+<!-- @@@setTop -->
+<!-- $$$setTopLeft[overload1]$$$setTopLeftconstQPointF& -->
+<h3 class="fn" translate="no" id="setTopLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setTopLeft</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Set the top-left corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the bottom-right corner of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#topLeft" translate="no">topLeft</a>() and <a href="qrectf.html#moveTopLeft" translate="no">moveTopLeft</a>().</p>
+<!-- @@@setTopLeft -->
+<!-- $$$setTopRight[overload1]$$$setTopRightconstQPointF& -->
+<h3 class="fn" translate="no" id="setTopRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setTopRight</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>position</i>)</h3>
+<p>Set the top-right corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the bottom-left corner of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#topRight" translate="no">topRight</a>() and <a href="qrectf.html#moveTopRight" translate="no">moveTopRight</a>().</p>
+<!-- @@@setTopRight -->
+<!-- $$$setWidth[overload1]$$$setWidthqreal -->
+<h3 class="fn" translate="no" id="setWidth"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setWidth</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>width</i>)</h3>
+<p>Sets the width of the rectangle to the given finite <i translate="no">width</i>. The right edge is changed, but not the left one.</p>
+<p><b>See also </b><a href="qrectf.html#width" translate="no">width</a>() and <a href="qrectf.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@setWidth -->
+<!-- $$$setX[overload1]$$$setXqreal -->
+<h3 class="fn" translate="no" id="setX"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setX</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>x</i>)</h3>
+<p>Sets the left edge of the rectangle to the given finite <i translate="no">x</i> coordinate. May change the width, but will never change the right edge of the rectangle.</p>
+<p>Equivalent to <a href="qrectf.html#setLeft" translate="no">setLeft</a>().</p>
+<p><b>See also </b><a href="qrectf.html#x" translate="no">x</a>(), <a href="qrectf.html#setY" translate="no">setY</a>(), and <a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>().</p>
+<!-- @@@setX -->
+<!-- $$$setY[overload1]$$$setYqreal -->
+<h3 class="fn" translate="no" id="setY"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">setY</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>y</i>)</h3>
+<p>Sets the top edge of the rectangle to the given finite <i translate="no">y</i> coordinate. May change the height, but will never change the bottom edge of the rectangle.</p>
+<p>Equivalent to <a href="qrectf.html#setTop" translate="no">setTop</a>().</p>
+<p><b>See also </b><a href="qrectf.html#y" translate="no">y</a>(), <a href="qrectf.html#setX" translate="no">setX</a>(), and <a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>().</p>
+<!-- @@@setY -->
+<!-- $$$size[overload1]$$$size -->
+<h3 class="fn" translate="no" id="size"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qsizef.html" translate="no">QSizeF</a></span> QRectF::<span class="name">size</span>() const</h3>
+<p>Returns the size of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#setSize" translate="no">setSize</a>(), <a href="qrectf.html#width" translate="no">width</a>(), and <a href="qrectf.html#height" translate="no">height</a>().</p>
+<!-- @@@size -->
+<!-- $$$toAlignedRect[overload1]$$$toAlignedRect -->
+<h3 class="fn" translate="no" id="toAlignedRect"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html" translate="no">QRect</a></span> QRectF::<span class="name">toAlignedRect</span>() const</h3>
+<p>Returns a <a href="qrect.html" translate="no">QRect</a> based on the values of this rectangle that is the smallest possible integer rectangle that completely contains this rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#toRect" translate="no">toRect</a>().</p>
+<!-- @@@toAlignedRect -->
+<!-- $$$toCGRect[overload1]$$$toCGRect -->
+<h3 class="fn" translate="no" id="toCGRect"><code class="details extra" translate="no">[noexcept]</code> <span class="type">CGRect</span> QRectF::<span class="name">toCGRect</span>() const</h3>
+<p>Creates a CGRect from a <a href="qrectf.html" translate="no">QRectF</a>.</p>
+<p><b>See also </b><a href="qrectf.html#fromCGRect" translate="no">fromCGRect</a>().</p>
+<!-- @@@toCGRect -->
+<!-- $$$toDOMRect[overload1]$$$toDOMRect -->
+<h3 class="fn" translate="no" id="toDOMRect"><code class="details extra" translate="no">[since 6.5]</code> <span class="type">emscripten::val</span> QRectF::<span class="name">toDOMRect</span>() const</h3>
+<p>Converts this object to a DOMRect (https://www.w3.org/TR/geometry-1/).</p>
+<p>This function was introduced in Qt 6.5.</p>
+<p><b>See also </b><a href="qrectf.html#fromDOMRect" translate="no">fromDOMRect</a>().</p>
+<!-- @@@toDOMRect -->
+<!-- $$$toRect[overload1]$$$toRect -->
+<h3 class="fn" translate="no" id="toRect"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html" translate="no">QRect</a></span> QRectF::<span class="name">toRect</span>() const</h3>
+<p>Returns a <a href="qrect.html" translate="no">QRect</a> based on the values of this rectangle. Note that the coordinates in the returned rectangle are rounded to the nearest integer.</p>
+<p><b>See also </b><a href="qrectf.html#QRectF" translate="no">QRectF</a>(), <a href="qrectf.html#toAlignedRect" translate="no">toAlignedRect</a>(), and <a href="qrect.html#toRectF" translate="no">QRect::toRectF</a>().</p>
+<!-- @@@toRect -->
+<!-- $$$top[overload1]$$$top -->
+<h3 class="fn" translate="no" id="top"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">top</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's top edge. Equivalent to <a href="qrectf.html#y" translate="no">y</a>().</p>
+<p><b>See also </b><a href="qrectf.html#setTop" translate="no">setTop</a>(), <a href="qrectf.html#topLeft" translate="no">topLeft</a>(), and <a href="qrectf.html#topRight" translate="no">topRight</a>().</p>
+<!-- @@@top -->
+<!-- $$$topLeft[overload1]$$$topLeft -->
+<h3 class="fn" translate="no" id="topLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> QRectF::<span class="name">topLeft</span>() const</h3>
+<p>Returns the position of the rectangle's top-left corner.</p>
+<p><b>See also </b><a href="qrectf.html#setTopLeft" translate="no">setTopLeft</a>(), <a href="qrectf.html#top" translate="no">top</a>(), and <a href="qrectf.html#left" translate="no">left</a>().</p>
+<!-- @@@topLeft -->
+<!-- $$$topRight[overload1]$$$topRight -->
+<h3 class="fn" translate="no" id="topRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> QRectF::<span class="name">topRight</span>() const</h3>
+<p>Returns the position of the rectangle's top-right corner.</p>
+<p><b>See also </b><a href="qrectf.html#setTopRight" translate="no">setTopRight</a>(), <a href="qrectf.html#top" translate="no">top</a>(), and <a href="qrectf.html#right" translate="no">right</a>().</p>
+<!-- @@@topRight -->
+<!-- $$$translate[overload1]$$$translateqrealqreal -->
+<h3 class="fn" translate="no" id="translate"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">translate</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy</i>)</h3>
+<p>Moves the rectangle <i translate="no">dx</i> along the x-axis and <i translate="no">dy</i> along the y-axis, relative to the current position. Positive values move the rectangle to the right and downwards. Both parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#moveTopLeft" translate="no">moveTopLeft</a>(), <a href="qrectf.html#moveTo" translate="no">moveTo</a>(), and <a href="qrectf.html#translated" translate="no">translated</a>().</p>
+<!-- @@@translate -->
+<!-- $$$translate$$$translateconstQPointF& -->
+<h3 class="fn" translate="no" id="translate-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRectF::<span class="name">translate</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>offset</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Moves the rectangle <i translate="no">offset</i>.<a href="qpointf.html#x" translate="no">x</a>() along the x axis and <i translate="no">offset</i>.<a href="qpointf.html#y" translate="no">y</a>() along the y axis, relative to the current position.</p>
+<!-- @@@translate -->
+<!-- $$$translated[overload1]$$$translatedqrealqreal -->
+<h3 class="fn" translate="no" id="translated"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">translated</span>(<span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dx</i>, <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>dy</i>) const</h3>
+<p>Returns a copy of the rectangle that is translated <i translate="no">dx</i> along the x axis and <i translate="no">dy</i> along the y axis, relative to the current position. Positive values move the rectangle to the right and down. Both parameters must be finite.</p>
+<p><b>See also </b><a href="qrectf.html#translate" translate="no">translate</a>().</p>
+<!-- @@@translated -->
+<!-- $$$translated$$$translatedconstQPointF& -->
+<h3 class="fn" translate="no" id="translated-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">translated</span>(const <span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> &amp;<i>offset</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a copy of the rectangle that is translated <i translate="no">offset</i>.<a href="qpointf.html#x" translate="no">x</a>() along the x axis and <i translate="no">offset</i>.<a href="qpointf.html#y" translate="no">y</a>() along the y axis, relative to the current position.</p>
+<!-- @@@translated -->
+<!-- $$$transposed[overload1]$$$transposed -->
+<h3 class="fn" translate="no" id="transposed"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">transposed</span>() const</h3>
+<p>Returns a copy of the rectangle that has its width and height exchanged:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> r <span class="operator">=</span> {<span class="number">1.5</span><span class="operator">,</span> <span class="number">5.1</span><span class="operator">,</span> <span class="number">4.2</span><span class="operator">,</span> <span class="number">2.4</span>};
+ r <span class="operator">=</span> r<span class="operator">.</span>transposed(); <span class="comment">// r == {1.5, 5.1, 2.4, 4.2}</span>
+</pre>
+<p><b>See also </b><a href="qsizef.html#transposed" translate="no">QSizeF::transposed</a>().</p>
+<!-- @@@transposed -->
+<!-- $$$united[overload1]$$$unitedconstQRectF& -->
+<h3 class="fn" translate="no" id="united"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">united</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the bounding rectangle of this rectangle and the given <i translate="no">rectangle</i>.</p>
+<p class="centerAlign"><img src="images/qrect-unite.png" alt="" /></p><p><b>See also </b><a href="qrectf.html#intersected" translate="no">intersected</a>().</p>
+<!-- @@@united -->
+<!-- $$$width[overload1]$$$width -->
+<h3 class="fn" translate="no" id="width"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">width</span>() const</h3>
+<p>Returns the width of the rectangle.</p>
+<p><b>See also </b><a href="qrectf.html#setWidth" translate="no">setWidth</a>(), <a href="qrectf.html#height" translate="no">height</a>(), and <a href="qrectf.html#size" translate="no">size</a>().</p>
+<!-- @@@width -->
+<!-- $$$x[overload1]$$$x -->
+<h3 class="fn" translate="no" id="x"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">x</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's left edge. Equivalent to <a href="qrectf.html#left" translate="no">left</a>().</p>
+<p><b>See also </b><a href="qrectf.html#setX" translate="no">setX</a>(), <a href="qrectf.html#y" translate="no">y</a>(), and <a href="qrectf.html#topLeft" translate="no">topLeft</a>().</p>
+<!-- @@@x -->
+<!-- $$$y[overload1]$$$y -->
+<h3 class="fn" translate="no" id="y"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#qreal-typedef" translate="no">qreal</a></span> QRectF::<span class="name">y</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's top edge. Equivalent to <a href="qrectf.html#top" translate="no">top</a>().</p>
+<p><b>See also </b><a href="qrectf.html#setY" translate="no">setY</a>(), <a href="qrectf.html#x" translate="no">x</a>(), and <a href="qrectf.html#topLeft" translate="no">topLeft</a>().</p>
+<!-- @@@y -->
+<!-- $$$operator&[overload1]$$$operator&constQRectF& -->
+<h3 class="fn" translate="no" id="operator-and"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">operator&amp;</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the intersection of this rectangle and the given <i translate="no">rectangle</i>. Returns an empty rectangle if there is no intersection.</p>
+<p><b>See also </b><a href="qrectf.html#operator-and-eq" translate="no">operator&amp;=</a>() and <a href="qrectf.html#intersected" translate="no">intersected</a>().</p>
+<!-- @@@operator& -->
+<!-- $$$operator&=[overload1]$$$operator&=constQRectF& -->
+<h3 class="fn" translate="no" id="operator-and-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;QRectF::<span class="name">operator&amp;=</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Intersects this rectangle with the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrectf.html#intersected" translate="no">intersected</a>() and <a href="qrectf.html#operator-and" translate="no">operator&amp;</a>().</p>
+<!-- @@@operator&= -->
+<!-- $$$operator+=[overload1]$$$operator+=constQMarginsF& -->
+<h3 class="fn" translate="no" id="operator-2b-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;QRectF::<span class="name">operator+=</span>(const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>margins</i>)</h3>
+<p>Adds the <i translate="no">margins</i> to the rectangle, growing it.</p>
+<p><b>See also </b><a href="qrectf.html#marginsAdded" translate="no">marginsAdded</a>(), <a href="qrectf.html#marginsRemoved" translate="no">marginsRemoved</a>(), and <a href="qrectf.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@operator+= -->
+<!-- $$$operator-=[overload1]$$$operator-=constQMarginsF& -->
+<h3 class="fn" translate="no" id="operator--eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;QRectF::<span class="name">operator-=</span>(const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>margins</i>)</h3>
+<p>Returns a rectangle shrunk by the <i translate="no">margins</i>.</p>
+<p><b>See also </b><a href="qrectf.html#marginsRemoved" translate="no">marginsRemoved</a>(), <a href="qrectf.html#operator-2b-eq" translate="no">operator+=</a>(), and <a href="qrectf.html#marginsAdded" translate="no">marginsAdded</a>().</p>
+<!-- @@@operator-= -->
+<!-- $$$operator|[overload1]$$$operator|constQRectF& -->
+<h3 class="fn" translate="no" id="operator-7c"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> QRectF::<span class="name">operator|</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the bounding rectangle of this rectangle and the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrectf.html#united" translate="no">united</a>() and <a href="qrectf.html#operator-7c-eq" translate="no">operator|=</a>().</p>
+<!-- @@@operator| -->
+<!-- $$$operator|=[overload1]$$$operator|=constQRectF& -->
+<h3 class="fn" translate="no" id="operator-7c-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;QRectF::<span class="name">operator|=</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Unites this rectangle with the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrectf.html#united" translate="no">united</a>() and <a href="qrectf.html#operator-7c" translate="no">operator|</a>().</p>
+<!-- @@@operator|= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$qFuzzyCompare[overload1]$$$qFuzzyCompareconstQRectF&constQRectF& -->
+<h3 class="fn" translate="no" id="qFuzzyCompare"><code class="details extra" translate="no">[constexpr noexcept, since 6.8]</code> <span class="type">bool</span> <span class="name">qFuzzyCompare</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if the rectangle <i translate="no">lhs</i> is approximately equal to the rectangle <i translate="no">rhs</i>; otherwise returns <code translate="no">false</code>.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<!-- @@@qFuzzyCompare -->
+<!-- $$$qFuzzyIsNull[overload1]$$$qFuzzyIsNullconstQRectF& -->
+<h3 class="fn" translate="no" id="qFuzzyIsNull"><code class="details extra" translate="no">[constexpr noexcept, since 6.8]</code> <span class="type">bool</span> <span class="name">qFuzzyIsNull</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rect</i>)</h3>
+<p>Returns <code translate="no">true</code> if both width and height of the rectangle <i translate="no">rect</i> are approximately equal to zero; otherwise returns <code translate="no">false</code>.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<!-- @@@qFuzzyIsNull -->
+<!-- $$$operator!=[overload1]$$$operator!=constQRectF&constQRectF& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if the rectangles <i translate="no">lhs</i> and <i translate="no">rhs</i> are sufficiently different, otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This function does not check for strict inequality; instead, it uses a fuzzy comparison to compare the rectangles' coordinates.</p>
+</div>
+<!-- @@@operator!= -->
+<!-- $$$operator+[overload1]$$$operator+constQMarginsF&constQRectF& -->
+<h3 class="fn" translate="no" id="operator-2b"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> <span class="name">operator+</span>(const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rhs</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the <i translate="no">lhs</i> rectangle grown by the <i translate="no">rhs</i> margins.</p>
+<!-- @@@operator+ -->
+<!-- $$$operator+$$$operator+constQRectF&constQMarginsF& -->
+<h3 class="fn" translate="no" id="operator-2b-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> <span class="name">operator+</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns the <i translate="no">lhs</i> rectangle grown by the <i translate="no">rhs</i> margins.</p>
+<!-- @@@operator+ -->
+<!-- $$$operator-$$$operator-constQRectF&constQMarginsF& -->
+<h3 class="fn" translate="no" id="operator--7"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> <span class="name">operator-</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qmarginsf.html" translate="no">QMarginsF</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns the <i translate="no">lhs</i> rectangle shrunk by the <i translate="no">rhs</i> margins.</p>
+<!-- @@@operator- -->
+<!-- $$$operator<<$$$operator<<QDataStream&constQRectF& -->
+<h3 class="fn" translate="no" id="operator-lt-lt-20"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&lt;&lt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Writes the <i translate="no">rectangle</i> to the <i translate="no">stream</i>, and returns a reference to the stream.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator==[overload1]$$$operator==constQRectF&constQRectF& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if the rectangles <i translate="no">lhs</i> and <i translate="no">rhs</i> are <b>approximately</b> equal, otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This function does not check for strict equality; instead, it uses a fuzzy comparison to compare the rectangles' coordinates.</p>
+</div>
+<p><b>See also </b><a href="qrectf.html#qFuzzyCompare" translate="no">qFuzzyCompare</a>.</p>
+<!-- @@@operator== -->
+<!-- $$$operator>>$$$operator>>QDataStream&QRectF& -->
+<h3 class="fn" translate="no" id="operator-gt-gt-19"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&gt;&gt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, <span class="type"><a href="qrectf.html#QRectF" translate="no">QRectF</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Reads a <i translate="no">rectangle</i> from the <i translate="no">stream</i>, and returns a reference to the stream.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator>> -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

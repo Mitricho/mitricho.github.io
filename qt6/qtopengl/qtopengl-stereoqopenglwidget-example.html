@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- stereoqopenglwidget.qdoc -->
+  <meta name="description" content="This example shows how to create a minimal QOpenGLWidget based application with stereoscopic rendering support.">
+  <title>QOpenGLWidget Stereoscopic Rendering Example | Qt OpenGL</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopengl-index.html">Qt OpenGL</a></li>
+<li><a href="examples-widgets-opengl.html">Qt OpenGL Examples</a></li>
+<li>QOpenGLWidget Stereoscopic Rendering Example</li>
+<li id="buildversion"><a href="qtopengl-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#setting-the-correct-surface-flag">Setting the correct surface flag</a></li>
+<li class="level1"><a href="#rendering-twice">Rendering twice</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QOpenGLWidget Stereoscopic Rendering Example</h1>
+<!-- $$$stereoqopenglwidget-brief -->
+<p>This example shows how to create a minimal <a href="qopenglwidget.html" translate="no">QOpenGLWidget</a> based application with stereoscopic rendering support.</p>
+<!-- @@@stereoqopenglwidget -->
+<!-- $$$stereoqopenglwidget-description -->
+<div class="descr" id="details">
+<div class="admonition note">
+<p><b>Note: </b>Support for stereoscopic rendering has certain hardware requirements, such as, a graphics card with stereo support, 3D glasses and specific monitors.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>This example renders two images to two separate buffers. When you view the images through 3D glasses, they give a 3D holographic effect.</p>
+</div>
+<p class="centerAlign"><img src="images/stereoexample-leftbuffer.png" alt="" /></p><p>The above image is what will be rendered to the left buffer.</p>
+<p class="centerAlign"><img src="images/stereoexample-rightbuffer.png" alt="" /></p><p>The above image is what will be rendered to the right buffer.</p>
+<h4 id="setting-the-correct-surface-flag">Setting the correct surface flag</h4>
+<p>To enable stereoscopic rendering you need to set the flag <a href="../qtgui/qsurfaceformat.html#FormatOption-enum" translate="no">QSurfaceFormat::StereoBuffers</a> globally. Just doing it on the widget is not enough because of how the flag is handled internally. The safest is to do it on QSurfaceFormat::SetDefaultFormat prior to starting the application.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtgui/qsurfaceformat.html" translate="no">QSurfaceFormat</a></span> format;
+ format<span class="operator">.</span>setDepthBufferSize(<span class="number">24</span>);
+ format<span class="operator">.</span>setStencilBufferSize(<span class="number">8</span>);
+
+ <span class="comment">// Enable stereoscopic rendering support</span>
+ format<span class="operator">.</span>setStereo(<span class="keyword">true</span>);
+
+ <span class="type"><a href="../qtgui/qsurfaceformat.html" translate="no">QSurfaceFormat</a></span><span class="operator">::</span>setDefaultFormat(format);
+</pre>
+<h4 id="rendering-twice">Rendering twice</h4>
+<p>After <a href="../qtgui/qsurfaceformat.html#FormatOption-enum" translate="no">QSurfaceFormat::StereoBuffers</a> is set, then paintGL() will be called twice, once for each buffer. In paintGL() you can call currentTargetBuffer() to query which TargetBuffer is currently active.</p>
+<p>In the following snippet we slightly translate the matrix to not render the vertices on top of each other. This is a simple example just too see that if the necessary support is there, at runtime you should see two objects, one on the left and one on the right.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// Slightly translate the model, so that there's a visible difference in each buffer.</span>
+ QMatrix4x4 modelview;
+ <span class="keyword">if</span> (currentTargetBuffer() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopenglwidget.html" translate="no">QOpenGLWidget</a></span><span class="operator">::</span>LeftBuffer)
+     modelview<span class="operator">.</span>translate(<span class="operator">-</span><span class="number">0.4f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>);
+ <span class="keyword">else</span> <span class="keyword">if</span> (currentTargetBuffer() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopenglwidget.html" translate="no">QOpenGLWidget</a></span><span class="operator">::</span>RightBuffer)
+     modelview<span class="operator">.</span>translate(<span class="number">0.4f</span><span class="operator">,</span> <span class="number">0.0f</span><span class="operator">,</span> <span class="number">0.0f</span>);
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/opengl/stereoqopenglwidget?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@stereoqopenglwidget -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

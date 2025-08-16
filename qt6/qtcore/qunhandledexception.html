@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qexception.cpp -->
+  <meta name="description" content="The QUnhandledException class represents an unhandled exception in a Qt Concurrent worker thread.">
+  <title>QUnhandledException Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QUnhandledException</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QUnhandledException Class</h1>
+<!-- $$$QUnhandledException-brief -->
+<p>The QUnhandledException class represents an unhandled exception in a Qt Concurrent worker thread. <a href="#details">More...</a></p>
+<!-- @@@QUnhandledException -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QUnhandledException&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qexception.html" translate="no">QException</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qunhandledexception-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> </td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#QUnhandledException-2" translate="no">QUnhandledException</a></b>(std::__exception_ptr::exception_ptr <i>exception</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#QUnhandledException-1" translate="no">QUnhandledException</a></b>(const QUnhandledException &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></b>(QUnhandledException &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> std::__exception_ptr::exception_ptr </td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#exception" translate="no">exception</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#swap" translate="no">swap</a></b>(QUnhandledException &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QUnhandledException &amp;</td><td class="memItemRight bottomAlign"><b><a href="qunhandledexception.html#operator-eq" translate="no">operator=</a></b>(const QUnhandledException &amp;<i>other</i>)</td></tr>
+</table></div>
+<!-- $$$QUnhandledException-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>If a worker thread throws an exception that is not a subclass of <a href="qexception.html" translate="no">QException</a>, the <a href="../qtconcurrent/qtconcurrent-index.html">Qt Concurrent</a> functions will throw a QUnhandledException on the receiver thread side. The information about the actual exception that has been thrown will be saved in the QUnhandledException class and can be obtained using the <a href="qunhandledexception.html#exception" translate="no">exception</a>() method. For example, you can process the exception held by QUnhandledException in the following way:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">try</span> {
+     <span class="keyword">auto</span> f <span class="operator">=</span> <span class="type">QtConcurrent</span><span class="operator">::</span>run(<span class="operator">[</span><span class="operator">]</span> { <span class="keyword">throw</span> MyException {}; });
+     <span class="comment">// ...</span>
+ } <span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> <span class="operator">&amp;</span>e) {
+     <span class="keyword">try</span> {
+         <span class="keyword">if</span> (e<span class="operator">.</span>exception())
+             std<span class="operator">::</span>rethrow_exception(e<span class="operator">.</span>exception());
+     } <span class="keyword">catch</span> (<span class="keyword">const</span> MyException <span class="operator">&amp;</span>ex) {
+         <span class="comment">// Process 'ex'</span>
+     }
+ }
+</pre>
+<p>Inheriting from this class is not supported.</p>
+</div>
+<!-- @@@QUnhandledException -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QUnhandledException$$$QUnhandledExceptionstd::__exception_ptr::exception_ptr -->
+<h3 class="fn" translate="no" id="QUnhandledException-2"><code class="details extra" translate="no">[noexcept, since 6.0]</code> QUnhandledException::<span class="name">QUnhandledException</span>(<span class="type">std::__exception_ptr::exception_ptr</span> <i>exception</i> = nullptr)</h3>
+<p>Constructs a new QUnhandledException object. Saves the pointer to the actual exception object if <i translate="no">exception</i> is passed.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qunhandledexception.html#exception" translate="no">exception</a>().</p>
+<!-- @@@QUnhandledException -->
+<!-- $$$QUnhandledException$$$QUnhandledExceptionconstQUnhandledException& -->
+<h3 class="fn" translate="no" id="QUnhandledException-1"><code class="details extra" translate="no">[noexcept]</code> QUnhandledException::<span class="name">QUnhandledException</span>(const <span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> &amp;<i>other</i>)</h3>
+<p>Constructs a QUnhandledException object as a copy of <i translate="no">other</i>.</p>
+<!-- @@@QUnhandledException -->
+<!-- $$$QUnhandledException[overload1]$$$QUnhandledExceptionQUnhandledException&& -->
+<h3 class="fn" translate="no" id="QUnhandledException"><code class="details extra" translate="no">[noexcept]</code> QUnhandledException::<span class="name">QUnhandledException</span>(<span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> &amp;&amp;<i>other</i>)</h3>
+<p>Move-constructs a QUnhandledException, making it point to the same object as <i translate="no">other</i> was pointing to.</p>
+<!-- @@@QUnhandledException -->
+<!-- $$$exception[overload1]$$$exception -->
+<h3 class="fn" translate="no" id="exception"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">std::__exception_ptr::exception_ptr</span> QUnhandledException::<span class="name">exception</span>() const</h3>
+<p>Returns a <a href="https://en.cppreference.com/w/cpp/error/exception_ptr">pointer</a> to the actual exception that has been saved in this <a href="qunhandledexception.html" translate="no">QUnhandledException</a>. Returns a <code translate="no">null</code> pointer, if it does not point to an exception object.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@exception -->
+<!-- $$$swap[overload1]$$$swapQUnhandledException& -->
+<h3 class="fn" translate="no" id="swap"><code class="details extra" translate="no">[noexcept, since 6.0]</code> <span class="type">void</span> QUnhandledException::<span class="name">swap</span>(<span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> &amp;<i>other</i>)</h3>
+<p>Swaps this unhandled exception object with <i translate="no">other</i>. This operation is very fast and never fails.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@swap -->
+<!-- $$$operator=[overload1]$$$operator=constQUnhandledException& -->
+<h3 class="fn" translate="no" id="operator-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> &amp;QUnhandledException::<span class="name">operator=</span>(const <span class="type"><a href="qunhandledexception.html#QUnhandledException" translate="no">QUnhandledException</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns <i translate="no">other</i> to this <a href="qunhandledexception.html" translate="no">QUnhandledException</a> object and returns a reference to this <a href="qunhandledexception.html" translate="no">QUnhandledException</a> object.</p>
+<!-- @@@operator= -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- colorpalette-example.qdoc -->
+  <meta name="description" content="Example of how to create a RESTful API server using the QHttpServer.">
+  <title>RESTful API Server | Qt HTTP Server | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qthttpserver-index.html">Qt HTTP Server</a></li>
+<li><a href="qthttpserver-examples.html">Qt HTTP Server Examples</a></li>
+<li>RESTful API Server</li>
+<li id="buildversion"><a href="qthttpserver-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">RESTful API Server</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2022 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ <span class="preprocessor">#ifndef TYPES_H</span>
+ <span class="preprocessor">#define TYPES_H</span>
+
+ <span class="preprocessor">#include &lt;QtGui/QColor&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QDateTime&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QJsonArray&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QJsonObject&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QJsonParseError&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QString&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/qtypes.h&gt;</span>
+
+ <span class="preprocessor">#include &lt;algorithm&gt;</span>
+ <span class="preprocessor">#include &lt;optional&gt;</span>
+
+ <span class="keyword">struct</span> Jsonable
+ {
+     <span class="keyword">virtual</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span> <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> <span class="operator">~</span>Jsonable() <span class="operator">=</span> <span class="keyword">default</span>;
+ };
+
+ <span class="keyword">struct</span> Updatable
+ {
+     <span class="keyword">virtual</span> <span class="type">bool</span> update(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> <span class="type">void</span> updateFields(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> <span class="operator">~</span>Updatable() <span class="operator">=</span> <span class="keyword">default</span>;
+ };
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">&gt;</span>
+ <span class="keyword">struct</span> FromJsonFactory
+ {
+     <span class="keyword">virtual</span> std<span class="operator">::</span>optional<span class="operator">&lt;</span>T<span class="operator">&gt;</span> fromJson(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="keyword">const</span> <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> <span class="operator">~</span>FromJsonFactory() <span class="operator">=</span> <span class="keyword">default</span>;
+ };
+
+ <span class="keyword">struct</span> User : <span class="keyword">public</span> Jsonable<span class="operator">,</span> <span class="keyword">public</span> Updatable
+ {
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> id;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> email;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> firstName;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> lastName;
+     <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> avatarUrl;
+     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> createdAt;
+     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> updatedAt;
+
+     <span class="keyword">explicit</span> User(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>email<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>firstName<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>lastName<span class="operator">,</span>
+                   <span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>avatarUrl<span class="operator">,</span>
+                   <span class="keyword">const</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> <span class="operator">&amp;</span>createdAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc()<span class="operator">,</span>
+                   <span class="keyword">const</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> <span class="operator">&amp;</span>updatedAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc())
+         : id(nextId())<span class="operator">,</span>
+           email(email)<span class="operator">,</span>
+           firstName(firstName)<span class="operator">,</span>
+           lastName(lastName)<span class="operator">,</span>
+           avatarUrl(avatarUrl)<span class="operator">,</span>
+           createdAt(createdAt)<span class="operator">,</span>
+           updatedAt(updatedAt)
+     {
+     }
+
+     <span class="type">bool</span> update(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) override
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;email&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;first_name&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;last_name&quot;</span>)
+             <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;avatar&quot;</span>))
+             <span class="keyword">return</span> <span class="keyword">false</span>;
+
+         email <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString();
+         firstName <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;first_name&quot;</span>)<span class="operator">.</span>toString();
+         lastName <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;last_name&quot;</span>)<span class="operator">.</span>toString();
+         avatarUrl<span class="operator">.</span>setPath(json<span class="operator">.</span>value(<span class="string">&quot;avatar&quot;</span>)<span class="operator">.</span>toString());
+         updateTimestamp();
+         <span class="keyword">return</span> <span class="keyword">true</span>;
+     }
+
+     <span class="type">void</span> updateFields(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) override
+     {
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;email&quot;</span>))
+             email <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString();
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;first_name&quot;</span>))
+             firstName <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;first_name&quot;</span>)<span class="operator">.</span>toString();
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;last_name&quot;</span>))
+             lastName <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;last_name&quot;</span>)<span class="operator">.</span>toString();
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;avatar&quot;</span>))
+             avatarUrl<span class="operator">.</span>setPath(json<span class="operator">.</span>value(<span class="string">&quot;avatar&quot;</span>)<span class="operator">.</span>toString());
+         updateTimestamp();
+     }
+
+     <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span> override
+     {
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{ { <span class="string">&quot;id&quot;</span><span class="operator">,</span> id }<span class="operator">,</span>
+                             { <span class="string">&quot;email&quot;</span><span class="operator">,</span> email }<span class="operator">,</span>
+                             { <span class="string">&quot;first_name&quot;</span><span class="operator">,</span> firstName }<span class="operator">,</span>
+                             { <span class="string">&quot;last_name&quot;</span><span class="operator">,</span> lastName }<span class="operator">,</span>
+                             { <span class="string">&quot;avatar&quot;</span><span class="operator">,</span> avatarUrl<span class="operator">.</span>toString() }<span class="operator">,</span>
+                             { <span class="string">&quot;createdAt&quot;</span><span class="operator">,</span> createdAt<span class="operator">.</span>toString(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs) }<span class="operator">,</span>
+                             { <span class="string">&quot;updatedAt&quot;</span><span class="operator">,</span> updatedAt<span class="operator">.</span>toString(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs) } };
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> updateTimestamp() { updatedAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc(); }
+
+     <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> nextId()
+     {
+         <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> lastId <span class="operator">=</span> <span class="number">1</span>;
+         <span class="keyword">return</span> lastId<span class="operator">+</span><span class="operator">+</span>;
+     }
+ };
+
+ <span class="keyword">struct</span> UserFactory : <span class="keyword">public</span> FromJsonFactory<span class="operator">&lt;</span>User<span class="operator">&gt;</span>
+ {
+     UserFactory(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>scheme<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>hostName<span class="operator">,</span> <span class="type">int</span> port)
+         : scheme(scheme)<span class="operator">,</span> hostName(hostName)<span class="operator">,</span> port(port)
+     {
+     }
+
+     std<span class="operator">::</span>optional<span class="operator">&lt;</span>User<span class="operator">&gt;</span> fromJson(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="keyword">const</span> override
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;email&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;first_name&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;last_name&quot;</span>)
+             <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;avatar&quot;</span>)) {
+             <span class="keyword">return</span> std<span class="operator">::</span>nullopt;
+         }
+
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;createdAt&quot;</span>) <span class="operator">&amp;</span><span class="operator">&amp;</span> json<span class="operator">.</span>contains(<span class="string">&quot;updatedAt&quot;</span>)) {
+             <span class="keyword">return</span> User(
+                     json<span class="operator">.</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;first_name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                     json<span class="operator">.</span>value(<span class="string">&quot;last_name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;avatar&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>fromString(json<span class="operator">.</span>value(<span class="string">&quot;createdAt&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs)<span class="operator">,</span>
+                     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>fromString(json<span class="operator">.</span>value(<span class="string">&quot;updatedAt&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs));
+         }
+         <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> avatarUrl(json<span class="operator">.</span>value(<span class="string">&quot;avatar&quot;</span>)<span class="operator">.</span>toString());
+         <span class="keyword">if</span> (<span class="operator">!</span>avatarUrl<span class="operator">.</span>isValid()) {
+             avatarUrl<span class="operator">.</span>setPath(json<span class="operator">.</span>value(<span class="string">&quot;avatar&quot;</span>)<span class="operator">.</span>toString());
+         }
+         avatarUrl<span class="operator">.</span>setScheme(scheme);
+         avatarUrl<span class="operator">.</span>setHost(hostName);
+         avatarUrl<span class="operator">.</span>setPort(port);
+
+         <span class="keyword">return</span> User(json<span class="operator">.</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;first_name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                     json<span class="operator">.</span>value(<span class="string">&quot;last_name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> avatarUrl);
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> scheme;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> hostName;
+     <span class="type">int</span> port;
+ };
+
+ <span class="keyword">struct</span> Color : <span class="keyword">public</span> Jsonable<span class="operator">,</span> <span class="keyword">public</span> Updatable
+ {
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> id;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> name;
+     <span class="type">QColor</span> color;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> pantone;
+     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> createdAt;
+     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> updatedAt;
+
+     <span class="keyword">explicit</span> Color(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>color<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>pantone<span class="operator">,</span>
+                    <span class="keyword">const</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> <span class="operator">&amp;</span>createdAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc()<span class="operator">,</span>
+                    <span class="keyword">const</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> <span class="operator">&amp;</span>updatedAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc())
+         : id(nextId())<span class="operator">,</span>
+           name(name)<span class="operator">,</span>
+           color(<span class="type">QColor</span>(color))<span class="operator">,</span>
+           pantone(pantone)<span class="operator">,</span>
+           createdAt(createdAt)<span class="operator">,</span>
+           updatedAt(updatedAt)
+     {
+     }
+
+     <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span> override
+     {
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{ { <span class="string">&quot;id&quot;</span><span class="operator">,</span> id }<span class="operator">,</span>
+                             { <span class="string">&quot;name&quot;</span><span class="operator">,</span> name }<span class="operator">,</span>
+                             { <span class="string">&quot;color&quot;</span><span class="operator">,</span> color<span class="operator">.</span>name() }<span class="operator">,</span>
+                             { <span class="string">&quot;pantone_value&quot;</span><span class="operator">,</span> pantone }<span class="operator">,</span>
+                             { <span class="string">&quot;createdAt&quot;</span><span class="operator">,</span> createdAt<span class="operator">.</span>toString(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs) }<span class="operator">,</span>
+                             { <span class="string">&quot;updatedAt&quot;</span><span class="operator">,</span> updatedAt<span class="operator">.</span>toString(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs) } };
+     }
+
+     <span class="type">bool</span> update(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) override
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;name&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;color&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;pantone_value&quot;</span>))
+             <span class="keyword">return</span> <span class="keyword">false</span>;
+
+         name <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;name&quot;</span>)<span class="operator">.</span>toString();
+         color <span class="operator">=</span> <span class="type">QColor</span>(json<span class="operator">.</span>value(<span class="string">&quot;color&quot;</span>)<span class="operator">.</span>toString());
+         pantone <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;pantone_value&quot;</span>)<span class="operator">.</span>toString();
+         updateTimestamp();
+         <span class="keyword">return</span> <span class="keyword">true</span>;
+     }
+
+     <span class="type">void</span> updateFields(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) override
+     {
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;name&quot;</span>))
+             name <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;name&quot;</span>)<span class="operator">.</span>toString();
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;color&quot;</span>))
+             color <span class="operator">=</span> <span class="type">QColor</span>(json<span class="operator">.</span>value(<span class="string">&quot;color&quot;</span>)<span class="operator">.</span>toString());
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;pantone_value&quot;</span>))
+             pantone <span class="operator">=</span> json<span class="operator">.</span>value(<span class="string">&quot;pantone_value&quot;</span>)<span class="operator">.</span>toString();
+         updateTimestamp();
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> updateTimestamp() { updatedAt <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTimeUtc(); }
+
+     <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> nextId()
+     {
+         <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> lastId <span class="operator">=</span> <span class="number">1</span>;
+         <span class="keyword">return</span> lastId<span class="operator">+</span><span class="operator">+</span>;
+     }
+ };
+
+ <span class="keyword">struct</span> ColorFactory : <span class="keyword">public</span> FromJsonFactory<span class="operator">&lt;</span>Color<span class="operator">&gt;</span>
+ {
+     std<span class="operator">::</span>optional<span class="operator">&lt;</span>Color<span class="operator">&gt;</span> fromJson(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="keyword">const</span> override
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;name&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;color&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;pantone_value&quot;</span>))
+             <span class="keyword">return</span> std<span class="operator">::</span>nullopt;
+         <span class="keyword">if</span> (json<span class="operator">.</span>contains(<span class="string">&quot;createdAt&quot;</span>) <span class="operator">&amp;</span><span class="operator">&amp;</span> json<span class="operator">.</span>contains(<span class="string">&quot;updatedAt&quot;</span>)) {
+             <span class="keyword">return</span> Color(
+                     json<span class="operator">.</span>value(<span class="string">&quot;name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;color&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                     json<span class="operator">.</span>value(<span class="string">&quot;pantone_value&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>fromString(json<span class="operator">.</span>value(<span class="string">&quot;createdAt&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs)<span class="operator">,</span>
+                     <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>fromString(json<span class="operator">.</span>value(<span class="string">&quot;updatedAt&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODateWithMs));
+         }
+         <span class="keyword">return</span> Color(json<span class="operator">.</span>value(<span class="string">&quot;name&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;color&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                      json<span class="operator">.</span>value(<span class="string">&quot;pantone_value&quot;</span>)<span class="operator">.</span>toString());
+     }
+ };
+
+ <span class="keyword">struct</span> SessionEntry : <span class="keyword">public</span> Jsonable
+ {
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> id;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> email;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> password;
+     std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtcore/quuid.html" translate="no">QUuid</a></span><span class="operator">&gt;</span> token;
+
+     <span class="keyword">explicit</span> SessionEntry(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>email<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>password)
+         : id(nextId())<span class="operator">,</span> email(email)<span class="operator">,</span> password(password)
+     {
+     }
+
+     <span class="type">void</span> startSession() { token <span class="operator">=</span> generateToken(); }
+
+     <span class="type">void</span> endSession() { token <span class="operator">=</span> std<span class="operator">::</span>nullopt; }
+
+     <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span> override
+     {
+         <span class="keyword">return</span> token
+                 <span class="operator">?</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{ { <span class="string">&quot;id&quot;</span><span class="operator">,</span> id }<span class="operator">,</span>
+                                { <span class="string">&quot;token&quot;</span><span class="operator">,</span> token<span class="operator">-</span><span class="operator">&gt;</span>toString(<span class="type"><a href="../qtcore/quuid.html" translate="no">QUuid</a></span><span class="operator">::</span>StringFormat<span class="operator">::</span>WithoutBraces) } }
+                 : <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{};
+     }
+
+     <span class="type">bool</span> <span class="keyword">operator</span><span class="operator">=</span><span class="operator">=</span>(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>otherToken) <span class="keyword">const</span>
+     {
+         <span class="keyword">return</span> token <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">*</span>token <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/quuid.html" translate="no">QUuid</a></span><span class="operator">::</span>fromString(otherToken);
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="../qtcore/quuid.html" translate="no">QUuid</a></span> generateToken() { <span class="keyword">return</span> <span class="type"><a href="../qtcore/quuid.html" translate="no">QUuid</a></span><span class="operator">::</span>createUuid(); }
+
+     <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> nextId()
+     {
+         <span class="keyword">static</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> lastId <span class="operator">=</span> <span class="number">1</span>;
+         <span class="keyword">return</span> lastId<span class="operator">+</span><span class="operator">+</span>;
+     }
+ };
+
+ <span class="keyword">struct</span> SessionEntryFactory : <span class="keyword">public</span> FromJsonFactory<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span>
+ {
+     std<span class="operator">::</span>optional<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span> fromJson(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) <span class="keyword">const</span> override
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;email&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">.</span>contains(<span class="string">&quot;password&quot;</span>))
+             <span class="keyword">return</span> std<span class="operator">::</span>nullopt;
+
+         <span class="keyword">return</span> SessionEntry(json<span class="operator">.</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span> json<span class="operator">.</span>value(<span class="string">&quot;password&quot;</span>)<span class="operator">.</span>toString());
+     }
+ };
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">&gt;</span>
+ <span class="keyword">class</span> IdMap : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qmap.html" translate="no">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span><span class="operator">,</span> T<span class="operator">&gt;</span>
+ {
+ <span class="keyword">public</span>:
+     IdMap() <span class="operator">=</span> <span class="keyword">default</span>;
+     <span class="keyword">explicit</span> IdMap(<span class="keyword">const</span> FromJsonFactory<span class="operator">&lt;</span>T<span class="operator">&gt;</span> <span class="operator">&amp;</span>factory<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qjsonarray.html" translate="no">QJsonArray</a></span> <span class="operator">&amp;</span>array) : <span class="type"><a href="../qtcore/qmap.html" translate="no">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span><span class="operator">,</span> T<span class="operator">&gt;</span>()
+     {
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>jsonValue : array) {
+             <span class="keyword">if</span> (jsonValue<span class="operator">.</span>isObject()) {
+                 <span class="keyword">const</span> <span class="keyword">auto</span> maybeT <span class="operator">=</span> factory<span class="operator">.</span>fromJson(jsonValue<span class="operator">.</span>toObject());
+                 <span class="keyword">if</span> (maybeT) {
+                     <span class="type"><a href="../qtcore/qmap.html" translate="no">QMap</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span><span class="operator">,</span> T<span class="operator">&gt;</span><span class="operator">::</span>insert(maybeT<span class="operator">-</span><span class="operator">&gt;</span>id<span class="operator">,</span> <span class="operator">*</span>maybeT);
+                 }
+             }
+         }
+     }
+ };
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">&gt;</span>
+ <span class="keyword">class</span> Paginator : <span class="keyword">public</span> Jsonable
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">static</span> constexpr qsizetype defaultPage <span class="operator">=</span> <span class="number">1</span>;
+     <span class="keyword">static</span> constexpr qsizetype defaultPageSize <span class="operator">=</span> <span class="number">6</span>;
+
+     <span class="keyword">explicit</span> Paginator(<span class="keyword">const</span> T <span class="operator">&amp;</span>container<span class="operator">,</span> qsizetype page<span class="operator">,</span> qsizetype size)
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> containerSize <span class="operator">=</span> container<span class="operator">.</span>size();
+         <span class="keyword">const</span> <span class="keyword">auto</span> pageIndex <span class="operator">=</span> page <span class="operator">-</span> <span class="number">1</span>;
+         <span class="keyword">const</span> <span class="keyword">auto</span> pageSize <span class="operator">=</span> <a href="../qtcore/qtminmax-qtcore-proxy.html#qMin" translate="no">qMin</a>(size<span class="operator">,</span> containerSize);
+         <span class="keyword">const</span> <span class="keyword">auto</span> totalPages <span class="operator">=</span> (containerSize <span class="operator">%</span> pageSize) <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">?</span> (containerSize <span class="operator">/</span> pageSize)
+                                                                 : (containerSize <span class="operator">/</span> pageSize) <span class="operator">+</span> <span class="number">1</span>;
+         valid <span class="operator">=</span> containerSize <span class="operator">&gt;</span> (pageIndex <span class="operator">*</span> pageSize);
+         <span class="keyword">if</span> (valid) {
+             <span class="type"><a href="../qtcore/qjsonarray.html" translate="no">QJsonArray</a></span> data;
+
+             <span class="keyword">auto</span> iter <span class="operator">=</span> container<span class="operator">.</span>begin();
+             std<span class="operator">::</span>advance(iter<span class="operator">,</span> std<span class="operator">::</span>min(pageIndex <span class="operator">*</span> pageSize<span class="operator">,</span> containerSize));
+             <span class="keyword">for</span> (qsizetype i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> pageSize <span class="operator">&amp;</span><span class="operator">&amp;</span> iter <span class="operator">!</span><span class="operator">=</span> container<span class="operator">.</span>end(); <span class="operator">+</span><span class="operator">+</span>i<span class="operator">,</span> <span class="operator">+</span><span class="operator">+</span>iter) {
+                 data<span class="operator">.</span>push_back(iter<span class="operator">-</span><span class="operator">&gt;</span>toJson());
+             }
+             json <span class="operator">=</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{ { <span class="string">&quot;page&quot;</span><span class="operator">,</span> pageIndex <span class="operator">+</span> <span class="number">1</span> }<span class="operator">,</span>
+                                 { <span class="string">&quot;per_page&quot;</span><span class="operator">,</span> pageSize }<span class="operator">,</span>
+                                 { <span class="string">&quot;total&quot;</span><span class="operator">,</span> containerSize }<span class="operator">,</span>
+                                 { <span class="string">&quot;total_pages&quot;</span><span class="operator">,</span> totalPages }<span class="operator">,</span>
+                                 { <span class="string">&quot;data&quot;</span><span class="operator">,</span> data } };
+         } <span class="keyword">else</span> {
+             json <span class="operator">=</span> <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span>{};
+         }
+     }
+
+     <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span> { <span class="keyword">return</span> json; }
+
+     constexpr <span class="type">bool</span> isValid() <span class="keyword">const</span> { <span class="keyword">return</span> valid; }
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span> json;
+     <span class="type">bool</span> valid;
+ };
+
+ <span class="preprocessor">#endif // TYPES_H</span>
+</pre>

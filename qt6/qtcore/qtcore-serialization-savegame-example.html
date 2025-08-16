@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- savegame.qdoc -->
+  <meta name="description" content="How to save and load a game using Qt's JSON or CBOR classes.">
+  <title>Saving and Loading a Game | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Saving and Loading a Game</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-character-class">The Character Class</a></li>
+<li class="level1"><a href="#the-level-class">The Level Class</a></li>
+<li class="level1"><a href="#the-game-class">The Game Class</a></li>
+<li class="level1"><a href="#tying-it-all-together">Tying It All Together</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Saving and Loading a Game</h1>
+<!-- $$$serialization/savegame-brief -->
+<p>How to save and load a game using Qt's JSON or CBOR classes.</p>
+<!-- @@@serialization/savegame -->
+<!-- $$$serialization/savegame-description -->
+<div class="descr" id="details">
+<p>Many games provide save functionality, so that the player's progress through the game can be saved and loaded at a later time. The process of saving a game generally involves serializing each game object's member variables to a file. Many formats can be used for this purpose, one of which is JSON. With <a href="qjsondocument.html" translate="no">QJsonDocument</a>, you also have the ability to serialize a document in a <a href="https://datatracker.ietf.org/doc/html/rfc7049">CBOR</a> format, which is great if you don't want the save file to be easy to read (but see <a href="qtcore-serialization-cbordump-example.html">Parsing and displaying CBOR data</a> for how it <i>can</i> be read), or if you need to keep the file size down.</p>
+<p>In this example, we'll demonstrate how to save and load a simple game to and from JSON and binary formats.</p>
+<h4 id="the-character-class">The Character Class</h4>
+<p>The Character class represents a non-player character (NPC) in our game, and stores the player's name, level, and class type.</p>
+<p>It provides static fromJson() and non-static toJson() functions to serialise itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>This pattern (fromJson()/toJson()) works because QJsonObjects can be constructed independent of an owning <a href="qjsondocument.html" translate="no">QJsonDocument</a>, and because the data types being (de)serialized here are value types, so can be copied. When serializing to another format &mdash; for example XML or <a href="qdatastream.html" translate="no">QDataStream</a>, which require passing a document-like object &mdash; or when the object identity is important (<a href="qobject.html" translate="no">QObject</a> subclasses, for example), other patterns may be more suitable. See the <a href="../qtxml/qtxml-dombookmarks-example.html">dombookmarks</a> example for XML, and the implementation of <a href="../qtwidgets/qlistwidgetitem.html#read" translate="no">QListWidgetItem::read</a>() and <a href="../qtwidgets/qlistwidgetitem.html#write" translate="no">QListWidgetItem::write</a>() for idiomatic <a href="qdatastream.html" translate="no">QDataStream</a> serialization. The <code translate="no">print()</code> functions in this example are good examples of <a href="qtextstream.html" translate="no">QTextStream</a> serialization, even though they, of course, lack the deserialization side.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Character
+ {
+     Q_GADGET
+
+ <span class="keyword">public</span>:
+     <span class="keyword">enum</span> ClassType { Warrior<span class="operator">,</span> Mage<span class="operator">,</span> Archer };
+     Q_ENUM(ClassType)
+
+     Character();
+     Character(<span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name<span class="operator">,</span> <span class="type">int</span> level<span class="operator">,</span> ClassType classType);
+
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> name() <span class="keyword">const</span>;
+     <span class="type">void</span> setName(<span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name);
+
+     <span class="type">int</span> level() <span class="keyword">const</span>;
+     <span class="type">void</span> setLevel(<span class="type">int</span> level);
+
+     ClassType classType() <span class="keyword">const</span>;
+     <span class="type">void</span> setClassType(ClassType classType);
+
+     <span class="keyword">static</span> Character fromJson(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json);
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span>;
+
+     <span class="type">void</span> print(<span class="type"><a href="qtextstream.html" translate="no">QTextStream</a></span> <span class="operator">&amp;</span>s<span class="operator">,</span> <span class="type">int</span> indentation <span class="operator">=</span> <span class="number">0</span>) <span class="keyword">const</span>;
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> mName;
+     <span class="type">int</span> mLevel <span class="operator">=</span> <span class="number">0</span>;
+     ClassType mClassType <span class="operator">=</span> Warrior;
+ };
+</pre>
+<p>Of particular interest to us are the fromJson() and toJson() function implementations:</p>
+<pre class="cpp" translate="no">
+ Character Character<span class="operator">::</span>fromJson(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json)
+ {
+     Character result;
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isString())
+         result<span class="operator">.</span>mName <span class="operator">=</span> v<span class="operator">.</span>toString();
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;level&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isDouble())
+         result<span class="operator">.</span>mLevel <span class="operator">=</span> v<span class="operator">.</span>toInt();
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;classType&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isDouble())
+         result<span class="operator">.</span>mClassType <span class="operator">=</span> ClassType(v<span class="operator">.</span>toInt());
+
+     <span class="keyword">return</span> result;
+ }
+</pre>
+<p>In the fromJson() function, we construct a local <code translate="no">result</code> Character object and assign <code translate="no">result</code>'s members values from the <a href="qjsonobject.html" translate="no">QJsonObject</a> argument. You can use either <a href="qjsonobject.html#operator-5b-5d" translate="no">QJsonObject::operator[]</a>() or <a href="qjsonobject.html#value" translate="no">QJsonObject::value</a>() to access values within the JSON object; both are const functions and return <a href="qjsonvalue.html#Type-enum" translate="no">QJsonValue::Undefined</a> if the key is invalid. In particular, the <code translate="no">is...</code> functions (for example <a href="qjsonvalue.html#isString" translate="no">QJsonValue::isString</a>(), <a href="qjsonvalue.html#isDouble" translate="no">QJsonValue::isDouble</a>()) return <code translate="no">false</code> for <a href="qjsonvalue.html#Type-enum" translate="no">QJsonValue::Undefined</a>, so we can check for existence as well as the correct type in a single lookup.</p>
+<p>If a value does not exist in the JSON object, or has the wrong type, we don't write to the corresponding <code translate="no">result</code> member, either, thereby preserving any values the default constructor may have set. This means default values are centrally defined in one location (the default constructor) and need not be repeated in serialisation code (<a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a>).</p>
+<p>Observe the use of <a href="https://en.cppreference.com/w/cpp/language/if#If_statements_with_initializer">C++17 if-with-initializer</a> to separate scoping and checking of the variable <code translate="no">v</code>. This means we can keep the variable name short, because its scope is limited.</p>
+<p>Compare that to the naïve approach using <code translate="no">QJsonObject::contains()</code>:</p>
+<pre class="cpp plain" translate="no">
+ if (json.contains(&quot;name&quot;) &amp;&amp; json[&quot;name&quot;].isString())
+     result.mName = json[&quot;name&quot;].toString();
+</pre>
+<p>which, beside being less readable, requires a total of three lookups (no, the compiler will <i>not</i> optimize these into one), so is three times slower and repeats <code translate="no">&quot;name&quot;</code> three times (violating the DRY principle).</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> Character<span class="operator">::</span>toJson() <span class="keyword">const</span>
+ {
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> json;
+     json<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span> <span class="operator">=</span> mName;
+     json<span class="operator">[</span><span class="string">&quot;level&quot;</span><span class="operator">]</span> <span class="operator">=</span> mLevel;
+     json<span class="operator">[</span><span class="string">&quot;classType&quot;</span><span class="operator">]</span> <span class="operator">=</span> mClassType;
+     <span class="keyword">return</span> json;
+ }
+</pre>
+<p>In the toJson() function, we do the reverse of the fromJson() function; assign values from the Character object to a new JSON object we then return. As with accessing values, there are two ways to set values on a <a href="qjsonobject.html" translate="no">QJsonObject</a>: <a href="qjsonobject.html#operator-5b-5d" translate="no">QJsonObject::operator[]</a>() and <a href="qjsonobject.html#insert" translate="no">QJsonObject::insert</a>(). Both will override any existing value at the given key.</p>
+<h4 id="the-level-class">The Level Class</h4>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Level
+ {
+ <span class="keyword">public</span>:
+     Level() <span class="operator">=</span> <span class="keyword">default</span>;
+     <span class="keyword">explicit</span> Level(<span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name);
+
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> name() <span class="keyword">const</span>;
+
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Character<span class="operator">&gt;</span> npcs() <span class="keyword">const</span>;
+     <span class="type">void</span> setNpcs(<span class="keyword">const</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Character<span class="operator">&gt;</span> <span class="operator">&amp;</span>npcs);
+
+     <span class="keyword">static</span> Level fromJson(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json);
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span>;
+
+     <span class="type">void</span> print(<span class="type"><a href="qtextstream.html" translate="no">QTextStream</a></span> <span class="operator">&amp;</span>s<span class="operator">,</span> <span class="type">int</span> indentation <span class="operator">=</span> <span class="number">0</span>) <span class="keyword">const</span>;
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> mName;
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Character<span class="operator">&gt;</span> mNpcs;
+ };
+</pre>
+<p>We want the levels in our game to each each have several NPCs, so we keep a <a href="qlist.html" translate="no">QList</a> of Character objects. We also provide the familiar fromJson() and toJson() functions.</p>
+<pre class="cpp" translate="no">
+ Level Level<span class="operator">::</span>fromJson(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json)
+ {
+     Level result;
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isString())
+         result<span class="operator">.</span>mName <span class="operator">=</span> v<span class="operator">.</span>toString();
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;npcs&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isArray()) {
+         <span class="keyword">const</span> <span class="type"><a href="qjsonarray.html" translate="no">QJsonArray</a></span> npcs <span class="operator">=</span> v<span class="operator">.</span>toArray();
+         result<span class="operator">.</span>mNpcs<span class="operator">.</span>reserve(npcs<span class="operator">.</span>size());
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> <span class="operator">&amp;</span>npc : npcs)
+             result<span class="operator">.</span>mNpcs<span class="operator">.</span>append(Character<span class="operator">::</span>fromJson(npc<span class="operator">.</span>toObject()));
+     }
+
+     <span class="keyword">return</span> result;
+ }
+</pre>
+<p>Containers can be written to and read from JSON using <a href="qjsonarray.html" translate="no">QJsonArray</a>. In our case, we construct a <a href="qjsonarray.html" translate="no">QJsonArray</a> from the value associated with the key <code translate="no">&quot;npcs&quot;</code>. Then, for each <a href="qjsonvalue.html" translate="no">QJsonValue</a> element in the array, we call toObject() to get the Character's JSON object. Character::fromJson() can then turn that QJSonObject into a Character object to append to our NPC array.</p>
+<div class="admonition note">
+<p><b>Note: </b><a href="containers.html">Associate containers</a> can be written by storing the key in each value object (if it's not already). With this approach, the container is stored as a regular array of objects, but the index of each element is used as the key to construct the container when reading it back in.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> Level<span class="operator">::</span>toJson() <span class="keyword">const</span>
+ {
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> json;
+     json<span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span> <span class="operator">=</span> mName;
+     <span class="type"><a href="qjsonarray.html" translate="no">QJsonArray</a></span> npcArray;
+     <span class="keyword">for</span> (<span class="keyword">const</span> Character <span class="operator">&amp;</span>npc : mNpcs)
+         npcArray<span class="operator">.</span>append(npc<span class="operator">.</span>toJson());
+     json<span class="operator">[</span><span class="string">&quot;npcs&quot;</span><span class="operator">]</span> <span class="operator">=</span> npcArray;
+     <span class="keyword">return</span> json;
+ }
+</pre>
+<p>Again, the toJson() function is similar to the fromJson() function, except reversed.</p>
+<h4 id="the-game-class">The Game Class</h4>
+<p>Having established the Character and Level classes, we can move on to the Game class:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Game
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">enum</span> SaveFormat { Json<span class="operator">,</span> Binary };
+
+     Character player() <span class="keyword">const</span>;
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Level<span class="operator">&gt;</span> levels() <span class="keyword">const</span>;
+
+     <span class="type">void</span> newGame();
+     <span class="type">bool</span> loadGame(SaveFormat saveFormat);
+     <span class="type">bool</span> saveGame(SaveFormat saveFormat) <span class="keyword">const</span>;
+
+     <span class="type">void</span> read(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json);
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> toJson() <span class="keyword">const</span>;
+
+     <span class="type">void</span> print(<span class="type"><a href="qtextstream.html" translate="no">QTextStream</a></span> <span class="operator">&amp;</span>s<span class="operator">,</span> <span class="type">int</span> indentation <span class="operator">=</span> <span class="number">0</span>) <span class="keyword">const</span>;
+
+ <span class="keyword">private</span>:
+     Character mPlayer;
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Level<span class="operator">&gt;</span> mLevels;
+ };
+</pre>
+<p>First of all, we define the <code translate="no">SaveFormat</code> enum. This will allow us to specify the format in which the game should be saved: <code translate="no">Json</code> or <code translate="no">Binary</code>.</p>
+<p>Next, we provide accessors for the player and levels. We then expose three functions: newGame(), saveGame() and loadGame().</p>
+<p>The read() and toJson() functions are used by saveGame() and loadGame().</p>
+<div class="admonition note"><p><b>Note:</b> Despite <code translate="no">Game</code> being a value class, we assume that the author wants a game to have identity, much like your main window would have. We therefore don't use a static fromJson() function, which would create a new object, but a read() function we can call on existing objects. There's a 1:1 correspondence between read() and fromJson(), in that one can be implemented in terms of the other:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> read(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) { <span class="operator">*</span><span class="keyword">this</span> <span class="operator">=</span> fromJson(json); }
+ <span class="keyword">static</span> Game fromObject(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json) { Game g; g<span class="operator">.</span>read(json); <span class="keyword">return</span> g; }
+</pre>
+<p>We just use what's more convenient for callers of the functions.</p>
+</div><pre class="cpp" translate="no">
+ <span class="type">void</span> Game<span class="operator">::</span>newGame()
+ {
+     mPlayer <span class="operator">=</span> Character();
+     mPlayer<span class="operator">.</span>setName(<span class="string">&quot;Hero&quot;</span>_L1);
+     mPlayer<span class="operator">.</span>setClassType(Character<span class="operator">::</span>Archer);
+     mPlayer<span class="operator">.</span>setLevel(<span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">15</span><span class="operator">,</span> <span class="number">21</span>));
+
+     mLevels<span class="operator">.</span>clear();
+     mLevels<span class="operator">.</span>reserve(<span class="number">2</span>);
+
+     Level village(<span class="string">&quot;Village&quot;</span>_L1);
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Character<span class="operator">&gt;</span> villageNpcs;
+     villageNpcs<span class="operator">.</span>reserve(<span class="number">2</span>);
+     villageNpcs<span class="operator">.</span>append(Character(<span class="string">&quot;Barry the Blacksmith&quot;</span>_L1<span class="operator">,</span>
+                                  <span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">8</span><span class="operator">,</span> <span class="number">11</span>)<span class="operator">,</span> Character<span class="operator">::</span>Warrior));
+     villageNpcs<span class="operator">.</span>append(Character(<span class="string">&quot;Terry the Trader&quot;</span>_L1<span class="operator">,</span>
+                                  <span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">6</span><span class="operator">,</span> <span class="number">8</span>)<span class="operator">,</span> Character<span class="operator">::</span>Warrior));
+     village<span class="operator">.</span>setNpcs(villageNpcs);
+     mLevels<span class="operator">.</span>append(village);
+
+     Level dungeon(<span class="string">&quot;Dungeon&quot;</span>_L1);
+     <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Character<span class="operator">&gt;</span> dungeonNpcs;
+     dungeonNpcs<span class="operator">.</span>reserve(<span class="number">3</span>);
+     dungeonNpcs<span class="operator">.</span>append(Character(<span class="string">&quot;Eric the Evil&quot;</span>_L1<span class="operator">,</span>
+                                  <span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">18</span><span class="operator">,</span> <span class="number">26</span>)<span class="operator">,</span> Character<span class="operator">::</span>Mage));
+     dungeonNpcs<span class="operator">.</span>append(Character(<span class="string">&quot;Eric's Left Minion&quot;</span>_L1<span class="operator">,</span>
+                                  <span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">5</span><span class="operator">,</span> <span class="number">7</span>)<span class="operator">,</span> Character<span class="operator">::</span>Warrior));
+     dungeonNpcs<span class="operator">.</span>append(Character(<span class="string">&quot;Eric's Right Minion&quot;</span>_L1<span class="operator">,</span>
+                                  <span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">4</span><span class="operator">,</span> <span class="number">9</span>)<span class="operator">,</span> Character<span class="operator">::</span>Warrior));
+     dungeon<span class="operator">.</span>setNpcs(dungeonNpcs);
+     mLevels<span class="operator">.</span>append(dungeon);
+ }
+</pre>
+<p>To setup a new game, we create the player and populate the levels and their NPCs.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Game<span class="operator">::</span>read(<span class="keyword">const</span> <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> <span class="operator">&amp;</span>json)
+ {
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;player&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isObject())
+         mPlayer <span class="operator">=</span> Character<span class="operator">::</span>fromJson(v<span class="operator">.</span>toObject());
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> v <span class="operator">=</span> json<span class="operator">[</span><span class="string">&quot;levels&quot;</span><span class="operator">]</span>; v<span class="operator">.</span>isArray()) {
+         <span class="keyword">const</span> <span class="type"><a href="qjsonarray.html" translate="no">QJsonArray</a></span> levels <span class="operator">=</span> v<span class="operator">.</span>toArray();
+         mLevels<span class="operator">.</span>clear();
+         mLevels<span class="operator">.</span>reserve(levels<span class="operator">.</span>size());
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="qjsonvalue.html" translate="no">QJsonValue</a></span> <span class="operator">&amp;</span>level : levels)
+             mLevels<span class="operator">.</span>append(Level<span class="operator">::</span>fromJson(level<span class="operator">.</span>toObject()));
+     }
+ }
+</pre>
+<p>The read() function starts by replacing the player with the one read from JSON. We then clear() the level array so that calling loadGame() on the same Game object twice doesn't result in old levels hanging around.</p>
+<p>We then populate the level array by reading each Level from a <a href="qjsonarray.html" translate="no">QJsonArray</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> Game<span class="operator">::</span>toJson() <span class="keyword">const</span>
+ {
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> json;
+     json<span class="operator">[</span><span class="string">&quot;player&quot;</span><span class="operator">]</span> <span class="operator">=</span> mPlayer<span class="operator">.</span>toJson();
+
+     <span class="type"><a href="qjsonarray.html" translate="no">QJsonArray</a></span> levels;
+     <span class="keyword">for</span> (<span class="keyword">const</span> Level <span class="operator">&amp;</span>level : mLevels)
+         levels<span class="operator">.</span>append(level<span class="operator">.</span>toJson());
+     json<span class="operator">[</span><span class="string">&quot;levels&quot;</span><span class="operator">]</span> <span class="operator">=</span> levels;
+     <span class="keyword">return</span> json;
+ }
+</pre>
+<p>Writing the game to JSON is similar to writing a level.</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> Game<span class="operator">::</span>loadGame(Game<span class="operator">::</span>SaveFormat saveFormat)
+ {
+     <span class="type"><a href="qfile.html" translate="no">QFile</a></span> loadFile(saveFormat <span class="operator">=</span><span class="operator">=</span> Json <span class="operator">?</span> <span class="string">&quot;save.json&quot;</span>_L1 : <span class="string">&quot;save.dat&quot;</span>_L1);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>loadFile<span class="operator">.</span>open(<span class="type"><a href="qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>ReadOnly)) {
+         <a href="qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Couldn't open save file.&quot;</span>);
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+     }
+
+     <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> saveData <span class="operator">=</span> loadFile<span class="operator">.</span>readAll();
+
+     <span class="type"><a href="qjsondocument.html" translate="no">QJsonDocument</a></span> loadDoc(saveFormat <span class="operator">=</span><span class="operator">=</span> Json
+                           <span class="operator">?</span> <span class="type"><a href="qjsondocument.html" translate="no">QJsonDocument</a></span><span class="operator">::</span>fromJson(saveData)
+                           : <span class="type"><a href="qjsondocument.html" translate="no">QJsonDocument</a></span>(<span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span><span class="operator">::</span>fromCbor(saveData)<span class="operator">.</span>toMap()<span class="operator">.</span>toJsonObject()));
+
+     read(loadDoc<span class="operator">.</span>object());
+
+     <span class="type"><a href="qtextstream.html" translate="no">QTextStream</a></span>(stdout) <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Loaded save for &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> loadDoc<span class="operator">[</span><span class="string">&quot;player&quot;</span><span class="operator">]</span><span class="operator">[</span><span class="string">&quot;name&quot;</span><span class="operator">]</span><span class="operator">.</span>toString()
+                         <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot; using &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> (saveFormat <span class="operator">!</span><span class="operator">=</span> Json <span class="operator">?</span> <span class="string">&quot;CBOR&quot;</span> : <span class="string">&quot;JSON&quot;</span>) <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;...\n&quot;</span>;
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<p>When loading a saved game in loadGame(), the first thing we do is open the save file based on which format it was saved to; <code translate="no">&quot;save.json&quot;</code> for JSON, and <code translate="no">&quot;save.dat&quot;</code> for CBOR. We print a warning and return <code translate="no">false</code> if the file couldn't be opened.</p>
+<p>Since <a href="qjsondocument.html#fromJson" translate="no">QJsonDocument::fromJson</a>() and <a href="qcborvalue.html#fromCbor" translate="no">QCborValue::fromCbor</a>() both take a <a href="qbytearray.html" translate="no">QByteArray</a>, we can read the entire contents of the save file into one, regardless of the save format.</p>
+<p>After constructing the <a href="qjsondocument.html" translate="no">QJsonDocument</a>, we instruct the Game object to read itself and then return <code translate="no">true</code> to indicate success.</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> Game<span class="operator">::</span>saveGame(Game<span class="operator">::</span>SaveFormat saveFormat) <span class="keyword">const</span>
+ {
+     <span class="type"><a href="qfile.html" translate="no">QFile</a></span> saveFile(saveFormat <span class="operator">=</span><span class="operator">=</span> Json <span class="operator">?</span> <span class="string">&quot;save.json&quot;</span>_L1 : <span class="string">&quot;save.dat&quot;</span>_L1);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>saveFile<span class="operator">.</span>open(<span class="type"><a href="qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>WriteOnly)) {
+         <a href="qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Couldn't open save file.&quot;</span>);
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+     }
+
+     <span class="type"><a href="qjsonobject.html" translate="no">QJsonObject</a></span> gameObject <span class="operator">=</span> toJson();
+     saveFile<span class="operator">.</span>write(saveFormat <span class="operator">=</span><span class="operator">=</span> Json <span class="operator">?</span> <span class="type"><a href="qjsondocument.html" translate="no">QJsonDocument</a></span>(gameObject)<span class="operator">.</span>toJson()
+                                       : <span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span><span class="operator">::</span>fromJsonValue(gameObject)<span class="operator">.</span>toCbor());
+
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<p>Not surprisingly, saveGame() looks very much like loadGame(). We determine the file extension based on the format, print a warning and return <code translate="no">false</code> if the opening of the file fails. We then write the Game object to a <a href="qjsonobject.html" translate="no">QJsonObject</a>. To save the game in the format that was specified, we convert the JSON object into either a <a href="qjsondocument.html" translate="no">QJsonDocument</a> for a subsequent <a href="qjsondocument.html#toJson" translate="no">QJsonDocument::toJson</a>() call, or a <a href="qcborvalue.html" translate="no">QCborValue</a> for <a href="qcborvalue.html#toCbor" translate="no">QCborValue::toCbor</a>().</p>
+<h4 id="tying-it-all-together">Tying It All Together</h4>
+<p>We are now ready to enter main():</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+
+     <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> args <span class="operator">=</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>arguments();
+     <span class="keyword">const</span> <span class="type">bool</span> newGame
+             <span class="operator">=</span> args<span class="operator">.</span>size() <span class="operator">&lt;</span><span class="operator">=</span> <span class="number">1</span> <span class="operator">|</span><span class="operator">|</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">::</span>compare(args<span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">,</span> <span class="string">&quot;load&quot;</span>_L1<span class="operator">,</span> <span class="type"><a href="qt.html" translate="no">Qt</a></span><span class="operator">::</span>CaseInsensitive) <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">const</span> <span class="type">bool</span> json
+             <span class="operator">=</span> args<span class="operator">.</span>size() <span class="operator">&lt;</span><span class="operator">=</span> <span class="number">2</span> <span class="operator">|</span><span class="operator">|</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">::</span>compare(args<span class="operator">[</span><span class="number">2</span><span class="operator">]</span><span class="operator">,</span> <span class="string">&quot;binary&quot;</span>_L1<span class="operator">,</span> <span class="type"><a href="qt.html" translate="no">Qt</a></span><span class="operator">::</span>CaseInsensitive) <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>;
+
+     Game game;
+     <span class="keyword">if</span> (newGame)
+         game<span class="operator">.</span>newGame();
+     <span class="keyword">else</span> <span class="keyword">if</span> (<span class="operator">!</span>game<span class="operator">.</span>loadGame(json <span class="operator">?</span> Game<span class="operator">::</span>Json : Game<span class="operator">::</span>Binary))
+         <span class="keyword">return</span> <span class="number">1</span>;
+     <span class="comment">// Game is played; changes are made...</span>
+</pre>
+<p>Since we're only interested in demonstrating <i>serialization</i> of a game with JSON, our game is not actually playable. Therefore, we only need <a href="qcoreapplication.html" translate="no">QCoreApplication</a> and have no event loop. On application start-up we parse the command-line arguments to decide how to start the game. For the first argument the options &quot;new&quot; (default) and &quot;load&quot; are available. When &quot;new&quot; is specified a new game will be generated, and when &quot;load&quot; is specified a previously saved game will be loaded in. For the second argument &quot;json&quot; (default) and &quot;binary&quot; are available as options. This argument will decide which file is saved to and/or loaded from. We then move ahead and assume that the player had a great time and made lots of progress, altering the internal state of our Character, Level and Game objects.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qtextstream.html" translate="no">QTextStream</a></span> s(stdout);
+     s <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Game ended in the following state:\n&quot;</span>;
+     game<span class="operator">.</span>print(s);
+     <span class="keyword">if</span> (<span class="operator">!</span>game<span class="operator">.</span>saveGame(json <span class="operator">?</span> Game<span class="operator">::</span>Json : Game<span class="operator">::</span>Binary))
+         <span class="keyword">return</span> <span class="number">1</span>;
+
+     <span class="keyword">return</span> <span class="number">0</span>;
+ }
+</pre>
+<p>When the player has finished, we save their game. For demonstration purposes, we can serialize to either JSON or CBOR. You can examine the contents of the files in the same directory as the executable (or re-run the example, making sure to also specify the &quot;load&quot; option), although the binary save file will contain some garbage characters (which is normal).</p>
+<p>That concludes our example. As you can see, serialization with Qt's JSON classes is very simple and convenient. The advantages of using <a href="qjsondocument.html" translate="no">QJsonDocument</a> and friends over <a href="qdatastream.html" translate="no">QDataStream</a>, for example, is that you not only get human-readable JSON files, but you also have the option to use a binary format if it's required, <i>without</i> rewriting any code.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/corelib/serialization/savegame?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="json.html">JSON Support in Qt</a>, <a href="cbor.html">CBOR Support in Qt</a>, and Data Input Output.</p>
+<!-- @@@serialization/savegame -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

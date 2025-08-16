@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick.qdoc -->
+  <meta name="description" content="The Qt Quick module implements the &quot;standard library&quot; for QML">
+  <title>Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li>Qt Quick</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#using-the-module">Using the Module</a></li>
+<li class="level2"><a href="#qml-api">QML API</a></li>
+<li class="level2"><a href="#c-api">C++ API</a></li>
+<li class="level1"><a href="#important-concepts-in-qt-quick">Important Concepts in Qt Quick</a></li>
+<li class="level1"><a href="#c-extension-points">C++ Extension Points</a></li>
+<li class="level1"><a href="#articles-and-guides">Articles and Guides</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level1"><a href="#reference">Reference</a></li>
+<li class="level1"><a href="#qt-academy-courses">Qt Academy Courses</a></li>
+<li class="level1"><a href="#licenses-and-attributions">Licenses and Attributions</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick</h1>
+<!-- $$$qtquick-index.html-description -->
+<div class="descr" id="details">
+<p>The Qt Quick module is the standard library for writing QML applications. While the <a href="../qtqml/qtqml-index.html">Qt Qml</a> module provides the QML engine and language infrastructure, the Qt Quick module provides all the basic types necessary for creating user interfaces with QML. It provides a visual canvas and includes types for creating and animating visual components, receiving user input, creating data models and views and delayed object instantiation.</p>
+<p>The Qt Quick module provides both a <a href="qtquick-qmlmodule.html" translate="no">QML API</a>, which supplies QML types for creating user interfaces with the QML language, and a <a href="qtquick-module.html" translate="no">C++ API</a> for extending QML applications with C++ code.</p>
+<div class="admonition note">
+<p><b>Note: </b>A set of Qt Quick-based UI controls is also available to create user interfaces. See <a href="../qtquickcontrols/qtquickcontrols-index.html">Qt Quick Controls</a> for more information.</p>
+</div>
+<p>If you're new to QML and Qt Quick, please see QML Applications for an introduction to writing QML applications.</p>
+<h2 id="using-the-module">Using the Module</h2>
+<h3 id="qml-api">QML API</h3>
+<p>The QML types of the module are available through the <code translate="no">QtQuick</code> import. To use the types, add the following import statement to your .qml file:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+</pre>
+<h3 id="c-api">C++ API</h3>
+<p>Using a Qt module's C++ API requires linking against the module library, either directly or through other dependencies. Several build tools have dedicated support for this, including CMake and <a href="../qmake/qmake-manual.html">qmake</a>.</p>
+<h4 id="building-with-cmake">Building with CMake</h4>
+<p>Use the <code translate="no">find_package()</code> command to locate the needed module component in the <code translate="no">Qt6</code> package:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS Quick)
+ target_link_libraries(mytarget PRIVATE Qt6<span class="operator">::</span>Quick)
+</pre>
+<p>For more details, see the Build with CMake overview.</p>
+<h4 id="building-with-qmake">Building with qmake</h4>
+<p>To configure the module for building with qmake, add the module as a value of the <code translate="no">QT</code> variable in the project's .pro file:</p>
+<pre class="cpp" translate="no">
+ QT <span class="operator">+</span><span class="operator">=</span> quick
+</pre>
+<h2 id="important-concepts-in-qt-quick">Important Concepts in Qt Quick</h2>
+<p>Qt Quick provides everything you need to create a rich application with a fluid and dynamic user interface. It enables you to build user interfaces around the behavior of user interface components and how they connect with one another, and it provides a visual canvas with its own coordinate system and rendering engine. Animation and transition effects are first class concepts in Qt Quick, and you can add visual effects through specialized components for particle and shader effects.</p>
+<ul>
+<li><a href="qtquick-visualcanvas-topic.html">The Visual Canvas</a></li>
+<li><a href="qtquick-input-topic.html">User Input</a></li>
+<li><a href="qtquick-positioning-topic.html">Positioning</a></li>
+<li><a href="qtquick-statesanimations-topic.html">States, Transitions And Animations</a></li>
+<li><a href="qtquick-modelviewsdata-topic.html">Data - Models, Views and Data Storage</a></li>
+<li><a href="qtquick-effects-topic.html">Particles And Graphical Effects</a><ul>
+<li><a href="qml-qtquick-effects-multieffect.html" translate="no">MultiEffect</a></li>
+</ul>
+</li>
+<li><a href="qtquick-convenience-topic.html">Convenience Types</a></li>
+</ul>
+<p>When using the Qt Quick module, you will need to know how to write QML applications using the QML language. In particular, QML Basics and QML Essentials from the QML Applications page.</p>
+<p>To find out more about using the QML language, see the <a href="../qtqml/qtqml-index.html">Qt Qml</a> module documentation.</p>
+<h2 id="c-extension-points">C++ Extension Points</h2>
+<ul>
+<li><a href="qtquick-cppextensionpoints.html">C++ Extension Points</a><ul>
+<li><a href="qtquick-cppextensionpoints.html#user-defined-qquickitem-derived-types">Creating User-Defined QQuickItem-Derived Types</a></li>
+<li><a href="qtquick-cppextensionpoints.html#scene-graph-related-classes">Scene Graph-Related Classes</a></li>
+<li><a href="qtquick-cppextensionpoints.html#pixmap-and-threaded-image-support">Pixmap and Threaded Image Support</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="articles-and-guides">Articles and Guides</h2>
+<ul>
+<li><a href="qtquick-bestpractices.html">Qt Quick Guidelines</a></li>
+<li><a href="qtquick-tools-and-utilities.html">Qt Quick Tools and Utilities</a><p>Further information for writing QML applications:</p>
+<ul>
+<li>QML Applications - essential information for application development with QML and Qt Quick</li>
+<li><a href="../qtqml/qtqml-index.html">Qt Qml</a> - documentation for the Qt QML module, which provides the QML engine and language infrastructure</li>
+<li><a href="qtquick-how-tos.html">Qt Quick How-tos</a> - shows how to achieve specific tasks in Qt Quick</li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="qtquick-codesamples.html">Qt Quick Examples and Tutorials</a></li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="qtquick-module.html" translate="no">Qt Quick C++ Classes</a> - the C++ API provided by the Qt Quick module</li>
+<li><a href="qtquick-qmlmodule.html" translate="no">Qt Quick QML Types</a> - a list of QML types provided by the <code translate="no">QtQuick</code> import<ul>
+<li><a href="qtquick-effects-qmlmodule.html" translate="no">Effects</a> - provides graphical effects to apply to Qt Quick items</li>
+<li><a href="qtquick-localstorage-qmlmodule.html" translate="no">Local Storage</a> - a submodule containing a JavaScript interface for an SQLite database</li>
+<li><a href="qtquick-particles-qmlmodule.html" translate="no">Particles</a> - provides a particle system for Qt Quick</li>
+<li><a href="qtquicklayouts-index.html">Layouts</a> - provides layouts for arranging Qt Quick items</li>
+<li>Tests - contains types for writing unit test for a QML application</li>
+<li><a href="qtquick-shapes-qmlmodule.html" translate="no">Shapes</a> - provides types for rendering vector shapes in a Qt Quick scene.</li>
+<li><a href="qtquick-vectorimage-qmlmodule.html" translate="no">Vector Image</a> - provides types for displaying vector image files.</li>
+</ul>
+</li>
+<li><a href="qtquick-android-classes.html">Qt Quick Android Classes</a> - provides classes for using QML with Java/Kotlin Android APIs.</li>
+</ul>
+<h2 id="qt-academy-courses">Qt Academy Courses</h2>
+<ul>
+<li><a href="https://www.qt.io/academy/course-catalog#introduction-to-qt-quick">Introduction to Qt Quick</a></li>
+</ul>
+<h2 id="licenses-and-attributions">Licenses and Attributions</h2>
+<p>Qt Quick is available under commercial licenses from The Qt Company. In addition, it is available under free software licenses. Since Qt 5.4, these free software licenses are GNU Lesser General Public License, version 3, or the GNU General Public License, version 2. See Qt Licensing for further details.</p>
+</div>
+<!-- @@@qtquick-index.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

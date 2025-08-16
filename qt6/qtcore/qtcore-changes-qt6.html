@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt6-changes.qdoc -->
+  <meta name="description" content="Changes to containers, strings, serialization and I/O classes.">
+  <title>Changes to Qt Core | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Changes to Qt Core</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="comparison-types.html" />
+  <link rel="next" href="qtcoreprivate-module.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="comparison-types.html">Comparison types overview</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtcoreprivate-module.html">Reference - Private C++ Classes</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#container-classes">Container Classes</a></li>
+<li class="level2"><a href="#qhash-qmultihash-qset">QHash, QMultiHash, QSet</a></li>
+<li class="level2"><a href="#qvector-qlist">QVector, QList</a></li>
+<li class="level1"><a href="#view-classes-in-qt6">View classes in Qt6</a></li>
+<li class="level2"><a href="#general-overview">General Overview</a></li>
+<li class="level2"><a href="#introduction-to-view-classes-on-the-example-of-qstringview">Introduction to view classes on the example of QStringView</a></li>
+<li class="level2"><a href="#views-as-function-argument">Views as function argument</a></li>
+<li class="level2"><a href="#view-manipulation-functions">View manipulation functions</a></li>
+<li class="level2"><a href="#non-null-terminated-strings-and-strings-containing-char-0-char">Non null-terminated strings and strings containing <code translate="no">'\0'</code></a></li>
+<li class="level2"><a href="#ownership-model-of-views">Ownership model of views</a></li>
+<li class="level2"><a href="#converting-an-qstringview-to-qstring">Converting an QStringView to QString</a></li>
+<li class="level2"><a href="#important-notes">Important notes</a></li>
+<li class="level1"><a href="#string-related-classes">String related classes</a></li>
+<li class="level2"><a href="#the-qstringview-class">The QStringView class</a></li>
+<li class="level2"><a href="#the-qstringref-class">The QStringRef class</a></li>
+<li class="level1"><a href="#qmutex-and-related-classes">QMutex and Related Classes</a></li>
+<li class="level1"><a href="#qfuture-and-related-classes">QFuture and Related Classes</a></li>
+<li class="level2"><a href="#the-qfuture-class">The QFuture class</a></li>
+<li class="level2"><a href="#behavioral-changes-to-qfuture-and-qfuturewatcher">Behavioral Changes to QFuture and QFutureWatcher</a></li>
+<li class="level2"><a href="#the-qpromise-class">The QPromise class</a></li>
+<li class="level1"><a href="#io-classes">IO Classes</a></li>
+<li class="level2"><a href="#the-qprocess-class">The QProcess class</a></li>
+<li class="level1"><a href="#meta-type-system">Meta-Type system</a></li>
+<li class="level2"><a href="#the-qvariant-class">The QVariant class</a></li>
+<li class="level2"><a href="#the-qmetatype-class">The QMetaType class</a></li>
+<li class="level2"><a href="#type-registration">Type registration</a></li>
+<li class="level1"><a href="#regular-expression-classes">Regular expression classes</a></li>
+<li class="level2"><a href="#the-qregularexpression-class">The QRegularExpression class</a></li>
+<li class="level2"><a href="#the-qregexp-class">The QRegExp class</a></li>
+<li class="level1"><a href="#qevent-and-subclasses">QEvent and subclasses</a></li>
+<li class="level1"><a href="#serialization-classes">Serialization classes</a></li>
+<li class="level1"><a href="#other-classes">Other classes</a></li>
+<li class="level1"><a href="#qt-state-machine-framework">Qt State Machine Framework</a></li>
+<li class="level1"><a href="#using-the-qt5compat-module">Using the Qt5Compat module</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Changes to Qt Core</h1>
+<!-- $$$qtcore-changes-qt6.html-description -->
+<div class="descr" id="details">
+<p>Qt 6 is a result of the conscious effort to make the framework more efficient and easy to use.</p>
+<p>We try to maintain binary and source compatibility for all the public APIs in each release. But some changes were inevitable in an effort to make Qt a better framework.</p>
+<p>In this topic we summarize those changes in Qt Core, and provide guidance to handle them.</p>
+<h2 id="container-classes">Container Classes</h2>
+<h3 id="qhash-qmultihash-qset">QHash, QMultiHash, QSet</h3>
+<h4 id="qhash-signature">qHash() Signature</h4>
+<p>For custom types, <a href="qhash.html#the-hashing-function" translate="no">QHash</a> and <a href="qmultihash.html" translate="no">QMultiHash</a> rely on you providing a <a href="qhash.html#the-hashing-function" translate="no">custom qHash() function</a> in the same namespace. In Qt 4 and Qt 5, the return value and optional second argument of a <code translate="no">qHash</code> function was of type <code translate="no">uint</code>. In Qt 6, it is <code translate="no">size_t</code>.</p>
+<p>That is, you need to change</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qttypes.html#uint-typedef" translate="no">uint</a></span> <a href="qhash.html#qHash" translate="no">qHash</a>(MyType x<span class="operator">,</span> <span class="type"><a href="qttypes.html#uint-typedef" translate="no">uint</a></span> seed);
+</pre>
+<p>to</p>
+<pre class="cpp" translate="no">
+ size_t <a href="qhash.html#qHash" translate="no">qHash</a>(MyType x<span class="operator">,</span> size_t seed);
+</pre>
+<p>This allows <a href="qhash.html#the-hashing-function" translate="no">QHash</a>, <a href="qmultihash.html" translate="no">QMultiHash</a> and <a href="qset.html" translate="no">QSet</a> to hold more than 2^32 items on 64 bit platforms.</p>
+<h4 id="stability-of-references">Stability of References</h4>
+<p>The implementation of <a href="qhash.html#the-hashing-function" translate="no">QHash</a>, <a href="qmultihash.html" translate="no">QMultiHash</a> and <a href="qset.html" translate="no">QSet</a> in Qt 6 got changed from a node based approach to a two stage lookup table. This design allows to keep the memory overhead of a hash instance very small, while at the same time giving good performance.</p>
+<p>One behavioral change to note is that the new implementation will not provide stable references to elements in the hash when the table needs to grow, or when entries are removed. Applications that rely on such stability might now run into undefined behavior.</p>
+<h4 id="removal-of-qhash-insertmulti">Removal of QHash::insertMulti</h4>
+<p>In Qt 5, <a href="qhash.html#the-hashing-function" translate="no">QHash</a> could be used to create multi-valued hashes by using QHash::insertMulti, and <a href="qmultihash.html" translate="no">QMultiHash</a> was deriving vom <a href="qhash.html#the-hashing-function" translate="no">QHash</a>.</p>
+<p>In Qt 6, both types and use cases are distinct, and QHash::insertMulti got removed.</p>
+<h3 id="qvector-qlist">QVector, QList</h3>
+<p>Prior to Qt 6, <a href="qvector.html" translate="no">QVector</a> and <a href="qlist.html" translate="no">QList</a> were separate classes. In Qt 6, they are unified: Qt 5 <a href="qlist.html" translate="no">QList</a> implementation is gone and both classes use updated <a href="qvector.html" translate="no">QVector</a> implementation instead. <a href="qlist.html" translate="no">QList</a> is the class with the actual implementation and <a href="qvector.html" translate="no">QVector</a> is an alias (typedef) to <a href="qlist.html" translate="no">QList</a>.</p>
+<p><a href="qlist.html" translate="no">QList</a>'s fromVector() and toVector(), and <a href="qvector.html" translate="no">QVector</a>'s fromList() and toList(), no longer involve data copying in Qt 6. They now return the object that they were called for.</p>
+<h4 id="api-changes">API Changes</h4>
+<p><a href="qlist.html" translate="no">QList</a>'s (and hence <a href="qvector.html" translate="no">QVector</a>'s) size type is changed from <code translate="no">int</code> to <code translate="no">qsizetype</code>. Together with the size type, all relevant methods' signatures are updated to use <code translate="no">qsizetype</code>. This allows <a href="qlist.html" translate="no">QList</a> to hold more than 2^31 items on 64 bit platforms.</p>
+<p>When upgrading the code base to Qt 6, this API change would most likely result in compiler warnings about narrowing type conversions. Having the following example code:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> myFunction(<span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>MyType<span class="operator">&gt;</span> <span class="operator">&amp;</span>data) {
+     <span class="type">int</span> size <span class="operator">=</span> data<span class="operator">.</span>size();
+     <span class="comment">// ...</span>
+     <span class="keyword">const</span> <span class="type">int</span> pos <span class="operator">=</span> getInsertPosition(size);
+     data<span class="operator">.</span>insert(pos<span class="operator">,</span> MyType());
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>you would need to update it to use either <code translate="no">qsizetype</code> or an auto keyword:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> myFunction(<span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>MyType<span class="operator">&gt;</span> <span class="operator">&amp;</span>data) {
+     <span class="keyword">auto</span> size <span class="operator">=</span> data<span class="operator">.</span>size();
+     <span class="comment">// ...</span>
+     <span class="keyword">const</span> <span class="keyword">auto</span> pos <span class="operator">=</span> getInsertPosition(size);
+     data<span class="operator">.</span>insert(pos<span class="operator">,</span> MyType());
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>Alternatively, you may use type casting and cast everything to <code translate="no">int</code> or to <code translate="no">qsizetype</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>If you want to build against both Qt 5 and Qt 6, the auto keyword is a good solution to cover signature differences between the versions.</p>
+</div>
+<h4 id="memory-layout">Memory Layout</h4>
+<p><a href="qlist.html" translate="no">QList</a> received multiple changes related to the memory layout in Qt 6.</p>
+<p>In Qt 5, <code translate="no">sizeof(QList&lt;T&gt;)</code> was equal to a size of a pointer. Now, the extra pointer indirection is removed and <a href="qlist.html" translate="no">QList</a> data members are directly stored in the object. By default, expect <code translate="no">sizeof(QList&lt;T&gt;)</code> to be equal to the size of 3 pointers.</p>
+<p>At the same time, memory layout of the elements is also updated. <a href="qlist.html" translate="no">QList</a> now always stores its elements directly in the allocated memory region as opposed to Qt 5, where certain objects were separately allocated on the heap and pointers to the objects were placed into the <a href="qlist.html" translate="no">QList</a> instead.</p>
+<p>Note that the latter, in particular, affects large objects. To have Qt 5 behavior, you could wrap your objects into smart pointers and store these smart pointers in <a href="qlist.html" translate="no">QList</a> directly. In this case, the type of your <a href="qlist.html" translate="no">QList</a> would be <code translate="no">QList&lt;MySmartPointer&lt;MyLargeObject&gt;&gt;</code> as opposed to <code translate="no">QList&lt;MyLargeObject&gt;</code> in Qt 5.</p>
+<h4 id="container-classes-qvector-qlist-stability-of-references-8">Stability of References</h4>
+<p>There are several changes made to the <a href="qvector.html" translate="no">QVector</a>/<a href="qlist.html" translate="no">QList</a> implementation. The <a href="qvector.html" translate="no">QVector</a> related one is: insertion at the beginning is optimized (similarly to <a href="qlist.html" translate="no">QList</a> in Qt 5). The <a href="qlist.html" translate="no">QList</a> related one is: memory layout for the elements is simplified.</p>
+<div class="admonition important">
+<p><b>Important: </b>These changes impact the stability of references. In Qt 6, you should consider any size or capacity modifying method to invalidate all references, even when <a href="qlist.html" translate="no">QList</a> is not <a href="implicit-sharing.html">implicitly shared</a>. Exceptions to this rule are documented explicitly.</p>
+</div>
+<p>Applications that rely on certain reference stability might run into undefined behavior when upgraded to use Qt 6. You should pay extra attention to cases where <a href="qvector.html" translate="no">QVector</a> or <a href="qlist.html" translate="no">QList</a> with a non C-compatible array layout were used originally.</p>
+<h2 id="view-classes-in-qt6">View classes in Qt6</h2>
+<h3 id="general-overview">General Overview</h3>
+<p>There are several new <code translate="no">View</code> classes coming with Qt6. There is the already existing <a href="qstringview.html" translate="no">QStringView</a>, now accompanied by <a href="qbytearrayview.html" translate="no">QByteArrayView</a> and followed by a specialized <a href="qutf8stringview.html" translate="no">QUtf8StringView</a> and a more universal <a href="qanystringview.html" translate="no">QAnyStringView</a>.</p>
+<h3 id="introduction-to-view-classes-on-the-example-of-qstringview">Introduction to view classes on the example of QStringView</h3>
+<p>The <a href="qstringview.html" translate="no">QStringView</a> class provides a unified view on UTF-16 strings with a read-only subset of the <a href="qstring.html" translate="no">QString</a> API. Unlike <a href="qstring.html" translate="no">QString</a>, which keeps its own copy of the string (possibly ref-counted), <a href="qstringview.html" translate="no">QStringView</a> provides a view of a string that is stored elsewhere.</p>
+<pre class="cpp" translate="no">
+ <span class="type">char</span> hello<span class="operator">[</span><span class="operator">]</span>{ <span class="string">&quot;Hello.&quot;</span> };   <span class="comment">// narrow multi-byte string literal</span>
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> str{hello};         <span class="comment">// needs to make a copy of the string literal</span>
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> strToStr(str);      <span class="comment">// atomic increment involved to not create a copy of hello again</span>
+
+ <span class="comment">// The above code can be re-written to avoid copying and atomic increment.</span>
+
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> view{ u<span class="string">&quot;Hello.&quot;</span> };  <span class="comment">// view to UTF-16 encoded string literal</span>
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> viewToView{ view }; <span class="comment">// view of the same UTF-16 encoded string literal</span>
+</pre>
+<p>The string <code translate="no">&quot;Hello.&quot;</code> is stored in the binary and is not allocated at run-time. <code translate="no">view</code> is only a view onto the string <code translate="no">&quot;Hello.&quot;</code>, therefore no copy has to be created. When we copy a <a href="qstringview.html" translate="no">QStringView</a>, the <code translate="no">viewToView</code> observes the same string as the copied-from <code translate="no">view</code> is observing. This means that <code translate="no">viewToView</code> does not need to create a copy or an atomic increment. They are views onto the existing string <code translate="no">&quot;Hello.&quot;</code>.</p>
+<h3 id="views-as-function-argument">Views as function argument</h3>
+<p>Views should be passed by value, not by reference-to-const.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> myfun1(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> sv);        <span class="comment">// preferred</span>
+ <span class="type">void</span> myfun2(<span class="keyword">const</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <span class="operator">&amp;</span>sv); <span class="comment">// compiles and works, but slower</span>
+</pre>
+<h3 id="view-manipulation-functions">View manipulation functions</h3>
+<p><a href="qstringview.html" translate="no">QStringView</a> supports functions that let us manipulate the view of the string. This allows us to change the view without creating a partial copy of the viewed string.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> pineapple <span class="operator">=</span> <span class="string">&quot;Pineapple&quot;</span>;
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> pine <span class="operator">=</span> pineapple<span class="operator">.</span>left(<span class="number">4</span>);
+
+ <span class="comment">// The above code can be re-written to avoid creating a partial copy.</span>
+
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> pineappleView{ pineapple };
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> pineView <span class="operator">=</span> pineappleView<span class="operator">.</span>left(<span class="number">4</span>);
+</pre>
+<h3 id="non-null-terminated-strings-and-strings-containing-char-0-char">Non null-terminated strings and strings containing <code translate="no">'\0'</code></h3>
+<p><a href="qstringview.html" translate="no">QStringView</a> supports both null-terminated and non null-terminated strings. The difference comes from the way you initialize the <a href="qstringview.html" translate="no">QStringView</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qchar.html" translate="no">QChar</a></span> aToE<span class="operator">[</span><span class="operator">]</span>{ <span class="char">'a'</span><span class="operator">,</span> <span class="char">'b'</span><span class="operator">,</span> <span class="char">'c'</span><span class="operator">,</span> <span class="char">'d'</span><span class="operator">,</span> <span class="char">'e'</span> };
+
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> nonNull{ aToE<span class="operator">,</span> std<span class="operator">::</span>size(aToE) }; <span class="comment">// with length given</span>
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> nonNull{ aToE }; <span class="comment">// automatically determines the length</span>
+
+ <span class="type"><a href="qchar.html" translate="no">QChar</a></span> fToJ<span class="operator">[</span><span class="operator">]</span>{ <span class="char">'f'</span><span class="operator">,</span> <span class="char">'g'</span><span class="operator">,</span> <span class="char">'h'</span><span class="operator">,</span> <span class="char">'\0'</span><span class="operator">,</span> <span class="char">'j'</span> };
+
+ <span class="comment">// uses given length, doesn't search for '\0', so '\0' at position 3</span>
+ <span class="comment">// is considered to be a part of the string similarly to 'h' and 'j</span>
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> nonNull{ fToJ<span class="operator">,</span> std<span class="operator">::</span>size(fToJ) };
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> part{ fToJ }; <span class="comment">//stops on the first encounter of '\0'</span>
+</pre>
+<h3 id="ownership-model-of-views">Ownership model of views</h3>
+<p>As <code translate="no">views</code> do not own the memory they reference, care must be taken to ensure that the referenced data (for example, owned by a <a href="qstring.html" translate="no">QString</a>) outlives the <code translate="no">view</code> on all code paths.</p>
+<pre class="cpp plain" translate="no">
+ QStringView sayHello()
+ {
+     QString hello(&quot;Hello.&quot;);
+     return QStringView{ hello }; // hello gets out of scope and destroyed
+ }
+
+ void main()
+ {
+     QStringView hello{ sayHello() };
+     qDebug() &lt;&lt; hello; // undefined behavior
+ }
+</pre>
+<h3 id="converting-an-qstringview-to-qstring">Converting an QStringView to QString</h3>
+<p><a href="qstringview.html" translate="no">QStringView</a> will not implicitly or explicitly convert to a <a href="qstring.html" translate="no">QString</a>, but can create a deep copy of its data:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> print(<span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>s) { <a href="qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> s; }
+
+ <span class="type">void</span> main()
+ {
+     <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> string{ u<span class="string">&quot;string&quot;</span>};
+
+     <span class="comment">// print(string); // invalid, no implicit conversion</span>
+     <span class="comment">// QString str{ string }; // invalid, no explicit conversion</span>
+
+     print(string<span class="operator">.</span>toString());
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> str <span class="operator">=</span> string<span class="operator">.</span>toString(); <span class="comment">// create QString from view</span>
+ }
+</pre>
+<h3 id="important-notes">Important notes</h3>
+<p>By leveraging the new view classes, one can achieve a lot of performance boost in many use cases. However, it is important to know that there might be some caveats. Therefore it is important to remember:</p>
+<ul>
+<li>Views should be passed by value, not by reference-to-const.</li>
+<li>Constructing a view with a negative length is undefined behavior.</li>
+<li>Care must be taken to ensure that the referenced data (for example, owned by a <a href="qstring.html" translate="no">QString</a>) outlives the view on all code paths.</li>
+</ul>
+<h2 id="string-related-classes">String related classes</h2>
+<h3 id="the-qstringview-class">The QStringView class</h3>
+<p>Starting with Qt6 it is generally recommended to use <a href="qstringview.html" translate="no">QStringView</a> over <code translate="no">QStringRef</code>. <a href="qstringview.html" translate="no">QStringView</a> references a contiguous portion of a UTF-16 string it does not own. It acts as an interface type to all kinds of UTF-16 strings, without the need to construct a <a href="qstring.html" translate="no">QString</a> first. The <a href="qstringview.html" translate="no">QStringView</a> class exposes almost all read-only methods of <a href="qstring.html" translate="no">QString</a> and the previously existing <code translate="no">QStringRef</code> class.</p>
+<div class="admonition note">
+<p><b>Note: </b>Care must be taken to ensure that the referenced string data (for example, owned by a <a href="qstring.html" translate="no">QString</a>) outlives the <a href="qstringview.html" translate="no">QStringView</a> on all code paths.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>If a <a href="qstringview.html" translate="no">QStringView</a> wraps a <a href="qstring.html" translate="no">QString</a>, care needs to be taken since unlike <code translate="no">QStringRef</code> <a href="qstringview.html" translate="no">QStringView</a> will not update the internal data pointer once the <a href="qstring.html" translate="no">QString</a> data relocates.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> view{string};
+
+ <span class="comment">// Appending something very long might cause a relocation and will</span>
+ <span class="comment">// ultimately result in a garbled QStringView.</span>
+ string <span class="operator">+</span><span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+</pre>
+<h3 id="the-qstringref-class">The QStringRef class</h3>
+<p>In Qt6 QStringRef got removed from Qt Core. To ease porting of existing applications without touching the whole code-base, the <code translate="no">QStringRef</code> class did not vanish completely and instead it got moved into the Qt5Compat module. If you want to use <code translate="no">QStringRef</code> further, see <a href="qtcore-changes-qt6.html#using-the-qt5compat-module">Using the Qt5Compat module</a>.</p>
+<p>Unfortunately, some methods exposed by <a href="qstring.html" translate="no">QString</a> returning a <code translate="no">QStringRef</code>, could not be moved to Qt5Compat. Therefore some manual porting may be needed. If your code uses one or more of the following functions you need to port them to use <a href="qstringview.html" translate="no">QStringView</a> or <a href="qstringtokenizer.html" translate="no">QStringTokenizer</a>. It is also recommended to use <a href="qstringview.html#tokenize" translate="no">QStringView::tokenize</a> over <a href="qstringview.html#split" translate="no">QStringView::split</a> for performance critical code.</p>
+<p>Change code using <code translate="no">QStringRef</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="type">QStringRef</span> left <span class="operator">=</span> string<span class="operator">.</span>leftRef(n);
+ <span class="type">QStringRef</span> mid <span class="operator">=</span> string<span class="operator">.</span>midRef(n);
+ <span class="type">QStringRef</span> right <span class="operator">=</span> string<span class="operator">.</span>rightRef(n);
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> value <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="keyword">const</span> <span class="type"><a href="qvector.html" translate="no">QVector</a></span><span class="operator">&lt;</span><span class="type">QStringRef</span><span class="operator">&gt;</span> refs <span class="operator">=</span> string<span class="operator">.</span>splitRef(<span class="char">' '</span>);
+ <span class="keyword">if</span> (refs<span class="operator">.</span>contains(value))
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+</pre>
+<p>to:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> left <span class="operator">=</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{string}<span class="operator">.</span>left(n);
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> mid <span class="operator">=</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{string}<span class="operator">.</span>mid(n);
+ <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> right <span class="operator">=</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{string}<span class="operator">.</span>right(n);
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> value <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="keyword">const</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qstringview.html" translate="no">QStringView</a></span><span class="operator">&gt;</span> refs <span class="operator">=</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{string}<span class="operator">.</span>split(u<span class="char">' '</span>);
+ <span class="keyword">if</span> (refs<span class="operator">.</span>contains(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{value}))
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ <span class="comment">// or</span>
+ <span class="keyword">const</span> <span class="keyword">auto</span> refs <span class="operator">=</span> <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span>{string}<span class="operator">.</span>tokenize(u<span class="char">' '</span>);
+ <span class="keyword">for</span> (<span class="keyword">auto</span> ref : refs) {
+     <span class="keyword">if</span> (ref <span class="operator">=</span><span class="operator">=</span> value)
+         <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<h2 id="qmutex-and-related-classes">QMutex and Related Classes</h2>
+<p>In Qt 6, <a href="qrecursivemutex.html" translate="no">QRecursiveMutex</a> does not inherit from <a href="qmutex.html" translate="no">QMutex</a> anymore. This change was done to improve the performance of both <a href="qmutex.html" translate="no">QMutex</a> and <a href="qrecursivemutex.html" translate="no">QRecursiveMutex</a>.</p>
+<p>Due to those changes, the QMutex::RecursionMode enum has been removed, and <a href="qmutexlocker.html" translate="no">QMutexLocker</a> is now a templated class that can operate on both <a href="qmutex.html" translate="no">QMutex</a> and <a href="qrecursivemutex.html" translate="no">QRecursiveMutex</a>.</p>
+<h2 id="qfuture-and-related-classes">QFuture and Related Classes</h2>
+<h3 id="the-qfuture-class">The QFuture class</h3>
+<p>To avoid unintended usage of <a href="qfuture.html" translate="no">QFuture</a>, there were some changes to <a href="qfuture.html" translate="no">QFuture</a> API in Qt 6, which may introduce source compatibility breaks.</p>
+<h4 id="implicit-conversions-between-qfuture-and-other-types">Implicit conversions between QFuture and other types</h4>
+<p>Conversion of <code translate="no">QFuture&lt;T&gt;</code> to <code translate="no">T</code> has been disabled. The casting operator was calling <a href="qfuture.html#result" translate="no">QFuture::result</a>(), which may lead to undefined behavior if the user has moved the results from <a href="qfuture.html" translate="no">QFuture</a> via <a href="qfuture.html#takeResult" translate="no">QFuture::takeResult</a>() before trying to do the conversion. Use <a href="qfuture.html#result" translate="no">QFuture::result</a>() or <a href="qfuture.html#takeResult" translate="no">QFuture::takeResult</a>() methods explicitly, where you need to convert <code translate="no">QFuture&lt;T&gt;</code> to <code translate="no">T</code>.</p>
+<p>The implicit conversion from <code translate="no">QFuture&lt;T&gt;</code> to <code translate="no">QFuture&lt;void&gt;</code> has been also disabled. If you really intend to do the conversion, use the explicit <code translate="no">QFuture&lt;void&gt;(const QFuture&lt;T&gt; &amp;)</code> constructor:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> future <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span> voidFuture <span class="operator">=</span> <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span>(future);
+</pre>
+<h4 id="equality-operators">Equality operators</h4>
+<p>The equality operators of <a href="qfuture.html" translate="no">QFuture</a> have been removed. They were comparing the underlying d-pointers instead of comparing the results, which is not what users might expect. If you need to compare <a href="qfuture.html" translate="no">QFuture</a> objects, use <code translate="no">QFuture::result()</code> or <code translate="no">QFuture::takeResult()</code> methods. For example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> future1 <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> future2 <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="keyword">if</span> (future1<span class="operator">.</span>result() <span class="operator">=</span><span class="operator">=</span> future2<span class="operator">.</span>result())
+     <span class="comment">// ...</span>
+</pre>
+<h3 id="behavioral-changes-to-qfuture-and-qfuturewatcher">Behavioral Changes to QFuture and QFutureWatcher</h3>
+<p>In Qt 6, there were some improvements to <a href="qfuture.html" translate="no">QFuture</a> and <a href="qfuturewatcher.html" translate="no">QFutureWatcher</a> which caused the following behavioral changes:</p>
+<ul>
+<li>After pausing <a href="qfuture.html" translate="no">QFuture</a> or <a href="qfuturewatcher.html" translate="no">QFutureWatcher</a> (by calling <code translate="no">pause()</code> or <code translate="no">setPaused(true)</code>), <a href="qfuturewatcher.html" translate="no">QFutureWatcher</a> will not immediately stop delivering progress and result ready signals. At the moment of pausing there may be still computations that are in progress and cannot be stopped. Signals for such computations may be still delivered after pause, instead of being postponed and reported only after next resume. To get notified when pause actually took effect, <a href="qfuturewatcher.html#suspended" translate="no">QFutureWatcher::suspended</a>() signal can be used. In addition, there are new <code translate="no">isSuspending()</code> and <code translate="no">isSuspended()</code> methods, to check if the <a href="qfuture.html" translate="no">QFuture</a> is in the process of suspending or it's already in the suspended state. Note that for consistency reasons, for both <a href="qfuture.html" translate="no">QFuture</a> and <a href="qfuturewatcher.html" translate="no">QFutureWatcher</a> the pause-related APIs were deprecated and replaced by similar methods having &quot;suspend&quot; in the name instead.</li>
+<li><a href="qfuture.html#waitForFinished" translate="no">QFuture::waitForFinished</a>() will now wait until <a href="qfuture.html" translate="no">QFuture</a> is actually in the finished state, instead of exiting as soon as it is not in the running state. This prevents <code translate="no">waitForFinished()</code> from exiting immediately, if at the moment of calling it the future is not started yet. The same applies to <a href="qfuturewatcher.html#waitForFinished" translate="no">QFutureWatcher::waitForFinished</a>(). This change won't affect the behavior of code that was using <a href="qfuture.html" translate="no">QFuture</a> with <a href="../qtconcurrent/qtconcurrent-module.html" translate="no">QtConcurrent</a>. Only the code that was using it with the undocumented <code translate="no">QFutureInterface</code> may be affected.</li>
+<li><a href="qfuturewatcher.html#isFinished" translate="no">QFutureWatcher::isFinished</a>() now reflects the finished-state of the <a href="qfuture.html" translate="no">QFuture</a> rather than returning false until <a href="qfuturewatcher.html#finished" translate="no">QFutureWatcher::finished</a>() has been emitted.</li>
+</ul>
+<h3 id="the-qpromise-class">The QPromise class</h3>
+<p>In Qt 6, the new <a href="qpromise.html" translate="no">QPromise</a> class should be used instead of unofficial QFutureInterface as a &quot;setter&quot; counterpart of <a href="qfuture.html" translate="no">QFuture</a>.</p>
+<h2 id="io-classes">IO Classes</h2>
+<h3 id="the-qprocess-class">The QProcess class</h3>
+<p>In Qt 6, the <a href="qprocess.html#start" translate="no">QProcess::start</a>() overload that interprets a single command string by splitting it into program name and arguments is renamed to <a href="qprocess.html#startCommand" translate="no">QProcess::startCommand</a>(). However, a <a href="qprocess.html#start" translate="no">QProcess::start</a>() overload that takes a single string, as well as a <a href="qstringlist.html" translate="no">QStringList</a> for arguments exists. Since the <a href="qstringlist.html" translate="no">QStringList</a> parameter defaults to the empty list, existing code only passing a string will still compile, but will fail to execute the process if it is a complete command string that includes arguments.</p>
+<p>Qt 5.15 introduced deprecation warnings for the respective overload to make it easy to discover and update existing code:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qprocess.html" translate="no">QProcess</a></span> process;
+
+ <span class="comment">// compiles with warnings in 5.15, compiles but fails with Qt 6</span>
+ process<span class="operator">.</span>start(<span class="string">&quot;dir \&quot;My Documents\&quot;&quot;</span>);
+
+ <span class="comment">// works with both Qt 5 and Qt 6; also see QProcess::splitCommand()</span>
+ process<span class="operator">.</span>start(<span class="string">&quot;dir&quot;</span><span class="operator">,</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span>({<span class="string">&quot;My Documents&quot;</span>});
+
+ <span class="comment">// works with Qt 6</span>
+ process<span class="operator">.</span>startCommand(<span class="string">&quot;dir \&quot;My Documents\&quot;&quot;</span>);
+</pre>
+<p>QProcess::pid() and the Q_PID type have been removed; use <a href="qprocess.html#processId" translate="no">QProcess::processId</a>() instead to get the native process identifier. Code using native Win32 APIs to access the data in the Q_PID as a Win32 <code translate="no">PROCESS_INFORMATION</code> struct is no longer supported.</p>
+<h2 id="meta-type-system">Meta-Type system</h2>
+<h3 id="the-qvariant-class">The QVariant class</h3>
+<p><code translate="no">QVariant</code> has been rewritten to use <code translate="no">QMetaType</code> for all of its operations. This implies behavior changes in a few methods:</p>
+<ul>
+<li><code translate="no">QVariant::isNull()</code> now only returns <code translate="no">true</code> if the <code translate="no">QVariant</code> is empty or contains a <code translate="no">nullptr</code>. In Qt 5, it also returned true for classes in qtbase which had an <code translate="no">isNull</code> method themselves if that one returned true. Code relying on the old behavior needs to check whether the contained value returns isNull &ndash; however such code is unlikely to occur in practice, as <code translate="no">isNull()</code> is rarely the property one is interested in (compare <code translate="no">QString::isEmpty()</code> / <code translate="no">isNull()</code> and <code translate="no">QTime::isValid</code> / <code translate="no">isNull</code>).</li>
+<li><code translate="no">QVariant::operator==</code> uses <code translate="no">QMetaType::equals</code> in Qt 6. Therefore, some graphical types like <code translate="no">QPixmap</code>, <code translate="no">QImage</code> and <code translate="no">QIcon</code> will never compare equal. Moreover, floating point numbers stored in <code translate="no">QVariant</code> are no longer compared with <code translate="no">qFuzzyCompare</code>, but instead use exact comparisons.</li>
+</ul>
+<p>Furthermore, QVariant::operator&lt;, QVariant::operator&lt;=, QVariant::operator&gt; and QVariant::operator&gt;= were removed, because different variants are not always orderable. This also means that <a href="qvariant.html" translate="no">QVariant</a> cannot be used anymore as a key in a <a href="qmap.html" translate="no">QMap</a>.</p>
+<h3 id="the-qmetatype-class">The QMetaType class</h3>
+<p>In Qt 6, registration of comparators, and <a href="qdebug.html" translate="no">QDebug</a> and <a href="qdatastream.html" translate="no">QDataStream</a> streaming operators is done automatically. Consequently, <code translate="no">QMetaType::registerEqualsComparator()</code>, <code translate="no">QMetaType::registerComparators()</code>, <code translate="no">qRegisterMetaTypeStreamOperators()</code> and <code translate="no">QMetaType::registerDebugStreamOperator()</code> do no longer exist. Calls to those methods have to be removed when porting to Qt 6.</p>
+<h3 id="type-registration">Type registration</h3>
+<p>Types used in <code translate="no">Q_PROPERTY</code> have their meta-type stored in the class' <code translate="no">QMetaObject</code>. This requires the types to be complete when moc sees them, which can lead to compilation errors in code that worked in Qt 5. There are three ways to fix this issue:</p>
+<ul>
+<li>Include the header which defines the type.</li>
+<li>Instead of using an include, use the <code translate="no">Q_MOC_INCLUDE</code> macro. This helps if including the header would cause a cyclic dependency, or when it would slow down compilation.</li>
+<li>If the header is present in the cpp file which implements the class, it is also possible to include the moc generated file there.</li>
+</ul>
+<h2 id="regular-expression-classes">Regular expression classes</h2>
+<h3 id="the-qregularexpression-class">The QRegularExpression class</h3>
+<p>In Qt 6, the <code translate="no">QRegExp</code> type has been retired to the Qt5Compat module and all Qt APIs using it have been removed from other modules. Client code which used it can be ported to use <a href="qregularexpression.html" translate="no">QRegularExpression</a> in its place. As <a href="qregularexpression.html" translate="no">QRegularExpression</a> is present already in Qt 5, this can be done and tested before migration to Qt 6.</p>
+<p>The <a href="qregularexpression.html" translate="no">QRegularExpression</a> class introduced in Qt 5 implements Perl-compatible regular expressions and is a big improvement upon QRegExp in terms of APIs offered, supported pattern syntax, and speed of execution. The biggest difference is that <a href="qregularexpression.html" translate="no">QRegularExpression</a> simply holds a regular expression, and it's <i>not</i> modified when a match is requested. Instead, a <a href="qregularexpressionmatch.html" translate="no">QRegularExpressionMatch</a> object is returned, to check the result of a match and extract the captured substring. The same applies to global matching and <a href="qregularexpressionmatchiterator.html" translate="no">QRegularExpressionMatchIterator</a>.</p>
+<p>Other differences are outlined below.</p>
+<div class="admonition note">
+<p><b>Note: </b><a href="qregularexpression.html" translate="no">QRegularExpression</a> does not support all the features available in Perl-compatible regular expressions. The most notable one is the fact that duplicated names for capturing groups are not supported, and using them can lead to undefined behavior. This may change in a future version of Qt.</p>
+</div>
+<h4 id="different-pattern-syntax">Different pattern syntax</h4>
+<p>Porting a regular expression from QRegExp to <a href="qregularexpression.html" translate="no">QRegularExpression</a> may require changes to the pattern itself.</p>
+<p>In specific scenarios, QRegExp was too lenient and accepted patterns that are simply invalid when using <a href="qregularexpression.html" translate="no">QRegularExpression</a>. These are easy to detect, because the <a href="qregularexpression.html" translate="no">QRegularExpression</a> objects built with these patterns are not valid (see <a href="qregularexpression.html#isValid" translate="no">QRegularExpression::isValid</a>()).</p>
+<p>In other cases, a pattern ported from QRegExp to <a href="qregularexpression.html" translate="no">QRegularExpression</a> may silently change semantics. Therefore, it is necessary to review the patterns used. The most notable cases of silent incompatibility are:</p>
+<ul>
+<li>Curly braces are needed to use a hexadecimal escape like <code translate="no">\xHHHH</code> with more than 2 digits. A pattern like <code translate="no">\x2022</code> needs to be ported to <code translate="no">\x{2022}</code>, or it will match a space (<code translate="no">0x20</code>) followed by the string <code translate="no">&quot;22&quot;</code>. In general, it is highly recommended to always use curly braces with the <code translate="no">\x</code> escape, no matter the number of digits specified.</li>
+<li>A 0-to-n quantification like <code translate="no">{,n}</code> needs to be ported to <code translate="no">{0,n}</code> to preserve semantics. Otherwise, a pattern such as <code translate="no">\d{,3}</code> would match a digit followed by the exact string <code translate="no">&quot;{,3}&quot;</code>.</li>
+<li>QRegExp by default does Unicode-aware matching, while <a href="qregularexpression.html" translate="no">QRegularExpression</a> requires a separate option; see below for more details.</li>
+<li>c{.} in QRegExp does by default match all characters, including the newline character. <a href="qregularexpression.html" translate="no">QRegularExpression</a> excludes the newline character by default. To include the newline character, set the <a href="qregularexpression.html#PatternOption-enum" translate="no">QRegularExpression::DotMatchesEverythingOption</a> pattern option.</li>
+</ul>
+<p>For an overview of the regular expression syntax supported by <a href="qregularexpression.html" translate="no">QRegularExpression</a>, please refer to the <a href="https://pcre.org/original/doc/html/pcrepattern.html">pcrepattern(3)</a> man page, describing the pattern syntax supported by PCRE (the reference implementation of Perl-compatible regular expressions).</p>
+<h4 id="porting-from-qregexp-exactmatch">Porting from QRegExp::exactMatch()</h4>
+<p>QRegExp::exactMatch() served two purposes: it exactly matched a regular expression against a subject string, and it implemented partial matching.</p>
+<h5 id="porting-from-qregexp-s-exact-matching">Porting from QRegExp's Exact Matching</h5>
+<p>Exact matching indicates whether the regular expression matches the entire subject string. For example, the classes yield on the subject string <code translate="no">&quot;abc123&quot;</code>:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th ></th><th >QRegExp::exactMatch()</th><th ><a href="qregularexpressionmatch.html#hasMatch" translate="no">QRegularExpressionMatch::hasMatch</a>()</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">&quot;\\d+&quot;</code></td><td ><b>false</b></td><td ><b>true</b></td></tr>
+<tr valign="top" class="even"><td ><code translate="no">&quot;[a-z]+\\d+&quot;</code></td><td ><b>true</b></td><td ><b>true</b></td></tr>
+</table></div>
+<p>Exact matching is not reflected in <a href="qregularexpression.html" translate="no">QRegularExpression</a>. If you want to be sure that the subject string matches the regular expression exactly, you can wrap the pattern using the <a href="qregularexpression.html#anchoredPattern" translate="no">QRegularExpression::anchoredPattern</a>() function:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> p(<span class="string">&quot;a .*|pattern&quot;</span>);
+
+ <span class="comment">// re matches exactly the pattern string p</span>
+ <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> re(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span><span class="operator">::</span>anchoredPattern(p));
+</pre>
+<h5 id="porting-from-qregexp-s-partial-matching">Porting from QRegExp's Partial Matching</h5>
+<p>When using QRegExp::exactMatch(), if an exact match was not found, one could still find out how much of the subject string was matched by the regular expression by calling QRegExp::matchedLength(). If the returned length was equal to the subject string's length, then one could conclude that a partial match was found.</p>
+<p><a href="qregularexpression.html" translate="no">QRegularExpression</a> supports partial matching explicitly by means of the appropriate <a href="qregularexpression.html#MatchType-enum" translate="no">QRegularExpression::MatchType</a>.</p>
+<h4 id="global-matching">Global matching</h4>
+<p>Due to limitations of the QRegExp API, it was impossible to implement global matching correctly (that is, like Perl does). In particular, patterns that can match 0 characters (like <code translate="no">&quot;a*&quot;</code>) are problematic.</p>
+<p><a href="qregularexpression.html#globalMatch" translate="no">QRegularExpression::globalMatch</a>() implements Perl global match correctly, and the returned iterator can be used to examine each result.</p>
+<p>For example, if you have code like:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> subject(<span class="string">&quot;the quick fox&quot;</span>);
+
+ <span class="type">int</span> offset <span class="operator">=</span> <span class="number">0</span>;
+ <span class="type">QRegExp</span> re(<span class="string">&quot;(\\w+)&quot;</span>);
+ <span class="keyword">while</span> ((offset <span class="operator">=</span> re<span class="operator">.</span>indexIn(subject<span class="operator">,</span> offset)) <span class="operator">!</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>) {
+     offset <span class="operator">+</span><span class="operator">=</span> re<span class="operator">.</span>matchedLength();
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>You can rewrite it as:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> subject(<span class="string">&quot;the quick fox&quot;</span>);
+
+ <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> re(<span class="string">&quot;(\\w+)&quot;</span>);
+ <span class="type"><a href="qregularexpressionmatchiterator.html" translate="no">QRegularExpressionMatchIterator</a></span> i <span class="operator">=</span> re<span class="operator">.</span>globalMatch(subject);
+ <span class="keyword">while</span> (i<span class="operator">.</span>hasNext()) {
+     <span class="type"><a href="qregularexpressionmatch.html" translate="no">QRegularExpressionMatch</a></span> match <span class="operator">=</span> i<span class="operator">.</span>next();
+     <span class="comment">// ...</span>
+ }
+</pre>
+<h4 id="unicode-properties-support">Unicode properties support</h4>
+<p>When using QRegExp, character classes such as <code translate="no">\w</code>, <code translate="no">\d</code>, etc. match characters with the corresponding Unicode property: for instance, <code translate="no">\d</code> matches any character with the Unicode <code translate="no">Nd</code> (decimal digit) property.</p>
+<p>Those character classes only match ASCII characters by default when using <a href="qregularexpression.html" translate="no">QRegularExpression</a>: for instance, <code translate="no">\d</code> matches exactly a character in the <code translate="no">0-9</code> ASCII range. It is possible to change this behavior by using the <a href="qregularexpression.html#PatternOption-enum" translate="no">QRegularExpression::UseUnicodePropertiesOption</a> pattern option.</p>
+<h4 id="wildcard-matching">Wildcard matching</h4>
+<p>There is no direct way to do wildcard matching in <a href="qregularexpression.html" translate="no">QRegularExpression</a>. However, the <a href="qregularexpression.html#wildcardToRegularExpression" translate="no">QRegularExpression::wildcardToRegularExpression</a>() method is provided to translate glob patterns into a Perl-compatible regular expression that can be used for that purpose.</p>
+<p>For example, if you have code like:</p>
+<pre class="cpp" translate="no">
+ <span class="type">QRegExp</span> wildcard(<span class="string">&quot;*.txt&quot;</span>);
+ wildcard<span class="operator">.</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>Wildcard);
+</pre>
+<p>You can rewrite it as:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">auto</span> wildcard <span class="operator">=</span> <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span>(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span><span class="operator">::</span>wildcardToRegularExpression(<span class="string">&quot;*.txt&quot;</span>));
+</pre>
+<p>Please note though that some shell-like wildcard patterns might not be translated to what you expect. The following example code will silently break if simply converted using the above-mentioned function:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> fp1(<span class="string">&quot;C:/Users/dummy/files/content.txt&quot;</span>);
+ <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> fp2(<span class="string">&quot;/home/dummy/files/content.txt&quot;</span>);
+
+ <span class="type">QRegExp</span> re1(<span class="string">&quot;*/files/*&quot;</span>);
+ re1<span class="operator">.</span>setPatternSyntax(<span class="type">QRegExp</span><span class="operator">::</span>Wildcard);
+ re1<span class="operator">.</span>exactMatch(fp1); <span class="comment">// returns true</span>
+ re1<span class="operator">.</span>exactMatch(fp2); <span class="comment">// returns true</span>
+
+ <span class="comment">// but converted with QRegularExpression::wildcardToRegularExpression()</span>
+
+ <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> re2(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span><span class="operator">::</span>wildcardToRegularExpression(<span class="string">&quot;*/files/*&quot;</span>));
+ re2<span class="operator">.</span>match(fp1)<span class="operator">.</span>hasMatch(); <span class="comment">// returns false</span>
+ re2<span class="operator">.</span>match(fp2)<span class="operator">.</span>hasMatch(); <span class="comment">// returns false</span>
+</pre>
+<p>This is because, by default, the regular expression returned by <a href="qregularexpression.html#wildcardToRegularExpression" translate="no">QRegularExpression::wildcardToRegularExpression</a>() is fully anchored. To get a regular expression that is not anchored, pass <a href="qregularexpression.html#WildcardConversionOption-enum" translate="no">QRegularExpression::UnanchoredWildcardConversion</a> as the conversion options:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> re3(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span><span class="operator">::</span>wildcardToRegularExpression(
+                            <span class="string">&quot;*/files/*&quot;</span><span class="operator">,</span> <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span><span class="operator">::</span>UnanchoredWildcardConversion));
+ re3<span class="operator">.</span>match(fp1)<span class="operator">.</span>hasMatch(); <span class="comment">// returns true</span>
+ re3<span class="operator">.</span>match(fp2)<span class="operator">.</span>hasMatch(); <span class="comment">// returns true</span>
+</pre>
+<h4 id="minimal-matching">Minimal matching</h4>
+<p>QRegExp::setMinimal() implemented minimal matching by simply reversing the greediness of the quantifiers (QRegExp did not support lazy quantifiers, like <code translate="no">*?</code>, <code translate="no">+?</code>, etc.). <a href="qregularexpression.html" translate="no">QRegularExpression</a> instead does support greedy, lazy, and possessive quantifiers. The <a href="qregularexpression.html#PatternOption-enum" translate="no">QRegularExpression::InvertedGreedinessOption</a> pattern option can be useful to emulate the effects of QRegExp::setMinimal(): if enabled, it inverts the greediness of quantifiers (greedy ones become lazy and vice versa).</p>
+<h4 id="caret-modes">Caret modes</h4>
+<p>The <a href="qregularexpression.html#MatchOption-enum" translate="no">QRegularExpression::AnchorAtOffsetMatchOption</a> match option can be used to emulate the QRegExp::CaretAtOffset behavior. There is no equivalent for the other QRegExp::CaretMode modes.</p>
+<h3 id="the-qregexp-class">The QRegExp class</h3>
+<p>In Qt6 QRegExp got removed from Qt Core. If your application cannot be ported right now, <code translate="no">QRegExp</code> still exists in Qt5Compat to keep these code-bases working. If you want to use <code translate="no">QRegExp</code> further, see <a href="qtcore-changes-qt6.html#using-the-qt5compat-module">Using the Qt5Compat module</a>.</p>
+<h2 id="qevent-and-subclasses">QEvent and subclasses</h2>
+<p>The <a href="qevent.html" translate="no">QEvent</a> class defined a copy constructor and an assignment operator, in spite of being a polymorphic class. Copying classes with virtual methods can result in slicing when assigning objects from different classes to each other. Since copying and assigning often happens implicilty, this could lead to hard-to-debug problems.</p>
+<p>In Qt 6, the copy constructor and assignment operator for <a href="qevent.html" translate="no">QEvent</a> subclasses have been made protected to prevent implicit copying. If you need to copy events, use the <a href="qevent.html#clone" translate="no">clone</a> method, which will return a heap-allocated copy of the <a href="qevent.html" translate="no">QEvent</a> object. Make sure you delete the clone, perhaps using std::unique_ptr, unless you post it (in which case Qt will delete it once it has been delivered).</p>
+<p>In your <a href="qevent.html" translate="no">QEvent</a> subclasses, override clone(), and declare the protected and default-implemented copy constructor and assignment operator like this:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> MyEvent : <span class="keyword">public</span> <span class="type"><a href="qevent.html" translate="no">QEvent</a></span>
+ {
+ <span class="keyword">public</span>:
+     <span class="comment">// ...</span>
+
+     MyEvent <span class="operator">*</span>clone() <span class="keyword">const</span> override { <span class="keyword">return</span> <span class="keyword">new</span> MyEvent(<span class="operator">*</span><span class="keyword">this</span>); }
+
+ <span class="keyword">protected</span>:
+     MyEvent(<span class="keyword">const</span> MyEvent <span class="operator">&amp;</span>other) <span class="operator">=</span> <span class="keyword">default</span>;
+     MyEvent <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(<span class="keyword">const</span> MyEvent <span class="operator">&amp;</span>other) <span class="operator">=</span> <span class="keyword">default</span>;
+     MyEvent(MyEvent <span class="operator">&amp;</span><span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+     MyEvent <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(MyEvent <span class="operator">&amp;</span><span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+     <span class="comment">// member data</span>
+ };
+</pre>
+<p>Note that if your MyEvent class allocates memory (e.g. through a pointer-to-implementation pattern), then you will have to implement custom copy semantics.</p>
+<h2 id="serialization-classes">Serialization classes</h2>
+<p>In Qt 6, <a href="qjsondocument.html" translate="no">QJsonDocument</a> methods for converting it to/from Qt's legacy JSON binary format were removed in favor of the standardized CBOR format. Qt JSON types can be converted to Qt CBOR types, which can in turn be serialized into the CBOR binary format and vice versa. See, for example, <a href="qcborvalue.html#fromJsonValue" translate="no">QCborValue::fromJsonValue</a>() and <a href="qcborvalue.html#toJsonValue" translate="no">QCborValue::toJsonValue</a>().</p>
+<p>If you still need to use the binary JSON format, you can use the replacements provided in the Qt5Compat module. They can be found in the QBinaryJson namespace. See <a href="qtcore-changes-qt6.html#using-the-qt5compat-module">Using the Qt5Compat module</a> to find out how to use the module in your application.</p>
+<h2 id="other-classes">Other classes</h2>
+<p>In Qt 5, <a href="qcoreapplication.html#quit" translate="no">QCoreApplication::quit</a>() was equivalent to calling <a href="qcoreapplication.html#exit" translate="no">QCoreApplication::exit</a>(). This just exited the main event loop.</p>
+<p>In Qt 6, the method will instead try to close all top-level windows by posting a close event. The windows are free to cancel the shutdown process by ignoring the event.</p>
+<p>Call <a href="qcoreapplication.html#exit" translate="no">QCoreApplication::exit</a>() to keep the non-conditional behavior.</p>
+<p>QLibraryInfo::location() and QLibraryInfo::Location were deprecated due to inconsistent naming. Use the new API <a href="qlibraryinfo.html#path" translate="no">QLibraryInfo::path</a>() and <a href="qlibraryinfo.html#LibraryPath-enum" translate="no">QLibraryInfo::LibraryPath</a> instead.</p>
+<h2 id="qt-state-machine-framework">Qt State Machine Framework</h2>
+<p>Qt State Machine was moved into the Qt SCXML module (soon to be renamed to Qt State Machines) and therefore it is no longer part of Qt Core. There were very few cross dependencies inside Qt Core which ultimately led to this decision.</p>
+<h2 id="using-the-qt5compat-module">Using the Qt5Compat module</h2>
+<p>To use the Qt5Compat module, you need to build with its headers in your include path and link against its library. If you are using <a href="../qmake/qmake-manual.html">qmake</a>, add the following to your <code translate="no">.pro</code> file:</p>
+<pre class="cpp" translate="no">
+ QT <span class="operator">+</span><span class="operator">=</span> core5compat
+</pre>
+<p>If you build your application or library using cmake, add the following to your <code translate="no">CMakeList.txt</code>:</p>
+<pre class="cpp" translate="no">
+ PUBLIC_LIBRARIES
+     <span class="type"><a href="qt.html" translate="no">Qt</a></span><span class="operator">::</span>Core5Compat
+</pre>
+</div>
+<!-- @@@qtcore-changes-qt6.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="comparison-types.html">Comparison types overview</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtcoreprivate-module.html">Reference - Private C++ Classes</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

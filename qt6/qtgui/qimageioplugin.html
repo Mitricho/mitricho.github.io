@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qimageiohandler.cpp -->
+  <meta name="description" content="The QImageIOPlugin class defines an interface for writing an image format plugin.">
+  <title>QImageIOPlugin Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QImageIOPlugin</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QImageIOPlugin Class</h1>
+<!-- $$$QImageIOPlugin-brief -->
+<p>The QImageIOPlugin class defines an interface for writing an image format plugin. <a href="#details">More...</a></p>
+<!-- @@@QImageIOPlugin -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QImageIOPlugin&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qimageioplugin-members.html">List of all members, including inherited members</a></li>
+<li>QImageIOPlugin is part of <a href="../qtcore/plugins.html">Plugin Classes</a>.</li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#Capability-enum" translate="no">Capabilities</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#Capability-enum" translate="no">Capability</a></b> { CanRead, CanWrite, CanReadIncremental }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#QImageIOPlugin" translate="no">QImageIOPlugin</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#dtor.QImageIOPlugin" translate="no">~QImageIOPlugin</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QImageIOPlugin::Capabilities </td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#capabilities" translate="no">capabilities</a></b>(QIODevice *<i>device</i>, const QByteArray &amp;<i>format</i>) const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QImageIOHandler *</td><td class="memItemRight bottomAlign"><b><a href="qimageioplugin.html#create" translate="no">create</a></b>(QIODevice *<i>device</i>, const QByteArray &amp;<i>format</i> = QByteArray()) const = 0</td></tr>
+</table></div>
+<!-- $$$QImageIOPlugin-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QImageIOPlugin is a factory for creating <a href="qimageiohandler.html" translate="no">QImageIOHandler</a> objects, which are used internally by <a href="qimagereader.html" translate="no">QImageReader</a> and <a href="qimagewriter.html" translate="no">QImageWriter</a> to add support for different image formats to Qt.</p>
+<p>Writing an image I/O plugin is achieved by subclassing this base class, reimplementing the pure virtual functions <a href="qimageioplugin.html#capabilities" translate="no">capabilities</a>() and <a href="qimageioplugin.html#create" translate="no">create</a>(), and exporting the class with the <a href="../qtcore/qtplugin.html#Q_PLUGIN_METADATA" translate="no">Q_PLUGIN_METADATA</a>() macro. See How to Create Qt Plugins for details.</p>
+<p>An image format plugin can support three capabilities: reading (<a href="qimageioplugin.html#Capability-enum" translate="no">CanRead</a>), writing (<a href="qimageioplugin.html#Capability-enum" translate="no">CanWrite</a>) and <i>incremental</i> reading (<a href="qimageioplugin.html#Capability-enum" translate="no">CanReadIncremental</a>). Reimplement <a href="qimageioplugin.html#capabilities" translate="no">capabilities</a>() in your subclass to expose the capabilities of your image format.</p>
+<p><a href="qimageioplugin.html#create" translate="no">create</a>() should create an instance of your <a href="qimageiohandler.html" translate="no">QImageIOHandler</a> subclass, with the provided device and format properly set, and return this handler.</p>
+<p>The json metadata file for the plugin needs to contain information about the image formats the plugins supports, together with the corresponding MIME types (one for each format). For a jpeg plugin, this could, for example, look as follows:</p>
+<pre class="cpp" translate="no">
+ {
+   <span class="string">&quot;Keys&quot;</span>: <span class="operator">[</span> <span class="string">&quot;jpg&quot;</span><span class="operator">,</span> <span class="string">&quot;jpeg&quot;</span> <span class="operator">]</span><span class="operator">,</span>
+   <span class="string">&quot;MimeTypes&quot;</span>: <span class="operator">[</span> <span class="string">&quot;image/jpeg&quot;</span><span class="operator">,</span> <span class="string">&quot;image/jpeg&quot;</span> <span class="operator">]</span>
+ }
+</pre>
+<p>Different plugins can support different capabilities. For example, you may have one plugin that supports reading the GIF format, and another that supports writing. Qt will select the correct plugin for the job, depending on the return value of <a href="qimageioplugin.html#capabilities" translate="no">capabilities</a>(). If several plugins support the same capability, Qt will select one arbitrarily.</p>
+</div>
+<p><b>See also </b><a href="qimageiohandler.html" translate="no">QImageIOHandler</a> and How to Create Qt Plugins.</p>
+<!-- @@@QImageIOPlugin -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Capability$$$CanRead$$$CanWrite$$$CanReadIncremental -->
+<h3 class="flags" id="Capability-enum">enum QImageIOPlugin::<span class="name">Capability</span><br/>flags QImageIOPlugin::<span class="name">Capabilities</span></h3>
+<p>This enum describes the capabilities of a <a href="qimageioplugin.html" translate="no">QImageIOPlugin</a>.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QImageIOPlugin::CanRead</code></td><td class="topAlign tblval"><code translate="no">0x1</code></td><td class="topAlign">The plugin can read images.</td></tr>
+<tr><td class="topAlign"><code translate="no">QImageIOPlugin::CanWrite</code></td><td class="topAlign tblval"><code translate="no">0x2</code></td><td class="topAlign">The plugin can write images.</td></tr>
+<tr><td class="topAlign"><code translate="no">QImageIOPlugin::CanReadIncremental</code></td><td class="topAlign tblval"><code translate="no">0x4</code></td><td class="topAlign">The plugin can read images incrementally.</td></tr>
+</table></div>
+<p>The Capabilities type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;Capability&gt;. It stores an OR combination of Capability values.</p>
+<!-- @@@Capability -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QImageIOPlugin[overload1]$$$QImageIOPluginQObject* -->
+<h3 class="fn" translate="no" id="QImageIOPlugin"><code class="details extra" translate="no">[explicit]</code> QImageIOPlugin::<span class="name">QImageIOPlugin</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs an image plugin with the given <i translate="no">parent</i>. This is invoked automatically by the moc generated code that exports the plugin.</p>
+<!-- @@@QImageIOPlugin -->
+<!-- $$$~QImageIOPlugin[overload1]$$$~QImageIOPlugin -->
+<h3 class="fn" translate="no" id="dtor.QImageIOPlugin"><code class="details extra" translate="no">[virtual noexcept]</code> QImageIOPlugin::<span class="name">~QImageIOPlugin</span>()</h3>
+<p>Destroys the picture format plugin.</p>
+<p>You never have to call this explicitly. Qt destroys a plugin automatically when it is no longer used.</p>
+<!-- @@@~QImageIOPlugin -->
+<!-- $$$capabilities[overload1]$$$capabilitiesQIODevice*constQByteArray& -->
+<h3 class="fn" translate="no" id="capabilities"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qimageioplugin.html#Capability-enum" translate="no">QImageIOPlugin::Capabilities</a></span> QImageIOPlugin::<span class="name">capabilities</span>(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span> *<i>device</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>format</i>) const</h3>
+<p>Returns the capabilities of the plugin, based on the data in <i translate="no">device</i> and the format <i translate="no">format</i>. If <i translate="no">device</i> is <code translate="no">0</code>, it should simply report whether the format can be read or written. Otherwise, it should attempt to determine whether the given format (or any format supported by the plugin if <i translate="no">format</i> is empty) can be read from or written to <i translate="no">device</i>. It should do this without changing the state of <i translate="no">device</i> (typically by using <a href="../qtcore/qiodevice.html#peek" translate="no">QIODevice::peek</a>()).</p>
+<p>For example, if the <a href="qimageioplugin.html" translate="no">QImageIOPlugin</a> supports the BMP format, <i translate="no">format</i> is either empty or <code translate="no">&quot;bmp&quot;</code>, and the data in the device starts with the characters <code translate="no">&quot;BM&quot;</code>, this function should return <a href="qimageioplugin.html#Capability-enum" translate="no">CanRead</a>. If <i translate="no">format</i> is <code translate="no">&quot;bmp&quot;</code>, <i translate="no">device</i> is <code translate="no">0</code> and the handler supports both reading and writing, this function should return <a href="qimageioplugin.html#Capability-enum" translate="no">CanRead</a> | <a href="qimageioplugin.html#Capability-enum" translate="no">CanWrite</a>.</p>
+<p>Format names are always given in lower case.</p>
+<!-- @@@capabilities -->
+<!-- $$$create[overload1]$$$createQIODevice*constQByteArray& -->
+<h3 class="fn" translate="no" id="create"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qimageiohandler.html" translate="no">QImageIOHandler</a></span> *QImageIOPlugin::<span class="name">create</span>(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span> *<i>device</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>format</i> = QByteArray()) const</h3>
+<p>Creates and returns a <a href="qimageiohandler.html" translate="no">QImageIOHandler</a> subclass, with <i translate="no">device</i> and <i translate="no">format</i> set. The <i translate="no">format</i> must come from the values listed in the <code translate="no">&quot;Keys&quot;</code> entry in the plugin metadata, or be empty. If it is empty, the data in <i translate="no">device</i> must have been recognized by the <a href="qimageioplugin.html#capabilities" translate="no">capabilities</a>() method (with a likewise empty format).</p>
+<p>Format names are always given in lower case.</p>
+<!-- @@@create -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

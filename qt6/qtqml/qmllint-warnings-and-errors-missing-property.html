@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- missing-property.qdoc -->
+  <meta name="description" content="[missing-property] Binding a value to a non-existing property.">
+  <title>Missing property | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qmllint-warnings-and-errors.html">QML Lint Warning and Errors</a></li>
+<li>Missing property</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#can-t-assign-to-non-existent-default-property">Can't assign to non-existent default property</a></li>
+<li class="level2"><a href="#what-happened">What happened?</a></li>
+<li class="level2"><a href="#why-is-this-bad">Why is this bad?</a></li>
+<li class="level2"><a href="#example">Example</a></li>
+<li class="level1"><a href="#property-does-not-exist">Property does not exist</a></li>
+<li class="level2"><a href="#property-does-not-exist-what-happened-5">What happened?</a></li>
+<li class="level2"><a href="#property-does-not-exist-why-is-this-bad-6">Why is this bad?</a></li>
+<li class="level2"><a href="#property-does-not-exist-example-7">Example</a></li>
+<li class="level1"><a href="#member-not-found-on-type">Member not found on type</a></li>
+<li class="level2"><a href="#member-not-found-on-type-what-happened-9">What happened?</a></li>
+<li class="level2"><a href="#member-not-found-on-type-why-is-this-bad-10">Why is this bad?</a></li>
+<li class="level2"><a href="#member-not-found-on-type-example-11">Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Missing property</h1>
+<!-- $$$qmllint-warnings-and-errors-missing-property.html-description -->
+<div class="descr" id="details">
+<p>This warning category is spelled <code translate="no">[missing-property]</code> by qmllint.</p>
+<h2 id="can-t-assign-to-non-existent-default-property">Can't assign to non-existent default property</h2>
+<h3 id="what-happened">What happened?</h3>
+<p>You assigned an object to a non-existing default property.</p>
+<h3 id="why-is-this-bad">Why is this bad?</h3>
+<p>The QML engine can't assign this object at runtime.</p>
+<h3 id="example">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component MyType: <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> { property <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> <span class="name">myItem</span>; }
+
+     <span class="type">MyType</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {}
+     }
+ }
+</pre>
+<p>To fix this warning, specify the property you want to bind to or, if you are the author of the type, mark a property as default:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component MyType: <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> { property <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> <span class="name">myItem</span>; }
+
+     <span class="type">MyType</span> {
+         <span class="name">myItem</span>: <span class="name">Item</span> {}
+     }
+
+     component AlternativeMyType: <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> { default property <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> <span class="name">myItem</span>; }
+
+     <span class="type">AlternativeMyType</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {} <span class="comment">// bound to myItem via default property</span>
+     }
+ }
+</pre>
+<h2 id="property-does-not-exist">Property does not exist</h2>
+<h3 id="property-does-not-exist-what-happened-5">What happened?</h3>
+<p>You assigned an expression to a non-existing property.</p>
+<h3 id="property-does-not-exist-why-is-this-bad-6">Why is this bad?</h3>
+<p>The QML engine can't assign this expression at runtime.</p>
+<h3 id="property-does-not-exist-example-7">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt</span>
+     <span class="name">myItn</span>: <span class="number">42</span>
+ }
+</pre>
+<p>To fix this warning, remove the binding or correct a possible typo:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt</span>
+     <span class="name">myInt</span>: <span class="number">42</span>
+ }
+</pre>
+<h2 id="member-not-found-on-type">Member not found on type</h2>
+<h3 id="member-not-found-on-type-what-happened-9">What happened?</h3>
+<p>You accessed a member in a field member expression that can't be found by QML tooling.</p>
+<p>A field member expression is an expression of the form <code translate="no">someId.someProperty</code>.</p>
+<h3 id="member-not-found-on-type-why-is-this-bad-10">Why is this bad?</h3>
+<p>The QML tooling can't find this member, and the QML engine probably can't either.</p>
+<h3 id="member-not-found-on-type-example-11">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">id</span>: <span class="name">self</span>
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt</span>
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt2</span>: <span class="number">1</span> <span class="operator">+</span> <span class="name">self</span>.<span class="name">myItn</span>
+ }
+</pre>
+<p>To fix this warning, remove the binding or correct a possible typo:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">id</span>: <span class="name">self</span>
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt</span>
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">myInt2</span>: <span class="number">1</span> <span class="operator">+</span> <span class="name">self</span>.<span class="name">myInt</span>
+ }
+</pre>
+</div>
+<!-- @@@qmllint-warnings-and-errors-missing-property.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

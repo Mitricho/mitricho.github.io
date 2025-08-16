@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- opcuanodeid.cpp -->
+  <meta name="description" content="Specifies a node by an identifier.">
+  <title>NodeId QML Type | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-qmlmodule.html" translate="no">QML Types</a></li>
+<li>NodeId</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">NodeId QML Type</h1>
+<!-- $$$NodeId-brief -->
+<p>Specifies a node by an identifier. <a href="#details">More...</a></p>
+<!-- @@@NodeId -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtOpcUa</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> QtOpcUa 5.12</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Status:</td><td class="memItemRight bottomAlign"> Deprecated since 6.9<span class="status deprecated"></span></td></tr>
+</table></div>
+<p><b>This type is deprecated since QtOpcUa 6.9. We strongly advise against using it in new code.</b></p>
+<ul>
+<li><a href="qml-qtopcua-nodeid-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-nodeid.html#identifier-prop" translate="no">identifier</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-nodeid.html#ns-prop" translate="no">ns</a></b> : string</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-nodeid.html#nodeChanged-signal" translate="no">nodeChanged</a></b>()</li>
+</ul>
+<!-- $$$NodeId-description -->
+<h2 id="details">Detailed Description</h2>
+<pre class="cpp" translate="no">
+ import QtOpcUa as QtOpcUa
+
+ <span class="type">QtOpcUa</span>.NodeId {
+     <span class="name">identifier</span>: <span class="string">&quot;s=Example.Node&quot;</span>
+     <span class="name">ns</span>: <span class="string">&quot;Example Namespace&quot;</span>
+ }
+</pre>
+<!-- @@@NodeId -->
+<h2>Property Documentation</h2>
+<!-- $$$identifier -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="identifier-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">identifier</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Identifier of the node. The identifier has to be given in one of the following types.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Type</th><th >Example</th></tr></thead>
+<tr valign="top" class="odd"><td >Numeric</td><td ><code translate="no">i=23</code></td></tr>
+<tr valign="top" class="even"><td >String</td><td ><code translate="no">s=MyStringIdentifier</code></td></tr>
+<tr valign="top" class="odd"><td >GUID</td><td ><code translate="no">g=08081e75-8e5e-319b-954f-f3a7613dc29b</code></td></tr>
+<tr valign="top" class="even"><td >Opaque (base64)</td><td ><code translate="no">b=UXQgZnR3IQ==</code></td></tr>
+</table></div>
+<p>It is possible but not recommended to include the namespace index <code translate="no">ns=X;s=...</code>. In this case the given namespace index is internally stripped off the identifier and set to the namespace property.</p>
+</div></div><!-- @@@identifier -->
+<br/>
+<!-- $$$ns -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="ns-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">ns</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Namespace of the node identifier. The identifier can be the index as a number or the name as string. A string which can be converted to an integer is considered a namespace index.</p>
+</div></div><!-- @@@ns -->
+<br/>
+<h2>Signal Documentation</h2>
+<!-- $$$nodeChanged[overload1]$$$nodeChanged -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="nodeChanged-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">nodeChanged</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Emitted when the underlying node has changed. This happens when the namespace or identifier has changed.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onNodeChanged</code>.</p>
+</div></div></div><!-- @@@nodeChanged -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

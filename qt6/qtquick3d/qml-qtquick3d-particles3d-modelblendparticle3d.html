@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dparticlemodelblendparticle.cpp -->
+  <meta name="description" content="Blends particle effect with a 3D model.">
+  <title>ModelBlendParticle3D QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-particles3d-qmlmodule.html" translate="no">QtQuick3D.Particles3D</a></li>
+<li>ModelBlendParticle3D</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ModelBlendParticle3D QML Type</h1>
+<!-- $$$ModelBlendParticle3D-brief -->
+<p>Blends particle effect with a 3D model. <a href="#details">More...</a></p>
+<!-- @@@ModelBlendParticle3D -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Particles3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-particles3d-particle3d.html" translate="no">Particle3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-particles3d-modelblendparticle3d-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#ModelBlendEmitMode-prop" translate="no">ModelBlendEmitMode</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#ModelBlendMode-prop" translate="no">ModelBlendMode</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#activationNode-prop" translate="no">activationNode</a></b> : Node</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#delegate-prop" translate="no">delegate</a></b> : Component</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#emitMode-prop" translate="no">emitMode</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#endNode-prop" translate="no">endNode</a></b> : Node</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#endTime-prop" translate="no">endTime</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#modelBlendMode-propx" translate="no">modelBlendMode</a></b> : ModelBlendMode</li>
+</ul>
+<!-- $$$ModelBlendParticle3D-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The type provides a way to blend particle effect with a 3D model. The provided model needs to be triangle-based. Each triangle in the model is converted into a particle, which are then used by the emitter. Instead of particle shader, the model is shaded using the <a href="qml-qtquick3d-model.html#materials-prop" translate="no">material</a> specified in the model. The way the effect is blended is determined by the <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#modelBlendMode-propx" translate="no">modelBlendMode</a>.</p>
+<p>The possible modes are:</p>
+<ul>
+<li><b>Construct</b>, where the model gets constructed from the particles.</li>
+<li><b>Explode</b>, where the model gets converted into particles.</li>
+<li><b>Transfer</b>, where Construct and Explode are combined to create an effect where the model is transferred from one place to another.</li>
+</ul>
+<p>By default the particles are emitted in the order they are specified in the model unless <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#emitMode-prop" translate="no">emitMode</a> is set to <code translate="no">Random</code> or <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#emitMode-prop" translate="no">emitMode</a> is set to <code translate="no">Activation</code> and <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#activationNode-prop" translate="no">activationNode</a> is set.</p>
+<p>Some features defined in base class and emitters are not functional with this type:</p>
+<ul>
+<li><a href="qml-qtquick3d-particles3d-particle3d.html#alignMode-propx" translate="no">Particle3D::alignMode</a> is not functional since the particles can be in arbitrary orientation in the model.</li>
+<li><a href="qml-qtquick3d-particles3d-particle3d.html#sortMode-propx" translate="no">Particle3D::sortMode</a> is not functional since the particles are always rendered in the order the primitives are specified in the model.</li>
+<li><a href="qml-qtquick3d-particles3d-particleemitter3d.html#depthBias-prop" translate="no">ParticleEmitter3D::depthBias</a> is not functional since the model depth bias is used instead.</li>
+</ul>
+<div class="admonition note">
+<p><b>Note: </b>The default <a href="qml-qtquick3d-particles3d-particle3d.html#fadeInEffect-prop" translate="no">fadeInEffect</a> and <a href="qml-qtquick3d-particles3d-particle3d.html#fadeInEffect-prop" translate="no">fadeOutEffect</a> are <code translate="no">Particle3D.FadeNone</code>.</p>
+</div>
+<!-- @@@ModelBlendParticle3D -->
+<h2>Property Documentation</h2>
+<!-- $$$ModelBlendEmitMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="ModelBlendEmitMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">ModelBlendEmitMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Defines the emit mode of the particles</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Sequential</code></td><td class="topAlign">The particles are emitted in the order they are defined in the model.</td></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Random</code></td><td class="topAlign">The particles are emitted in random order.</td></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Activation</code></td><td class="topAlign">The particles are emitted when they are activated by the <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html#activationNode-prop" translate="no">activationNode</a>.</td></tr>
+</table></div>
+</div></div><!-- @@@ModelBlendEmitMode -->
+<br/>
+<!-- $$$ModelBlendMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="ModelBlendMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">ModelBlendMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Defines the blending mode for the particle effect.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Explode</code></td><td class="topAlign">The model gets exploded i.e. the particles are emitted from the position of the model.</td></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Construct</code></td><td class="topAlign">The model gets constructed i.e the particles fly from the emitter and construct the model at the end.</td></tr>
+<tr><td class="topAlign"><code translate="no">ModelBlendParticle3D.Transfer</code></td><td class="topAlign">Combines Explode and Transfer for the same model.</td></tr>
+</table></div>
+</div></div><!-- @@@ModelBlendMode -->
+<br/>
+<!-- $$$activationNode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="activationNode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">activationNode</span> : <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds a node that activates particles and overrides the reqular emit routine. The activation node can be used to control how the particles are emitted spatially when the model is exploded/constructed from the particles. The activation node emits a particle if the center of that particle is on the positive half of the z-axis of the activation node. Animating the activation node to move trough the model will cause the particles to be emitted sequentially along the path the activation node moves.</p>
+</div></div><!-- @@@activationNode -->
+<br/>
+<!-- $$$delegate -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="delegate-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">delegate</span> : <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The delegate provides a template defining the model for the <a href="qml-qtquick3d-particles3d-modelblendparticle3d.html" translate="no">ModelBlendParticle3D</a>.</p>
+<p>For example, using the default sphere model with default material</p>
+<pre class="qml" translate="no">
+ Component {
+     id: modelComponent
+     Model {
+         source: &quot;#Sphere&quot;
+         scale: Qt.vector3d(0.5, 0.5, 0.5)
+         materials: DefaultMaterial { diffuseColor: &quot;red&quot; }
+     }
+ }
+
+ ModelBlendParticle3D {
+     id: particleRedSphere
+     delegate: modelComponent
+ }
+</pre>
+</div></div><!-- @@@delegate -->
+<br/>
+<!-- $$$emitMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="emitMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">emitMode</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the emit mode of the particles.</p>
+</div></div><!-- @@@emitMode -->
+<br/>
+<!-- $$$endNode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="endNode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">endNode</span> : <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the node that specifies the transformation for the model at the end of particle effect. It defines the size, position and rotation where the model is constructed when using the <code translate="no">ModelBlendParticle3D.Construct</code> and <code translate="no">ModelBlendParticle3D.Transfer</code> blend modes.</p>
+</div></div><!-- @@@endNode -->
+<br/>
+<!-- $$$endTime -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="endTime-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">endTime</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the end time of the particle in milliseconds. The end time is used during construction and defines duration from particle lifetime at the end where the effect is blended with the model positions. Before the end time the particles positions are defined only by the particle effect, but during end time the particle position is blended linearly with the model end position.</p>
+</div></div><!-- @@@endTime -->
+<br/>
+<!-- $$$modelBlendMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="modelBlendMode-propx">
+<td class="tblQmlPropNode"><p>
+<span class="name">modelBlendMode</span> : <span class="type">ModelBlendMode</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds blending mode for the particle effect.</p>
+</div></div><!-- @@@modelBlendMode -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- calendarbackendplugin.qdoc -->
+  <meta name="description" content="QCalendar example illustrating user-supplied custom calendars.">
+  <title>Calendar Backend Plugin Example | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Calendar Backend Plugin Example</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#calendar-backend">Calendar backend</a></li>
+<li class="level2"><a href="#example-implementation">Example implementation</a></li>
+<li class="level2"><a href="#julian-day-conversions">Julian Day conversions</a></li>
+<li class="level2"><a href="#locale-support">Locale support</a></li>
+<li class="level1"><a href="#plugin">Plugin</a></li>
+<li class="level2"><a href="#writing-a-plugin">Writing a plugin</a></li>
+<li class="level2"><a href="#loading-the-plugin">Loading the plugin</a></li>
+<li class="level2"><a href="#instantiating-the-backend">Instantiating the backend</a></li>
+<li class="level2"><a href="#extending-qcalendarwidget">Extending QCalendarWidget</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Calendar Backend Plugin Example</h1>
+<!-- $$$time/calendarbackendplugin-brief -->
+<p><a href="qcalendar.html" translate="no">QCalendar</a> example illustrating user-supplied custom calendars.</p>
+<!-- @@@time/calendarbackendplugin -->
+<!-- $$$time/calendarbackendplugin-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/calendarwindow_transition.png" alt="" /></p><h4 id="introduction">Introduction</h4>
+<p>There are numerous different calendar systems in use around the globe. Qt has built-in support for some of them (see <a href="qcalendar.html#System-enum" translate="no">System</a>), but can't provide general support due to their high number. Additional calendar systems can be provided by implementing a custom QCalendarBackend, which is a private API.</p>
+<p>This example demonstrates how to write a custom calendar backend and how to use the low-level plugin API to extend an application to user-selectable calendars. Many countries transitioned from the Julian to the Gregorian calendar at some point in their history, and this custom calendar backend will implement the respective calendar as an example. The custom backend is compiled into a plugin and loaded at runtime by the main application. The exact transition date, different for various regions, is provided as a string to the plugin and can be determined by the user.</p>
+<h4 id="calendar-backend">Calendar backend</h4>
+<p>The calendar backend class must inherit from <code translate="no">QCalendarBackend</code> and implement its pure virtual functions in a <code translate="no">thread-safe</code> way. It may also override some other virtual functions as needed.</p>
+<h5 id="example-implementation">Example implementation</h5>
+<p>This example inherits from the already existing <code translate="no">QRomanCalendar</code>, which in turn inherits from the <code translate="no">QCalendarBackend</code> and implements some of its virtual functions. It's constructive to do this because the transition calendar shares, with both Julian and Gregorian calendars, parts provided by the Roman calendar.</p>
+<p>Here is the class declaration of <code translate="no">JulianGregorianCalendar</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> JulianGregorianCalendar : <span class="keyword">public</span> <span class="type"><a href="qromancalendar.html" translate="no">QRomanCalendar</a></span>
+ {
+ <span class="keyword">public</span>:
+     JulianGregorianCalendar(<span class="type"><a href="qdate.html" translate="no">QDate</a></span> endJulian<span class="operator">,</span> <span class="type"><a href="qanystringview.html" translate="no">QAnyStringView</a></span> name);
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> name() <span class="keyword">const</span> override;
+     <span class="type">int</span> daysInMonth(<span class="type">int</span> month<span class="operator">,</span> <span class="type">int</span> year <span class="operator">=</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>Unspecified) <span class="keyword">const</span> override;
+     <span class="type">bool</span> isLeapYear(<span class="type">int</span> year) <span class="keyword">const</span> override;
+     <span class="type">bool</span> dateToJulianDay(<span class="type">int</span> year<span class="operator">,</span> <span class="type">int</span> month<span class="operator">,</span> <span class="type">int</span> day<span class="operator">,</span> <span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> <span class="operator">*</span>jd) <span class="keyword">const</span> override;
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay julianDayToDate(<span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> jd) <span class="keyword">const</span> override;
+ <span class="keyword">private</span>:
+     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">const</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> julian <span class="operator">=</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Julian);
+     <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">const</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> gregorian <span class="operator">=</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Gregorian);
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay m_julianUntil;
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay m_gregorianSince;
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> m_name;
+ };
+</pre>
+<p>The <code translate="no">QDate</code> passed to the constructor - <i translate="no">endJulian</i> - is the date of the last day of the Julian calendar. The calendar will automatically calculate the shift for a given year, e.g in 1582, 10 days were omitted, but in 1700, 12 days had to be omitted. The calendar backend is registered under <i translate="no">name</i> and a calendar instance can be created using that name. The class only overrides functions where the two calendars it combines differ from the Roman base. It has instances of the Julian and Gregorian calendars to which these functions can delegate.</p>
+<h5 id="julian-day-conversions">Julian Day conversions</h5>
+<p><code translate="no">dateToJulianDay(int year, int month, int day, qint64 *jd)</code> computes the Julian day number corresponding to the specified <i translate="no">year</i>, <i translate="no">month</i> and <i translate="no">day</i>. Returns <code translate="no">true</code> and sets <i translate="no">jd</i> if there is such a date in this calendar; otherwise, returns <code translate="no">false</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> JulianGregorianCalendar<span class="operator">::</span>dateToJulianDay(<span class="type">int</span> year<span class="operator">,</span> <span class="type">int</span> month<span class="operator">,</span> <span class="type">int</span> day<span class="operator">,</span> <span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> <span class="operator">*</span>jd) <span class="keyword">const</span>
+ {
+     <span class="keyword">if</span> (year <span class="operator">=</span><span class="operator">=</span> m_julianUntil<span class="operator">.</span>year <span class="operator">&amp;</span><span class="operator">&amp;</span> month <span class="operator">=</span><span class="operator">=</span> m_julianUntil<span class="operator">.</span>month) {
+         <span class="keyword">if</span> (m_julianUntil<span class="operator">.</span>day <span class="operator">&lt;</span> day <span class="operator">&amp;</span><span class="operator">&amp;</span> day <span class="operator">&lt;</span> m_gregorianSince<span class="operator">.</span>day) {
+             <span class="comment">// Requested date is in the gap skipped over by the transition.</span>
+             <span class="operator">*</span>jd <span class="operator">=</span> <span class="number">0</span>;
+             <span class="keyword">return</span> <span class="keyword">false</span>;
+         }
+     }
+     <span class="type"><a href="qdate.html" translate="no">QDate</a></span> givenDate <span class="operator">=</span> gregorian<span class="operator">.</span>dateFromParts(year<span class="operator">,</span> month<span class="operator">,</span> day);
+     <span class="type"><a href="qdate.html" translate="no">QDate</a></span> julianUntil <span class="operator">=</span> julian<span class="operator">.</span>dateFromParts(m_julianUntil);
+     <span class="keyword">if</span> (givenDate <span class="operator">&gt;</span> julianUntil) {
+         <span class="operator">*</span>jd <span class="operator">=</span> givenDate<span class="operator">.</span>toJulianDay();
+         <span class="keyword">return</span> <span class="keyword">true</span>;
+     }
+     <span class="operator">*</span>jd <span class="operator">=</span> julian<span class="operator">.</span>dateFromParts(year<span class="operator">,</span> month<span class="operator">,</span> day)<span class="operator">.</span>toJulianDay();
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<p><code translate="no">julianDayToDate(qint64 jd)</code> computes year, month and day in this calendar for the given Julian day number, <i translate="no">jd</i>. If the given day falls outside this calendar's scope, the return value for <code translate="no">isValid()</code> is <code translate="no">false</code>. In this example, if the given date falls in the gap jumped over by the transition from Julian to Gregorian calendar, it is out of scope.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay JulianGregorianCalendar<span class="operator">::</span>julianDayToDate(<span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> jd) <span class="keyword">const</span>
+ {
+     <span class="keyword">const</span> <span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> jdForChange <span class="operator">=</span> julian<span class="operator">.</span>dateFromParts(m_julianUntil)<span class="operator">.</span>toJulianDay();
+     <span class="keyword">if</span> (jdForChange <span class="operator">&lt;</span> jd) {
+         <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> gregorian(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Gregorian);
+         <span class="type"><a href="qdate.html" translate="no">QDate</a></span> date <span class="operator">=</span> <span class="type"><a href="qdate.html" translate="no">QDate</a></span><span class="operator">::</span>fromJulianDay(jd);
+         <span class="keyword">return</span> gregorian<span class="operator">.</span>partsFromDate(date);
+     } <span class="keyword">else</span> <span class="keyword">if</span> (jd <span class="operator">&lt;</span><span class="operator">=</span> jdForChange) {
+         <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> julian(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Julian);
+         <span class="type"><a href="qdate.html" translate="no">QDate</a></span> date <span class="operator">=</span> <span class="type"><a href="qdate.html" translate="no">QDate</a></span><span class="operator">::</span>fromJulianDay(jd);
+         <span class="keyword">return</span> julian<span class="operator">.</span>partsFromDate(date);
+     }
+     <span class="keyword">return</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>Unspecified<span class="operator">,</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>Unspecified<span class="operator">,</span>
+                                    <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>Unspecified);
+ }
+</pre>
+<h5 id="locale-support">Locale support</h5>
+<p>A calendar may, in general, have its own naming of months of the year and days of the week. These must be suitably localized to be intelligible to all users. By default the backend baseclass takes care of week day names for us, which is entirely sufficient for these Julian/Gregorian transition calendars.</p>
+<p>Although a backend can directly override the month naming methods, the baseclass version of these can be customized by implementing <code translate="no">localeMonthData()</code> and <code translate="no">localeMonthIndexData()</code> to provide tables of localized month names. Since the Julian and Gregorian calendars use the same month naming, they inherit that customization from a common base, <code translate="no">QRomanCalendar</code>. This also means the custom calendar can use the same names, again by inheriting from that base. This takes care of localization.</p>
+<h4 id="plugin">Plugin</h4>
+<p>Qt applications can be extended through plugins. This requires the application to detect and load plugins using <a href="qpluginloader.html" translate="no">QPluginLoader</a>.</p>
+<h5 id="writing-a-plugin">Writing a plugin</h5>
+<p>To write a plugin, the first thing that has to be done is to create a pure virtual class that defines the interface between plugin and application.</p>
+<p>In this example the following interface was used:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> RequestedCalendarInterface
+ {
+ <span class="keyword">public</span>:
+     RequestedCalendarInterface() <span class="operator">=</span> <span class="keyword">default</span>;
+     <span class="keyword">virtual</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>SystemId loadCalendar(<span class="type"><a href="qanystringview.html" translate="no">QAnyStringView</a></span> requested) <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> <span class="operator">~</span>RequestedCalendarInterface() <span class="operator">=</span> <span class="keyword">default</span>;
+ };
+</pre>
+<p>and register it in the Qt meta-object system:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#define RequestedCalendarInterface_iid \
+ &quot;org.qt-project.Qt.Examples.CalendarBackend.RequestedCalendarInterface/1.0&quot;</span>
+ Q_DECLARE_INTERFACE(RequestedCalendarInterface<span class="operator">,</span> RequestedCalendarInterface_iid)
+</pre>
+<p><a href="qtplugin.html#Q_DECLARE_INTERFACE" translate="no">Q_DECLARE_INTERFACE</a>() macro is used to associate the <code translate="no">ClassName</code> (here: <code translate="no">RequestedCalendarInterface</code>) with the defined <code translate="no">Identifier</code> (here: <code translate="no">RequestedCalendarInterface_iid</code>). The <code translate="no">Identifier</code> must be unique. This interface can be implemented by plugins that load other calendars, interpreting <code translate="no">loadCalendar()</code>'s string parameter in various ways. It isn't limited to this particular plugin that will be implemented using it, so it has a generic name, not one specific to this particular backend.</p>
+<p>Then a plugin class that inherits from <a href="qobject.html" translate="no">QObject</a> and from the interface is created.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> JulianGregorianPlugin : <span class="keyword">public</span> <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">,</span> <span class="keyword">public</span> RequestedCalendarInterface
+ {
+     Q_OBJECT
+     Q_INTERFACES(RequestedCalendarInterface)
+     Q_PLUGIN_METADATA(IID <span class="string">&quot;org.qt-project.Qt.Examples.&quot;</span>
+                           <span class="string">&quot;CalendarBackend.&quot;</span>
+                           <span class="string">&quot;RequestedCalendarInterface/1.0&quot;</span>)
+ <span class="keyword">public</span>:
+     JulianGregorianPlugin();
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>SystemId loadCalendar(<span class="type"><a href="qanystringview.html" translate="no">QAnyStringView</a></span> request) override;
+     <span class="operator">~</span>JulianGregorianPlugin();
+ };
+</pre>
+<p><a href="qtplugin.html#Q_PLUGIN_METADATA" translate="no">Q_PLUGIN_METADATA</a>() and <a href="qobject.html#Q_INTERFACES" translate="no">Q_INTERFACES</a>() are being used to declare meta data that was also declared in the interface class and to tell Qt which interface the class implements.</p>
+<p>This plugin instantiates and registers a custom calendar backend which can in turn be used to instantiate <a href="qcalendar.html" translate="no">QCalendar</a> by the application at any point.</p>
+<p>Qt Plugins are stored in a single shared library (a DLL) and <a href="qpluginloader.html" translate="no">QPluginLoader</a> is used for detecting and dynamically loading the plugin file (for more see How to Create Qt Plugins).</p>
+<h5 id="loading-the-plugin">Loading the plugin</h5>
+<p><a href="qpluginloader.html" translate="no">QPluginLoader</a> checks if the plugin's version of Qt is the same as that of the application and provides direct access to a Qt plugin.</p>
+<p>Here is the use of <a href="qpluginloader.html" translate="no">QPluginLoader</a> in the example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qpluginloader.html" translate="no">QPluginLoader</a></span> loader;
+     loader<span class="operator">.</span>setFileName(<span class="string">&quot;../plugin/calendarPlugin&quot;</span>);
+     loader<span class="operator">.</span>load();
+     <span class="keyword">if</span> (<span class="operator">!</span>loader<span class="operator">.</span>isLoaded())
+         <span class="keyword">return</span> <span class="number">1</span>;
+     <span class="keyword">auto</span> <span class="operator">*</span>myplugin <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span>RequestedCalendarInterface<span class="operator">*</span><span class="operator">&gt;</span>(loader<span class="operator">.</span>instance());
+</pre>
+<p>First, an instance of a <a href="qpluginloader.html" translate="no">QPluginLoader</a> object needs to be initialized. Next, it has to be specified which plugin to load by passing a DLL file name to <a href="qpluginloader.html#fileName-prop" translate="no">setFileName</a>(). Then, by using <a href="qpluginloader.html#load" translate="no">load</a>(), the plugin file is dynamically loaded. At the end, a call to <a href="qobject.html#qobject_cast" translate="no">qobject_cast</a>() tests whether a plugin implements a given interface. <a href="qobject.html#qobject_cast" translate="no">qobject_cast</a>() uses <a href="qpluginloader.html#instance" translate="no">instance</a>() to access the root component in the plugin. If the plugin has been loaded correctly, its functions should be available.</p>
+<h5 id="instantiating-the-backend">Instantiating the backend</h5>
+<p>In this example there is only one function in the plugin. <code translate="no">loadCalendar()</code> is responsible for registering the custom calendar backend in <code translate="no">QCalendarRegistry</code> with given date of the transition and names.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>SystemId JulianGregorianPlugin<span class="operator">::</span>loadCalendar(<span class="type"><a href="qanystringview.html" translate="no">QAnyStringView</a></span> request)
+ {
+     Q_ASSERT(<span class="operator">!</span>request<span class="operator">.</span>isEmpty());
+     <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> names <span class="operator">=</span> request<span class="operator">.</span>toString()<span class="operator">.</span>split(u<span class="char">';'</span>);
+     <span class="keyword">if</span> (names<span class="operator">.</span>size() <span class="operator">&lt;</span> <span class="number">1</span>)
+         <span class="keyword">return</span> {};
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> dateString <span class="operator">=</span> names<span class="operator">.</span>takeFirst();
+     <span class="keyword">auto</span> date <span class="operator">=</span> <span class="type"><a href="qdate.html" translate="no">QDate</a></span><span class="operator">::</span>fromString(dateString<span class="operator">,</span> u<span class="string">&quot;yyyy-MM-dd&quot;</span><span class="operator">,</span>
+                                   <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Julian));
+     <span class="keyword">if</span> (<span class="operator">!</span>date<span class="operator">.</span>isValid())
+         <span class="keyword">return</span> {};
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> primary <span class="operator">=</span> names<span class="operator">.</span>isEmpty() <span class="operator">?</span>
+             <span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">::</span>fromStdU16String(u<span class="string">&quot;Julian until &quot;</span>) <span class="operator">+</span> dateString : names<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>;
+     <span class="keyword">auto</span> backend <span class="operator">=</span> <span class="keyword">new</span> JulianGregorianCalendar(date<span class="operator">,</span> primary);
+     names<span class="operator">.</span>emplaceFront(backend<span class="operator">-</span><span class="operator">&gt;</span>name());
+     <span class="keyword">auto</span> cid <span class="operator">=</span> backend<span class="operator">-</span><span class="operator">&gt;</span>registerCustomBackend(names);
+     <span class="keyword">return</span> cid;
+ }
+
+ JulianGregorianPlugin<span class="operator">::</span><span class="operator">~</span>JulianGregorianPlugin()
+ {
+ }
+</pre>
+<p>String argument for <code translate="no">loadCalendar()</code> is supplied by the user via command line arguments. Then, the date of transition from the Julian calendar to the Gregorian is extracted by splitting the given string. After validation, a custom backend object is created. The backend must be registered before it can be used in <a href="qcalendar.html" translate="no">QCalendar</a>, using the <code translate="no">registerCustomBackend()</code> method. Once a backend is registered, a <a href="qcalendar.html" translate="no">QCalendar</a> can be instantiated with the respective <a href="qcalendar-systemid.html" translate="no">SystemId</a> or <code translate="no">name</code>.</p>
+<p>Here is the use of <code translate="no">loadCalendar</code> in the <code translate="no">main</code>:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">const</span> <span class="keyword">auto</span> cid <span class="operator">=</span> myplugin<span class="operator">-</span><span class="operator">&gt;</span>loadCalendar(args<span class="operator">.</span>at(<span class="number">0</span>));
+     <span class="keyword">if</span> (<span class="operator">!</span>cid<span class="operator">.</span>isValid()) {
+         <a href="qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Invalid ID&quot;</span>;
+         parser<span class="operator">.</span>showHelp(<span class="number">1</span>);
+     }
+     <span class="keyword">const</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> calendar(cid);
+</pre>
+<h5 id="extending-qcalendarwidget">Extending QCalendarWidget</h5>
+<p>By creating a <a href="qcalendar.html" translate="no">QCalendar</a> instance with a specific calendar as a backend, it is possible to provide <a href="../qtwidgets/qcalendarwidget.html" translate="no">QCalendarWidget</a> with that backend and visualize it.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtwidgets/qcalendarwidget.html" translate="no">QCalendarWidget</a></span> widget;
+     widget<span class="operator">.</span>setCalendar(calendar);
+     widget<span class="operator">.</span>show();
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>YearMonthDay when <span class="operator">=</span> { <span class="number">1582</span><span class="operator">,</span> <span class="number">10</span><span class="operator">,</span> <span class="number">4</span> };
+     <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> julian <span class="operator">=</span> <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span><span class="operator">::</span>System<span class="operator">::</span>Julian);
+     <span class="keyword">auto</span> got <span class="operator">=</span> <span class="type"><a href="qdate.html" translate="no">QDate</a></span><span class="operator">::</span>fromString(args<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>left(<span class="number">10</span>)<span class="operator">,</span> u<span class="string">&quot;yyyy-MM-dd&quot;</span><span class="operator">,</span> julian);
+     <span class="keyword">if</span> (got<span class="operator">.</span>isValid())
+         when <span class="operator">=</span> julian<span class="operator">.</span>partsFromDate(got);
+     widget<span class="operator">.</span>setCurrentPage(when<span class="operator">.</span>year<span class="operator">,</span> when<span class="operator">.</span>month);
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/corelib/time/calendarbackendplugin?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="../qtwidgets/qcalendarwidget.html" translate="no">QCalendarWidget</a>, <a href="qcalendar.html" translate="no">QCalendar</a>, <a href="qdate.html" translate="no">QDate</a>, <a href="qlocale.html" translate="no">QLocale</a>, <a href="../qmake/qmake-variable-reference.html#qtplugin">QtPlugin</a>, and <a href="qpluginloader.html" translate="no">QPluginLoader</a>.</p>
+<!-- @@@time/calendarbackendplugin -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

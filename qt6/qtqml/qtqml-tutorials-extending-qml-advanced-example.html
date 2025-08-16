@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- extending-tutorial-advanced.qdoc -->
+  <meta name="description" content="Tutorial about advanced extensions to QML with Qt C++.">
+  <title>Writing advanced QML Extensions with C++ | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qtqml-cppintegration-overview.html">Overview - QML and C++ Integration</a></li>
+<li>Writing advanced QML Extensions with C++</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtqml-tutorials-extending-qml-example.html" />
+  <link rel="next" href="qtqml-javascript-topic.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtqml-tutorials-extending-qml-example.html">Writing QML Extensions with C++</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-javascript-topic.html">QML and JavaScript Integration</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#birthdayparty-base-project">BirthdayParty Base Project</a></li>
+<li class="level1"><a href="#inheritance-and-coercion">Inheritance and Coercion</a></li>
+<li class="level1"><a href="#default-properties">Default Properties</a></li>
+<li class="level1"><a href="#grouped-properties">Grouped Properties</a></li>
+<li class="level1"><a href="#attached-properties">Attached Properties</a></li>
+<li class="level1"><a href="#property-value-source">Property Value Source</a></li>
+<li class="level1"><a href="#foreign-objects-integration">Foreign objects integration</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Writing advanced QML Extensions with C++</h1>
+<!-- $$$qtqml-tutorials-extending-qml-advanced-example.html-description -->
+<div class="descr" id="details">
+<h2 id="birthdayparty-base-project">BirthdayParty Base Project</h2>
+<p><code translate="no">extending-qml-advanced/advanced1-Base-project</code></p>
+<p>This tutorial uses the example of a birthday party to demonstrate some of the features of QML. The code for the various features explained below is based on this birthday party project and relies on some of the material in the first tutorial on <a href="qtqml-tutorials-extending-qml-example.html">QML extensions</a>. This simple example is then expanded upon to illustrate the various QML extensions explained below. The complete code for each new extension to the code can be found in the tutorials at the location specified under each section's title or by following the link to the code at the very end of this page.</p>
+<p class="centerAlign"><img src="images/extending-qml-advanced-word-cloud.png" alt="" /></p><p>The base project defines the <code translate="no">Person</code> class and the <code translate="no">BirthdayParty</code> class, which model the attendees and the party itself respectively.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Person : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> name READ name WRITE setName NOTIFY nameChanged FINAL)
+     Q_PROPERTY(<span class="type">int</span> shoeSize READ shoeSize WRITE setShoeSize NOTIFY shoeSizeChanged FINAL)
+     QML_ELEMENT
+     ...
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> m_name;
+     <span class="type">int</span> m_shoeSize <span class="operator">=</span> <span class="number">0</span>;
+ };
+
+ <span class="keyword">class</span> BirthdayParty : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(Person <span class="operator">*</span>host READ host WRITE setHost NOTIFY hostChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>Person<span class="operator">&gt;</span> guests READ guests NOTIFY guestsChanged FINAL)
+     QML_ELEMENT
+     ...
+     Person <span class="operator">*</span>m_host <span class="operator">=</span> nullptr;
+     <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>Person <span class="operator">*</span><span class="operator">&gt;</span> m_guests;
+ };
+</pre>
+<p>All the information about the party can then be stored in the corresponding QML file.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="name">host</span>: <span class="name">Person</span> {
+         <span class="name">name</span>: <span class="string">&quot;Bob Jones&quot;</span>
+         <span class="name">shoeSize</span>: <span class="number">12</span>
+     }
+     <span class="name">guests</span>: [
+         <span class="type">Person</span> { <span class="name">name</span>: <span class="string">&quot;Leo Hodges&quot;</span> },
+         <span class="type">Person</span> { <span class="name">name</span>: <span class="string">&quot;Jack Smith&quot;</span> },
+         <span class="type">Person</span> { <span class="name">name</span>: <span class="string">&quot;Anne Brown&quot;</span> }
+     ]
+ }
+</pre>
+<p>The <code translate="no">main.cpp</code> file creates a simple shell application that displays whose birthday it is and who is invited to their party.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qqmlengine.html" translate="no">QQmlEngine</a></span> engine;
+     <span class="type"><a href="qqmlcomponent.html" translate="no">QQmlComponent</a></span> component(<span class="operator">&amp;</span>engine);
+     component<span class="operator">.</span>loadFromModule(<span class="string">&quot;People&quot;</span><span class="operator">,</span> <span class="string">&quot;Main&quot;</span>);
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>BirthdayParty<span class="operator">&gt;</span> party{ qobject_cast<span class="operator">&lt;</span>BirthdayParty <span class="operator">*</span><span class="operator">&gt;</span>(component<span class="operator">.</span>create()) };
+</pre>
+<p>The app outputs the following summary of the party.</p>
+<pre class="cpp plain" translate="no">
+ &quot;Bob Jones&quot; is having a birthday!
+ They are inviting:
+     &quot;Leo Hodges&quot;
+     &quot;Jack Smith&quot;
+     &quot;Anne Brown&quot;
+</pre>
+<p>The following sections go into how to add support for <code translate="no">Boy</code> and <code translate="no">Girl</code> attendees instead of just <code translate="no">Person</code> by using inheritance and coercion, how to make use of default properties to implicitly assign attendees of the party as guests, how to assign properties as groups instead of one by one, how to use attached objects to keep track of invited guests' reponses, how to use a property value source to display the lyrics of the happy birthday song over time, and how to expose third party objects to QML.</p>
+<h2 id="inheritance-and-coercion">Inheritance and Coercion</h2>
+<p><code translate="no">extending-qml-advanced/advanced2-Inheritance-and-coercion</code></p>
+<p>Right now, each attendant is being modelled as a person. This is a bit too generic and it would be nice to be able to know more about the attendees. By specializing them as boys and girls, we can already get a better idea of who's coming.</p>
+<p>To do this, the <code translate="no">Boy</code> and <code translate="no">Girl</code> classes are introduced, both inheriting from <code translate="no">Person</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Boy : <span class="keyword">public</span> Person
+ {
+     Q_OBJECT
+     QML_ELEMENT
+ <span class="keyword">public</span>:
+     <span class="keyword">using</span> Person<span class="operator">::</span>Person;
+ };
+
+ <span class="keyword">class</span> Girl : <span class="keyword">public</span> Person
+ {
+     Q_OBJECT
+     QML_ELEMENT
+ <span class="keyword">public</span>:
+     <span class="keyword">using</span> Person<span class="operator">::</span>Person;
+ };
+</pre>
+<p>The <code translate="no">Person</code> class remains unaltered and the <code translate="no">Boy</code> and <code translate="no">Girl</code> C++ classes are trivial extensions of it. The types and their QML name are registered with the QML engine with <a href="qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a>.</p>
+<p>Notice that the <code translate="no">host</code> and <code translate="no">guests</code> properties in <code translate="no">BirthdayParty</code> still take instances of <code translate="no">Person</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BirthdayParty : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(Person <span class="operator">*</span>host READ host WRITE setHost NOTIFY hostChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>Person<span class="operator">&gt;</span> guests READ guests NOTIFY guestsChanged FINAL)
+     QML_ELEMENT
+     ...
+ };
+</pre>
+<p>The implementation of the <code translate="no">Person</code> class itself has not been changed. However, as the <code translate="no">Person</code> class was repurposed as a common base for <code translate="no">Boy</code> and <code translate="no">Girl</code>, <code translate="no">Person</code> should no longer be instantiable from QML directly. An explicit <code translate="no">Boy</code> or <code translate="no">Girl</code> should be instantiated instead.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Person : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     ...
+     QML_ELEMENT
+     QML_UNCREATABLE(<span class="string">&quot;Person is an abstract base class.&quot;</span>)
+     ...
+ };
+</pre>
+<p>While we want to disallow instantiating <code translate="no">Person</code> from within QML, it still needs to be registered with the QML engine so that it can be used as a property type and other types can be coerced to it. This is what the <a href="qqmlintegration-h-qtqml-proxy.html#QML_UNCREATABLE" translate="no">QML_UNCREATABLE</a> macro does. As all three types, <code translate="no">Person</code>, <code translate="no">Boy</code> and <code translate="no">Girl</code>, have been registered with the QML system, on assignment, QML automatically (and type-safely) converts the <code translate="no">Boy</code> and <code translate="no">Girl</code> objects into a <code translate="no">Person</code>.</p>
+<p>With these changes in place, we can now specify the birthday party with the extra information about the attendees as follows.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="name">host</span>: <span class="name">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Bob Jones&quot;</span>
+         <span class="name">shoeSize</span>: <span class="number">12</span>
+     }
+     <span class="name">guests</span>: [
+         <span class="type">Boy</span> { <span class="name">name</span>: <span class="string">&quot;Leo Hodges&quot;</span> },
+         <span class="type">Boy</span> { <span class="name">name</span>: <span class="string">&quot;Jack Smith&quot;</span> },
+         <span class="type">Girl</span> { <span class="name">name</span>: <span class="string">&quot;Anne Brown&quot;</span> }
+     ]
+ }
+</pre>
+<h2 id="default-properties">Default Properties</h2>
+<p><code translate="no">extending-qml-advanced/advanced3-Default-properties</code></p>
+<p>Currently, in the QML file, each property is assigned explicitly. For example, the <code translate="no">host</code> property is assigned a <code translate="no">Boy</code> and the <code translate="no">guests</code> property is assigned a list of <code translate="no">Boy</code> or <code translate="no">Girl</code>. This is easy but it can be made a bit simpler for this specific use case. Instead of assigning the <code translate="no">guests</code> property explicitly, we can add <code translate="no">Boy</code> and <code translate="no">Girl</code> objects inside the party directly and have them assigned to <code translate="no">guests</code> implicitly. It makes sense that all the attendees that we specify, and that are not the host, are guests. This change is purely syntactical but it can add a more natural feel in many situations.</p>
+<p>The <code translate="no">guests</code> property can be designated as the default property of <code translate="no">BirthdayParty</code>. Meaning that each object created inside of a <code translate="no">BirthdayParty</code> is implicitly appended to the default property <code translate="no">guests</code>. The resulting QML looks like this.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="name">host</span>: <span class="name">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Bob Jones&quot;</span>
+         <span class="name">shoeSize</span>: <span class="number">12</span>
+     }
+
+     <span class="type">Boy</span> { <span class="name">name</span>: <span class="string">&quot;Leo Hodges&quot;</span> }
+     <span class="type">Boy</span> { <span class="name">name</span>: <span class="string">&quot;Jack Smith&quot;</span> }
+     <span class="type">Girl</span> { <span class="name">name</span>: <span class="string">&quot;Anne Brown&quot;</span> }
+ }
+</pre>
+<p>The only change required to enable this behavior is to add the <code translate="no">DefaultProperty</code> class info annotation to <code translate="no">BirthdayParty</code> to designate <code translate="no">guests</code> as its default property.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BirthdayParty : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(Person <span class="operator">*</span>host READ host WRITE setHost NOTIFY hostChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>Person<span class="operator">&gt;</span> guests READ guests NOTIFY guestsChanged FINAL)
+     Q_CLASSINFO(<span class="string">&quot;DefaultProperty&quot;</span><span class="operator">,</span> <span class="string">&quot;guests&quot;</span>)
+     QML_ELEMENT
+     ...
+ };
+</pre>
+<p>You may already be familiar with this mechanism. The default property for all descendants of <code translate="no">Item</code> in QML is the <code translate="no">data</code> property. All elements not explicitly added to a property of an <code translate="no">Item</code> will be added to <code translate="no">data</code>. This makes the structure clear and reduces unnecessary noise in the code.</p>
+<h2 id="grouped-properties">Grouped Properties</h2>
+<p><code translate="no">extending-qml-advanced/advanced4-Grouped-properties</code></p>
+<p>More information is needed about the shoes of the guests. Aside from their size, we also want to store the shoes' color, brand, and price. This information is stored in a <code translate="no">ShoeDescription</code> class.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> ShoeDescription : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">int</span> size READ size WRITE setSize NOTIFY shoeChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtgui/qcolor.html" translate="no">QColor</a></span> color READ color WRITE setColor NOTIFY shoeChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> brand READ brand WRITE setBrand NOTIFY shoeChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> price READ price WRITE setPrice NOTIFY shoeChanged FINAL)
+     ...
+ };
+</pre>
+<p>Each person now has two properties, a <code translate="no">name</code> and a shoe description <code translate="no">shoe</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Person : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> name READ name WRITE setName NOTIFY nameChanged FINAL)
+     Q_PROPERTY(ShoeDescription <span class="operator">*</span>shoe READ shoe WRITE setShoe NOTIFY shoeChanged FINAL)
+     ...
+ };
+</pre>
+<p>Specifying the values for each element of the shoe description works but is a bit repetitive.</p>
+<pre class="cpp" translate="no">
+     <span class="type">Girl</span> {
+         <span class="name">name</span>: <span class="string">&quot;Anne Brown&quot;</span>
+         <span class="name">shoe</span>.size: <span class="number">7</span>
+         <span class="name">shoe</span>.color: <span class="string">&quot;red&quot;</span>
+         <span class="name">shoe</span>.brand: <span class="string">&quot;Job Macobs&quot;</span>
+         <span class="name">shoe</span>.price: <span class="number">99.99</span>
+     }
+</pre>
+<p>Grouped properties provide a more elegant way of assigning these properties. Instead of assigning the values to each property one-by-one, the individual values can be passed as a group to the <code translate="no">shoe</code> property making the code more readable. No changes are required to enable this feature as it is available by default for all of QML.</p>
+<pre class="cpp" translate="no">
+     <span class="name">host</span>: <span class="name">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Bob Jones&quot;</span>
+         <span class="type">shoe</span> { <span class="name">size</span>: <span class="number">12</span>; <span class="name">color</span>: <span class="string">&quot;white&quot;</span>; <span class="name">brand</span>: <span class="string">&quot;Bikey&quot;</span>; <span class="name">price</span>: <span class="number">90.0</span> }
+     }
+</pre>
+<h2 id="attached-properties">Attached Properties</h2>
+<p><code translate="no">extending-qml-advanced/advanced5-Attached-properties</code></p>
+<p>The time has come for the host to send out invitations. To keep track of which guests have responded to the invitation and when, we need somewhere to store that information. Storing it in the <code translate="no">BirthdayParty</code> object iself would not really fit. A better way would be to store the responses as attached objects to the party object.</p>
+<p>First, we declare the <code translate="no">BirthdayPartyAttached</code> class which holds the guest reponses.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BirthdayPartyAttached : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qdate.html" translate="no">QDate</a></span> rsvp READ rsvp WRITE setRsvp NOTIFY rsvpChanged FINAL)
+     QML_ANONYMOUS
+     ...
+ };
+</pre>
+<p>And we attach it to the <code translate="no">BirthdayParty</code> class and define <code translate="no">qmlAttachedProperties()</code> to return the attached object.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BirthdayParty : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     ...
+     QML_ATTACHED(BirthdayPartyAttached)
+     ...
+     <span class="keyword">static</span> BirthdayPartyAttached <span class="operator">*</span>qmlAttachedProperties(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>);
+
+ };
+</pre>
+<p>Now, attached objects can be used in the QML to hold the rsvp information of the invited guests.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="type">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Robert Campbell&quot;</span>
+         <span class="name">BirthdayParty</span>.rsvp: <span class="name">Date</span>.<span class="name">fromLocaleString</span>(<span class="name">Qt</span>.<span class="name">locale</span>(), <span class="string">&quot;2023-03-01&quot;</span>, <span class="string">&quot;yyyy-MM-dd&quot;</span>)
+     }
+
+     <span class="type">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Leo Hodges&quot;</span>
+         <span class="type">shoe</span> { <span class="name">size</span>: <span class="number">10</span>; <span class="name">color</span>: <span class="string">&quot;black&quot;</span>; <span class="name">brand</span>: <span class="string">&quot;Reebok&quot;</span>; <span class="name">price</span>: <span class="number">59.95</span> }
+         <span class="name">BirthdayParty</span>.rsvp: <span class="name">Date</span>.<span class="name">fromLocaleString</span>(<span class="name">Qt</span>.<span class="name">locale</span>(), <span class="string">&quot;2023-03-03&quot;</span>, <span class="string">&quot;yyyy-MM-dd&quot;</span>)
+     }
+
+     <span class="name">host</span>: <span class="name">Boy</span> {
+         <span class="name">name</span>: <span class="string">&quot;Jack Smith&quot;</span>
+         <span class="type">shoe</span> { <span class="name">size</span>: <span class="number">8</span>; <span class="name">color</span>: <span class="string">&quot;blue&quot;</span>; <span class="name">brand</span>: <span class="string">&quot;Puma&quot;</span>; <span class="name">price</span>: <span class="number">19.95</span> }
+     }
+ }
+</pre>
+<p>Finally, the information can be accessed in the following way.</p>
+<pre class="cpp" translate="no">
+             <span class="type"><a href="../qtcore/qdate.html" translate="no">QDate</a></span> rsvpDate;
+             <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>attached <span class="operator">=</span> qmlAttachedPropertiesObject<span class="operator">&lt;</span>BirthdayParty<span class="operator">&gt;</span>(guest<span class="operator">,</span> <span class="keyword">false</span>);
+
+             <span class="keyword">if</span> (attached)
+                 rsvpDate <span class="operator">=</span> attached<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;rsvp&quot;</span>)<span class="operator">.</span>toDate();
+</pre>
+<p>The program outputs the following summary of the party to come.</p>
+<pre class="cpp plain" translate="no">
+ &quot;Jack Smith&quot; is having a birthday!
+ He is inviting:
+     &quot;Robert Campbell&quot; RSVP date: &quot;Wed Mar 1 2023&quot;
+     &quot;Leo Hodges&quot; RSVP date: &quot;Mon Mar 6 2023&quot;
+</pre>
+<h2 id="property-value-source">Property Value Source</h2>
+<p><code translate="no">extending-qml-advanced/advanced6-Property-value-source</code></p>
+<p>During the party the guests have to sing for the host. It would be handy if the program could display the lyrics customized for the occasion to help the guests. To this end, a property value source is used to generate the verses of the song over time.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> HappyBirthdaySong : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">,</span> <span class="keyword">public</span> <span class="type"><a href="qqmlpropertyvaluesource.html" translate="no">QQmlPropertyValueSource</a></span>
+ {
+     Q_OBJECT
+     Q_INTERFACES(<span class="type"><a href="qqmlpropertyvaluesource.html" translate="no">QQmlPropertyValueSource</a></span>)
+     ...
+     <span class="type">void</span> setTarget(<span class="keyword">const</span> <span class="type"><a href="qqmlproperty.html" translate="no">QQmlProperty</a></span> <span class="operator">&amp;</span>) override;
+
+ };
+</pre>
+<p>The class <code translate="no">HappyBirthdaySong</code> is added as a value source. It must inherit from <code translate="no">QQmlPropertyValueSource</code> and implement the <a href="qqmlpropertyvaluesource.html" translate="no">QQmlPropertyValueSource</a> interface with the <a href="../qtcore/qobject.html#Q_INTERFACES" translate="no">Q_INTERFACES</a> macro. The <code translate="no">setTarget()</code> function is used to define which property this source acts upon. In this case, the value source writes to the <code translate="no">announcement</code> property of the <code translate="no">BirthdayParty</code> to display the lyrics over time. It has an internal timer that causes the <code translate="no">announcement</code> property of the party to be set to the next line of the lyrics repeatedly.</p>
+<p>In QML, a <code translate="no">HappyBirthdaySong</code> is instantiated inside the <code translate="no">BirthdayParty</code>. The <code translate="no">on</code> keyword in its signature is used to specify the property that the value source targets, in this case <code translate="no">announcement</code>. The <code translate="no">name</code> property of the <code translate="no">HappyBirthdaySong</code> object is also <a href="qtqml-syntax-propertybinding.html">bound</a> to the name of the host of the party.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="name">id</span>: <span class="name">party</span>
+     HappyBirthdaySong on <span class="name">announcement</span> {
+         <span class="name">name</span>: <span class="name">party</span>.<span class="name">host</span>.<span class="name">name</span>
+     }
+     ...
+ }
+</pre>
+<p>The program displays the time at which the party started using the <code translate="no">partyStarted</code> signal and then prints the following happy birthday verses over and over.</p>
+<pre class="cpp plain" translate="no">
+ Happy birthday to you,
+ Happy birthday to you,
+ Happy birthday dear Bob Jones,
+ Happy birthday to you!
+</pre>
+<h2 id="foreign-objects-integration">Foreign objects integration</h2>
+<p><code translate="no">extending-qml-advanced/advanced7-Foreign-objects-integration</code></p>
+<p>Instead of just printing the lyrics out to the console, the attendees would like to use a more fancy display with support for colors. They would like to integrate it in the project but currently it is not possible to configure the screen from QML because it comes from a third party library. To solve this, the necessary types need to be exposed to the QML engine so its properties are available for modification in QML directly.</p>
+<p>The display can be controlled by the <code translate="no">ThirdPartyDisplay</code> class. It has properties to define the content and the foreground and background colors of the text to display.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Q_DECL_EXPORT ThirdPartyDisplay : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> content READ content WRITE setContent NOTIFY contentChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtgui/qcolor.html" translate="no">QColor</a></span> foregroundColor READ foregroundColor WRITE setForegroundColor NOTIFY colorsChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtgui/qcolor.html" translate="no">QColor</a></span> backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY colorsChanged FINAL)
+     ...
+ };
+</pre>
+<p>To expose this type to QML, we can register it with the engine with <a href="qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a>. However, since the class isn't accessible for modification, <a href="qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> cannot simply be added to it. To register the type with the engine, the type needs to be registered from the outside. This is what <a href="qqmlintegration-h-qtqml-proxy.html#QML_FOREIGN" translate="no">QML_FOREIGN</a> is for. When used in a type in conjunction with other QML macros, the other macros apply not to the type they reside in but to the foreign type designated by <a href="qqmlintegration-h-qtqml-proxy.html#QML_FOREIGN" translate="no">QML_FOREIGN</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> ForeignDisplay : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     QML_NAMED_ELEMENT(ThirdPartyDisplay)
+     QML_FOREIGN(ThirdPartyDisplay)
+ };
+</pre>
+<p>This way, the BirthdayParty now has a new property with the display.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BirthdayParty : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(Person <span class="operator">*</span>host READ host WRITE setHost NOTIFY hostChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>Person<span class="operator">&gt;</span> guests READ guests NOTIFY guestsChanged FINAL)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> announcement READ announcement WRITE setAnnouncement NOTIFY announcementChanged FINAL)
+     Q_PROPERTY(ThirdPartyDisplay <span class="operator">*</span>display READ display WRITE setDisplay NOTIFY displayChanged FINAL)
+     ...
+ };
+</pre>
+<p>And, in QML, the colors of the text on the fancy third display can be set explicitly.</p>
+<pre class="cpp" translate="no">
+ <span class="type">BirthdayParty</span> {
+     <span class="name">display</span>: <span class="name">ThirdPartyDisplay</span> {
+         <span class="name">foregroundColor</span>: <span class="string">&quot;black&quot;</span>
+         <span class="name">backgroundColor</span>: <span class="string">&quot;white&quot;</span>
+     }
+     ...
+ }
+</pre>
+<p>Setting the <code translate="no">announcement</code> property of the BirthdayParty now sends the message to the fancy display instead of printing it itself.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> BirthdayParty<span class="operator">::</span>setAnnouncement(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>announcement)
+ {
+     <span class="keyword">if</span> (m_announcement <span class="operator">!</span><span class="operator">=</span> announcement) {
+         m_announcement <span class="operator">=</span> announcement;
+         <span class="keyword">emit</span> announcementChanged();
+     }
+     m_display<span class="operator">-</span><span class="operator">&gt;</span>setContent(announcement);
+ }
+</pre>
+<p>The output then looks like this over and over similar to the previous section.</p>
+<pre class="cpp plain" translate="no">
+ [Fancy ThirdPartyDisplay] Happy birthday to you,
+ [Fancy ThirdPartyDisplay] Happy birthday to you,
+ [Fancy ThirdPartyDisplay] Happy birthday dear Bob Jones,
+ [Fancy ThirdPartyDisplay] Happy birthday to you!
+</pre>
+</div>
+<p><b>See also </b><a href="qtqml-cppintegration-definetypes.html#specifying-default-and-parent-properties-for-qml-object-types">Specifying Default and Parent Properties for QML Object Types</a>, <a href="qtqml-syntax-objectattributes.html#grouped-properties">Grouped Properties</a>, <a href="qtqml-cppintegration-definetypes.html#providing-attached-properties">Providing Attached Properties</a>, <a href="qtqml-cppintegration-definetypes.html#property-value-sources">Property Value Sources</a>, and <a href="qtqml-cppintegration-definetypes.html#registering-foreign-types">Registering Foreign Types</a>.</p>
+<!-- @@@qtqml-tutorials-extending-qml-advanced-example.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtqml-tutorials-extending-qml-example.html">Writing QML Extensions with C++</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-javascript-topic.html">QML and JavaScript Integration</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

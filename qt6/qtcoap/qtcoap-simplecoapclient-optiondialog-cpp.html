@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- simplecoapclient.qdoc -->
+  <meta name="description" content="Creating an application that communicates with a CoAP server.">
+  <title>Simple CoAP Client | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Simple CoAP Client</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Simple CoAP Client</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2019 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &quot;optiondialog.h&quot;</span>
+ <span class="preprocessor">#include &quot;ui_optiondialog.h&quot;</span>
+
+ OptionDialog<span class="operator">::</span>OptionDialog(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>options<span class="operator">,</span> <span class="type">QWidget</span> <span class="operator">*</span>parent) :
+     <span class="type">QDialog</span>(parent)<span class="operator">,</span>
+     ui(<span class="keyword">new</span> Ui<span class="operator">::</span>OptionDialog)<span class="operator">,</span>
+     m_options(options)
+ {
+     ui<span class="operator">-</span><span class="operator">&gt;</span>setupUi(<span class="keyword">this</span>);
+     connect(ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">,</span> <span class="operator">&amp;</span><span class="type">QTableWidget</span><span class="operator">::</span>itemSelectionChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+         <span class="keyword">const</span> <span class="keyword">auto</span> selection <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>selectedItems();
+         ui<span class="operator">-</span><span class="operator">&gt;</span>removeButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="operator">!</span>selection<span class="operator">.</span>isEmpty());
+     });
+
+     fillOptions();
+     applyOptionValues();
+
+     <span class="keyword">auto</span> header <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>horizontalHeader();
+     header<span class="operator">-</span><span class="operator">&gt;</span>setSectionResizeMode(<span class="type">QHeaderView</span><span class="operator">::</span>Stretch);
+ }
+
+ OptionDialog<span class="operator">::</span><span class="operator">~</span>OptionDialog()
+ {
+     <span class="keyword">delete</span> ui;
+ }
+
+ <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">&gt;</span> OptionDialog<span class="operator">::</span>options() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_options;
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>on_addButton_clicked()
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> option <span class="operator">=</span>
+             ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>currentData(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>UserRole)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>OptionName<span class="operator">&gt;</span>();
+     m_options<span class="operator">.</span>push_back(<span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span>(option<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>optionValueEdit<span class="operator">-</span><span class="operator">&gt;</span>text()));
+
+     addTableRow(ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>currentText()<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>optionValueEdit<span class="operator">-</span><span class="operator">&gt;</span>text());
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>on_removeButton_clicked()
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> idx <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>currentRow();
+     <span class="keyword">if</span> (idx <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> idx <span class="operator">&lt;</span> ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>rowCount()) {
+         ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>removeRow(idx);
+         m_options<span class="operator">.</span>removeAt(idx);
+     }
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>on_clearButton_clicked()
+ {
+     m_options<span class="operator">.</span>clear();
+     ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>setRowCount(<span class="number">0</span>);
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>fillOptions()
+ {
+     ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>setHorizontalHeaderLabels({tr(<span class="string">&quot;Name&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Value&quot;</span>)});
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;None&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Invalid);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Block1&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Block1);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Block2&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Block2);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Content-Format&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>ContentFormat);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;If-Match&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>IfMatch);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;If-None-Match&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>IfNoneMatch);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Location-Path&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>LocationPath);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Location-Query&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>LocationQuery);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Max-Age&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>MaxAge);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Observe&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Observe);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Proxy-Scheme&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>ProxyScheme);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Proxy-Uri&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>ProxyUri);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Size1&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Size1);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Size2&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>Size2);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Uri-Host&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>UriHost);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Uri-Path&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>UriPath);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Uri-Port&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>UriPort);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(tr(<span class="string">&quot;Uri-Query&quot;</span>)<span class="operator">,</span> <span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">::</span>UriQuery);
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>applyOptionValues()
+ {
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>option : std<span class="operator">::</span>as_const(m_options)) {
+         <span class="keyword">const</span> <span class="type">int</span> optionIndex <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>findData(option<span class="operator">.</span>name());
+         <span class="keyword">if</span> (optionIndex <span class="operator">!</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>)
+             addTableRow(ui<span class="operator">-</span><span class="operator">&gt;</span>optionComboBox<span class="operator">-</span><span class="operator">&gt;</span>itemText(optionIndex)<span class="operator">,</span> option<span class="operator">.</span>stringValue());
+     }
+ }
+
+ <span class="type">void</span> OptionDialog<span class="operator">::</span>addTableRow(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value)
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> rowCount <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>rowCount();
+     ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>insertRow(rowCount);
+
+     <span class="type">QTableWidgetItem</span> <span class="operator">*</span>optionItem <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QTableWidgetItem</span>(name);
+     optionItem<span class="operator">-</span><span class="operator">&gt;</span>setFlags(optionItem<span class="operator">-</span><span class="operator">&gt;</span>flags() <span class="operator">^</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ItemIsEditable);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>setItem(rowCount<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> optionItem);
+
+     <span class="type">QTableWidgetItem</span> <span class="operator">*</span>valueItem <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QTableWidgetItem</span>(value);
+     valueItem<span class="operator">-</span><span class="operator">&gt;</span>setFlags(valueItem<span class="operator">-</span><span class="operator">&gt;</span>flags() <span class="operator">^</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ItemIsEditable);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>tableWidget<span class="operator">-</span><span class="operator">&gt;</span>setItem(rowCount<span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> valueItem);
+ }
+</pre>

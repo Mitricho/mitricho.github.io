@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qdatetime.cpp -->
+  <meta name="description" content="The QDate class provides date functions.">
+  <title>QDate Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QDate</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#remarks">Remarks</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QDate Class</h1>
+<!-- $$$QDate-brief -->
+<p>The QDate class provides date functions. <a href="#details">More...</a></p>
+<!-- @@@QDate -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QDate&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qdate-members.html">List of all members, including inherited members</a></li>
+<li><a href="qdate-obsolete.html">Deprecated members</a></li>
+</ul>
+<p>This class is <i>strongly comparable</i>.</p>
+<p>This class is <b>strongly comparable</b> with std::chrono::year_month_day, std::chrono::year_month_day_last, std::chrono::year_month_weekday, and std::chrono::year_month_weekday_last.</p>
+<p>These comparison operators are only available when using C++20.</p>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate" translate="no">QDate</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate-1" translate="no">QDate</a></b>(std::chrono::year_month_day <i>date</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate-2" translate="no">QDate</a></b>(std::chrono::year_month_day_last <i>date</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate-3" translate="no">QDate</a></b>(std::chrono::year_month_weekday <i>date</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate-4" translate="no">QDate</a></b>(std::chrono::year_month_weekday_last <i>date</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#QDate-5" translate="no">QDate</a></b>(int <i>y</i>, int <i>m</i>, int <i>d</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addDays" translate="no">addDays</a></b>(qint64 <i>ndays</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addDuration" translate="no">addDuration</a></b>(std::chrono::days <i>ndays</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addMonths" translate="no">addMonths</a></b>(int <i>nmonths</i>, QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addMonths-1" translate="no">addMonths</a></b>(int <i>nmonths</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addYears" translate="no">addYears</a></b>(int <i>nyears</i>, QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#addYears-1" translate="no">addYears</a></b>(int <i>nyears</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#day" translate="no">day</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#day-1" translate="no">day</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#dayOfWeek" translate="no">dayOfWeek</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#dayOfWeek-1" translate="no">dayOfWeek</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#dayOfYear" translate="no">dayOfYear</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#dayOfYear-1" translate="no">dayOfYear</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#daysInMonth" translate="no">daysInMonth</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#daysInMonth-1" translate="no">daysInMonth</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#daysInYear" translate="no">daysInYear</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#daysInYear-1" translate="no">daysInYear</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#daysTo" translate="no">daysTo</a></b>(QDate <i>d</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#endOfDay" translate="no">endOfDay</a></b>(const QTimeZone &amp;<i>zone</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.5)</code> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#endOfDay-1" translate="no">endOfDay</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#getDate" translate="no">getDate</a></b>(int *<i>year</i>, int *<i>month</i>, int *<i>day</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#month" translate="no">month</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#month-1" translate="no">month</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#setDate" translate="no">setDate</a></b>(int <i>year</i>, int <i>month</i>, int <i>day</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#setDate-1" translate="no">setDate</a></b>(int <i>year</i>, int <i>month</i>, int <i>day</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#startOfDay" translate="no">startOfDay</a></b>(const QTimeZone &amp;<i>zone</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.5)</code> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#startOfDay-1" translate="no">startOfDay</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toJulianDay" translate="no">toJulianDay</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::chrono::sys_days </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toStdSysDays" translate="no">toStdSysDays</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toString" translate="no">toString</a></b>(QStringView <i>format</i>, QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toString-1" translate="no">toString</a></b>(const QString &amp;<i>format</i>, QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toString-2" translate="no">toString</a></b>(QStringView <i>format</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toString-3" translate="no">toString</a></b>(Qt::DateFormat <i>format</i> = Qt::TextDate) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#toString-4" translate="no">toString</a></b>(const QString &amp;<i>format</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#weekNumber" translate="no">weekNumber</a></b>(int *<i>yearNumber</i> = nullptr) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#year" translate="no">year</a></b>(QCalendar <i>cal</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#year-1" translate="no">year</a></b>() const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#currentDate" translate="no">currentDate</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromJulianDay" translate="no">fromJulianDay</a></b>(qint64 <i>jd</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromStdSysDays" translate="no">fromStdSysDays</a></b>(const std::chrono::sys_days &amp;<i>days</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, Qt::DateFormat <i>format</i> = Qt::TextDate)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-1" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, const QString &amp;<i>format</i>, int <i>baseYear</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-2" translate="no">fromString</a></b>(QStringView <i>string</i>, Qt::DateFormat <i>format</i> = Qt::TextDate)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-3" translate="no">fromString</a></b>(QStringView <i>string</i>, QStringView <i>format</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-4" translate="no">fromString</a></b>(QStringView <i>string</i>, QStringView <i>format</i>, int <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-5" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, QStringView <i>format</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-6" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, QStringView <i>format</i>, int <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-7" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, const QString &amp;<i>format</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-8" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, const QString &amp;<i>format</i>, int <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-9" translate="no">fromString</a></b>(QStringView <i>string</i>, QStringView <i>format</i>, int <i>baseYear</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QDate </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#fromString-10" translate="no">fromString</a></b>(const QString &amp;<i>string</i>, QStringView <i>format</i>, int <i>baseYear</i>, QCalendar <i>cal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#isLeapYear" translate="no">isLeapYear</a></b>(int <i>year</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#isValid-1" translate="no">isValid</a></b>(int <i>year</i>, int <i>month</i>, int <i>day</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-not-eq" translate="no">operator!=</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-lt" translate="no">operator&lt;</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-lt-lt-1" translate="no">operator&lt;&lt;</a></b>(QDataStream &amp;<i>out</i>, QDate <i>date</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-lt-eq" translate="no">operator&lt;=</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-eq-eq" translate="no">operator==</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-gt" translate="no">operator&gt;</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-gt-eq" translate="no">operator&gt;=</a></b>(const QDate &amp;<i>lhs</i>, const QDate &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qdate.html#operator-gt-gt-1" translate="no">operator&gt;&gt;</a></b>(QDataStream &amp;<i>in</i>, QDate &amp;<i>date</i>)</td></tr>
+</table></div>
+<!-- $$$QDate-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A QDate object represents a particular day, regardless of calendar, locale or other settings used when creating it or supplied by the system. It can report the year, month and day of the month that represent the day with respect to the proleptic Gregorian calendar or any calendar supplied as a <a href="qcalendar.html" translate="no">QCalendar</a> object. QDate objects should be passed by value rather than by reference to const; they simply package <code translate="no">qint64</code>.</p>
+<p>A QDate object is typically created by giving the year, month, and day numbers explicitly. Note that QDate interprets year numbers less than 100 as presented, i.e., as years 1 through 99, without adding any offset. The static function <a href="qdate.html#currentDate" translate="no">currentDate</a>() creates a QDate object containing the date read from the system clock. An explicit date can also be set using <a href="qdate.html#setDate" translate="no">setDate</a>(). The <a href="qdate.html#fromString" translate="no">fromString</a>() function returns a QDate given a string and a date format which is used to interpret the date within the string.</p>
+<p>The <a href="qdate.html#year-1" translate="no">year</a>(), <a href="qdate.html#month-1" translate="no">month</a>(), and <a href="qdate.html#day-1" translate="no">day</a>() functions provide access to the year, month, and day numbers. When more than one of these values is needed, it is more efficient to call <a href="qcalendar.html#partsFromDate" translate="no">QCalendar::partsFromDate</a>(), to save repeating (potentially expensive) calendrical calculations.</p>
+<p>Also, <a href="qdate.html#dayOfWeek-1" translate="no">dayOfWeek</a>() and <a href="qdate.html#dayOfYear-1" translate="no">dayOfYear</a>() functions are provided. The same information is provided in textual format by <a href="qdate.html#toString" translate="no">toString</a>(). <a href="qlocale.html" translate="no">QLocale</a> can map the day numbers to names, <a href="qcalendar.html" translate="no">QCalendar</a> can map month numbers to names.</p>
+<p>QDate provides a full set of operators to compare two QDate objects where smaller means earlier, and larger means later.</p>
+<p>You can increment (or decrement) a date by a given number of days using <a href="qdate.html#addDays" translate="no">addDays</a>(). Similarly you can use <a href="qdate.html#addMonths" translate="no">addMonths</a>() and <a href="qdate.html#addYears" translate="no">addYears</a>(). The <a href="qdate.html#daysTo" translate="no">daysTo</a>() function returns the number of days between two dates.</p>
+<p>The <a href="qdate.html#daysInMonth-1" translate="no">daysInMonth</a>() and <a href="qdate.html#daysInYear-1" translate="no">daysInYear</a>() functions return how many days there are in this date's month and year, respectively. The <a href="qdate.html#isLeapYear" translate="no">isLeapYear</a>() function indicates whether a date is in a leap year. <a href="qcalendar.html" translate="no">QCalendar</a> can also supply this information, in some cases more conveniently.</p>
+<h3 id="remarks">Remarks</h3>
+<div class="admonition note">
+<p><b>Note: </b>All conversion to and from string formats is done using the C locale. For localized conversions, see <a href="qlocale.html" translate="no">QLocale</a>.</p>
+</div>
+<p>In the Gregorian calendar, there is no year 0. Dates in that year are considered invalid. The year -1 is the year &quot;1 before Christ&quot; or &quot;1 before common era.&quot; The day before 1 January 1 CE, QDate(1, 1, 1), is 31 December 1 BCE, QDate(-1, 12, 31). Various other calendars behave similarly; see <a href="qcalendar.html#hasYearZero" translate="no">QCalendar::hasYearZero</a>().</p>
+<h4 id="range-of-valid-dates">Range of Valid Dates</h4>
+<p>Dates are stored internally as a Julian Day number, an integer count of every day in a contiguous range, with 24 November 4714 BCE in the Gregorian calendar being Julian Day 0 (1 January 4713 BCE in the Julian calendar). As well as being an efficient and accurate way of storing an absolute date, it is suitable for converting a date into other calendar systems such as Hebrew, Islamic or Chinese. The Julian Day number can be obtained using <a href="qdate.html#toJulianDay" translate="no">QDate::toJulianDay</a>() and can be set using <a href="qdate.html#fromJulianDay" translate="no">QDate::fromJulianDay</a>().</p>
+<p>The range of Julian Day numbers that QDate can represent is, for technical reasons, limited to between -784350574879 and 784354017364, which means from before 2 billion BCE to after 2 billion CE. This is more than seven times as wide as the range of dates a <a href="qdatetime.html" translate="no">QDateTime</a> can represent.</p>
+</div>
+<p><b>See also </b><a href="qtime.html" translate="no">QTime</a>, <a href="qdatetime.html" translate="no">QDateTime</a>, <a href="qcalendar.html" translate="no">QCalendar</a>, <a href="qdatetime.html#YearRange-enum" translate="no">QDateTime::YearRange</a>, <a href="../qtwidgets/qdateedit.html" translate="no">QDateEdit</a>, <a href="../qtwidgets/qdatetimeedit.html" translate="no">QDateTimeEdit</a>, and <a href="../qtwidgets/qcalendarwidget.html" translate="no">QCalendarWidget</a>.</p>
+<!-- @@@QDate -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="QDate-1"><code class="details extra" translate="no">[constexpr noexcept, since 6.4]</code> QDate::<span class="name">QDate</span>(<span class="type">std::chrono::year_month_day</span> <i>date</i>)</h3><h3 class="fn fngroupitem" translate="no" id="QDate-2"><code class="details extra" translate="no">[constexpr noexcept, since 6.4]</code> QDate::<span class="name">QDate</span>(<span class="type">std::chrono::year_month_day_last</span> <i>date</i>)</h3><h3 class="fn fngroupitem" translate="no" id="QDate-3"><code class="details extra" translate="no">[constexpr noexcept, since 6.4]</code> QDate::<span class="name">QDate</span>(<span class="type">std::chrono::year_month_weekday</span> <i>date</i>)</h3><h3 class="fn fngroupitem" translate="no" id="QDate-4"><code class="details extra" translate="no">[constexpr noexcept, since 6.4]</code> QDate::<span class="name">QDate</span>(<span class="type">std::chrono::year_month_weekday_last</span> <i>date</i>)</h3></div>
+<p>Constructs a <a href="qdate.html" translate="no">QDate</a> representing the same date as <i translate="no">date</i>. This allows for easy interoperability between the Standard Library calendaring classes and Qt datetime classes.</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// 23 April 2012:</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> date <span class="operator">=</span> std<span class="operator">::</span>chrono<span class="operator">::</span>year_month_day(std<span class="operator">::</span>chrono<span class="operator">::</span>year(<span class="number">2012</span>)<span class="operator">,</span>
+                                          std<span class="operator">::</span>chrono<span class="operator">::</span>month(<span class="number">4</span>)<span class="operator">,</span>
+                                          std<span class="operator">::</span>chrono<span class="operator">::</span>day(<span class="number">23</span>));
+
+ <span class="comment">// Same, under `using std::chrono` convenience:</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> dateWithLiterals1 <span class="operator">=</span> <span class="number">23</span> <span class="operator">/</span> April <span class="operator">/</span> <span class="number">2012y</span>;
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> dateWithLiterals2 <span class="operator">=</span> <span class="number">2012y</span> <span class="operator">/</span> April <span class="operator">/</span> <span class="number">23</span>;
+
+ <span class="comment">// Last day of February 2000</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> lastDayFeb2020 <span class="operator">=</span> <span class="number">2000y</span> <span class="operator">/</span> February <span class="operator">/</span> last;
+
+ <span class="comment">// First Monday of January 2020:</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> firstMonday <span class="operator">=</span> <span class="number">2020y</span> <span class="operator">/</span> January <span class="operator">/</span> Monday<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>;
+
+ <span class="comment">// Last Monday of January 2020:</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> lastMonday <span class="operator">=</span> <span class="number">2020y</span> <span class="operator">/</span> January <span class="operator">/</span> Monday<span class="operator">[</span>last<span class="operator">]</span>;
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Unlike <a href="qdate.html" translate="no">QDate</a>, std::chrono::year and the related classes feature the year zero. This means that if <i translate="no">date</i> is in the year zero or before, the resulting <a href="qdate.html" translate="no">QDate</a> object will have an year one less than the one specified by <i translate="no">date</i>.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>This function requires C++20.</p>
+</div>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="toString"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QDate::<span class="name">toString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3><h3 class="fn fngroupitem" translate="no" id="toString-1"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QDate::<span class="name">toString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>format</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3></div>
+<p>Returns the date as a string. The <i translate="no">format</i> parameter determines the format of the result string. If <i translate="no">cal</i> is supplied, it determines the calendar used to represent the date; it defaults to Gregorian. Prior to Qt 5.14, there was no <i translate="no">cal</i> parameter and the Gregorian calendar was always used.</p>
+<p>These expressions may be used in the <i translate="no">format</i> parameter:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Expression</th><th >Output</th></tr></thead>
+<tr valign="top" class="odd"><td >d</td><td >The day as a number without a leading zero (1 to 31)</td></tr>
+<tr valign="top" class="even"><td >dd</td><td >The day as a number with a leading zero (01 to 31)</td></tr>
+<tr valign="top" class="odd"><td >ddd</td><td >The abbreviated day name ('Mon' to 'Sun').</td></tr>
+<tr valign="top" class="even"><td >dddd</td><td >The long day name ('Monday' to 'Sunday').</td></tr>
+<tr valign="top" class="odd"><td >M</td><td >The month as a number without a leading zero (1 to 12)</td></tr>
+<tr valign="top" class="even"><td >MM</td><td >The month as a number with a leading zero (01 to 12)</td></tr>
+<tr valign="top" class="odd"><td >MMM</td><td >The abbreviated month name ('Jan' to 'Dec').</td></tr>
+<tr valign="top" class="even"><td >MMMM</td><td >The long month name ('January' to 'December').</td></tr>
+<tr valign="top" class="odd"><td >yy</td><td >The year as a two digit number (00 to 99)</td></tr>
+<tr valign="top" class="even"><td >yyyy</td><td >The year as a four digit number. If the year is negative, a minus sign is prepended, making five characters.</td></tr>
+</table></div>
+<p>Any sequence of characters enclosed in single quotes will be included verbatim in the output string (stripped of the quotes), even if it contains formatting characters. Two consecutive single quotes (&quot;''&quot;) are replaced by a single quote in the output. All other characters in the format string are included verbatim in the output string.</p>
+<p>Formats without separators (e.g. &quot;ddMM&quot;) are supported but must be used with care, as the resulting strings aren't always reliably readable (e.g. if &quot;dM&quot; produces &quot;212&quot; it could mean either the 2nd of December or the 21st of February).</p>
+<p>Example format strings (assuming that the <a href="qdate.html" translate="no">QDate</a> is the 20 July 1969):</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Format</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td >dd.MM.yyyy</td><td >20.07.1969</td></tr>
+<tr valign="top" class="even"><td >ddd MMMM d yy</td><td >Sun July 20 69</td></tr>
+<tr valign="top" class="odd"><td >'The day is' dddd</td><td >The day is Sunday</td></tr>
+</table></div>
+<p>If the datetime is invalid, an empty string will be returned.</p>
+<div class="admonition note">
+<p><b>Note: </b>Day and month names are given in English (C locale). To get localized month and day names, use <a href="qlocale.html#system" translate="no">QLocale::system</a>().<a href="qdate.html#toString" translate="no">toString</a>().</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>If a format character is repeated more times than the longest expression in the table above using it, this part of the format will be read as several expressions with no separator between them; the longest above, possibly repeated as many times as there are copies of it, ending with a residue that may be a shorter expression. Thus <code translate="no">'MMMMMMMMMM'</code> for a date in May will contribute <code translate="no">&quot;MayMay05&quot;</code> to the output.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#fromString" translate="no">fromString</a>(), <a href="qdatetime.html#toString" translate="no">QDateTime::toString</a>(), <a href="qtime.html#toString" translate="no">QTime::toString</a>(), and <a href="qlocale.html#toString" translate="no">QLocale::toString</a>().</p>
+<!-- @@@ -->
+<!-- $$$QDate[overload1]$$$QDate -->
+<h3 class="fn" translate="no" id="QDate"><code class="details extra" translate="no">[constexpr]</code> QDate::<span class="name">QDate</span>()</h3>
+<p>Constructs a null date. Null dates are invalid.</p>
+<p><b>See also </b><a href="qdate.html#isNull" translate="no">isNull</a>() and <a href="qdate.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@QDate -->
+<!-- $$$QDate$$$QDateintintint -->
+<h3 class="fn" translate="no" id="QDate-5">QDate::<span class="name">QDate</span>(<span class="type">int</span> <i>y</i>, <span class="type">int</span> <i>m</i>, <span class="type">int</span> <i>d</i>)</h3>
+<p>Constructs a date with year <i translate="no">y</i>, month <i translate="no">m</i> and day <i translate="no">d</i>.</p>
+<p>The date is understood in terms of the Gregorian calendar. If the specified date is invalid, the date is not set and <a href="qdate.html#isValid" translate="no">isValid</a>() returns <code translate="no">false</code>.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Years 1 to 99 are interpreted as is. Year 0 is invalid.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#isValid" translate="no">isValid</a>() and <a href="qcalendar.html#dateFromParts" translate="no">QCalendar::dateFromParts</a>().</p>
+<!-- @@@QDate -->
+<!-- $$$addDays[overload1]$$$addDaysqint64 -->
+<h3 class="fn" translate="no" id="addDays"><span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addDays</span>(<span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> <i>ndays</i>) const</h3>
+<p>Returns a <a href="qdate.html" translate="no">QDate</a> object containing a date <i translate="no">ndays</i> later than the date of this object (or earlier if <i translate="no">ndays</i> is negative).</p>
+<p>Returns a null date if the current date is invalid or the new date is out of range.</p>
+<p><b>See also </b><a href="qdate.html#addMonths" translate="no">addMonths</a>(), <a href="qdate.html#addYears" translate="no">addYears</a>(), and <a href="qdate.html#daysTo" translate="no">daysTo</a>().</p>
+<!-- @@@addDays -->
+<!-- $$$addDuration[overload1]$$$addDurationstd::chrono::days -->
+<h3 class="fn" translate="no" id="addDuration"><code class="details extra" translate="no">[since 6.4]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addDuration</span>(<span class="type">std::chrono::days</span> <i>ndays</i>) const</h3>
+<p>Returns a <a href="qdate.html" translate="no">QDate</a> object containing a date <i translate="no">ndays</i> later than the date of this object (or earlier if <i translate="no">ndays</i> is negative).</p>
+<p>Returns a null date if the current date is invalid or the new date is out of range.</p>
+<div class="admonition note">
+<p><b>Note: </b>Adding durations expressed in <code translate="no">std::chrono::months</code> or <code translate="no">std::chrono::years</code> does not yield the same result obtained by using <a href="qdate.html#addMonths" translate="no">addMonths</a>() or <a href="qdate.html#addYears" translate="no">addYears</a>(). The former are fixed durations, calculated in relation to the solar year; the latter use the Gregorian calendar definitions of months/years.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>This function requires C++20.</p>
+</div>
+<p>This function was introduced in Qt 6.4.</p>
+<p><b>See also </b><a href="qdate.html#addMonths" translate="no">addMonths</a>(), <a href="qdate.html#addYears" translate="no">addYears</a>(), and <a href="qdate.html#daysTo" translate="no">daysTo</a>().</p>
+<!-- @@@addDuration -->
+<!-- $$$addMonths[overload1]$$$addMonthsintQCalendar -->
+<h3 class="fn" translate="no" id="addMonths"><span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addMonths</span>(<span class="type">int</span> <i>nmonths</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns a <a href="qdate.html" translate="no">QDate</a> object containing a date <i translate="no">nmonths</i> later than the date of this object (or earlier if <i translate="no">nmonths</i> is negative).</p>
+<p>Uses <i translate="no">cal</i> as calendar, if supplied, else the Gregorian calendar.</p>
+<div class="admonition note">
+<p><b>Note: </b>If the ending day/month combination does not exist in the resulting month/year, this function will return a date that is the latest valid date in the selected month.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#addDays" translate="no">addDays</a>() and <a href="qdate.html#addYears" translate="no">addYears</a>().</p>
+<!-- @@@addMonths -->
+<!-- $$$addMonths$$$addMonthsint -->
+<h3 class="fn" translate="no" id="addMonths-1"><span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addMonths</span>(<span class="type">int</span> <i>nmonths</i>) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@addMonths -->
+<!-- $$$addYears[overload1]$$$addYearsintQCalendar -->
+<h3 class="fn" translate="no" id="addYears"><span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addYears</span>(<span class="type">int</span> <i>nyears</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns a <a href="qdate.html" translate="no">QDate</a> object containing a date <i translate="no">nyears</i> later than the date of this object (or earlier if <i translate="no">nyears</i> is negative).</p>
+<p>Uses <i translate="no">cal</i> as calendar, if supplied, else the Gregorian calendar.</p>
+<div class="admonition note">
+<p><b>Note: </b>If the ending day/month combination does not exist in the resulting year (e.g., for the Gregorian calendar, if the date was Feb 29 and the final year is not a leap year), this function will return a date that is the latest valid date in the given month (in the example, Feb 28).</p>
+</div>
+<p><b>See also </b><a href="qdate.html#addDays" translate="no">addDays</a>() and <a href="qdate.html#addMonths" translate="no">addMonths</a>().</p>
+<!-- @@@addYears -->
+<!-- $$$addYears$$$addYearsint -->
+<h3 class="fn" translate="no" id="addYears-1"><span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">addYears</span>(<span class="type">int</span> <i>nyears</i>) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@addYears -->
+<!-- $$$currentDate[overload1]$$$currentDate -->
+<h3 class="fn" translate="no" id="currentDate"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">currentDate</span>()</h3>
+<p>Returns the system clock's current date.</p>
+<p><b>See also </b><a href="qtime.html#currentTime" translate="no">QTime::currentTime</a>() and <a href="qdatetime.html#currentDateTime-1" translate="no">QDateTime::currentDateTime</a>().</p>
+<!-- @@@currentDate -->
+<!-- $$$day[overload1]$$$dayQCalendar -->
+<h3 class="fn" translate="no" id="day"><span class="type">int</span> QDate::<span class="name">day</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the day of the month for this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar (for which the return ranges from 1 to 31). Returns 0 if the date is invalid.</p>
+<p><b>See also </b><a href="qdate.html#year-1" translate="no">year</a>(), <a href="qdate.html#month-1" translate="no">month</a>(), <a href="qdate.html#dayOfWeek-1" translate="no">dayOfWeek</a>(), and <a href="qcalendar.html#partsFromDate" translate="no">QCalendar::partsFromDate</a>().</p>
+<!-- @@@day -->
+<!-- $$$day$$$day -->
+<h3 class="fn" translate="no" id="day-1"><span class="type">int</span> QDate::<span class="name">day</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@day -->
+<!-- $$$dayOfWeek[overload1]$$$dayOfWeekQCalendar -->
+<h3 class="fn" translate="no" id="dayOfWeek"><span class="type">int</span> QDate::<span class="name">dayOfWeek</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the weekday (1 = Monday to 7 = Sunday) for this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar. Returns 0 if the date is invalid. Some calendars may give special meaning (e.g. intercallary days) to values greater than 7.</p>
+<p><b>See also </b><a href="qdate.html#day-1" translate="no">day</a>(), <a href="qdate.html#dayOfYear-1" translate="no">dayOfYear</a>(), <a href="qcalendar.html#dayOfWeek" translate="no">QCalendar::dayOfWeek</a>(), and <a href="qt.html#DayOfWeek-enum" translate="no">Qt::DayOfWeek</a>.</p>
+<!-- @@@dayOfWeek -->
+<!-- $$$dayOfWeek$$$dayOfWeek -->
+<h3 class="fn" translate="no" id="dayOfWeek-1"><span class="type">int</span> QDate::<span class="name">dayOfWeek</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@dayOfWeek -->
+<!-- $$$dayOfYear[overload1]$$$dayOfYearQCalendar -->
+<h3 class="fn" translate="no" id="dayOfYear"><span class="type">int</span> QDate::<span class="name">dayOfYear</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the day of the year (1 for the first day) for this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar. Returns 0 if either the date or the first day of its year is invalid.</p>
+<p><b>See also </b><a href="qdate.html#day-1" translate="no">day</a>(), <a href="qdate.html#dayOfWeek-1" translate="no">dayOfWeek</a>(), and <a href="qcalendar.html#daysInYear" translate="no">QCalendar::daysInYear</a>().</p>
+<!-- @@@dayOfYear -->
+<!-- $$$dayOfYear$$$dayOfYear -->
+<h3 class="fn" translate="no" id="dayOfYear-1"><span class="type">int</span> QDate::<span class="name">dayOfYear</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@dayOfYear -->
+<!-- $$$daysInMonth[overload1]$$$daysInMonthQCalendar -->
+<h3 class="fn" translate="no" id="daysInMonth"><span class="type">int</span> QDate::<span class="name">daysInMonth</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the number of days in the month for this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar (for which the result ranges from 28 to 31). Returns 0 if the date is invalid.</p>
+<p><b>See also </b><a href="qdate.html#day-1" translate="no">day</a>(), <a href="qdate.html#daysInYear-1" translate="no">daysInYear</a>(), <a href="qcalendar.html#daysInMonth" translate="no">QCalendar::daysInMonth</a>(), <a href="qcalendar.html#maximumDaysInMonth" translate="no">QCalendar::maximumDaysInMonth</a>(), and <a href="qcalendar.html#minimumDaysInMonth" translate="no">QCalendar::minimumDaysInMonth</a>().</p>
+<!-- @@@daysInMonth -->
+<!-- $$$daysInMonth$$$daysInMonth -->
+<h3 class="fn" translate="no" id="daysInMonth-1"><span class="type">int</span> QDate::<span class="name">daysInMonth</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@daysInMonth -->
+<!-- $$$daysInYear[overload1]$$$daysInYearQCalendar -->
+<h3 class="fn" translate="no" id="daysInYear"><span class="type">int</span> QDate::<span class="name">daysInYear</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the number of days in the year for this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar (for which the result is 365 or 366). Returns 0 if the date is invalid.</p>
+<p><b>See also </b><a href="qdate.html#day-1" translate="no">day</a>(), <a href="qdate.html#daysInMonth-1" translate="no">daysInMonth</a>(), <a href="qcalendar.html#daysInYear" translate="no">QCalendar::daysInYear</a>(), and <a href="qcalendar.html#maximumMonthsInYear" translate="no">QCalendar::maximumMonthsInYear</a>().</p>
+<!-- @@@daysInYear -->
+<!-- $$$daysInYear$$$daysInYear -->
+<h3 class="fn" translate="no" id="daysInYear-1"><span class="type">int</span> QDate::<span class="name">daysInYear</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@daysInYear -->
+<!-- $$$daysTo[overload1]$$$daysToQDate -->
+<h3 class="fn" translate="no" id="daysTo"><span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> QDate::<span class="name">daysTo</span>(<span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> <i>d</i>) const</h3>
+<p>Returns the number of days from this date to <i translate="no">d</i> (which is negative if <i translate="no">d</i> is earlier than this date).</p>
+<p>Returns 0 if either date is invalid.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> d1(<span class="number">1995</span><span class="operator">,</span> <span class="number">5</span><span class="operator">,</span> <span class="number">17</span>);  <span class="comment">// May 17, 1995</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> d2(<span class="number">1995</span><span class="operator">,</span> <span class="number">5</span><span class="operator">,</span> <span class="number">20</span>);  <span class="comment">// May 20, 1995</span>
+ d1<span class="operator">.</span>daysTo(d2);          <span class="comment">// returns 3</span>
+ d2<span class="operator">.</span>daysTo(d1);          <span class="comment">// returns -3</span>
+</pre>
+<p><b>See also </b><a href="qdate.html#addDays" translate="no">addDays</a>().</p>
+<!-- @@@daysTo -->
+<!-- $$$endOfDay[overload1]$$$endOfDayconstQTimeZone& -->
+<h3 class="fn" translate="no" id="endOfDay"><span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">endOfDay</span>(const <span class="type"><a href="qtimezone.html" translate="no">QTimeZone</a></span> &amp;<i>zone</i>) const</h3>
+<p>Returns the end-moment of the day.</p>
+<p>When a day ends depends on a how time is described: each day starts and ends earlier for those in time-zones further west and later for those in time-zones further east. The time representation to use can be specified by an optional time <i translate="no">zone</i>. The default time representation is the system's local time.</p>
+<p>Usually, the end of the day is one millisecond before the midnight, 24:00: however, if a time-zone transition causes the given date to skip over that moment (e.g. a DST spring-forward skipping over 23:00 and the following hour), the actual latest time in the day is returned. This can only arise when the time representation is a time-zone or local time.</p>
+<p>When <i translate="no">zone</i> has a timeSpec() of <a href="qt.html#TimeSpec-enum" translate="no">Qt::OffsetFromUTC</a> or <a href="qt.html#TimeSpec-enum" translate="no">Qt::UTC</a>, the time representation has no transitions so the end of the day is <a href="qtime.html" translate="no">QTime</a>(23, 59, 59, 999).</p>
+<p>In the rare case of a date that was entirely skipped (this happens when a zone east of the international date-line switches to being west of it), the return shall be invalid. Passing an invalid time-zone as <i translate="no">zone</i> will also produce an invalid result, as shall dates that end outside the range representable by <a href="qdatetime.html" translate="no">QDateTime</a>.</p>
+<p><b>See also </b><a href="qdate.html#startOfDay-1" translate="no">startOfDay</a>().</p>
+<!-- @@@endOfDay -->
+<!-- $$$endOfDay$$$endOfDay -->
+<h3 class="fn" translate="no" id="endOfDay-1"><code class="details extra" translate="no">[since 6.5]</code> <span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">endOfDay</span>() const</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.5.</p>
+<!-- @@@endOfDay -->
+<!-- $$$fromJulianDay[overload1]$$$fromJulianDayqint64 -->
+<h3 class="fn" translate="no" id="fromJulianDay"><code class="details extra" translate="no">[static constexpr]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromJulianDay</span>(<span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> <i>jd</i>)</h3>
+<p>Converts the Julian day <i translate="no">jd</i> to a <a href="qdate.html" translate="no">QDate</a>.</p>
+<p><b>See also </b><a href="qdate.html#toJulianDay" translate="no">toJulianDay</a>().</p>
+<!-- @@@fromJulianDay -->
+<!-- $$$fromStdSysDays[overload1]$$$fromStdSysDaysconststd::chrono::sys_days& -->
+<h3 class="fn" translate="no" id="fromStdSysDays"><code class="details extra" translate="no">[static constexpr noexcept, since 6.4]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromStdSysDays</span>(const <span class="type">std::chrono::sys_days</span> &amp;<i>days</i>)</h3>
+<p>Returns a <a href="qdate.html" translate="no">QDate</a> <i translate="no">days</i> days after January 1st, 1970 (the UNIX epoch). If <i translate="no">days</i> is negative, the returned date will be before the epoch.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function requires C++20.</p>
+</div>
+<p>This function was introduced in Qt 6.4.</p>
+<p><b>See also </b><a href="qdate.html#toStdSysDays" translate="no">toStdSysDays</a>().</p>
+<!-- @@@fromStdSysDays -->
+<!-- $$$fromString[overload1]$$$fromStringconstQString&Qt::DateFormat -->
+<h3 class="fn" translate="no" id="fromString"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, <span class="type"><a href="qt.html#DateFormat-enum" translate="no">Qt::DateFormat</a></span> <i>format</i> = Qt::TextDate)</h3>
+<p>Returns the <a href="qdate.html" translate="no">QDate</a> represented by the <i translate="no">string</i>, using the <i translate="no">format</i> given, or an invalid date if the string cannot be parsed.</p>
+<p>Note for <a href="qt.html#DateFormat-enum" translate="no">Qt::TextDate</a>: only English month names (e.g. &quot;Jan&quot; in short form or &quot;January&quot; in long form) are recognized.</p>
+<p><b>See also </b><a href="qdate.html#toString" translate="no">toString</a>() and <a href="qlocale.html#toDate" translate="no">QLocale::toDate</a>().</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&constQString&intQCalendar -->
+<h3 class="fn" translate="no" id="fromString-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>format</i>, <span class="type">int</span> <i>baseYear</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>Returns the <a href="qdate.html" translate="no">QDate</a> represented by the <i translate="no">string</i>, using the <i translate="no">format</i> given, or an invalid date if the string cannot be parsed.</p>
+<p>Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar. Ranges of values in the format descriptions below are for the latter; they may be different for other calendars.</p>
+<p>These expressions may be used for the format:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Expression</th><th >Output</th></tr></thead>
+<tr valign="top" class="odd"><td >d</td><td >The day as a number without a leading zero (1 to 31)</td></tr>
+<tr valign="top" class="even"><td >dd</td><td >The day as a number with a leading zero (01 to 31)</td></tr>
+<tr valign="top" class="odd"><td >ddd</td><td >The abbreviated day name ('Mon' to 'Sun').</td></tr>
+<tr valign="top" class="even"><td >dddd</td><td >The long day name ('Monday' to 'Sunday').</td></tr>
+<tr valign="top" class="odd"><td >M</td><td >The month as a number without a leading zero (1 to 12)</td></tr>
+<tr valign="top" class="even"><td >MM</td><td >The month as a number with a leading zero (01 to 12)</td></tr>
+<tr valign="top" class="odd"><td >MMM</td><td >The abbreviated month name ('Jan' to 'Dec').</td></tr>
+<tr valign="top" class="even"><td >MMMM</td><td >The long month name ('January' to 'December').</td></tr>
+<tr valign="top" class="odd"><td >yy</td><td >The year as a two digit number (00 to 99)</td></tr>
+<tr valign="top" class="even"><td >yyyy</td><td >The year as a four digit number, possibly plus a leading minus sign for negative years.</td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>Day and month names must be given in English (C locale). If localized month and day names are to be recognized, use <a href="qlocale.html#system" translate="no">QLocale::system</a>().toDate().</p>
+</div>
+<p>All other input characters will be treated as text. Any non-empty sequence of characters enclosed in single quotes will also be treated (stripped of the quotes) as text and not be interpreted as expressions. For example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> date <span class="operator">=</span> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>fromString(<span class="string">&quot;1MM12car2003&quot;</span><span class="operator">,</span> <span class="string">&quot;d'MM'MMcaryyyy&quot;</span>);
+ <span class="comment">// date is 1 December 2003</span>
+</pre>
+<p>If the format is not satisfied, an invalid <a href="qdate.html" translate="no">QDate</a> is returned. The expressions that don't expect leading zeroes (d, M) will be greedy. This means that they will use two digits even if this will put them outside the accepted range of values and leaves too few digits for other sections. For example, the following format string could have meant January 30 but the M will grab two digits, resulting in an invalid date:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> date <span class="operator">=</span> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>fromString(<span class="string">&quot;130&quot;</span><span class="operator">,</span> <span class="string">&quot;Md&quot;</span>); <span class="comment">// invalid</span>
+</pre>
+<p>For any field that is not represented in the format the following defaults are used:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Field</th><th >Default value</th></tr></thead>
+<tr valign="top" class="odd"><td >Year</td><td ><i translate="no">baseYear</i> (or 1900)</td></tr>
+<tr valign="top" class="even"><td >Month</td><td >1 (January)</td></tr>
+<tr valign="top" class="odd"><td >Day</td><td >1</td></tr>
+</table></div>
+<p>When <i translate="no">format</i> only specifies the last two digits of a year, the 100 years starting at <i translate="no">baseYear</i> are the candidates first considered. Prior to 6.7 there was no <i translate="no">baseYear</i> parameter and 1900 was always used. This is the default for <i translate="no">baseYear</i>, selecting a year from then to 1999. Passing 1976 as <i translate="no">baseYear</i> will select a year from 1976 through 2075, for example. When the format also includes month, day (of month) and day-of-week, these suffice to imply the century. In such a case, a matching date is selected in the nearest century to the one indicated by <i translate="no">baseYear</i>, prefering later over earlier. See <a href="qcalendar.html#matchCenturyToWeekday" translate="no">QCalendar::matchCenturyToWeekday</a>() and <a href="#date-ambiguities" translate="no">Date ambiguities</a> for further details,</p>
+<p>The following examples demonstrate the default values:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>fromString(<span class="string">&quot;1.30&quot;</span><span class="operator">,</span> <span class="string">&quot;M.d&quot;</span>);           <span class="comment">// January 30 1900</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>fromString(<span class="string">&quot;20000110&quot;</span><span class="operator">,</span> <span class="string">&quot;yyyyMMdd&quot;</span>);  <span class="comment">// January 10, 2000</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>fromString(<span class="string">&quot;20000110&quot;</span><span class="operator">,</span> <span class="string">&quot;yyyyMd&quot;</span>);    <span class="comment">// January 10, 2000</span>
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If a format character is repeated more times than the longest expression in the table above using it, this part of the format will be read as several expressions with no separator between them; the longest above, possibly repeated as many times as there are copies of it, ending with a residue that may be a shorter expression. Thus <code translate="no">'MMMMMMMMMM'</code> would match <code translate="no">&quot;MayMay05&quot;</code> and set the month to May. Likewise, <code translate="no">'MMMMMM'</code> would match <code translate="no">&quot;May08&quot;</code> and find it inconsistent, leading to an invalid date.</p>
+</div>
+<h5 id="date-ambiguities">Date ambiguities</h5>
+<p>Different cultures use different formats for dates and, as a result, users may mix up the order in which date fields should be given. For example, <code translate="no">&quot;Wed 28-Nov-01&quot;</code> might mean either 2028 November 1st or the 28th of November, 2001 (each of which happens to be a Wednesday). Using format <code translate="no">&quot;ddd yy-MMM-dd&quot;</code> it shall be interpreted the first way, using <code translate="no">&quot;ddd dd-MMM-yy&quot;</code> the second. However, which the user meant may depend on the way the user normally writes dates, rather than the format the code was expecting.</p>
+<p>The example considered above mixed up day of the month and a two-digit year. Similar confusion can arise over interchanging the month and day of the month, when both are given as numbers. In these cases, including a day of the week field in the date format can provide some redundancy, that may help to catch errors of this kind. However, as in the example above, this is not always effective: the interchange of two fields (or their meanings) may produce dates with the same day of the week.</p>
+<p>Including a day of the week in the format can also resolve the century of a date specified using only the last two digits of its year. Unfortunately, when combined with a date in which the user (or other source of data) has mixed up two of the fields, this resolution can lead to finding a date which does match the format's reading but isn't the one intended by its author. Likewise, if the user simply gets the day of the week wrong, in an otherwise correct date, this can lead a date in a different century. In each case, finding a date in a different century can turn a wrongly-input date into a wildly different one.</p>
+<p>The best way to avoid date ambiguities is to use four-digit years and months specified by name (whether full or abbreviated), ideally collected via user interface idioms that make abundantly clear to the user which part of the date they are selecting. Including a day of the week can also help by providing the means to check consistency of the data. Where data comes from the user, using a format supplied by a locale selected by the user, it is best to use a long format as short formats are more likely to use two-digit years. Of course, it is not always possible to control the format - data may come from a source you do not control, for example.</p>
+<p>As a result of these possible sources of confusion, particularly when you cannot be sure an unambiguous format is in use, it is important to check that the result of reading a string as a date is not just valid but reasonable for the purpose for which it was supplied. If the result is outside some range of reasonable values, it may be worth getting the user to confirm their date selection, showing the date read from the string in a long format that does include month name and four-digit year, to make it easier for them to recognize any errors.</p>
+<p><b>See also </b><a href="qdate.html#toString" translate="no">toString</a>(), <a href="qdatetime.html#fromString" translate="no">QDateTime::fromString</a>(), <a href="qtime.html#fromString" translate="no">QTime::fromString</a>(), and <a href="qlocale.html#toDate" translate="no">QLocale::toDate</a>().</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringQStringViewQt::DateFormat -->
+<h3 class="fn" translate="no" id="fromString-2"><code class="details extra" translate="no">[static, since 6.0]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>string</i>, <span class="type"><a href="qt.html#DateFormat-enum" translate="no">Qt::DateFormat</a></span> <i>format</i> = Qt::TextDate)</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringQStringViewQStringViewQCalendar -->
+<h3 class="fn" translate="no" id="fromString-3"><code class="details extra" translate="no">[static, since 6.0]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringQStringViewQStringViewint -->
+<h3 class="fn" translate="no" id="fromString-4"><code class="details extra" translate="no">[static, since 6.7]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type">int</span> <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</h3>
+<p>This is an overloaded function.</p>
+<p>Uses a default-constructed <a href="qcalendar.html" translate="no">QCalendar</a>.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&QStringViewQCalendar -->
+<h3 class="fn" translate="no" id="fromString-5"><code class="details extra" translate="no">[static, since 6.0]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&QStringViewint -->
+<h3 class="fn" translate="no" id="fromString-6"><code class="details extra" translate="no">[static, since 6.7]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type">int</span> <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</h3>
+<p>This is an overloaded function.</p>
+<p>Uses a default-constructed <a href="qcalendar.html" translate="no">QCalendar</a>.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&constQString&QCalendar -->
+<h3 class="fn" translate="no" id="fromString-7"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>format</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&constQString&int -->
+<h3 class="fn" translate="no" id="fromString-8"><code class="details extra" translate="no">[static, since 6.7]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>format</i>, <span class="type">int</span> <i>baseYear</i> = QLocale::DefaultTwoDigitBaseYear)</h3>
+<p>This is an overloaded function.</p>
+<p>Uses a default-constructed <a href="qcalendar.html" translate="no">QCalendar</a>.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringQStringViewQStringViewintQCalendar -->
+<h3 class="fn" translate="no" id="fromString-9"><code class="details extra" translate="no">[static, since 6.7]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type">int</span> <i>baseYear</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@fromString -->
+<!-- $$$fromString$$$fromStringconstQString&QStringViewintQCalendar -->
+<h3 class="fn" translate="no" id="fromString-10"><code class="details extra" translate="no">[static, since 6.0]</code> <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> QDate::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>, <span class="type">int</span> <i>baseYear</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@fromString -->
+<!-- $$$getDate[overload1]$$$getDateint*int*int* -->
+<h3 class="fn" translate="no" id="getDate"><span class="type">void</span> QDate::<span class="name">getDate</span>(<span class="type">int</span> *<i>year</i>, <span class="type">int</span> *<i>month</i>, <span class="type">int</span> *<i>day</i>) const</h3>
+<p>Extracts the date's year, month, and day, and assigns them to *<i translate="no">year</i>, *<i translate="no">month</i>, and *<i translate="no">day</i>. The pointers may be null.</p>
+<p>Returns 0 if the date is invalid.</p>
+<div class="admonition note">
+<p><b>Note: </b>In Qt versions prior to 5.7, this function is marked as non-<code translate="no">const</code>.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#year-1" translate="no">year</a>(), <a href="qdate.html#month-1" translate="no">month</a>(), <a href="qdate.html#day-1" translate="no">day</a>(), <a href="qdate.html#isValid" translate="no">isValid</a>(), and <a href="qcalendar.html#partsFromDate" translate="no">QCalendar::partsFromDate</a>().</p>
+<!-- @@@getDate -->
+<!-- $$$isLeapYear[overload1]$$$isLeapYearint -->
+<h3 class="fn" translate="no" id="isLeapYear"><code class="details extra" translate="no">[static]</code> <span class="type">bool</span> QDate::<span class="name">isLeapYear</span>(<span class="type">int</span> <i>year</i>)</h3>
+<p>Returns <code translate="no">true</code> if the specified <i translate="no">year</i> is a leap year in the Gregorian calendar; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qcalendar.html#isLeapYear" translate="no">QCalendar::isLeapYear</a>().</p>
+<!-- @@@isLeapYear -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><code class="details extra" translate="no">[constexpr]</code> <span class="type">bool</span> QDate::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the date is null; otherwise returns <code translate="no">false</code>. A null date is invalid.</p>
+<div class="admonition note">
+<p><b>Note: </b>The behavior of this function is equivalent to <a href="qdate.html#isValid" translate="no">isValid</a>().</p>
+</div>
+<p><b>See also </b><a href="qdate.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@isNull -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[constexpr]</code> <span class="type">bool</span> QDate::<span class="name">isValid</span>() const</h3>
+<p>Returns <code translate="no">true</code> if this date is valid; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qdate.html#isNull" translate="no">isNull</a>() and <a href="qcalendar.html#isDateValid" translate="no">QCalendar::isDateValid</a>().</p>
+<!-- @@@isValid -->
+<!-- $$$isValid$$$isValidintintint -->
+<h3 class="fn" translate="no" id="isValid-1"><code class="details extra" translate="no">[static]</code> <span class="type">bool</span> QDate::<span class="name">isValid</span>(<span class="type">int</span> <i>year</i>, <span class="type">int</span> <i>month</i>, <span class="type">int</span> <i>day</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the specified date (<i translate="no">year</i>, <i translate="no">month</i>, and <i translate="no">day</i>) is valid in the Gregorian calendar; otherwise returns <code translate="no">false</code>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2002</span><span class="operator">,</span> <span class="number">5</span><span class="operator">,</span> <span class="number">17</span>);  <span class="comment">// true</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2002</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">30</span>);  <span class="comment">// false (Feb 30 does not exist)</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2004</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">29</span>);  <span class="comment">// true (2004 is a leap year)</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2000</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">29</span>);  <span class="comment">// true (2000 is a leap year)</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2006</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">29</span>);  <span class="comment">// false (2006 is not a leap year)</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">2100</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">29</span>);  <span class="comment">// false (2100 is not a leap year)</span>
+ <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span><span class="operator">::</span>isValid(<span class="number">1202</span><span class="operator">,</span> <span class="number">6</span><span class="operator">,</span> <span class="number">6</span>);   <span class="comment">// true (even though 1202 is pre-Gregorian)</span>
+</pre>
+<p><b>See also </b><a href="qdate.html#isNull" translate="no">isNull</a>(), <a href="qdate.html#setDate" translate="no">setDate</a>(), and <a href="qcalendar.html#isDateValid" translate="no">QCalendar::isDateValid</a>().</p>
+<!-- @@@isValid -->
+<!-- $$$month[overload1]$$$monthQCalendar -->
+<h3 class="fn" translate="no" id="month"><span class="type">int</span> QDate::<span class="name">month</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the month-number for the date.</p>
+<p>Numbers the months of the year starting with 1 for the first. Uses <i translate="no">cal</i> as calendar if supplied, else the Gregorian calendar, for which the month numbering is as follows:</p>
+<ul>
+<li>1 = &quot;January&quot;</li>
+<li>2 = &quot;February&quot;</li>
+<li>3 = &quot;March&quot;</li>
+<li>4 = &quot;April&quot;</li>
+<li>5 = &quot;May&quot;</li>
+<li>6 = &quot;June&quot;</li>
+<li>7 = &quot;July&quot;</li>
+<li>8 = &quot;August&quot;</li>
+<li>9 = &quot;September&quot;</li>
+<li>10 = &quot;October&quot;</li>
+<li>11 = &quot;November&quot;</li>
+<li>12 = &quot;December&quot;</li>
+</ul>
+<p>Returns 0 if the date is invalid. Note that some calendars may have more than 12 months in some years.</p>
+<p><b>See also </b><a href="qdate.html#year-1" translate="no">year</a>(), <a href="qdate.html#day-1" translate="no">day</a>(), and <a href="qcalendar.html#partsFromDate" translate="no">QCalendar::partsFromDate</a>().</p>
+<!-- @@@month -->
+<!-- $$$month$$$month -->
+<h3 class="fn" translate="no" id="month-1"><span class="type">int</span> QDate::<span class="name">month</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@month -->
+<!-- $$$setDate[overload1]$$$setDateintintint -->
+<h3 class="fn" translate="no" id="setDate"><span class="type">bool</span> QDate::<span class="name">setDate</span>(<span class="type">int</span> <i>year</i>, <span class="type">int</span> <i>month</i>, <span class="type">int</span> <i>day</i>)</h3>
+<p>Sets this to represent the date, in the Gregorian calendar, with the given <i translate="no">year</i>, <i translate="no">month</i> and <i translate="no">day</i> numbers. Returns true if the resulting date is valid, otherwise it sets this to represent an invalid date and returns false.</p>
+<p><b>See also </b><a href="qdate.html#isValid" translate="no">isValid</a>() and <a href="qcalendar.html#dateFromParts" translate="no">QCalendar::dateFromParts</a>().</p>
+<!-- @@@setDate -->
+<!-- $$$setDate$$$setDateintintintQCalendar -->
+<h3 class="fn" translate="no" id="setDate-1"><span class="type">bool</span> QDate::<span class="name">setDate</span>(<span class="type">int</span> <i>year</i>, <span class="type">int</span> <i>month</i>, <span class="type">int</span> <i>day</i>, <span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>)</h3>
+<p>Sets this to represent the date, in the given calendar <i translate="no">cal</i>, with the given <i translate="no">year</i>, <i translate="no">month</i> and <i translate="no">day</i> numbers. Returns true if the resulting date is valid, otherwise it sets this to represent an invalid date and returns false.</p>
+<p><b>See also </b><a href="qdate.html#isValid" translate="no">isValid</a>() and <a href="qcalendar.html#dateFromParts" translate="no">QCalendar::dateFromParts</a>().</p>
+<!-- @@@setDate -->
+<!-- $$$startOfDay[overload1]$$$startOfDayconstQTimeZone& -->
+<h3 class="fn" translate="no" id="startOfDay"><span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">startOfDay</span>(const <span class="type"><a href="qtimezone.html" translate="no">QTimeZone</a></span> &amp;<i>zone</i>) const</h3>
+<p>Returns the start-moment of the day.</p>
+<p>When a day starts depends on a how time is described: each day starts and ends earlier for those in time-zones further west and later for those in time-zones further east. The time representation to use can be specified by an optional time <i translate="no">zone</i>. The default time representation is the system's local time.</p>
+<p>Usually, the start of the day is midnight, 00:00: however, if a time-zone transition causes the given date to skip over that midnight (e.g. a DST spring-forward skipping over the first hour of the day day), the actual earliest time in the day is returned. This can only arise when the time representation is a time-zone or local time.</p>
+<p>When <i translate="no">zone</i> has a timeSpec() of is <a href="qt.html#TimeSpec-enum" translate="no">Qt::OffsetFromUTC</a> or <a href="qt.html#TimeSpec-enum" translate="no">Qt::UTC</a>, the time representation has no transitions so the start of the day is <a href="qtime.html" translate="no">QTime</a>(0, 0).</p>
+<p>In the rare case of a date that was entirely skipped (this happens when a zone east of the international date-line switches to being west of it), the return shall be invalid. Passing an invalid time-zone as <i translate="no">zone</i> will also produce an invalid result, as shall dates that start outside the range representable by <a href="qdatetime.html" translate="no">QDateTime</a>.</p>
+<p><b>See also </b><a href="qdate.html#endOfDay-1" translate="no">endOfDay</a>().</p>
+<!-- @@@startOfDay -->
+<!-- $$$startOfDay$$$startOfDay -->
+<h3 class="fn" translate="no" id="startOfDay-1"><code class="details extra" translate="no">[since 6.5]</code> <span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">startOfDay</span>() const</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.5.</p>
+<!-- @@@startOfDay -->
+<!-- $$$toJulianDay[overload1]$$$toJulianDay -->
+<h3 class="fn" translate="no" id="toJulianDay"><code class="details extra" translate="no">[constexpr]</code> <span class="type"><a href="qttypes.html#qint64-typedef" translate="no">qint64</a></span> QDate::<span class="name">toJulianDay</span>() const</h3>
+<p>Converts the date to a Julian day.</p>
+<p><b>See also </b><a href="qdate.html#fromJulianDay" translate="no">fromJulianDay</a>().</p>
+<!-- @@@toJulianDay -->
+<!-- $$$toStdSysDays[overload1]$$$toStdSysDays -->
+<h3 class="fn" translate="no" id="toStdSysDays"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">std::chrono::sys_days</span> QDate::<span class="name">toStdSysDays</span>() const</h3>
+<p>Returns the number of days between January 1st, 1970 (the UNIX epoch) and this date, represented as a <code translate="no">std::chrono::sys_days</code> object. If this date is before the epoch, the number of days will be negative.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function requires C++20.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#fromStdSysDays" translate="no">fromStdSysDays</a>() and <a href="qdate.html#daysTo" translate="no">daysTo</a>().</p>
+<!-- @@@toStdSysDays -->
+<!-- $$$toString$$$toStringQStringView -->
+<h3 class="fn" translate="no" id="toString-2"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QDate::<span class="name">toString</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>format</i>) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@toString -->
+<!-- $$$toString$$$toStringQt::DateFormat -->
+<h3 class="fn" translate="no" id="toString-3"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QDate::<span class="name">toString</span>(<span class="type"><a href="qt.html#DateFormat-enum" translate="no">Qt::DateFormat</a></span> <i>format</i> = Qt::TextDate) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the date as a string. The <i translate="no">format</i> parameter determines the format of the string.</p>
+<p>If the <i translate="no">format</i> is <a href="qt.html#DateFormat-enum" translate="no">Qt::TextDate</a>, the string is formatted in the default way. The day and month names will be in English. An example of this formatting is &quot;Sat May 20 1995&quot;. For localized formatting, see <a href="qlocale.html#toString" translate="no">QLocale::toString</a>().</p>
+<p>If the <i translate="no">format</i> is <a href="qt.html#DateFormat-enum" translate="no">Qt::ISODate</a>, the string format corresponds to the ISO 8601 extended specification for representations of dates and times, taking the form yyyy-MM-dd, where yyyy is the year, MM is the month of the year (between 01 and 12), and dd is the day of the month between 01 and 31.</p>
+<p>If the <i translate="no">format</i> is <a href="qt.html#DateFormat-enum" translate="no">Qt::RFC2822Date</a>, the string is formatted in an <a href="https://datatracker.ietf.org/doc/html/rfc2822">RFC 2822</a> compatible way. An example of this formatting is &quot;20 May 1995&quot;.</p>
+<p>If the date is invalid, an empty string will be returned.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>The <a href="qt.html#DateFormat-enum" translate="no">Qt::ISODate</a> format is only valid for years in the range 0 to 9999.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#fromString" translate="no">fromString</a>() and <a href="qlocale.html#toString" translate="no">QLocale::toString</a>().</p>
+<!-- @@@toString -->
+<!-- $$$toString$$$toStringconstQString& -->
+<h3 class="fn" translate="no" id="toString-4"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QDate::<span class="name">toString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>format</i>) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@toString -->
+<!-- $$$weekNumber[overload1]$$$weekNumberint* -->
+<h3 class="fn" translate="no" id="weekNumber"><span class="type">int</span> QDate::<span class="name">weekNumber</span>(<span class="type">int</span> *<i>yearNumber</i> = nullptr) const</h3>
+<p>Returns the ISO 8601 week number (1 to 53).</p>
+<p>Returns 0 if the date is invalid. Otherwise, returns the week number for the date. If <i translate="no">yearNumber</i> is not <code translate="no">nullptr</code> (its default), stores the year as *<i translate="no">yearNumber</i>.</p>
+<p>In accordance with ISO 8601, each week falls in the year to which most of its days belong, in the Gregorian calendar. As ISO 8601's week starts on Monday, this is the year in which the week's Thursday falls. Most years have 52 weeks, but some have 53.</p>
+<div class="admonition note">
+<p><b>Note: </b>*<i translate="no">yearNumber</i> is not always the same as <a href="qdate.html#year-1" translate="no">year</a>(). For example, 1 January 2000 has week number 52 in the year 1999, and 31 December 2002 has week number 1 in the year 2003.</p>
+</div>
+<p><b>See also </b><a href="qdate.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@weekNumber -->
+<!-- $$$year[overload1]$$$yearQCalendar -->
+<h3 class="fn" translate="no" id="year"><span class="type">int</span> QDate::<span class="name">year</span>(<span class="type"><a href="qcalendar.html" translate="no">QCalendar</a></span> <i>cal</i>) const</h3>
+<p>Returns the year of this date.</p>
+<p>Uses <i translate="no">cal</i> as calendar, if supplied, else the Gregorian calendar.</p>
+<p>Returns 0 if the date is invalid. For some calendars, dates before their first year may all be invalid.</p>
+<p>If using a calendar which has a year 0, check using <a href="qdate.html#isValid" translate="no">isValid</a>() if the return is 0. Such calendars use negative year numbers in the obvious way, with year 1 preceded by year 0, in turn preceded by year -1 and so on.</p>
+<p>Some calendars, despite having no year 0, have a conventional numbering of the years before their first year, counting backwards from 1. For example, in the proleptic Gregorian calendar, successive years before 1 CE (the first year) are identified as 1 BCE, 2 BCE, 3 BCE and so on. For such calendars, negative year numbers are used to indicate these years before year 1, with -1 indicating the year before 1.</p>
+<p><b>See also </b><a href="qdate.html#month-1" translate="no">month</a>(), <a href="qdate.html#day-1" translate="no">day</a>(), <a href="qcalendar.html#hasYearZero" translate="no">QCalendar::hasYearZero</a>(), <a href="qcalendar.html#isProleptic" translate="no">QCalendar::isProleptic</a>(), and <a href="qcalendar.html#partsFromDate" translate="no">QCalendar::partsFromDate</a>().</p>
+<!-- @@@year -->
+<!-- $$$year$$$year -->
+<h3 class="fn" translate="no" id="year-1"><span class="type">int</span> QDate::<span class="name">year</span>() const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@year -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$operator!=[overload1]$$$operator!=constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> and <i translate="no">rhs</i> represent distinct days; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qdate.html#operator-eq-eq" translate="no">operator==</a>().</p>
+<!-- @@@operator!= -->
+<!-- $$$operator<[overload1]$$$operator<constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-lt"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&lt;</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> is earlier than <i translate="no">rhs</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator< -->
+<!-- $$$operator<<$$$operator<<QDataStream&QDate -->
+<h3 class="fn" translate="no" id="operator-lt-lt-1"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&lt;&lt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>out</i>, <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> <i>date</i>)</h3>
+<p>Writes the <i translate="no">date</i> to stream <i translate="no">out</i>.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator<=[overload1]$$$operator<=constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-lt-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&lt;=</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> is earlier than or equal to <i translate="no">rhs</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator<= -->
+<!-- $$$operator==[overload1]$$$operator==constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> and <i translate="no">rhs</i> represent the same day, otherwise <code translate="no">false</code>.</p>
+<!-- @@@operator== -->
+<!-- $$$operator>[overload1]$$$operator>constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-gt"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&gt;</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> is later than <i translate="no">rhs</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator> -->
+<!-- $$$operator>=[overload1]$$$operator>=constQDate&constQDate& -->
+<h3 class="fn" translate="no" id="operator-gt-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&gt;=</span>(const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> is later than or equal to <i translate="no">rhs</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator>= -->
+<!-- $$$operator>>$$$operator>>QDataStream&QDate& -->
+<h3 class="fn" translate="no" id="operator-gt-gt-1"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&gt;&gt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>in</i>, <span class="type"><a href="qdate.html#QDate" translate="no">QDate</a></span> &amp;<i>date</i>)</h3>
+<p>Reads a date from stream <i translate="no">in</i> into the <i translate="no">date</i>.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator>> -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

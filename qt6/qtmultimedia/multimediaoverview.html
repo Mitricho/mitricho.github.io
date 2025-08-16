@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- multimedia-overview.qdoc -->
+  <meta name="description" content="A set of APIs for working with audio, video and camera devices.">
+  <title>Multimedia Overview | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li>Multimedia Overview</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="next" href="audiooverview.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="nextPage" href="audiooverview.html">Audio Overview</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#features">Features</a></li>
+<li class="level1"><a href="#multimedia-components">Multimedia Components</a></li>
+<li class="level1"><a href="#multimedia-recipes">Multimedia Recipes</a></li>
+<li class="level1"><a href="#limitations">Limitations</a></li>
+<li class="level1"><a href="#changes-from-previous-versions">Changes from Previous Versions</a></li>
+<li class="level1"><a href="#reference-documentation">Reference Documentation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Multimedia Overview</h1>
+<!-- $$$multimediaoverview.html-description -->
+<div class="descr" id="details">
+<p>Multimedia support in Qt is provided by the <a href="qtmultimedia-index.html">Qt Multimedia</a> module. The Qt Multimedia module provides a rich feature set that enables you to easily take advantage of a platform's multimedia capabilities, such as media playback and the use of camera devices.</p>
+<h2 id="features">Features</h2>
+<p>Here are some things you can do with the Qt Multimedia APIs:</p>
+<ul>
+<li>Access raw audio devices for input and output.</li>
+<li>Play low latency sound effects.</li>
+<li>Play 3D spatial audio.</li>
+<li>Play media files in playlists (such as compressed audio or video files).</li>
+<li>Record audio and compress it.</li>
+<li>Use a camera, including viewfinder, image capture, and movie recording</li>
+<li>Decode audio media files into memory for processing.</li>
+</ul>
+<h2 id="multimedia-components">Multimedia Components</h2>
+<p>The Qt Multimedia APIs are categorized into three main components. More information specific to each component is available in the overview pages. You can also take a look at some <a href="multimediaoverview.html#multimedia-recipes">recipes</a>.</p>
+<ul>
+<li><a href="audiooverview.html">Audio Overview</a></li>
+<li><a href="videooverview.html">Video Overview</a></li>
+<li><a href="cameraoverview.html">Camera Overview</a></li>
+<li><a href="../qtspatialaudio/spatialaudiooverview.html">Spatial Audio Overview</a> (Technology Preview)</li>
+</ul>
+<h2 id="multimedia-recipes">Multimedia Recipes</h2>
+<p>For some quick recipes, see this table:</p>
+<div class="table"><table class="generic" width="70%">
+ <thead><tr class="qt-style"><th >Use case</th><th >Examples</th><th >QML Types</th><th >C++ Classes</th></tr></thead>
+<tr valign="top" class="odd"><td >Playing a sound effect</td><td ></td><td ><a href="qml-qtmultimedia-soundeffect.html" translate="no">SoundEffect</a></td><td ><a href="qsoundeffect.html" translate="no">QSoundEffect</a></td></tr>
+<tr valign="top" class="even"><td >Playing 3D sound</td><td ><a href="../qtspatialaudio/qtspatialaudio-audiopanning-example.html">audiopanning</a></td><td ><a href="../qtspatialaudio/qml-qtquick3d-spatialaudio-spatialsound.html" translate="no">SpatialSound</a>, <a href="../qtspatialaudio/qml-qtquick3d-spatialaudio-audioengine.html" translate="no">AudioEngine</a></td><td ><a href="../qtspatialaudio/qspatialsound.html" translate="no">QSpatialSound</a>, <a href="../qtspatialaudio/qaudioengine.html" translate="no">QAudioEngine</a></td></tr>
+<tr valign="top" class="odd"><td >Playing encoded audio (MP3, AAC etc)</td><td ><a href="qtmultimedia-player-example.html">player</a></td><td ><a href="qml-qtmultimedia-mediaplayer.html" translate="no">MediaPlayer</a></td><td ><a href="qmediaplayer.html" translate="no">QMediaPlayer</a></td></tr>
+<tr valign="top" class="even"><td >Playing raw audio data with low latency</td><td ><a href="qtmultimedia-audiooutput-example.html">audiooutput</a></td><td ></td><td ><a href="qaudiosink.html" translate="no">QAudioSink</a></td></tr>
+<tr valign="top" class="odd"><td >Accessing raw audio input data</td><td ><a href="qtmultimedia-audiosource-example.html">audiosource</a></td><td ></td><td ><a href="qaudiosource.html" translate="no">QAudioSource</a></td></tr>
+<tr valign="top" class="even"><td >Recording encoded audio data</td><td ><a href="qtmultimedia-audiorecorder-example.html">audiorecorder</a></td><td ><a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>, <a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a>, <a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a></td><td ><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a>, <a href="qaudioinput.html" translate="no">QAudioInput</a>, <a href="qmediarecorder.html" translate="no">QMediaRecorder</a></td></tr>
+<tr valign="top" class="odd"><td >Discovering audio and video devices</td><td ><a href="qtmultimedia-audiodevices-example.html">audiodevices</a></td><td ><a href="qml-qtmultimedia-mediadevices.html" translate="no">MediaDevices</a>, <a href="qml-audiodevice.html" translate="no">audioDevice</a>, <a href="qml-cameradevice.html" translate="no">cameraDevice</a></td><td ><a href="qmediadevices.html" translate="no">QMediaDevices</a>, <a href="qaudiodevice.html" translate="no">QAudioDevice</a>, <a href="qcameradevice.html" translate="no">QCameraDevice</a></td></tr>
+<tr valign="top" class="even"><td >Video Playback</td><td ><a href="qtmultimedia-player-example.html">player</a>, <a href="qtmultimedia-video-mediaplayer-example.html">mediaplayer</a></td><td ><a href="qml-qtmultimedia-mediaplayer.html" translate="no">MediaPlayer</a>, <a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a>, <a href="qml-qtmultimedia-video.html" translate="no">Video</a></td><td ><a href="qmediaplayer.html" translate="no">QMediaPlayer</a>, <a href="qvideowidget.html" translate="no">QVideoWidget</a>, <a href="qgraphicsvideoitem.html" translate="no">QGraphicsVideoItem</a></td></tr>
+<tr valign="top" class="odd"><td >Capturing audio and video</td><td ><a href="qtmultimedia-camera-example.html">camera</a>, <a href="qtmultimedia-video-recorder-example.html">recorder</a></td><td ><a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>, <a href="qml-qtmultimedia-camera.html" translate="no">Camera</a>, <a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a> <a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a></td><td ><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a>, <a href="qcamera.html" translate="no">QCamera</a>, <a href="qaudioinput.html" translate="no">QAudioInput</a>, <a href="qvideowidget.html" translate="no">QVideoWidget</a></td></tr>
+<tr valign="top" class="even"><td >Capturing photos</td><td ><a href="qtmultimedia-camera-example.html">camera</a>, <a href="qtmultimedia-video-recorder-example.html">recorder</a></td><td ><a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>, <a href="qml-qtmultimedia-camera.html" translate="no">Camera</a>, <a href="qml-qtmultimedia-imagecapture.html" translate="no">ImageCapture</a></td><td ><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a>, <a href="qcamera.html" translate="no">QCamera</a>, <a href="qimagecapture.html" translate="no">QImageCapture</a></td></tr>
+<tr valign="top" class="odd"><td >Capturing movies</td><td ><a href="qtmultimedia-camera-example.html">camera</a>, <a href="qtmultimedia-video-recorder-example.html">recorder</a></td><td ><a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>, <a href="qml-qtmultimedia-camera.html" translate="no">Camera</a>, <a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a></td><td ><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a>, <a href="qcamera.html" translate="no">QCamera</a>, <a href="qmediarecorder.html" translate="no">QMediaRecorder</a></td></tr>
+</table></div>
+<h2 id="limitations">Limitations</h2>
+<p>The Qt Multimedia APIs build upon the multimedia framework of the underlying platform. This can mean that support for various codecs, or containers will vary between machines. This support depends on what the end user has installed. See <a href="videooverview.html#supported-media-formats">Supported Media Formats</a> for more detail.</p>
+<div class="admonition note">
+<p><b>Note: </b>Qt Multimedia APIs depend on functionality provided by <a href="../qtcore/qcoreapplication.html" translate="no">QCoreApplication</a>, and multimedia objects created using the Qt Multimedia APIs can only be used during the lifetime of this application object. It is therefore important to create a <a href="../qtcore/qcoreapplication.html" translate="no">QCoreApplication</a>, <a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a>, or <a href="../qtwidgets/qapplication.html" translate="no">QApplication</a> before accessing any of the Qt Multimedia APIs. If the application object is recreated, make sure that any Qt Multimedia objects are also recreated.</p>
+</div>
+<h2 id="changes-from-previous-versions">Changes from Previous Versions</h2>
+<p>If you previously used Qt Multimedia in Qt 5, see <a href="qtmultimedia-changes-qt6.html">Changes to Qt Multimedia</a> for more information on what has changed, and what you might need to change when porting code to Qt 6.</p>
+<h2 id="reference-documentation">Reference Documentation</h2>
+<ul>
+<li><a href="qtmultimedia-modules.html">C++ Classes</a></li>
+<li><a href="qtmultimedia-qmlmodule.html" translate="no">QML Types</a></li>
+</ul>
+</div>
+<!-- @@@multimediaoverview.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="nextPage" href="audiooverview.html">Audio Overview</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qjsonparser.cpp -->
+  <meta name="description" content="The QJsonParseError class is used to report errors during JSON parsing.">
+  <title>QJsonParseError Struct | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QJsonParseError</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-variables">Public Variables</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QJsonParseError Struct</h1>
+<!-- $$$QJsonParseError-brief -->
+<p>The QJsonParseError class is used to report errors during JSON parsing. <a href="#details">More...</a></p>
+<!-- @@@QJsonParseError -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QJsonParseError&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qjsonparseerror-members.html">List of all members, including inherited members</a></li>
+<li>QJsonParseError is part of <a href="json.html">JSON Support in Qt</a> and <a href="shared.html">Implicitly Shared Classes</a>.</li>
+</ul>
+<p><b>Note:</b> All functions in this struct are reentrant.</p>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qjsonparseerror.html#ParseError-enum" translate="no">ParseError</a></b> { NoError, UnterminatedObject, MissingNameSeparator, UnterminatedArray, MissingValueSeparator, &hellip;, GarbageAtEnd }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qjsonparseerror.html#errorString" translate="no">errorString</a></b>() const</td></tr>
+</table></div>
+<h2 id="public-variables">Public Variables</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QJsonParseError::ParseError </td><td class="memItemRight bottomAlign"><b><a href="qjsonparseerror.html#error-var" translate="no">error</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qjsonparseerror.html#offset-var" translate="no">offset</a></b></td></tr>
+</table></div>
+<!-- $$$QJsonParseError-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<p><b>See also </b><a href="json.html">JSON Support in Qt</a> and <a href="qtcore-serialization-savegame-example.html">Saving and Loading a Game</a>.</p>
+<!-- @@@QJsonParseError -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$ParseError$$$NoError$$$UnterminatedObject$$$MissingNameSeparator$$$UnterminatedArray$$$MissingValueSeparator$$$IllegalValue$$$TerminationByNumber$$$IllegalNumber$$$IllegalEscapeSequence$$$IllegalUTF8String$$$UnterminatedString$$$MissingObject$$$DeepNesting$$$DocumentTooLarge$$$GarbageAtEnd -->
+<h3 class="fn" translate="no" id="ParseError-enum">enum QJsonParseError::<span class="name">ParseError</span></h3>
+<p>This enum describes the type of error that occurred during the parsing of a JSON document.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::NoError</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">No error occurred</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::UnterminatedObject</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">An object is not correctly terminated with a closing curly bracket</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::MissingNameSeparator</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">A comma separating different items is missing</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::UnterminatedArray</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">The array is not correctly terminated with a closing square bracket</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::MissingValueSeparator</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">A colon separating keys from values inside objects is missing</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::IllegalValue</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">The value is illegal</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::TerminationByNumber</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">The input stream ended while parsing a number (as of 6.9, this is no longer returned)</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::IllegalNumber</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign">The number is not well formed</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::IllegalEscapeSequence</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign">An illegal escape sequence occurred in the input</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::IllegalUTF8String</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign">An illegal UTF8 sequence occurred in the input</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::UnterminatedString</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign">A string wasn't terminated with a quote</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::MissingObject</code></td><td class="topAlign tblval"><code translate="no">11</code></td><td class="topAlign">An object was expected but couldn't be found</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::DeepNesting</code></td><td class="topAlign tblval"><code translate="no">12</code></td><td class="topAlign">The JSON document is too deeply nested for the parser to parse it</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::DocumentTooLarge</code></td><td class="topAlign tblval"><code translate="no">13</code></td><td class="topAlign">The JSON document is too large for the parser to parse it</td></tr>
+<tr><td class="topAlign"><code translate="no">QJsonParseError::GarbageAtEnd</code></td><td class="topAlign tblval"><code translate="no">14</code></td><td class="topAlign">The parsed document contains additional garbage characters at the end</td></tr>
+</table></div>
+<!-- @@@ParseError -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$errorString[overload1]$$$errorString -->
+<h3 class="fn" translate="no" id="errorString"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QJsonParseError::<span class="name">errorString</span>() const</h3>
+<p>Returns the human-readable message appropriate to the reported JSON parsing error.</p>
+<p><b>See also </b><a href="qjsonparseerror.html#error-var" translate="no">error</a>.</p>
+<!-- @@@errorString -->
+</div>
+<div class="vars">
+<h2>Member Variable Documentation</h2>
+<!-- $$$error -->
+<h3 class="fn" translate="no" id="error-var"><span class="type"><a href="qjsonparseerror.html#ParseError-enum" translate="no">QJsonParseError::ParseError</a></span> QJsonParseError::<span class="name">error</span></h3>
+<p>Contains the type of the parse error. Is equal to <a href="qjsonparseerror.html#ParseError-enum" translate="no">QJsonParseError::NoError</a> if the document was parsed correctly.</p>
+<p><b>See also </b><a href="qjsonparseerror.html#ParseError-enum" translate="no">ParseError</a> and <a href="qjsonparseerror.html#errorString" translate="no">errorString</a>().</p>
+<!-- @@@error -->
+<!-- $$$offset -->
+<h3 class="fn" translate="no" id="offset-var"><span class="type">int</span> QJsonParseError::<span class="name">offset</span></h3>
+<p>Contains the byte offset in the UTF-8 byte array where the parse error occurred.</p>
+<p><b>See also </b><a href="qjsonparseerror.html#error-var" translate="no">error</a>, <a href="qjsonparseerror.html#errorString" translate="no">errorString</a>(), and <a href="qjsondocument.html#fromJson" translate="no">QJsonDocument::fromJson</a>().</p>
+<!-- @@@offset -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-filesystemexplorer.qdoc -->
+  <meta name="description" content="A desktop QML app utilizing customized Qt Quick Controls to display text files from a filesystem.">
+  <title>File System Explorer | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-examples.html">Qt Quick Controls Examples</a></li>
+<li>File System Explorer</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#modern-layout-and-structure">Modern layout and structure</a></li>
+<li class="level1"><a href="#custom-components">Custom components</a></li>
+<li class="level1"><a href="#python-version">Python version</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">File System Explorer</h1>
+<!-- $$$filesystemexplorer-brief -->
+<p>A desktop QML app utilizing customized Qt Quick Controls to display text files from a filesystem.</p>
+<!-- @@@filesystemexplorer -->
+<!-- $$$filesystemexplorer-description -->
+<div class="descr" id="details">
+<p>In this example, a modern layout is used that consists of three major components. There is an icon-based <i>Sidebar</i> to the left, followed by a resizable <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a> displaying the file system from a <a href="../qtgui/qfilesystemmodel.html" translate="no">QFileSystemModel</a>, and finally the <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> displaying the selected text files. There is a common look and feel across all operating systems. We accomplish this by using customized quick controls and frameless windows, with our own window decorations. When launching this application from the command-line, you have the option to provide an initial directory as a parameter. This initial directory will be used by the <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a> to set the starting point for displaying the directory structure.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-filesystemexplorer.webp" alt="" /></p><h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="modern-layout-and-structure">Modern layout and structure</h4>
+<p>To begin with, we are providing the colors throughout a singleton QML object. In this way, we can provide more structured control over the appearance of the application.</p>
+<pre class="cpp" translate="no">
+ pragma Singleton
+
+ <span class="type"><a href="../qtqml/qml-qtqml-qtobject.html" translate="no">QtObject</a></span> {
+     readonly property <span class="type">color</span> <span class="name">background</span>: <span class="string">&quot;#292828&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">surface1</span>: <span class="string">&quot;#171819&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">surface2</span>: <span class="string">&quot;#090A0C&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">text</span>: <span class="string">&quot;#D4BE98&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">textFile</span>: <span class="string">&quot;#E1D2B7&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">disabledText</span>: <span class="string">&quot;#2C313A&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">selection</span>: <span class="string">&quot;#4B4A4A&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">active</span>: <span class="string">&quot;#292828&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">inactive</span>: <span class="string">&quot;#383737&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">folder</span>: <span class="string">&quot;#383737&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">icon</span>: <span class="string">&quot;#383737&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">iconIndicator</span>: <span class="string">&quot;#D5B35D&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">color1</span>: <span class="string">&quot;#A7B464&quot;</span>
+     readonly property <span class="type">color</span> <span class="name">color2</span>: <span class="string">&quot;#D3869B&quot;</span>
+ }
+</pre>
+<p>Since we do not want to rely on the operating system's window decoration and instead want to provide our own, we use the <code translate="no">FramelessWindowHint</code> flag inside the <a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a>. In order to achieve an equivalent interaction with the window, we override the <code translate="no">contentItem</code> property of our customized <a href="qml-qtquick-controls-menubar.html" translate="no">MenuBar</a> and display some information text as well as interaction possibilities for dragging or closing the application. <a href="../qtqml/qtqml-documents-definetypes.html#inline-components">Inline Components</a> have been used to simplify this process.</p>
+<pre class="cpp" translate="no">
+             component InteractionButton: <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                 <span class="name">id</span>: <span class="name">interactionButton</span>
+
+                 signal <span class="type">action</span>()
+                 property <span class="type">alias</span> <span class="name">hovered</span>: <span class="name">hoverHandler</span>.<span class="name">hovered</span>
+
+                 <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+                 <span class="name">Layout</span>.preferredWidth: <span class="name">height</span>
+
+                 <span class="name">color</span>: <span class="name">hovered</span> ? <span class="name">Colors</span>.<span class="name">background</span> : <span class="string">&quot;transparent&quot;</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-hoverhandler.html" translate="no">HoverHandler</a></span> {
+                     <span class="name">id</span>: <span class="name">hoverHandler</span>
+                 }
+                 <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+                     <span class="name">id</span>: <span class="name">tapHandler</span>
+                     <span class="name">onTapped</span>: <span class="name">interactionButton</span>.<span class="name">action</span>()
+                 }
+             }
+
+             <span class="type">InteractionButton</span> {
+                 <span class="name">id</span>: <span class="name">minimize</span>
+
+                 <span class="name">onAction</span>: <span class="name">root</span>.<span class="name">dragWindow</span>.<span class="name">showMinimized</span>()
+                 <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                     <span class="name">color</span>: <span class="name">parent</span>.<span class="name">hovered</span> ? <span class="name">Colors</span>.<span class="name">iconIndicator</span> : <span class="name">Colors</span>.<span class="name">icon</span>
+                     <span class="name">height</span>: <span class="number">2</span>
+                     <span class="name">width</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="number">14</span>
+                 }
+             }
+
+             <span class="type">InteractionButton</span> {
+                 <span class="name">id</span>: <span class="name">maximize</span>
+     ...
+</pre>
+<p>The <i>Sidebar</i> on the left includes checkable navigation buttons on top and one-shot buttons on the bottom. A <a href="qml-qtquick-controls-buttongroup.html" translate="no">ButtonGroup</a> and a Container are used to ensure that only one entry is active at any given time. It is then possible to provide different views using a property alias for the current position, along with a <a href="../qtquick/qml-qtquick-layouts-stacklayout.html" translate="no">StackLayout</a>.</p>
+<p>This technique allows us to simply extend the functionality by adding another button and the corresponding element inside the <a href="../qtquick/qml-qtquick-layouts-stacklayout.html" translate="no">StackLayout</a>.</p>
+<pre class="cpp" translate="no">
+                 <span class="type"><a href="../qtquick/qml-qtquick-layouts-stacklayout.html" translate="no">StackLayout</a></span> {
+                     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+                     <span class="name">currentIndex</span>: <span class="name">sidebar</span>.<span class="name">currentTabIndex</span>
+
+                     <span class="comment">// Shows the help text.</span>
+                     <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+                         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;This example shows how to use and visualize the file system.\n\n&quot;</span>
+                                  <span class="operator">+</span> <span class="string">&quot;Customized Qt Quick Components have been used to achieve this look.\n\n&quot;</span>
+                                  <span class="operator">+</span> <span class="string">&quot;You can edit the files but they won't be changed on the file system.\n\n&quot;</span>
+                                  <span class="operator">+</span> <span class="string">&quot;Click on the folder icon to the left to get started.&quot;</span>)
+                         <span class="name">wrapMode</span>: <span class="name">TextArea</span>.<span class="name">Wrap</span>
+                         <span class="name">color</span>: <span class="name">Colors</span>.<span class="name">text</span>
+                     }
+
+                     <span class="comment">// Shows the files on the file system.</span>
+                     <span class="type">FileSystemView</span> {
+                         <span class="name">id</span>: <span class="name">fileSystemView</span>
+                         <span class="name">color</span>: <span class="name">Colors</span>.<span class="name">surface1</span>
+                         <span class="name">onFileClicked</span>: <span class="keyword"></span>path =&gt; <span class="keyword"></span><span class="name">root</span>.<span class="name">currentFilePath</span> <span class="operator">=</span> <span class="name">path</span>
+                     }
+                 }
+</pre>
+<p>The <a href="../qtquick/qml-qtquick-layouts-stacklayout.html" translate="no">StackLayout</a> includes, besides some information text, the <i>FileSystemView</i>. This custom component displays files and folders and populates it with data from a <a href="../qtquick/qtquick-modelviewsdata-cppmodels.html">C++ model</a>. We can then select the files and read them accordingly.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> FileSystemModel<span class="operator">::</span>readFile(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>filePath)
+ {
+     <span class="comment">// Don't issue errors for an empty path, as the initial binding</span>
+     <span class="comment">// will result in an empty path, and that's OK.</span>
+     <span class="keyword">if</span> (filePath<span class="operator">.</span>isEmpty())
+         <span class="keyword">return</span> {};
+
+     <span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span> file(filePath);
+
+     <span class="keyword">if</span> (file<span class="operator">.</span>size() <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">2'000'000</span>)
+         <span class="keyword">return</span> tr(<span class="string">&quot;File size is too big.\nYou can read files up to %1 MB.&quot;</span>)<span class="operator">.</span>arg(<span class="number">2</span>);
+
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qmimedatabase.html" translate="no">QMimeDatabase</a></span> db;
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qmimetype.html" translate="no">QMimeType</a></span> mime <span class="operator">=</span> db<span class="operator">.</span>mimeTypeForFile(<span class="type"><a href="../qtcore/qfileinfo.html" translate="no">QFileInfo</a></span>(file));
+
+     <span class="comment">// Check if the mimetype is supported and return the content.</span>
+     <span class="keyword">const</span> <span class="keyword">auto</span> mimeTypesForFile <span class="operator">=</span> mime<span class="operator">.</span>parentMimeTypes();
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>m : mimeTypesForFile) {
+         <span class="keyword">if</span> (m<span class="operator">.</span>contains(<span class="string">&quot;text&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>CaseInsensitive)
+                 <span class="operator">|</span><span class="operator">|</span> mime<span class="operator">.</span>comment()<span class="operator">.</span>contains(<span class="string">&quot;text&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>CaseInsensitive)) {
+             <span class="keyword">if</span> (<span class="operator">!</span>file<span class="operator">.</span>open(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>ReadOnly <span class="operator">|</span> <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>Text))
+                 <span class="keyword">return</span> tr(<span class="string">&quot;Error opening the File!&quot;</span>);
+
+             <span class="type"><a href="../qtcore/qtextstream.html" translate="no">QTextStream</a></span> stream(<span class="operator">&amp;</span>file);
+             <span class="keyword">return</span> stream<span class="operator">.</span>readAll();
+         }
+     }
+     <span class="keyword">return</span> tr(<span class="string">&quot;Filetype not supported!&quot;</span>);
+ }
+</pre>
+<p>By right-clicking on a folder in the <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a>, a popup Menu is opened, which allows control over the <code translate="no">rootIndex</code> property of the <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a>.</p>
+<pre class="cpp" translate="no">
+             <span class="type">MyMenu</span> {
+                 <span class="name">id</span>: <span class="name">contextMenu</span>
+                 <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+                     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Set as root index&quot;</span>)
+                     <span class="name">onTriggered</span>: {
+                         <span class="name">fileSystemTreeView</span>.<span class="name">rootIndex</span> <span class="operator">=</span> <span class="name">fileSystemTreeView</span>.<span class="name">index</span>(<span class="name">treeDelegate</span>.<span class="name">row</span>, <span class="number">0</span>)
+                     }
+                 }
+                 <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+                     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Reset root index&quot;</span>)
+                     <span class="name">onTriggered</span>: <span class="name">fileSystemTreeView</span>.<span class="name">rootIndex</span> <span class="operator">=</span> <span class="name">undefined</span>
+                 }
+             }
+         }
+</pre>
+<p>By using a <a href="qml-qtquick-controls-splitview.html" translate="no">SplitView</a>, we are able to dynamically share the space between the <a href="../qtquick/qml-qtquick-layouts-stacklayout.html" translate="no">StackLayout</a> and the Editor. Our Editor contains the <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> that displays the opened file and provides us with all the functionality needed to edit text files. Additionally, we provide a visualization of the line numbers, which can be toggled on and off in the Menu.</p>
+<pre class="cpp" translate="no">
+             <span class="type">Editor</span> {
+                 <span class="name">id</span>: <span class="name">editor</span>
+                 <span class="name">showLineNumbers</span>: <span class="name">root</span>.<span class="name">showLineNumbers</span>
+                 <span class="name">currentFilePath</span>: <span class="name">root</span>.<span class="name">currentFilePath</span>
+                 <span class="name">SplitView</span>.fillWidth: <span class="number">true</span>
+                 <span class="name">SplitView</span>.fillHeight: <span class="number">true</span>
+             }
+</pre>
+<h4 id="custom-components">Custom components</h4>
+<p>For a better understanding of the customization process, investigate <a href="qtquickcontrols-customize.html#customizing-a-control">this</a> article first. We are using reusable and customized components throughout this example.</p>
+<p>For instance, the <i>MyMenu</i> component customizes Menu's <code translate="no">background</code> property as well as its delegates' <code translate="no">contentItem</code> and <code translate="no">background</code> properties.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2023 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ import QtQuick
+ import QtQuick.Controls.Basic
+ import FileSystemModule
+
+ <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+     <span class="name">id</span>: <span class="name">root</span>
+
+     <span class="name">delegate</span>: <span class="name">MenuItem</span> {
+         <span class="name">id</span>: <span class="name">menuItem</span>
+         <span class="name">contentItem</span>: <span class="name">Item</span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+                 <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+                 <span class="name">anchors</span>.left: <span class="name">parent</span>.<span class="name">left</span>
+                 <span class="name">anchors</span>.leftMargin: <span class="number">5</span>
+
+                 <span class="name">text</span>: <span class="name">menuItem</span>.<span class="name">text</span>
+                 <span class="name">color</span>: <span class="name">enabled</span> ? <span class="name">Colors</span>.<span class="name">text</span> : <span class="name">Colors</span>.<span class="name">disabledText</span>
+             }
+             <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                 <span class="name">id</span>: <span class="name">indicator</span>
+
+                 <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+                 <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+                 <span class="name">width</span>: <span class="number">6</span>
+                 <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+
+                 <span class="name">visible</span>: <span class="name">menuItem</span>.<span class="name">highlighted</span>
+                 <span class="name">color</span>: <span class="name">Colors</span>.<span class="name">color2</span>
+             }
+         }
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">210</span>
+             <span class="name">implicitHeight</span>: <span class="number">35</span>
+             <span class="name">color</span>: <span class="name">menuItem</span>.<span class="name">highlighted</span> ? <span class="name">Colors</span>.<span class="name">active</span> : <span class="string">&quot;transparent&quot;</span>
+         }
+     }
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">210</span>
+         <span class="name">implicitHeight</span>: <span class="number">35</span>
+         <span class="name">color</span>: <span class="name">Colors</span>.<span class="name">surface2</span>
+     }
+ }
+</pre>
+<p>Another example is the customization of the <a href="qml-qtquick-controls-scrollindicator.html" translate="no">ScrollIndicator</a> inside the <i>FileSystemView</i>, which additionally uses customized animations. Here we also override the <code translate="no">contentItem</code>.</p>
+<pre class="cpp" translate="no">
+         <span class="name">ScrollIndicator</span>.vertical: <span class="name">ScrollIndicator</span> {
+             <span class="name">active</span>: <span class="number">true</span>
+             <span class="name">implicitWidth</span>: <span class="number">15</span>
+
+             <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+                 <span class="name">implicitWidth</span>: <span class="number">6</span>
+                 <span class="name">implicitHeight</span>: <span class="number">6</span>
+
+                 <span class="name">color</span>: <span class="name">Colors</span>.<span class="name">color1</span>
+                 <span class="name">opacity</span>: <span class="name">fileSystemTreeView</span>.<span class="name">movingVertically</span> ? <span class="number">0.5</span> : <span class="number">0.0</span>
+
+                 Behavior on <span class="name">opacity</span> {
+                     <span class="type"><a href="../qtquick/qml-qtquick-opacityanimator.html" translate="no">OpacityAnimator</a></span> {
+                         <span class="name">duration</span>: <span class="number">500</span>
+                     }
+                 }
+             }
+         }
+</pre>
+<h4 id="python-version">Python version</h4>
+<p>If you're interested in the Python version of this example, you can find it <a href="https://doc.qt.io/qtforpython-6/examples/example_quickcontrols_filesystemexplorer.html">here</a>. This showcases the usage of Qt for Python and demonstrates how it can be used to create the same application.</p>
+<p>Additionally, there is a detailed <a href="https://doc.qt.io/qtforpython-6/tutorials/extendedexplorer/extendedexplorer.html">tutorial</a> available that provides step-by-step instructions on how to extend this example with additional features. This tutorial can be helpful if you want to explore and learn more about building upon the existing functionality of the filesystem explorer.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quickcontrols/filesystemexplorer?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@filesystemexplorer -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickshape.cpp -->
+  <meta name="description" content="Provides QML types for drawing stroked and filled shapes.">
+  <title>Qt Quick Shapes QML Types | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Qt Quick Shapes QML Types</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquick-convenience-topic.html" />
+  <link rel="next" href="qtquick-vectorimage-qmlmodule.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquick-convenience-topic.html">Convenience types</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick-vectorimage-qmlmodule.html">Qt Quick Vector Image</a>
+</p>
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Qt Quick Shapes QML Types</h1>
+<!-- $$$QtQuick.Shapes-description -->
+<div class="descr" id="details">
+<p>To use the types in this module, import the module with the following line:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Shapes
+</pre>
+<p>Qt Quick Shapes provides tools for drawing arbitrary shapes in a Qt Quick scene. <a href="qml-qtquick-shapes-shape.html" translate="no">Shapes</a> can be constructed from basic building blocks like <a href="qml-qtquick-pathline.html" translate="no">lines</a> and <a href="qml-qtquick-pathcubic.html" translate="no">curves</a> that define sub-shapes. The sub-shapes can then be filled with solid colors or gradients, and an outline stroke can be defined.</p>
+<p>Qt Quick Shapes also supports higher level path element types, such as <a href="qml-qtquick-pathtext.html" translate="no">text</a> and <a href="qml-qtquick-pathsvg.html" translate="no">SVG path descriptions</a>. The currently supported element types is: <a href="qml-qtquick-pathmove.html" translate="no">PathMove</a>, <a href="qml-qtquick-pathline.html" translate="no">PathLine</a>, <a href="qml-qtquick-pathquad.html" translate="no">PathQuad</a>, <a href="qml-qtquick-pathcubic.html" translate="no">PathCubic</a>, <a href="qml-qtquick-patharc.html" translate="no">PathArc</a>, <a href="qml-qtquick-pathtext.html" translate="no">PathText</a> and <a href="qml-qtquick-pathsvg.html" translate="no">PathSvg</a>.</p>
+<p>Qt Quick Shapes triangulates the shapes and renders the corresponding triangles on the GPU. Therefore, altering the control points of elements will lead to re-triangulation of the affected paths, at some performance cost. In addition, curves are flattened before they are rendered, so applying a very high scale to the shape may show artifacts where it is visible that the curves are represented by a sequence of smaller, straight lines.</p>
+<div class="admonition note">
+<p><b>Note: </b>By default, Qt Quick Shapes relies on multi-sampling for anti-aliasing. This can be enabled for the entire application or window using the corresponding settings in <a href="../qtgui/qsurfaceformat.html" translate="no">QSurfaceFormat</a>. It can also be enabled for only the shape, by setting its <a href="qml-qtquick-item.html#layer.enabled-prop" translate="no">layer.enabled</a> property to true and then adjusting the <a href="qml-qtquick-item.html#layer.samples-prop" translate="no">layer.samples</a> property. In the latter case, multi-sampling will not be applied to the entire scene, but the shape will be rendered via an intermediate off-screen buffer. Alternatively, the <a href="qml-qtquick-shapes-shape.html#preferredRendererType-prop" translate="no">preferredRendererType</a> property can be set to <code translate="no">Shape.CurveRenderer</code>. This has anti-aliasing built in and generally renders the shapes at a higher quality, but at some additional performance cost.</p>
+</div>
+<p>For further information, the <a href="qtquick-quickshapes-shapes-example.html">Shapes example</a> shows how to implement different types of shapes, fills and strokes, and the <a href="qtquick-quickshapes-weatherforecast-example.html">Weather Forecast Example</a> shows examples of different ways shapes might be useful in a user interface.</p>
+</div>
+<!-- @@@QtQuick.Shapes -->
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-conicalgradient.html">ConicalGradient</a></p></td><td class="tblDescr"><p>Conical gradient</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-lineargradient.html">LinearGradient</a></p></td><td class="tblDescr"><p>Linear gradient</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-radialgradient.html">RadialGradient</a></p></td><td class="tblDescr"><p>Radial gradient</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-shape.html">Shape</a></p></td><td class="tblDescr"><p>Renders a path</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-shapegradient.html">ShapeGradient</a></p></td><td class="tblDescr"><p>Base type of Shape fill gradients</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shapes-shapepath.html">ShapePath</a></p></td><td class="tblDescr"><p>Describes a Path and associated properties for stroking and filling</p></td></tr>
+</table></div>
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquick-convenience-topic.html">Convenience types</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick-vectorimage-qmlmodule.html">Qt Quick Vector Image</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

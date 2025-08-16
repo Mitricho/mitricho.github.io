@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt_android_add_apk_target.qdoc -->
+  <meta name="description" content="Defines a build target that runs androiddeployqt to produce an APK.">
+  <title>qt_android_add_apk_target | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="cmake-commands-qtcore.html">CMake Commands in Qt6 Core</a></li>
+<li>qt_android_add_apk_target</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#synopsis">Synopsis</a></li>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#example">Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">qt_android_add_apk_target</h1>
+<!-- $$$qt-android-add-apk-target.html-description -->
+<div class="descr" id="details">
+<p>Defines a build target that runs androiddeployqt to produce an APK.</p>
+<p>The command is defined in the <code translate="no">Core</code> component of the <code translate="no">Qt6</code> package, which can be loaded like so:</p>
+<pre class="cpp plain" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS Core)
+</pre>
+<p>This command was introduced in Qt 6.0.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This command is deprecated since Qt 6.5. Use <a href="qt-add-executable.html">qt_add_executable</a> instead.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>This command should only be called if targeting the Android platform.</p>
+</div>
+<h2 id="synopsis">Synopsis</h2>
+<pre class="cpp plain" translate="no">
+ qt_android_add_apk_target(target)
+</pre>
+<p>If versionless commands are disabled, use <code translate="no">qt6_android_add_apk_target()</code> instead. It supports the same set of arguments as this command.</p>
+<h2 id="description">Description</h2>
+<p>The <code translate="no">&lt;target&gt;_make_apk</code> and <code translate="no">&lt;target&gt;_make_aab</code> custom targets created by this command take an Android deployment settings file and generate APK and AAB respectively by running <code translate="no">androiddeployqt</code>. The location of the settings file is taken from the <code translate="no">target</code>'s <code translate="no">QT_ANDROID_DEPLOYMENT_SETTINGS_FILE</code> property. This file is typically created by <a href="qt-android-generate-deployment-settings.html">qt_android_generate_deployment_settings()</a>. The respective Android package will be generated in an <code translate="no">android-build</code> subdirectory below the CMake build directory of the <code translate="no">target</code>.</p>
+<p>The <code translate="no">&lt;target&gt;_make_apk</code> and <code translate="no">&lt;target&gt;_make_aab</code> targets will be automatically added as dependencies of the <code translate="no">apk</code> and <code translate="no">aab</code> build targets respectively, which will be created automatically. Creating of the <code translate="no">apk</code> and <code translate="no">aab</code> targets can be disabled by setting the <code translate="no">QT_NO_GLOBAL_APK_TARGET</code> and <code translate="no">QT_NO_GLOBAL_AAB_TARGET</code> variables to <code translate="no">TRUE</code>.</p>
+<h2 id="example">Example</h2>
+<pre class="cpp" translate="no">
+ qt_android_generate_deployment_settings(myapp)
+ qt_android_add_apk_target(myapp)
+</pre>
+<p>The above commands define the <code translate="no">myapp_make_apk</code>, <code translate="no">myapp_make_aab</code>, <code translate="no">apk</code>, and <code translate="no">aab</code> build targets which can be used to generate just the <code translate="no">myapp</code> packages or all APKs and AABs in the project respectively.</p>
+</div>
+<p><b>See also </b><a href="qt-android-generate-deployment-settings.html">qt_android_generate_deployment_settings()</a>, <a href="qt-finalize-target.html">qt_finalize_target()</a>, and <a href="qt-finalize-project.html">qt_finalize_project()</a>.</p>
+<!-- @@@qt-android-add-apk-target.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

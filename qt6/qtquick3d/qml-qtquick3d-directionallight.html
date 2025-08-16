@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3ddirectionallight.cpp -->
+  <meta name="description" content="Defines a directional light in the scene.">
+  <title>DirectionalLight QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>DirectionalLight</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">DirectionalLight QML Type</h1>
+<!-- $$$DirectionalLight-brief -->
+<p>Defines a directional light in the scene. <a href="#details">More...</a></p>
+<!-- @@@DirectionalLight -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-light.html" translate="no">Light</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-directionallight-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#csmBlendRatio-prop" translate="no">csmBlendRatio</a></b> : real <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#csmNumSplits-prop" translate="no">csmNumSplits</a></b> : int <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#csmSplit1-prop" translate="no">csmSplit1</a></b> : real <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#csmSplit2-prop" translate="no">csmSplit2</a></b> : real <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#csmSplit3-prop" translate="no">csmSplit3</a></b> : real <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-directionallight.html#lockShadowmapTexels-prop" translate="no">lockShadowmapTexels</a></b> : bool <code class="summary extra" translate="no">(since 6.9)</code></li>
+</ul>
+<!-- $$$DirectionalLight-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The directional light emits light in one direction from an unidentifiable source located infinitely far away. This is similar to the way sunlight works in real life. A directional light has infinite range and does not diminish.</p>
+<p>If <a href="qml-qtquick3d-light.html#castsShadow-prop" translate="no">castsShadow</a> is enabled, shadows will be parallel to the light direction.</p>
+<p>A directional light effectively have no position, so moving it does not have any effect. The light will always be emitted in the direction of the light's Z axis.</p>
+<p>Rotating the light along its X or Y axis will change the direction of the light emission.</p>
+<p>Scaling a directional light will only have an effect in the following cases:</p>
+<ul>
+<li>If Z scale is set to a negative number, the light will be emitted in the opposite direction.</li>
+<li>If the scale of any axis is set to 0, the light will be emitted along the world's Z axis.<div class="admonition note">
+<p><b>Note: </b>Rotating the light will then have no effect.</p>
+</div>
+</li>
+</ul>
+<p>Let's look at a simple example:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+
+     <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+     }
+
+     <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;#40c060&quot;</span>
+             <span class="name">roughness</span>: <span class="number">0.1</span> <span class="comment">// make specular highlight visible</span>
+         }
+     }
+ }
+</pre>
+<p>Here the DirectionalLight uses the default <code translate="no">white</code> color, emitting in the direction of the DirectionalLight node's Z axis.</p>
+<p class="centerAlign"><img src="images/directionallight-1.png" alt="" /></p><p>Rotating 60 degrees around the X axis would lead to the following. Instead of emitting straight in the direction of the Z axis, the light is now pointing 60 degrees &quot;down&quot;:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+     <span class="name">eulerRotation</span>.x: <span class="number">60</span>
+ }
+</pre>
+<p class="centerAlign"><img src="images/directionallight-2.png" alt="" /></p><p>For further usage examples, see <a href="qtquick3d-lights-example.html">Qt Quick 3D - Lights Example</a>.</p>
+<p><b>See also </b><a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>, <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a>, and <a href="quick3d-shadow-mapping.html">Shadow Mapping</a>.</p>
+<!-- @@@DirectionalLight -->
+<h2>Property Documentation</h2>
+<!-- $$$csmBlendRatio -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="csmBlendRatio-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">csmBlendRatio</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines how much of the shadow of any cascade should be blended together with the previous one.</p>
+<p>Range: <code translate="no">[0.0, 1.0]</code></p>
+<p>Default value: <code translate="no">0.05</code></p>
+<p>This property was introduced in Qt 6.8.</p>
+</div></div><!-- @@@csmBlendRatio -->
+<br/>
+<!-- $$$csmNumSplits -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="csmNumSplits-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">csmNumSplits</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the number of splits the frustum should be split by when rendering the shadowmap. No splits means that the shadowmap will be rendered so that it covers the bounding box of all shadow casting and receiving objects.</p>
+<p>Range: <code translate="no">[0, 3]</code></p>
+<p>Default value: <code translate="no">0</code></p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qml-qtquick3d-directionallight.html#csmSplit1-prop" translate="no">csmSplit1</a>, <a href="qml-qtquick3d-directionallight.html#csmSplit2-prop" translate="no">csmSplit2</a>, and <a href="qml-qtquick3d-directionallight.html#csmSplit3-prop" translate="no">csmSplit3</a>.</p>
+</div></div><!-- @@@csmNumSplits -->
+<br/>
+<!-- $$$csmSplit1 -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="csmSplit1-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">csmSplit1</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines where the first cascade of the shadow map split will occur when CSM is active.</p>
+<p>Range: <code translate="no">[0.0, 1.0]</code></p>
+<p>Default value: <code translate="no">0.1</code></p>
+<div class="admonition note">
+<p><b>Note: </b>This property is only used when <a href="qml-qtquick3d-directionallight.html#csmNumSplits-prop" translate="no">DirectionalLight::csmNumSplits</a> is greater than <code translate="no">0</code>.</p>
+</div>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qml-qtquick3d-directionallight.html#csmSplit2-prop" translate="no">csmSplit2</a> and <a href="qml-qtquick3d-directionallight.html#csmSplit3-prop" translate="no">csmSplit3</a>.</p>
+</div></div><!-- @@@csmSplit1 -->
+<br/>
+<!-- $$$csmSplit2 -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="csmSplit2-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">csmSplit2</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines where the second cascade of the shadow map split will occur when CSM is active.</p>
+<p>Range: <code translate="no">[0.0, 1.0]</code></p>
+<p>Default value: <code translate="no">0.25</code></p>
+<div class="admonition note">
+<p><b>Note: </b>This property is only used when <a href="qml-qtquick3d-directionallight.html#csmNumSplits-prop" translate="no">DirectionalLight::csmNumSplits</a> is greater than <code translate="no">1</code>.</p>
+</div>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qml-qtquick3d-directionallight.html#csmSplit1-prop" translate="no">csmSplit1</a> and <a href="qml-qtquick3d-directionallight.html#csmSplit3-prop" translate="no">csmSplit3</a>.</p>
+</div></div><!-- @@@csmSplit2 -->
+<br/>
+<!-- $$$csmSplit3 -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="csmSplit3-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">csmSplit3</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines where the third cascade of the shadow map split will occur when CSM is active.</p>
+<p>Range: <code translate="no">[0.0, 1.0]</code></p>
+<p>Default value: <code translate="no">0.5</code></p>
+<div class="admonition note">
+<p><b>Note: </b>This property is only used when <a href="qml-qtquick3d-directionallight.html#csmNumSplits-prop" translate="no">DirectionalLight::csmNumSplits</a> is greater than <code translate="no">2</code>.</p>
+</div>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qml-qtquick3d-directionallight.html#csmSplit1-prop" translate="no">csmSplit1</a> and <a href="qml-qtquick3d-directionallight.html#csmSplit2-prop" translate="no">csmSplit2</a>.</p>
+</div></div><!-- @@@csmSplit3 -->
+<br/>
+<!-- $$$lockShadowmapTexels -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="lockShadowmapTexels-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">lockShadowmapTexels</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.9]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>When this property is enabled, the shadowmap texels are &quot;locked&quot; in position in the world eliminating shadow edge shimmering at the cost of bigger shadowmap texels. It works by using uniform sized, and texel aligned shadowmaps for each cascade.</p>
+<p>Default value: <code translate="no">false</code></p>
+<p>This property was introduced in Qt 6.9.</p>
+</div></div><!-- @@@lockShadowmapTexels -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

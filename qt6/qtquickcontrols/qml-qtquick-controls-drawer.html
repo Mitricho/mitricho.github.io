@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickdrawer.cpp -->
+  <meta name="description" content="Side panel that can be opened and closed using a swipe gesture.">
+  <title>Drawer QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Drawer</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Drawer QML Type</h1>
+<!-- $$$Drawer-brief -->
+<p>Side panel that can be opened and closed using a swipe gesture. <a href="#details">More...</a></p>
+<!-- @@@Drawer -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-popup.html" translate="no">Popup</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-drawer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-drawer.html#dragMargin-prop" translate="no">dragMargin</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-drawer.html#edge-prop" translate="no">edge</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-drawer.html#interactive-prop" translate="no">interactive</a></b> : bool <code class="summary extra" translate="no">(since QtQuick.Controls 2.2 (Qt 5.9))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-drawer.html#position-prop" translate="no">position</a></b> : real</li>
+</ul>
+<!-- $$$Drawer-description -->
+<h2 id="details">Detailed Description</h2>
+<p>Drawer provides a swipe-based side panel, similar to those often used in touch interfaces to provide a central location for navigation.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-drawer.gif" alt="" /></p><p>Drawer can be positioned at any of the four edges of the content item. The drawer above is positioned against the left edge of the window. The drawer is then opened by <i>&quot;dragging&quot;</i> it out from the left edge of the window.</p>
+<pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">id</span>: <span class="name">window</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="type"><a href="qml-qtquick-controls-drawer.html" translate="no">Drawer</a></span> {
+         <span class="name">id</span>: <span class="name">drawer</span>
+         <span class="name">width</span>: <span class="number">0.66</span> <span class="operator">*</span> <span class="name">window</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">window</span>.<span class="name">height</span>
+
+         <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+             <span class="name">text</span>: <span class="string">&quot;Content goes here!&quot;</span>
+             <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         }
+     }
+ }
+</pre>
+<p>Drawer is a special type of popup that resides at one of the window <a href="qml-qtquick-controls-drawer.html#edge-prop" translate="no">edges</a>. By default, Drawer re-parents itself to the window <code translate="no">overlay</code>, and therefore operates on window coordinates. It is also possible to manually set the <a href="qml-qtquick-controls-popup.html#parent-prop" translate="no">parent</a> to something else to make the drawer operate in a specific coordinate space.</p>
+<p>Drawer can be configured to cover only part of its window edge. The following example illustrates how Drawer can be positioned to appear below a window header:</p>
+<pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">id</span>: <span class="name">window</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="name">header</span>: <span class="name">ToolBar</span> { }
+
+     <span class="type"><a href="qml-qtquick-controls-drawer.html" translate="no">Drawer</a></span> {
+         <span class="name">y</span>: <span class="name">header</span>.<span class="name">height</span>
+         <span class="name">width</span>: <span class="name">window</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.6</span>
+         <span class="name">height</span>: <span class="name">window</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">header</span>.<span class="name">height</span>
+     }
+ }
+</pre>
+<p>The <a href="qml-qtquick-controls-drawer.html#position-prop" translate="no">position</a> property determines how much of the drawer is visible, as a value between <code translate="no">0.0</code> and <code translate="no">1.0</code>. It is not possible to set the x-coordinate (or horizontal margins) of a drawer at the left or right window edge, or the y-coordinate (or vertical margins) of a drawer at the top or bottom window edge.</p>
+<p>In the image above, the application's contents are <i>&quot;pushed&quot;</i> across the screen. This is achieved by applying a translation to the contents:</p>
+<pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">id</span>: <span class="name">window</span>
+     <span class="name">width</span>: <span class="number">200</span>
+     <span class="name">height</span>: <span class="number">228</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="type"><a href="qml-qtquick-controls-drawer.html" translate="no">Drawer</a></span> {
+         <span class="name">id</span>: <span class="name">drawer</span>
+         <span class="name">width</span>: <span class="number">0.66</span> <span class="operator">*</span> <span class="name">window</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">window</span>.<span class="name">height</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">id</span>: <span class="name">content</span>
+
+         <span class="name">text</span>: <span class="string">&quot;Aa&quot;</span>
+         <span class="name">font</span>.pixelSize: <span class="number">96</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Label</span>.<span class="name">AlignVCenter</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Label</span>.<span class="name">AlignHCenter</span>
+
+         <span class="name">transform</span>: <span class="name">Translate</span> {
+             <span class="name">x</span>: <span class="name">drawer</span>.<span class="name">position</span> <span class="operator">*</span> <span class="name">content</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.33</span>
+         }
+     }
+ }
+</pre>
+<p>If you would like the application's contents to stay where they are when the drawer is opened, don't apply a translation.</p>
+<p>Drawer can be configured as a non-closable persistent side panel by making the Drawer <a href="qml-qtquick-controls-popup.html#modal-prop" translate="no">non-modal</a> and <a href="qml-qtquick-controls-drawer.html#interactive-prop" translate="no">non-interactive</a>. See the <a href="qtquickcontrols-gallery-example.html">Gallery</a> example for more details.</p>
+<div class="admonition note">
+<p><b>Note: </b>On some platforms, certain edges may be reserved for system gestures and therefore cannot be used with Drawer. For example, the top and bottom edges may be reserved for system notifications and control centers on Android and iOS.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick-controls-swipeview.html" translate="no">SwipeView</a>, <a href="qtquickcontrols-customize.html#customizing-drawer">Customizing Drawer</a>, <a href="qtquickcontrols-navigation.html">Navigation Controls</a>, and <a href="qtquickcontrols-popups.html">Popup Controls</a>.</p>
+<!-- @@@Drawer -->
+<h2>Property Documentation</h2>
+<!-- $$$dragMargin -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="dragMargin-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">dragMargin</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the distance from the screen edge within which drag actions will open the drawer. Setting the value to <code translate="no">0</code> or less prevents opening the drawer by dragging.</p>
+<p>The default value is <code translate="no">Application.styleHints.startDragDistance</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-drawer.html#interactive-prop" translate="no">interactive</a>.</p>
+</div></div><!-- @@@dragMargin -->
+<br/>
+<!-- $$$edge -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="edge-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">edge</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the edge of the window at which the drawer will open from. The acceptable values are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Qt.TopEdge</code></td><td class="topAlign">The top edge of the window.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.LeftEdge</code></td><td class="topAlign">The left edge of the window (default).</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.RightEdge</code></td><td class="topAlign">The right edge of the window.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.BottomEdge</code></td><td class="topAlign">The bottom edge of the window.</td></tr>
+</table></div>
+</div></div><!-- @@@edge -->
+<br/>
+<!-- $$$interactive -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="interactive-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">interactive</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.2 (Qt 5.9)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the drawer is interactive. A non-interactive drawer does not react to swipes.</p>
+<p>The default value is <code translate="no">true</code>.</p>
+<p>This property was introduced in QtQuick.Controls 2.2 (Qt 5.9).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-drawer.html#dragMargin-prop" translate="no">dragMargin</a>.</p>
+</div></div><!-- @@@interactive -->
+<br/>
+<!-- $$$position -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="position-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">position</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the position of the drawer relative to its final destination. That is, the position will be <code translate="no">0.0</code> when the drawer is fully closed, and <code translate="no">1.0</code> when fully open.</p>
+</div></div><!-- @@@position -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

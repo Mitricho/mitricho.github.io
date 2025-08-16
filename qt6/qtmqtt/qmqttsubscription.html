@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qmqttsubscription.cpp -->
+  <meta name="description" content="The QMqttSubscription class receives notifications from an MQTT broker about a specified topic.">
+  <title>QMqttSubscription Class | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-module.html" translate="no">C++ Classes</a></li>
+<li>QMqttSubscription</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QMqttSubscription Class</h1>
+<!-- $$$QMqttSubscription-brief -->
+<p>The QMqttSubscription class receives notifications from an MQTT broker about a specified topic. <a href="#details">More...</a></p>
+<!-- @@@QMqttSubscription -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QMqttSubscription&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Mqtt)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Mqtt)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += mqtt</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qmqttsubscription-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#SubscriptionState-enum" translate="no">SubscriptionState</a></b> { Unsubscribed, SubscriptionPending, Subscribed, UnsubscriptionPending, Error }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary" translate="no">
+<tr><td class="topAlign"><ul>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#qos-prop" translate="no">qos</a></b> : const quint8</li>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#reason-prop" translate="no">reason</a></b> : const QString</li>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#reasonCode-prop" translate="no">reasonCode</a></b> : const QMqtt::ReasonCode</li>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#sharedSubscription-prop" translate="no">sharedSubscription</a></b> : const bool</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#sharedSubscriptionName-prop" translate="no">sharedSubscriptionName</a></b> : const QString</li>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#state-prop" translate="no">state</a></b> : const SubscriptionState</li>
+<li class="fn" translate="no"><b><a href="qmqttsubscription.html#topic-prop" translate="no">topic</a></b> : const QMqttTopicFilter</li>
+</ul>
+</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#dtor.QMqttSubscription" translate="no">~QMqttSubscription</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#sharedSubscription-prop" translate="no">isSharedSubscription</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint8 </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#qos-prop" translate="no">qos</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#reason-prop" translate="no">reason</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMqtt::ReasonCode </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#reasonCode-prop" translate="no">reasonCode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#sharedSubscriptionName-prop" translate="no">sharedSubscriptionName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMqttSubscription::SubscriptionState </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#state-prop" translate="no">state</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMqttTopicFilter </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#topic-prop" translate="no">topic</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMqttUserProperties </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#userProperties" translate="no">userProperties</a></b>() const</td></tr>
+</table></div>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#unsubscribe" translate="no">unsubscribe</a></b>()</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#messageReceived" translate="no">messageReceived</a></b>(QMqttMessage <i>msg</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#qos-prop" translate="no">qosChanged</a></b>(quint8)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmqttsubscription.html#state-prop" translate="no">stateChanged</a></b>(QMqttSubscription::SubscriptionState <i>state</i>)</td></tr>
+</table></div>
+<!-- $$$QMqttSubscription-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@QMqttSubscription -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$SubscriptionState$$$Unsubscribed$$$SubscriptionPending$$$Subscribed$$$UnsubscriptionPending$$$Error -->
+<h3 class="fn" translate="no" id="SubscriptionState-enum">enum QMqttSubscription::<span class="name">SubscriptionState</span></h3>
+<p>This enum type describes the states a subscription can have.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMqttSubscription::Unsubscribed</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The topic has been unsubscribed from.</td></tr>
+<tr><td class="topAlign"><code translate="no">QMqttSubscription::SubscriptionPending</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">A request for a subscription has been sent, but is has not been confirmed by the broker yet.</td></tr>
+<tr><td class="topAlign"><code translate="no">QMqttSubscription::Subscribed</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">The subscription was successful and messages will be received.</td></tr>
+<tr><td class="topAlign"><code translate="no">QMqttSubscription::UnsubscriptionPending</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">A request to unsubscribe from a topic has been sent, but it has not been confirmed by the broker yet.</td></tr>
+<tr><td class="topAlign"><code translate="no">QMqttSubscription::Error</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">An error occured.</td></tr>
+</table></div>
+<!-- @@@SubscriptionState -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$qos-prop$$$qos$$$qosChangedquint8 -->
+<h3 class="fn" translate="no" id="qos-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">qos</span> : const <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span></h3>
+<p>This property holds the QoS level at which the subscription has been made.</p>
+<p>The QoS level of the subscription specifies the <i>maximum</i> QoS level at which the client will receive messages. The publisher can still send messages at a lower level.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> quint8 </td><td class="memItemRight bottomAlign"><span class="name"><b>qos</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>qosChanged</b></span>(quint8)</td></tr>
+</table></div>
+<!-- @@@qos -->
+<!-- $$$reason-prop$$$reason -->
+<h3 class="fn" translate="no" id="reason-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">reason</span> : const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds the reason string for the subscription.</p>
+<p>A reason string is used by the server to provide additional information about the subscription. It is optional for the server to send it.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>reason</b></span>() const</td></tr>
+</table></div>
+<!-- @@@reason -->
+<!-- $$$reasonCode-prop$$$reasonCode -->
+<h3 class="fn" translate="no" id="reasonCode-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">reasonCode</span> : const <span class="type"><a href="qmqtt.html#ReasonCode-enum" translate="no">QMqtt::ReasonCode</a></span></h3>
+<p>This property holds the reason code for the subscription.</p>
+<p>The reason code specifies the error type if a subscription has failed, or the level of QoS for success.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMqtt::ReasonCode </td><td class="memItemRight bottomAlign"><span class="name"><b>reasonCode</b></span>() const</td></tr>
+</table></div>
+<!-- @@@reasonCode -->
+<!-- $$$sharedSubscription-prop$$$isSharedSubscription -->
+<h3 class="fn" translate="no" id="sharedSubscription-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">sharedSubscription</span> : const <span class="type">bool</span></h3>
+<p>This property holds whether the subscription is shared.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isSharedSubscription</b></span>() const</td></tr>
+</table></div>
+<!-- @@@sharedSubscription -->
+<!-- $$$sharedSubscriptionName-prop$$$sharedSubscriptionName -->
+<h3 class="fn" translate="no" id="sharedSubscriptionName-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">sharedSubscriptionName</span> : const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds the name of the shared subscription.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>sharedSubscriptionName</b></span>() const</td></tr>
+</table></div>
+<!-- @@@sharedSubscriptionName -->
+<!-- $$$state-prop$$$state$$$stateChangedQMqttSubscription::SubscriptionState -->
+<h3 class="fn" translate="no" id="state-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">state</span> : const <span class="type"><a href="qmqttsubscription.html#SubscriptionState-enum" translate="no">SubscriptionState</a></span></h3>
+<p>This property holds the state of the subscription.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMqttSubscription::SubscriptionState </td><td class="memItemRight bottomAlign"><span class="name"><b>state</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>stateChanged</b></span>(QMqttSubscription::SubscriptionState <i>state</i>)</td></tr>
+</table></div>
+<!-- @@@state -->
+<!-- $$$topic-prop$$$topic -->
+<h3 class="fn" translate="no" id="topic-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">topic</span> : const <span class="type"><a href="qmqtttopicfilter.html" translate="no">QMqttTopicFilter</a></span></h3>
+<p>This property holds the topic of the subscription.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMqttTopicFilter </td><td class="memItemRight bottomAlign"><span class="name"><b>topic</b></span>() const</td></tr>
+</table></div>
+<!-- @@@topic -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$~QMqttSubscription[overload1]$$$~QMqttSubscription -->
+<h3 class="fn" translate="no" id="dtor.QMqttSubscription"><code class="details extra" translate="no">[override virtual noexcept]</code> QMqttSubscription::<span class="name">~QMqttSubscription</span>()</h3>
+<p>Deletes a subscription. If the <a href="qmqttsubscription.html#topic-prop" translate="no">topic</a> was not already unsubscribed from, it will be unsubscribed from automatically.</p>
+<!-- @@@~QMqttSubscription -->
+<!-- $$$messageReceived[overload1]$$$messageReceivedQMqttMessage -->
+<h3 class="fn" translate="no" id="messageReceived"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QMqttSubscription::<span class="name">messageReceived</span>(<span class="type"><a href="qmqttmessage.html" translate="no">QMqttMessage</a></span> <i>msg</i>)</h3>
+<p>This signal is emitted when the new message <i translate="no">msg</i> has been received.</p>
+<!-- @@@messageReceived -->
+<!-- $$$unsubscribe[overload1]$$$unsubscribe -->
+<h3 class="fn" translate="no" id="unsubscribe"><code class="details extra" translate="no">[slot]</code> <span class="type">void</span> QMqttSubscription::<span class="name">unsubscribe</span>()</h3>
+<p>Unsubscribes from <a href="qmqttsubscription.html#topic-prop" translate="no">topic</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This might affect all shared pointer instances returned by <a href="qmqttclient.html#subscribe" translate="no">QMqttClient::subscribe</a>().</p>
+</div>
+<!-- @@@unsubscribe -->
+<!-- $$$userProperties[overload1]$$$userProperties -->
+<h3 class="fn" translate="no" id="userProperties"><span class="type"><a href="qmqttuserproperties.html" translate="no">QMqttUserProperties</a></span> QMqttSubscription::<span class="name">userProperties</span>() const</h3>
+<p>Returns the user properties received from the broker when the subscription has been accepted.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function will only provide valid data when the client specifies <a href="qmqttclient.html#ProtocolVersion-enum" translate="no">QMqttClient::MQTT_5_0</a> as <a href="qmqttclient.html#ProtocolVersion-enum" translate="no">QMqttClient::ProtocolVersion</a>.</p>
+</div>
+<!-- @@@userProperties -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- simplecoapclient.qdoc -->
+  <meta name="description" content="Creating an application that communicates with a CoAP server.">
+  <title>Simple CoAP Client | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Simple CoAP Client</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Simple CoAP Client</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2019 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#ifndef OPTIONDIALOG_H</span>
+ <span class="preprocessor">#define OPTIONDIALOG_H</span>
+
+ <span class="preprocessor">#include &lt;QCoapOption&gt;</span>
+ <span class="preprocessor">#include &lt;QDialog&gt;</span>
+
+ <span class="keyword">namespace</span> Ui {
+ <span class="keyword">class</span> OptionDialog;
+ }
+
+ <span class="keyword">class</span> OptionDialog : <span class="keyword">public</span> <span class="type">QDialog</span>
+ {
+     Q_OBJECT
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> OptionDialog(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>options<span class="operator">,</span> <span class="type">QWidget</span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+     <span class="operator">~</span>OptionDialog();
+
+     <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">&gt;</span> options() <span class="keyword">const</span>;
+
+ <span class="keyword">private</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> on_addButton_clicked();
+     <span class="type">void</span> on_clearButton_clicked();
+     <span class="type">void</span> on_removeButton_clicked();
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> fillOptions();
+     <span class="type">void</span> applyOptionValues();
+     <span class="type">void</span> addTableRow(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+
+     Ui<span class="operator">::</span>OptionDialog <span class="operator">*</span>ui;
+     <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapoption.html" translate="no">QCoapOption</a></span><span class="operator">&gt;</span> m_options;
+ };
+
+ <span class="preprocessor">#endif // OPTIONDIALOG_H</span>
+</pre>

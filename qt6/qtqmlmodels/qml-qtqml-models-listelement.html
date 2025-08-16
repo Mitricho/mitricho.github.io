@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qqmllistmodel.cpp -->
+  <meta name="description" content="Defines a data item in a ListModel.">
+  <title>ListElement QML Type | Qt 6.9</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QtQml.Models</a></li>
+<li>ListElement</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#referencing-roles">Referencing Roles</a></li>
+<li class="level2"><a href="#example-usage">Example Usage</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ListElement QML Type</h1>
+<!-- $$$ListElement-brief -->
+<p>Defines a data item in a <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a>. <a href="#details">More...</a></p>
+<!-- @@@ListElement -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQml.Models</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtqml-models-listelement-members.html">List of all members, including inherited members</a></li>
+</ul>
+<!-- $$$ListElement-description -->
+<h2 id="details">Detailed Description</h2>
+<p>List elements are defined inside <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a> definitions, and represent items in a list that will be displayed using <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a> or <a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a> items.</p>
+<p>List elements are defined like other QML elements except that they contain a collection of <i>role</i> definitions instead of properties. Using the same syntax as property definitions, roles both define how the data is accessed and include the data itself.</p>
+<p>The names used for roles must begin with a lower-case letter and should be common to all elements in a given model. Values must be simple constants; either strings (quoted and optionally within a call to <a href="../qtqml/qml-qtqml-qt.html#QT_TR_NOOP-method" translate="no">QT_TR_NOOP</a>(), boolean values (true, false), numbers, or enumeration values (such as AlignText.AlignHCenter).</p>
+<p>Beginning with Qt 5.11 ListElement also allows assigning a function declaration to a role. This allows the definition of ListElements with callable actions.</p>
+<h2 id="referencing-roles">Referencing Roles</h2>
+<p>The role names are used by delegates to obtain data from list elements. Each role name is accessible in the delegate's scope, and refers to the corresponding role in the current element. Where a role name would be ambiguous to use, it can be accessed via the <a href="../qtquick/qml-qtquick-listview.html#model-prop" translate="no">model</a> property (e.g., <code translate="no">model.cost</code> instead of <code translate="no">cost</code>).</p>
+<h2 id="example-usage">Example Usage</h2>
+<p>The following model defines a series of list elements, each of which contain &quot;name&quot; and &quot;cost&quot; roles and their associated values.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a></span> {
+     <span class="name">id</span>: <span class="name">fruitModel</span>
+
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Apple&quot;</span>
+         <span class="name">cost</span>: <span class="number">2.45</span>
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Orange&quot;</span>
+         <span class="name">cost</span>: <span class="number">3.25</span>
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Banana&quot;</span>
+         <span class="name">cost</span>: <span class="number">1.95</span>
+     }
+ }
+</pre>
+<p>The delegate obtains the name and cost for each element by simply referring to <code translate="no">name</code> and <code translate="no">cost</code>:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">model</span>: <span class="name">fruitModel</span>
+     <span class="name">delegate</span>: <span class="name">Row</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">&quot;Fruit: &quot;</span> <span class="operator">+</span> <span class="name">name</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">&quot;Cost: $&quot;</span> <span class="operator">+</span> <span class="name">cost</span> }
+     }
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a>.</p>
+<!-- @@@ListElement -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

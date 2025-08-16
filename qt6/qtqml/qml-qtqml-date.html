@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- date.qdoc -->
+  <meta name="description" content="Provides date functions.">
+  <title>Date QML Type | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qtqml-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Date</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#format-enumeration-values">Format Enumeration Values</a></li>
+<li class="level2"><a href="#further-notes">Further Notes</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Date QML Type</h1>
+<!-- $$$Date-brief -->
+<p>Provides date functions. <a href="#details">More...</a></p>
+<!-- @@@Date -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQml</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtqml-date-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#fromLocaleDateString-method" translate="no">fromLocaleDateString</a></b>(<i>locale</i>, <i>dateString</i>, <i>format</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#fromLocaleString-method" translate="no">fromLocaleString</a></b>(<i>locale</i>, <i>dateTimeString</i>, <i>format</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#fromLocaleTimeString-method" translate="no">fromLocaleTimeString</a></b>(<i>locale</i>, <i>timeString</i>, <i>format</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#timeZoneUpdated-method" translate="no">timeZoneUpdated</a></b>()</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#toLocaleDateString-method" translate="no">toLocaleDateString</a></b>(<i>locale</i>, <i>format</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#toLocaleString-method" translate="no">toLocaleString</a></b>(<i>locale</i>, <i>format</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtqml-date.html#toLocaleTimeString-method" translate="no">toLocaleTimeString</a></b>(<i>locale</i>, <i>format</i>)</li>
+</ul>
+<!-- $$$Date-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The QML Date object extends the <a href="https://tc39.es/ecma262/#sec-date-objects">JS Date object</a> with locale aware functions.</p>
+<p>Functions that accept a <code translate="no">format</code> argument take either Locale.LongFormat, Locale.ShortFormat, Locale.NarrowFormat enumeration values, or a string specifying the format.</p>
+<p>The form of the supported format strings is as described in the documentation of <a href="../qtcore/qdate.html#toString" translate="no">QDate::toString</a>(), <a href="../qtcore/qtime.html#toString" translate="no">QTime::toString</a>() and <a href="../qtcore/qdatetime.html#toString" translate="no">QDateTime::toString</a>().</p>
+<p>If the date is invalid, an empty string is returned.</p>
+<h2 id="format-enumeration-values">Format Enumeration Values</h2>
+<p>Use the enumeration values when you want a format that matches the locale preferences.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td >Locale.LongFormat</td><td >Longer format</td></tr>
+<tr valign="top" class="even"><td >Locale.ShortFormat</td><td >Shorter format</td></tr>
+<tr valign="top" class="odd"><td >Locale.NarrowFormat</td><td >In this context same as Locale.ShortFormat</td></tr>
+</table></div>
+<p>The format that the enumerations represent will depend on your locale, but also the method that the enumeration is used for.</p>
+<p>For example, for the <code translate="no">en_US</code> locale, these format strings are used:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Function</th><th >Locale Enum</th><th >Format String</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qml-qtqml-date.html#fromLocaleDateString-method" translate="no">fromLocaleDateString</a>, <a href="qml-qtqml-date.html#toLocaleDateString-method" translate="no">toLocaleDateString</a></td><td >Locale.LongFormat</td><td ><code translate="no">dddd, MMMM d, yyyy</code></td></tr>
+<tr valign="top" class="even"><td ><a href="qml-qtqml-date.html#fromLocaleDateString-method" translate="no">fromLocaleDateString</a>, <a href="qml-qtqml-date.html#toLocaleDateString-method" translate="no">toLocaleDateString</a></td><td >Locale.ShortFormat</td><td ><code translate="no">M/d/yy</code></td></tr>
+<tr valign="top" class="odd"><td ><a href="qml-qtqml-date.html#fromLocaleTimeString-method" translate="no">fromLocaleTimeString</a>, <a href="qml-qtqml-date.html#toLocaleTimeString-method" translate="no">toLocaleTimeString</a></td><td >Locale.LongFormat</td><td ><code translate="no">h:mm:ss AP t</code></td></tr>
+<tr valign="top" class="even"><td ><a href="qml-qtqml-date.html#fromLocaleTimeString-method" translate="no">fromLocaleTimeString</a>, <a href="qml-qtqml-date.html#toLocaleTimeString-method" translate="no">toLocaleTimeString</a></td><td >Locale.ShortFormat</td><td ><code translate="no">h:mm AP</code></td></tr>
+<tr valign="top" class="odd"><td ><a href="qml-qtqml-date.html#fromLocaleString-method" translate="no">fromLocaleString</a>, <a href="qml-qtqml-date.html#toLocaleString-method" translate="no">toLocaleString</a></td><td >Locale.LongFormat</td><td ><code translate="no">dddd, MMMM d, yyyy h:mm:ss AP t</code></td></tr>
+<tr valign="top" class="even"><td ><a href="qml-qtqml-date.html#fromLocaleString-method" translate="no">fromLocaleString</a>, <a href="qml-qtqml-date.html#toLocaleString-method" translate="no">toLocaleString</a></td><td >Locale.ShortFormat</td><td ><code translate="no">M/d/yy h:mm AP</code></td></tr>
+</table></div>
+<h2 id="further-notes">Further Notes</h2>
+<p>Using the locale-aware functions to perform date or time formatting can result in incorrectly formatted times, due to an inconsistency in specification between Qt and JS. ECMA-262 specifies that historical dates should be intrepreted by projecting the current rules for daylight-saving onto past years, while Qt uses historical data (where available) to determine whether daylight-saving was in effect for a given date. Therefore, constructing a Date value in JS and converting it to a string using the locale-aware functions can yield a result incorrect by one hour, if DST is currently in effect, while it was not for the time specified, or vice versa.</p>
+<p>There are different date formats with different understandings of negative years. Common human language does not have a year 0. The year after 1BC is 1AD. This understanding is reflected when printing or parsing dates in one of the formats not standardized by ECMAScript. That is: toString(), <a href="qml-qtqml-date.html#toLocaleString-method" translate="no">toLocaleString</a>(), toUTCString() and friends. ECMAScript does standardize one format: ISO 8601. This is what you get when you call toISOString(). This format does include a year 0, which is 1BC in other formats. Thus you get different years when printing negative dates with toISOString() and toString().</p>
+<p>When setting the year using the Date constructor or set(UTC)FullYear(), the convention set by ISO 8601 is used and 0 is a valid year. This means negative years set with the constructor or set(UTC)FullYear() are zero-based and thus offset by one year from what is printed with toString() and friends. Parsing the output of any of the to*String() methods will yield the same date value you printed from. Date.parse() will recognize the different formats and their convention on the existence of year 0.</p>
+<p>Note that all this is different from what you get in other JavaScript implementations which usually treat year 0 as valid in all string representations. As the date formats are &quot;implementation-dependent&quot; in the ECMAScript standard, this is still valid, though.</p>
+<p><b>See also </b><a href="qml-qtqml-locale.html" translate="no">Locale</a>.</p>
+<!-- @@@Date -->
+<h2>Method Documentation</h2>
+<!-- $$$fromLocaleDateString[overload1]$$$fromLocaleDateString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="fromLocaleDateString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">fromLocaleDateString</span>(<i>locale</i>, <i>dateString</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the date string <i translate="no">dateString</i> to a <a href="qml-qtqml-date.html" translate="no">Date</a> object using <i translate="no">locale</i> and <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows the current date first being formatted as a date string using the default locale and format, then parsed back again in the same manner:</p>
+<pre class="cpp" translate="no">
+ import QtQml 2.0
+
+ <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> {
+     property <span class="type"><a href="qml-var.html" translate="no">var</a></span> <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>()
+     property <span class="type"><a href="qml-date.html" translate="no">date</a></span> <span class="name">currentDate</span>: new <span class="name">Date</span>()
+     property <span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">dateString</span>
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">dateString</span> <span class="operator">=</span> <span class="name">currentDate</span>.<span class="name">toLocaleDateString</span>();
+         <span class="name">print</span>(<span class="name">Date</span>.<span class="name">fromLocaleDateString</span>(<span class="name">dateString</span>));
+     }
+ }
+</pre>
+</div></div><!-- @@@fromLocaleDateString -->
+<br/>
+<!-- $$$fromLocaleString[overload1]$$$fromLocaleString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="fromLocaleString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">fromLocaleString</span>(<i>locale</i>, <i>dateTimeString</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the datetime string <i translate="no">dateTimeString</i> to a <a href="qml-qtqml-date.html" translate="no">Date</a> object using <i translate="no">locale</i> and <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows a datetime being parsed from a datetime string in a certain format using the default locale:</p>
+<pre class="cpp" translate="no">
+ import QtQml 2.0
+
+ <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> {
+     property <span class="type"><a href="qml-var.html" translate="no">var</a></span> <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>()
+     property <span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">dateTimeString</span>: <span class="string">&quot;Tue 2013-09-17 10:56:06&quot;</span>
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">print</span>(<span class="name">Date</span>.<span class="name">fromLocaleString</span>(<span class="name">locale</span>, <span class="name">dateTimeString</span>, <span class="string">&quot;ddd yyyy-MM-dd hh:mm:ss&quot;</span>));
+     }
+ }
+</pre>
+</div></div><!-- @@@fromLocaleString -->
+<br/>
+<!-- $$$fromLocaleTimeString[overload1]$$$fromLocaleTimeString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="fromLocaleTimeString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">fromLocaleTimeString</span>(<i>locale</i>, <i>timeString</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the time string <i translate="no">timeString</i> to a <a href="qml-qtqml-date.html" translate="no">Date</a> object using <i translate="no">locale</i> and <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows the current time first being formatted as a time string using the default locale and a short format, then parsed back again in the same manner:</p>
+<pre class="cpp" translate="no">
+ import QtQml 2.2
+
+ <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> {
+     property <span class="type"><a href="qml-var.html" translate="no">var</a></span> <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>()
+     property <span class="type"><a href="qml-date.html" translate="no">date</a></span> <span class="name">currentTime</span>: new <span class="name">Date</span>()
+     property <span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">timeString</span>
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">timeString</span> <span class="operator">=</span> <span class="name">currentTime</span>.<span class="name">toLocaleTimeString</span>(<span class="name">locale</span>, <span class="name">Locale</span>.<span class="name">ShortFormat</span>);
+         <span class="name">print</span>(<span class="name">Date</span>.<span class="name">fromLocaleTimeString</span>(<span class="name">locale</span>, <span class="name">timeString</span>, <span class="name">Locale</span>.<span class="name">ShortFormat</span>));
+     }
+ }
+</pre>
+</div></div><!-- @@@fromLocaleTimeString -->
+<br/>
+<!-- $$$timeZoneUpdated[overload1]$$$timeZoneUpdated -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="timeZoneUpdated-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">timeZoneUpdated</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Informs the JS engine that the system's timezone has been changed, which is necessary for the correct manipulation of datetime data.</p>
+<p>JS stores Date objects in UTC time; all access to and from Date components in local time involves the application of the current offset from UTC. If the current offset changes due to the timezone being updated, the JS engine needs to be informed so that it can recalculate the offset.</p>
+<p>This function should be called after the system's timezone has been updated.</p>
+<p>For example, an application that changes the timezone would call timeZoneUpdated() after setting the new time zone:</p>
+<pre class="cpp" translate="no">
+ property string selectedTimeZone
+
+ onSelectedTimeZoneChanged: {
+     MyFunctions<span class="operator">.</span>setSystemTimeZone(selectedTimeZone)
+     Date<span class="operator">.</span>timeZoneUpdated()
+ }
+</pre>
+</div></div><!-- @@@timeZoneUpdated -->
+<br/>
+<!-- $$$toLocaleDateString[overload1]$$$toLocaleDateString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="toLocaleDateString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">toLocaleDateString</span>(<i>locale</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the Date to a string containing the date suitable for the specified <i translate="no">locale</i> in the specified <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows the current date formatted for the German locale:</p>
+<pre class="cpp" translate="no">
+ import QtQuick 2.0
+
+ <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;The date is: &quot;</span> <span class="operator">+</span> new <span class="name">Date</span>().<span class="name">toLocaleDateString</span>(<span class="name">Qt</span>.<span class="name">locale</span>(<span class="string">&quot;de_DE&quot;</span>))
+ }
+</pre>
+</div></div><!-- @@@toLocaleDateString -->
+<br/>
+<!-- $$$toLocaleString[overload1]$$$toLocaleString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="toLocaleString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">toLocaleString</span>(<i>locale</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the Date to a string containing the date and time suitable for the specified <i translate="no">locale</i> in the specified <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows the current date and time formatted for the German locale:</p>
+<pre class="cpp" translate="no">
+ import QtQuick 2.0
+
+ <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;The date is: &quot;</span> <span class="operator">+</span> new <span class="name">Date</span>().<span class="name">toLocaleString</span>(<span class="name">Qt</span>.<span class="name">locale</span>(<span class="string">&quot;de_DE&quot;</span>))
+ }
+</pre>
+</div></div><!-- @@@toLocaleString -->
+<br/>
+<!-- $$$toLocaleTimeString[overload1]$$$toLocaleTimeString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="toLocaleTimeString-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="qml-string.html" translate="no">string</a></span> <span class="name">toLocaleTimeString</span>(<i>locale</i>, <i>format</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Converts the Date to a string containing the time suitable for the specified <i translate="no">locale</i> in the specified <i translate="no">format</i>.</p>
+<p>If <i translate="no">format</i> is not specified, <a href="qml-qtqml-locale.html" translate="no">Locale.LongFormat</a> will be used.</p>
+<p>If <i translate="no">locale</i> is not specified, the default locale will be used.</p>
+<p>The following example shows the current time formatted for the German locale:</p>
+<pre class="cpp" translate="no">
+ import QtQuick 2.0
+
+ <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;The date is: &quot;</span> <span class="operator">+</span> new <span class="name">Date</span>().<span class="name">toLocaleTimeString</span>(<span class="name">Qt</span>.<span class="name">locale</span>(<span class="string">&quot;de_DE&quot;</span>))
+ }
+</pre>
+</div></div><!-- @@@toLocaleTimeString -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- declarative-camera.qdoc -->
+  <meta name="description" content="This Qt Quick based application shows how to use the API to capture a still image or video.">
+  <title>QML Camera Application | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="multimedia-examples.html">Qt Multimedia Examples</a></li>
+<li>QML Camera Application</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#application-structure">Application structure</a></li>
+<li class="level1"><a href="#using-screen-orientation-to-select-layout">Using screen orientation to select layout</a></li>
+<li class="level1"><a href="#controls-for-capturing">Controls for capturing</a></li>
+<li class="level1"><a href="#image-capturing">Image capturing</a></li>
+<li class="level1"><a href="#zoom-control">Zoom control</a></li>
+<li class="level1"><a href="#flash-and-torch-control">Flash and torch control</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML Camera Application</h1>
+<!-- $$$declarative-camera-brief -->
+<p>This Qt Quick based application shows how to use the API to capture a still image or video.</p>
+<!-- @@@declarative-camera -->
+<!-- $$$declarative-camera-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/qml-camera.png" alt="" /></p><p>This example demonstrates how to access camera functions via QML. It shows how to change settings and capture images or video.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="application-structure">Application structure</h4>
+<p>Most of the QML code in this example supports the user interface. Custom types that support the requirements have been implemented using existing Qt Quick controls.</p>
+<h4 id="using-screen-orientation-to-select-layout">Using screen orientation to select layout</h4>
+<p>The orientation and control layout state logic is encapsulated in a separate Item, <code translate="no">controlLayout</code> like so:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         <span class="name">id</span>: <span class="name">controlLayout</span>
+
+         readonly property <span class="type">bool</span> <span class="name">isMobile</span>: <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">===</span> <span class="string">&quot;android&quot;</span> <span class="operator">||</span> <span class="name">Qt</span>.<span class="name">platform</span>.<span class="name">os</span> <span class="operator">===</span> <span class="string">&quot;ios&quot;</span>
+         readonly property <span class="type">bool</span> <span class="name">isLandscape</span>: <span class="name">Screen</span>.<span class="name">desktopAvailableWidth</span> <span class="operator">&gt;=</span> <span class="name">Screen</span>.<span class="name">desktopAvailableHeight</span>
+         property <span class="type">int</span> <span class="name">buttonsWidth</span>: <span class="name">state</span> <span class="operator">===</span> <span class="string">&quot;MobilePortrait&quot;</span> ? <span class="name">Screen</span>.<span class="name">desktopAvailableWidth</span> <span class="operator">/</span> <span class="number">3.4</span> : <span class="number">114</span>
+
+         <span class="name">states</span>: [
+             <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+                 <span class="name">name</span>: <span class="string">&quot;MobileLandscape&quot;</span>
+                 <span class="name">when</span>: <span class="name">controlLayout</span>.<span class="name">isMobile</span> <span class="operator">&amp;&amp;</span> <span class="name">controlLayout</span>.<span class="name">isLandscape</span>
+             },
+             <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+                 <span class="name">name</span>: <span class="string">&quot;MobilePortrait&quot;</span>
+                 <span class="name">when</span>: <span class="name">controlLayout</span>.<span class="name">isMobile</span> <span class="operator">&amp;&amp;</span> !<span class="name">controlLayout</span>.<span class="name">isLandscape</span>
+             },
+             <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+                 <span class="name">name</span>: <span class="string">&quot;Other&quot;</span>
+                 <span class="name">when</span>: !<span class="name">controlLayout</span>.<span class="name">isMobile</span>
+             }
+         ]
+
+         <span class="name">onStateChanged</span>: {
+             <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;State: &quot;</span> <span class="operator">+</span> <span class="name">controlLayout</span>.<span class="name">state</span>)
+         }
+     }
+</pre>
+<p>The <code translate="no">stillControls</code> and <code translate="no">videoControls</code> objects both bind to the <code translate="no">state</code> and <code translate="no">buttonsWidth</code> properties of this Item, as shown in <code translate="no">stillControls</code>:</p>
+<pre class="cpp" translate="no">
+     <span class="type">PhotoCaptureControls</span> {
+         <span class="name">id</span>: <span class="name">stillControls</span>
+         <span class="name">state</span>: <span class="name">controlLayout</span>.<span class="name">state</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">buttonsWidth</span>: <span class="name">controlLayout</span>.<span class="name">buttonsWidth</span>
+         <span class="name">buttonsPanelPortraitHeight</span>: <span class="name">cameraUI</span>.<span class="name">buttonsPanelPortraitHeight</span>
+         <span class="name">buttonsPanelWidth</span>: <span class="name">cameraUI</span>.<span class="name">buttonsPanelLandscapeWidth</span>
+         <span class="name">captureSession</span>: <span class="name">captureSession</span>
+         <span class="name">visible</span>: (<span class="name">cameraUI</span>.<span class="name">state</span> <span class="operator">===</span> <span class="string">&quot;PhotoCapture&quot;</span>)
+         <span class="name">onPreviewSelected</span>: <span class="name">cameraUI</span>.<span class="name">state</span> <span class="operator">=</span> <span class="string">&quot;PhotoPreview&quot;</span>
+         <span class="name">onVideoModeSelected</span>: <span class="name">cameraUI</span>.<span class="name">state</span> <span class="operator">=</span> <span class="string">&quot;VideoCapture&quot;</span>
+         <span class="name">previewAvailable</span>: <span class="name">imageCapture</span>.<span class="name">preview</span>.<span class="name">length</span> <span class="operator">!==</span> <span class="number">0</span>
+     }
+</pre>
+<p>To support debugging, a message about layout state change is logged.</p>
+<p>Here is the portrait layout:</p>
+<p class="centerAlign"><img src="images/qml-declarative-portrait.png" alt="" /></p><p>You can see the <code translate="no">state</code> property is initially set as <code translate="no">PhotoCapture</code>.</p>
+<p>Then the <code translate="no">states</code> themselves are defined like so:</p>
+<pre class="cpp" translate="no">
+     <span class="name">states</span>: [
+         <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+             <span class="name">name</span>: <span class="string">&quot;PhotoCapture&quot;</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-statechangescript.html" translate="no">StateChangeScript</a></span> {
+                 <span class="name">script</span>: {
+                     <span class="name">camera</span>.<span class="name">start</span>()
+                 }
+             }
+         },
+         <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+             <span class="name">name</span>: <span class="string">&quot;PhotoPreview&quot;</span>
+         },
+         <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+             <span class="name">name</span>: <span class="string">&quot;VideoCapture&quot;</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-statechangescript.html" translate="no">StateChangeScript</a></span> {
+                 <span class="name">script</span>: {
+                     <span class="name">camera</span>.<span class="name">start</span>()
+                 }
+             }
+         },
+         <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+             <span class="name">name</span>: <span class="string">&quot;VideoPreview&quot;</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-statechangescript.html" translate="no">StateChangeScript</a></span> {
+                 <span class="name">script</span>: {
+                     <span class="name">camera</span>.<span class="name">stop</span>()
+                 }
+             }
+         }
+     ]
+</pre>
+<h4 id="controls-for-capturing">Controls for capturing</h4>
+<p>Controls for capturing are implemented in <code translate="no">PhotoCaptureControls.qml</code> and VideoCaptureControls.qml. They each are based on a <a href="../qtquick/qml-qtquick-focusscope.html" translate="no">FocusScope</a> that defines common buttons dimensions and margins that are used by the control buttons and then declares the buttons.</p>
+<p>This generates a column on the right hand side of the screen which includes, listed top to bottom, the following controls:</p>
+<div class="multi-column"><div class="doc-column"><ul>
+<li>A <code translate="no">Capture</code> or <code translate="no">Record</code> button, which initiates capturing.</li>
+<li>A <code translate="no">capture properties</code> button that displays the icon of the current white balance mode selected and when pressed uses a pop-up to displays the following option's icons:<ul>
+<li>Flash mode (if available)</li>
+<li>White balance modes</li>
+<li>Exposure compensation</li>
+</ul>
+</li>
+<li>A <code translate="no">View</code> button, once something has been captured.</li>
+<li>A button which displays the currently selected capture device and when pressed provides a list of available devices to switch to, using a pop-up.</li>
+<li>A <code translate="no">Switch To</code> button that displays the alternate capture mode (video or photo) depending on the current active selection and switches the mode when pressed.</li>
+<li>A <code translate="no">Quit</code> button, that exits the application.</li>
+</ul>
+</div><div class="doc-column"><p><img src="images/CaptureControls.png" alt="" /></p>
+</div><div class="doc-column"><p><img src="images/VideoCaptureControls.png" alt="" /></p>
+</div></div><h4 id="image-capturing">Image capturing</h4>
+<p>The button that triggers this is defined in CameraButton.qml: but its interaction with the camera is in the controls types, lets look at PhotoCaptureControls:</p>
+<pre class="cpp" translate="no">
+             <span class="type">CameraButton</span> {
+                 <span class="name">text</span>: <span class="string">&quot;Capture&quot;</span>
+                 <span class="name">implicitWidth</span>: <span class="name">captureControls</span>.<span class="name">buttonsWidth</span>
+                 <span class="name">visible</span>: <span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">imageCapture</span>.<span class="name">readyForCapture</span>
+                 <span class="name">onClicked</span>: <span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">imageCapture</span>.<span class="name">captureToFile</span>(<span class="string">&quot;&quot;</span>)
+             }
+</pre>
+<h4 id="zoom-control">Zoom control</h4>
+<div class="multi-column"><div class="doc-column"><p>Implemented in <code translate="no">ZoomControl.qml</code> the ZoomControl type is based on an Item and creates a bar that represents the zoom level, which can also be dragged. It uses an exponential calculation method to determine the zoom factor given the position of the <code translate="no">grove</code>.</p>
+<p>The bar is only visible if the initialZoom is greater than 1. This means the currently active camera has a zoom function.</p>
+</div><div class="doc-column"><p><img src="images/ZoomControl.png" alt="" /></p>
+</div></div><pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">id</span> : <span class="name">zoomControl</span>
+     property <span class="type">real</span> <span class="name">currentZoom</span> : <span class="number">1</span>
+     property <span class="type">real</span> <span class="name">maximumZoom</span> : <span class="number">1</span>
+     property <span class="type">real</span> <span class="name">minimumZoom</span> : <span class="number">1</span>
+     signal <span class="type">zoomTo</span>(real target)
+
+     <span class="name">visible</span>: <span class="name">zoomControl</span>.<span class="name">maximumZoom</span> <span class="operator">&gt;</span> <span class="name">zoomControl</span>.<span class="name">minimumZoom</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a></span> {
+         <span class="name">id</span> : <span class="name">mouseArea</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         property <span class="type">real</span> <span class="name">initialZoom</span> : <span class="number">0</span>
+         property <span class="type">real</span> <span class="name">initialPos</span> : <span class="number">0</span>
+
+         <span class="name">onPressed</span>: {
+             <span class="name">initialPos</span> <span class="operator">=</span> <span class="name">mouseY</span>
+             <span class="name">initialZoom</span> <span class="operator">=</span> <span class="name">zoomControl</span>.<span class="name">currentZoom</span>
+         }
+
+         <span class="name">onPositionChanged</span>: {
+             <span class="keyword">if</span> (<span class="name">pressed</span>) {
+                 var target = <span class="name">initialZoom</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">pow</span>(<span class="number">5</span>, (<span class="name">initialPos</span><span class="operator">-</span><span class="name">mouseY</span>)<span class="operator">/</span><span class="name">zoomControl</span>.<span class="name">height</span>);
+                 <span class="name">target</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">max</span>(<span class="name">zoomControl</span>.<span class="name">minimumZoom</span>, <span class="name">Math</span>.<span class="name">min</span>(<span class="name">target</span>, <span class="name">zoomControl</span>.<span class="name">maximumZoom</span>))
+                 <span class="name">zoomControl</span>.<span class="name">zoomTo</span>(<span class="name">target</span>)
+             }
+         }
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         <span class="name">id</span> : <span class="name">bar</span>
+         <span class="name">x</span> : <span class="number">16</span>
+         <span class="name">y</span> : <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">4</span>
+         <span class="name">width</span> : <span class="number">24</span>
+         <span class="name">height</span> : <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">2</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+             <span class="name">smooth</span>: <span class="number">true</span>
+             <span class="name">radius</span>: <span class="number">8</span>
+             <span class="name">border</span>.color: <span class="string">&quot;white&quot;</span>
+             <span class="name">border</span>.width: <span class="number">2</span>
+             <span class="name">color</span>: <span class="string">&quot;black&quot;</span>
+             <span class="name">opacity</span>: <span class="number">0.3</span>
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">id</span>: <span class="name">groove</span>
+             <span class="name">x</span> : <span class="number">0</span>
+             <span class="name">y</span> : <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> (<span class="number">1.0</span> <span class="operator">-</span> (<span class="name">zoomControl</span>.<span class="name">currentZoom</span><span class="operator">-</span><span class="name">zoomControl</span>.<span class="name">minimumZoom</span>) <span class="operator">/</span> (<span class="name">zoomControl</span>.<span class="name">maximumZoom</span><span class="operator">-</span><span class="name">zoomControl</span>.<span class="name">minimumZoom</span>))
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">y</span>
+             <span class="name">smooth</span>: <span class="number">true</span>
+             <span class="name">radius</span>: <span class="number">8</span>
+             <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+             <span class="name">opacity</span>: <span class="number">0.5</span>
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+             <span class="name">id</span>: <span class="name">zoomText</span>
+             <span class="type">anchors</span> {
+                 <span class="name">left</span>: <span class="name">bar</span>.<span class="name">right</span>; <span class="name">leftMargin</span>: <span class="number">16</span>
+             }
+             <span class="name">y</span>: <span class="name">Math</span>.<span class="name">min</span>(<span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">height</span>, <span class="name">Math</span>.<span class="name">max</span>(<span class="number">0</span>, <span class="name">groove</span>.<span class="name">y</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>))
+             <span class="name">text</span>: <span class="string">&quot;x&quot;</span> <span class="operator">+</span> <span class="name">Math</span>.<span class="name">round</span>(<span class="name">zoomControl</span>.<span class="name">currentZoom</span> <span class="operator">*</span> <span class="number">100</span>) <span class="operator">/</span> <span class="number">100</span>
+             <span class="name">font</span>.bold: <span class="number">true</span>
+             <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+             <span class="name">style</span>: <span class="name">Text</span>.<span class="name">Raised</span>; <span class="name">styleColor</span>: <span class="string">&quot;black&quot;</span>
+             <span class="name">opacity</span>: <span class="number">0.85</span>
+             <span class="name">font</span>.pixelSize: <span class="number">18</span>
+</pre>
+<p>In PhotoCaptureControls.qml and VideoCaptureControls.qml the signal <code translate="no">zoomTo</code> will set the selected camera's <a href="qml-qtmultimedia-camera.html#zoomFactor-prop" translate="no">zoomFactor</a> property to the calculated <code translate="no">target</code> value, as well as updating the ZoomControl bar.</p>
+<pre class="cpp" translate="no">
+     <span class="type">ZoomControl</span> {
+         <span class="name">x</span> : <span class="number">0</span>
+         <span class="name">y</span> : <span class="number">0</span>
+         <span class="name">width</span> : <span class="number">100</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> (<span class="name">flashControl</span>.<span class="name">visible</span> <span class="operator">*</span> <span class="name">flashControl</span>.<span class="name">height</span>) <span class="operator">-</span>
+                 (<span class="name">captureControls</span>.<span class="name">state</span> <span class="operator">===</span> <span class="string">&quot;MobilePortrait&quot;</span> ? <span class="name">buttonPaneShadow</span>.<span class="name">height</span> : <span class="number">0</span>)
+
+         <span class="name">currentZoom</span>: <span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">camera</span>.<span class="name">zoomFactor</span>
+         <span class="name">maximumZoom</span>: <span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">camera</span>.<span class="name">maximumZoomFactor</span>
+         <span class="name">minimumZoom</span>: <span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">camera</span>.<span class="name">minimumZoomFactor</span>
+         <span class="name">onZoomTo</span>: (<span class="keyword"></span>target) =&gt; <span class="keyword"></span><span class="name">captureControls</span>.<span class="name">captureSession</span>.<span class="name">camera</span>.<span class="name">zoomFactor</span> <span class="operator">=</span> <span class="name">target</span>
+     }
+</pre>
+<h4 id="flash-and-torch-control">Flash and torch control</h4>
+<p class="centerAlign"><img src="images/FlashControls.png" alt="" /></p><p>Defined in <code translate="no">FlashControl.qml</code> this enables flash mode selection and torch functionality to be toggled via a Switch. As with the zoom control, the switches are only visible on top of the preview window if the active device supports these functions.</p>
+<p>Here we check if the functions are supported:</p>
+<pre class="cpp" translate="no">
+     property <span class="type"><a href="qml-qtmultimedia-camera.html" translate="no">Camera</a></span> <span class="name">cameraDevice</span>
+     property <span class="type">bool</span> <span class="name">mIsFlashSupported</span>: (<span class="name">cameraDevice</span> <span class="operator">&amp;&amp;</span> <span class="name">cameraDevice</span>.<span class="name">active</span>) ? <span class="name">cameraDevice</span>.<span class="name">isFlashModeSupported</span>(<span class="name">Camera</span>.<span class="name">FlashOn</span>) : <span class="number">false</span>
+     property <span class="type">bool</span> <span class="name">mIsTorchSupported</span>: (<span class="name">cameraDevice</span> <span class="operator">&amp;&amp;</span> <span class="name">cameraDevice</span>.<span class="name">active</span>) ? <span class="name">cameraDevice</span>.<span class="name">isTorchModeSupported</span>(<span class="name">Camera</span>.<span class="name">TorchOn</span>) : <span class="number">false</span>
+</pre>
+<p>Here we implement the <code translate="no">flashModeControl</code> switch, which also directly controls the Camera device.</p>
+<pre class="cpp" translate="no">
+         <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+             <span class="name">id</span>: <span class="name">flashModeControl</span>
+             <span class="name">visible</span>: <span class="name">flashControl</span>.<span class="name">mIsFlashSupported</span>
+             <span class="name">opacity</span>: <span class="name">checked</span> ? <span class="number">0.75</span> : <span class="number">0.25</span>
+             <span class="name">text</span>: <span class="string">&quot;Flash&quot;</span>
+             <span class="name">contentItem</span>: <span class="name">Text</span> {
+                 <span class="name">text</span>: <span class="name">flashModeControl</span>.<span class="name">text</span>
+                 <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+                 <span class="name">leftPadding</span>: <span class="name">flashModeControl</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">flashModeControl</span>.<span class="name">spacing</span>
+             }
+
+             <span class="name">onPositionChanged</span>: {
+                 <span class="keyword">if</span> (<span class="name">position</span>) {
+                     <span class="keyword">if</span> (<span class="name">torchModeControl</span>.<span class="name">checked</span>)
+                         <span class="name">torchModeControl</span>.<span class="name">toggle</span>();
+                     <span class="name">flashControl</span>.<span class="name">cameraDevice</span>.<span class="name">flashMode</span> <span class="operator">=</span> <span class="name">Camera</span>.<span class="name">FlashOn</span>
+
+                 } <span class="keyword">else</span> {
+                     <span class="name">flashControl</span>.<span class="name">cameraDevice</span>.<span class="name">flashMode</span> <span class="operator">=</span> <span class="name">Camera</span>.<span class="name">FlashOff</span>
+                 }
+             }
+         }
+</pre>
+<p>Torch control is implemented in a similar way.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimedia/declarative-camera?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@declarative-camera -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

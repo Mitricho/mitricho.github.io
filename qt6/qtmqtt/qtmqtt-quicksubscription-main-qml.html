@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- quicksubscription.qdoc -->
+  <meta name="description" content="Use Qt Quick Controls to create an application that can subscribe to MQTT topics.">
+  <title>Qt Quick Subscription | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-examples.html">Qt MQTT Examples</a></li>
+<li>Qt Quick Subscription</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt Quick Subscription</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2017 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ import QtQuick
+ import QtQuick.Window
+ import QtQuick.Controls
+ import QtQuick.Layouts
+
+ <span class="type">Window</span> {
+     <span class="name">visible</span>: <span class="number">true</span>
+     <span class="name">width</span>: <span class="number">640</span>
+     <span class="name">height</span>: <span class="number">480</span>
+     <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Qt Quick Subscription&quot;</span>)
+     <span class="name">id</span>: <span class="name">root</span>
+
+     property <span class="type">var</span> <span class="name">tempSubscription</span>: <span class="number">0</span>
+
+     <span class="type">MqttClient</span> {
+         <span class="name">id</span>: <span class="name">client</span>
+         <span class="name">hostname</span>: <span class="name">hostnameField</span>.<span class="name">text</span>
+         <span class="name">port</span>: <span class="name">portField</span>.<span class="name">text</span>
+     }
+
+     <span class="type">ListModel</span> {
+         <span class="name">id</span>: <span class="name">messageModel</span>
+     }
+
+     <span class="keyword">function</span> <span class="name">addMessage</span>(payload)
+     {
+         <span class="name">messageModel</span>.<span class="name">insert</span>(<span class="number">0</span>, {&quot;payload&quot; : <span class="name">payload</span>})
+
+         <span class="keyword">if</span> (<span class="name">messageModel</span>.<span class="name">count</span> <span class="operator">&gt;=</span> <span class="number">100</span>)
+             <span class="name">messageModel</span>.<span class="name">remove</span>(<span class="number">99</span>)
+     }
+
+     <span class="type">GridLayout</span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">anchors</span>.margins: <span class="number">10</span>
+         <span class="name">columns</span>: <span class="number">2</span>
+
+         <span class="type">Label</span> {
+             <span class="name">text</span>: <span class="string">&quot;Hostname:&quot;</span>
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Disconnected</span>
+         }
+
+         <span class="type">TextField</span> {
+             <span class="name">id</span>: <span class="name">hostnameField</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+             <span class="name">text</span>: <span class="string">&quot;test.mosquitto.org&quot;</span>
+             <span class="name">placeholderText</span>: <span class="string">&quot;&lt;Enter host running MQTT broker&gt;&quot;</span>
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Disconnected</span>
+         }
+
+         <span class="type">Label</span> {
+             <span class="name">text</span>: <span class="string">&quot;Port:&quot;</span>
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Disconnected</span>
+         }
+
+         <span class="type">TextField</span> {
+             <span class="name">id</span>: <span class="name">portField</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+             <span class="name">text</span>: <span class="string">&quot;1883&quot;</span>
+             <span class="name">placeholderText</span>: <span class="string">&quot;&lt;Port&gt;&quot;</span>
+             <span class="name">inputMethodHints</span>: <span class="name">Qt</span>.<span class="name">ImhDigitsOnly</span>
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Disconnected</span>
+         }
+
+         <span class="type">Button</span> {
+             <span class="name">id</span>: <span class="name">connectButton</span>
+             <span class="name">Layout</span>.columnSpan: <span class="number">2</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+             <span class="name">text</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Connected</span> ? <span class="string">&quot;Disconnect&quot;</span> : <span class="string">&quot;Connect&quot;</span>
+             <span class="name">onClicked</span>: {
+                 <span class="keyword">if</span> (<span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Connected</span>) {
+                     <span class="name">client</span>.<span class="name">disconnectFromHost</span>()
+                     <span class="name">messageModel</span>.<span class="name">clear</span>()
+                     <span class="name">root</span>.<span class="name">tempSubscription</span>.<span class="name">destroy</span>()
+                     <span class="name">root</span>.<span class="name">tempSubscription</span> <span class="operator">=</span> <span class="number">0</span>
+                 } <span class="keyword">else</span>
+                     <span class="name">client</span>.<span class="name">connectToHost</span>()
+             }
+         }
+
+         <span class="type">RowLayout</span> {
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Connected</span>
+             <span class="name">Layout</span>.columnSpan: <span class="number">2</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+
+             <span class="type">Label</span> {
+                 <span class="name">text</span>: <span class="string">&quot;Topic:&quot;</span>
+             }
+
+             <span class="type">TextField</span> {
+                 <span class="name">id</span>: <span class="name">subField</span>
+                 <span class="name">placeholderText</span>: <span class="string">&quot;&lt;Subscription topic&gt;&quot;</span>
+                 <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+                 <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">tempSubscription</span> <span class="operator">===</span> <span class="number">0</span>
+             }
+
+             <span class="type">Button</span> {
+                 <span class="name">id</span>: <span class="name">subButton</span>
+                 <span class="name">text</span>: <span class="string">&quot;Subscribe&quot;</span>
+                 <span class="name">visible</span>: <span class="name">root</span>.<span class="name">tempSubscription</span> <span class="operator">===</span> <span class="number">0</span>
+                 <span class="name">onClicked</span>: {
+                     <span class="keyword">if</span> (<span class="name">subField</span>.<span class="name">text</span>.<span class="name">length</span> <span class="operator">===</span> <span class="number">0</span>) {
+                         <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;No topic specified to subscribe to.&quot;</span>)
+                         <span class="keyword">return</span>
+                     }
+                     <span class="name">tempSubscription</span> <span class="operator">=</span> <span class="name">client</span>.<span class="name">subscribe</span>(<span class="name">subField</span>.<span class="name">text</span>)
+                     <span class="name">tempSubscription</span>.<span class="name">messageReceived</span>.<span class="name">connect</span>(<span class="name">addMessage</span>)
+                 }
+             }
+         }
+
+         <span class="type">ListView</span> {
+             <span class="name">id</span>: <span class="name">messageView</span>
+             <span class="name">model</span>: <span class="name">messageModel</span>
+             <span class="name">implicitHeight</span>: <span class="number">300</span>
+             <span class="name">implicitWidth</span>: <span class="number">200</span>
+             <span class="name">Layout</span>.columnSpan: <span class="number">2</span>
+             <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+             <span class="name">clip</span>: <span class="number">true</span>
+             <span class="name">delegate</span>: <span class="name">Rectangle</span> {
+                 <span class="name">id</span>: <span class="name">delegatedRectangle</span>
+                 required property <span class="type">int</span> <span class="name">index</span>
+                 required property <span class="type">string</span> <span class="name">payload</span>
+                 <span class="name">width</span>: <span class="name">ListView</span>.<span class="name">view</span>.<span class="name">width</span>
+                 <span class="name">height</span>: <span class="number">30</span>
+                 <span class="name">color</span>: <span class="name">index</span> <span class="operator">%</span> <span class="number">2</span> ? <span class="string">&quot;#DDDDDD&quot;</span> : <span class="string">&quot;#888888&quot;</span>
+                 <span class="name">radius</span>: <span class="number">5</span>
+                 <span class="type">Text</span> {
+                     <span class="name">text</span>: <span class="name">delegatedRectangle</span>.<span class="name">payload</span>
+                     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                 }
+             }
+         }
+
+         <span class="type">Label</span> {
+             <span class="keyword">function</span> <span class="name">stateToString</span>(value) {
+                 <span class="keyword">if</span> (<span class="name">value</span> <span class="operator">===</span> <span class="number">0</span>)
+                     <span class="keyword">return</span> <span class="string">&quot;Disconnected&quot;</span>
+                 <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">value</span> <span class="operator">===</span> <span class="number">1</span>)
+                     <span class="keyword">return</span> <span class="string">&quot;Connecting&quot;</span>
+                 <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">value</span> <span class="operator">===</span> <span class="number">2</span>)
+                     <span class="keyword">return</span> <span class="string">&quot;Connected&quot;</span>
+                 <span class="keyword">else</span>
+                     <span class="keyword">return</span> <span class="string">&quot;Unknown&quot;</span>
+             }
+
+             <span class="name">Layout</span>.columnSpan: <span class="number">2</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+             <span class="name">color</span>: <span class="string">&quot;#333333&quot;</span>
+             <span class="name">text</span>: <span class="string">&quot;Status:&quot;</span> <span class="operator">+</span> <span class="name">stateToString</span>(<span class="name">client</span>.<span class="name">state</span>) <span class="operator">+</span> <span class="string">&quot;(&quot;</span> <span class="operator">+</span> <span class="name">client</span>.<span class="name">state</span> <span class="operator">+</span> <span class="string">&quot;)&quot;</span>
+             <span class="name">enabled</span>: <span class="name">client</span>.<span class="name">state</span> <span class="operator">===</span> <span class="name">MqttClient</span>.<span class="name">Connected</span>
+         }
+     }
+ }
+</pre>

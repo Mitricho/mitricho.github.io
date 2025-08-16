@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-fusion.qdoc -->
+  <title>Fusion Style | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+<li>Fusion Style</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquickcontrols-basic.html" />
+  <link rel="next" href="qtquickcontrols-imagine.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquickcontrols-basic.html">Basic Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-imagine.html">Imagine Style</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level2"><a href="#customization">Customization</a></li>
+<li class="level1"><a href="#related-information">Related Information</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Fusion Style</h1>
+<!-- $$$qtquickcontrols-fusion.html-description -->
+<div class="descr" id="details">
+<p>The Fusion style is a desktop-oriented style.</p>
+<p>The Fusion style is a platform-agnostic style that offers a desktop-oriented look and feel. It implements the same design language as the <a href="../qtwidgets/gallery.html">Fusion style for Qt Widgets</a>.</p>
+<p>The Fusion style automatically switches dark and light themes according to the system settings. For information on how to set custom theme colors, refer to the <a href="qtquickcontrols-fusion.html#customize-fusion-style">Customization</a> section.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/qtquickcontrols-fusion-light.png" alt="" /></p><p class="figCaption">The light theme of the Fusion style.</p>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-fusion-dark.png" alt="" /></p><p class="figCaption">The dark theme of the Fusion style.</p>
+</td></tr>
+</table></div>
+<p>To run an application with the Fusion style, see <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The Fusion style is not a native desktop style. The style runs on any platform, and looks similar everywhere. Minor differences may occur due to differences in the standard system palettes, available fonts, and font rendering engines.</p>
+</div>
+<h3 id="customization">Customization</h3>
+<span id="customize-fusion-style"></span><p>The Fusion style uses the standard system <a href="../qtquick/qml-qtquick-palette.html" translate="no">Palette</a> to provide colors that match the desktop environment.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-fusion-palettes.png" alt="" /></p><p>You can specify custom palettes for any control, <a href="qml-qtquick-controls-popup.html#palette-prop" translate="no">popup</a>, or <a href="../qtquick/qml-qtquick-window.html#palette-prop" translate="no">application window</a>. Explicit palette attributes are automatically propagated from parent to children, overriding any system defaults for that attribute. In the following example, the window and all three switches appear with a violet highlight color:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick 2.12
+ import QtQuick.Controls 2.12
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="name">palette</span>.highlight: <span class="string">&quot;violet&quot;</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-column.html" translate="no">Column</a></span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type"><a href="qml-qtquick-controls-switch.html" translate="no">Switch</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;First&quot;</span>); <span class="name">checked</span>: <span class="number">true</span> }
+         <span class="type"><a href="qml-qtquick-controls-switch.html" translate="no">Switch</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Second&quot;</span>); <span class="name">checked</span>: <span class="number">true</span> }
+         <span class="type"><a href="qml-qtquick-controls-switch.html" translate="no">Switch</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Third&quot;</span>) }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-fusion-violet.png" alt="" /></p></td></tr>
+</table></div>
+<p><b>See also</b> <a href="qtquickcontrols-basic.html">Basic Style</a>, <a href="qtquickcontrols-material.html">Material Style</a>, <a href="qtquickcontrols-universal.html">Universal Style</a></p>
+<h2 id="related-information">Related Information</h2>
+<ul>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+</ul>
+</div>
+<!-- @@@qtquickcontrols-fusion.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquickcontrols-basic.html">Basic Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-imagine.html">Imagine Style</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

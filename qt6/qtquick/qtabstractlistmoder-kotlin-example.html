@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtabstractlistmodel_kotlin_example.qdoc -->
+  <meta name="description" content="Uses the QtAbstractListModel Android Class to share data between Android code and a QML view.">
+  <title>Exposing QtAbstractListModel to QML | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-for-android.html">Qt Quick for Android</a></li>
+<li>Exposing QtAbstractListModel to QML</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtabstractitemmodel-in-android-studio-projects-example.html" />
+  <link rel="next" href="quick-changes-qt6.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtabstractitemmodel-in-android-studio-projects-example.html">Using QtAbstractItemModel in Android Studio Projects</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="quick-changes-qt6.html">Upgrading from Qt 5</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#running-the-example">Running the example</a></li>
+<li class="level1"><a href="#qml-project">QML project</a></li>
+<li class="level1"><a href="#kotlin-project">Kotlin project</a></li>
+<li class="level2"><a href="#data-model">Data model</a></li>
+<li class="level2"><a href="#main-activity">Main activity</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Exposing QtAbstractListModel to QML</h1>
+<!-- $$$qtabstractlistmoder-kotlin-example.html-description -->
+<div class="descr" id="details">
+<h2 id="overview">Overview</h2>
+<p class="centerAlign"><img src="images/qtabstractlistmodel_portrait.png" alt="" /></p><p>This example consists of two separate projects: A QML project and a Kotlin-based Android project which will host and display the QML content. It shows how to use QtAbstractListModel to share data from the Android side to the QML view which displays the data using a <a href="qml-qtquick-listview.html" translate="no">ListView</a>.</p>
+<h2 id="running-the-example">Running the example</h2>
+<p>To run this example, you need Android Studio and a Qt for Android installation.</p>
+<p>The Qt Gradle Plugin will be used to build the QML project during the Android project build process. For this, the example has some plugin configuration in the app-level build.gradle.kts file which may need to be modified if the plugin cannot, for example, find the Qt kit directory.</p>
+<pre class="cpp" translate="no">
+ QtBuild {
+     // Relative for Qt (Installer or MaintenanceTool) installations.
+     qtPath = file(&quot;../../../../../../../6.9.0&quot;)
+     projectPath = file(&quot;../../qtabstractlistmodel&quot;)
+ }
+</pre>
+<p>For further configuration of the plugin, please refer to the Qt Gradle Plugin documentation.</p>
+<h2 id="qml-project">QML project</h2>
+<p>The QML project is quite simple, it defines a data model as a property of the root object and some UI elements to display the data from that model.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">mainRectangle</span>
+
+     property <span class="type">AbstractItemModel</span> <span class="name">dataModel</span>
+</pre>
+<p>To display the data from the model, a <a href="qml-qtquick-listview.html" translate="no">ListView</a> is created. The <code translate="no">model</code> property is then set to the data model declared earlier.</p>
+<pre class="qml" translate="no">
+     <span class="type"><a href="qml-qtquick-listview.html" translate="no">ListView</a></span> {
+         <span class="name">id</span>: <span class="name">listView</span>
+
+         <span class="name">model</span>: <span class="name">mainRectangle</span>.<span class="name">dataModel</span>
+</pre>
+<p>In order to display the data model, the <a href="qml-qtquick-listview.html" translate="no">ListView</a> needs a delegate which will be instantiated for each item in the data model. In this case, the delegate will be a <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a> that holds two <a href="qml-qtquick-text.html" translate="no">Text</a> elements in a <a href="qml-qtquick-column.html" translate="no">Column</a>, displaying the data from each element in the data model.</p>
+<pre class="qml" translate="no">
+         <span class="name">delegate</span>: <span class="name">Rectangle</span> {
+             required property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">model</span>
+
+             <span class="name">width</span>: <span class="name">listView</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="name">textColumn</span>.<span class="name">height</span> <span class="operator">+</span> (<span class="number">2</span> <span class="operator">*</span> <span class="name">textColumn</span>.<span class="name">spacing</span>)
+             <span class="name">color</span>: <span class="string">&quot;#2CDE85&quot;</span>
+             <span class="name">radius</span>: <span class="number">25</span>
+
+             <span class="type"><a href="qml-qtquick-column.html" translate="no">Column</a></span> {
+                 <span class="name">id</span>: <span class="name">textColumn</span>
+
+                 <span class="name">height</span>: <span class="name">idText</span>.<span class="name">height</span> <span class="operator">+</span> <span class="name">rowText</span>.<span class="name">height</span> <span class="operator">+</span> <span class="name">spacing</span>
+                 <span class="name">spacing</span>: <span class="number">15</span>
+
+                 <span class="type">anchors</span> {
+                     <span class="name">verticalCenter</span>: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+                     <span class="name">left</span>: <span class="name">parent</span>.<span class="name">left</span>
+                     <span class="name">right</span>: <span class="name">parent</span>.<span class="name">right</span>
+                     <span class="name">leftMargin</span>: <span class="number">20</span>
+                     <span class="name">rightMargin</span>: <span class="number">20</span>
+                 }
+
+                 <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+                     <span class="name">id</span>: <span class="name">idText</span>
+
+                     <span class="name">color</span>: <span class="string">&quot;#00414A&quot;</span>
+                     <span class="name">text</span>: <span class="name">model</span>.<span class="name">id</span>
+                     <span class="name">font</span>.pixelSize: <span class="number">36</span>
+                     <span class="name">font</span>.bold: <span class="number">true</span>
+                 }
+
+                 <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+                     <span class="name">id</span>: <span class="name">rowText</span>
+
+                     <span class="name">color</span>: <span class="string">&quot;#00414A&quot;</span>
+                     <span class="name">text</span>: <span class="name">model</span>.<span class="name">row</span>
+                     <span class="name">font</span>.pixelSize: <span class="number">36</span>
+                     <span class="name">font</span>.bold: <span class="number">true</span>
+                 }
+             }
+         }
+</pre>
+<h2 id="kotlin-project">Kotlin project</h2>
+<p>The Android side consists of a single <a href="https://developer.android.com/reference/android/app/Activity">Activity</a> and the definition for the data model used earlier in the QML view.</p>
+<h3 id="data-model">Data model</h3>
+<p>The data model <code translate="no">MyListModel</code> is a child class of QtAbstractListModel, with <code translate="no">ArrayList&lt;String&gt;</code> as the internal storage system for data. In the initializer block of <code translate="no">MyListModel</code>, it generates some random data for the list.</p>
+<pre class="cpp" translate="no">
+ class MyListModel : QtAbstractListModel() {
+     private val m_dataList = ArrayList&lt;String&gt;()
+
+     init {
+         synchronized(this) {
+             for (row in 0..4) {
+                 m_dataList.add(UUID.randomUUID().toString())
+             }
+         }
+     }
+</pre>
+<p>Each item in the model has a set of data elements associated with it, each with its own role. Custom implementations of QtAbstractItemModel must define a custom role for each data element. Each role has an associated <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/">Int</a> value, which is used when retrieving the data, and a <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/">String</a> value, which specifies the name of the data element when used from QML.</p>
+<pre class="cpp" translate="no">
+     @Synchronized
+     override fun roleNames(): HashMap&lt;Int, String&gt; {
+         val m_roles = HashMap&lt;Int, String&gt;()
+         m_roles[DataRole.UUID.value()] = &quot;id&quot;
+         m_roles[DataRole.Row.value()] = &quot;row&quot;
+         return m_roles
+     }
+</pre>
+<p>While the <code translate="no">Int</code> values in the <code translate="no">&quot;roleNames()&quot;</code> method may be hard-coded, this example specifies a custom enum class <code translate="no">DataRole</code> within <code translate="no">MyListModel</code>, which is used when referring to these values. In this example, we define two roles: UUID and Row.</p>
+<pre class="cpp" translate="no">
+     private enum class DataRole(val m_value: Int) {
+         UUID(0),
+         Row(1);
+
+         fun value(): Int {
+             return m_value
+         }
+
+         companion object {
+             fun valueOf(value: Int): DataRole? {
+                 val values = entries.toTypedArray()
+                 if (0 &lt;= value &amp;&amp; value &lt; values.size) return values[value]
+                 return null
+             }
+         }
+     }
+</pre>
+<p>When it comes to returning data from the data model, the class must override the <code translate="no">&quot;QtAbstractListModel::data()&quot;</code> method. This method takes two parameters: QtModelIndex and <code translate="no">Int</code>, which refer to the index and role of the data element, respectively.</p>
+<p>In <code translate="no">&quot;MyDataModel::data()&quot;</code>, the <code translate="no">UUID</code> role returns the data from the given index in the internal data, while the <code translate="no">Row</code> role returns the row of the requested element.</p>
+<div class="admonition note">
+<p><b>Note: </b>This method, along with some others, is annotated with a @Synchronized tag. This is due to calls to these methods originating from the Qt thread and accessing the underlying data possibly at the same time as requests from the Android thread via the <code translate="no">&quot;addRow()&quot;</code> and <code translate="no">&quot;removeRow()&quot;</code> methods.</p>
+</div>
+<pre class="cpp" translate="no">
+     @Synchronized
+     override fun data(qtModelIndex: QtModelIndex, role: Int): Any {
+         return when (DataRole.valueOf(role)) {
+             DataRole.UUID -&gt; &quot;UUID: &quot; + m_dataList[qtModelIndex.row()]
+             DataRole.Row -&gt; &quot;Row: &quot; + qtModelIndex.row()
+             else -&gt; &quot;&quot;
+         }
+     }
+</pre>
+<p>To allow outside actors to manipulate the QtAbstractItemModel, the example adds two additional methods to <code translate="no">MyDataModel</code>. To add data to the row, it has the <code translate="no">&quot;addRow()&quot;</code> method; to remove data, there is the <code translate="no">&quot;removeRow()&quot;</code> method. These are used from the main activity.</p>
+<pre class="cpp" translate="no">
+     @Synchronized
+     fun addRow() {
+         beginInsertRows(QtModelIndex(), m_dataList.size, m_dataList.size)
+         m_dataList.add(UUID.randomUUID().toString())
+         endInsertRows()
+     }
+     @Synchronized
+     fun removeRow() {
+         if (!m_dataList.isEmpty()) {
+             beginRemoveRows(QtModelIndex(), m_dataList.size - 1, m_dataList.size - 1)
+             m_dataList.removeAt(m_dataList.size - 1)
+             endRemoveRows()
+         }
+     }
+</pre>
+<h3 id="main-activity">Main activity</h3>
+<p>The <code translate="no">MainActivity</code> class is a simple Kotlin-based Activity but also implements the interface QtQmlStatusChangeListener to listen to QML loading status events. It also stores the <code translate="no">QtQuickViewContent</code> object for the main view of the QML application and an instance of the data model detailed above.</p>
+<pre class="cpp" translate="no">
+ class MainActivity : AppCompatActivity(), QtQmlStatusChangeListener {
+     private val m_mainQmlContent: Main = Main()
+     private val m_listModel = MyListModel()
+</pre>
+<p>When creating the main Activity of the application, the example first creates a <a href="qtquickview-android-class.html#qtquickview">QtQuickView</a> and places it into the view hierarchy.</p>
+<pre class="cpp" translate="no">
+         val qtQuickView: QtQuickView = QtQuickView(this)
+
+         val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
+             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+         )
+         val qmlFrameLayout: FrameLayout = findViewById&lt;FrameLayout&gt;(R.id.qmlFrame)
+         qmlFrameLayout.addView(qtQuickView, params)
+</pre>
+<p>After adding the QtQuickView into the UI, the example finds the buttons that are used to manipulate the data model and sets some click listeners to call <code translate="no">addRow()</code> and <code translate="no">removeRow()</code> on the member data model.</p>
+<pre class="cpp" translate="no">
+         val addRowAtEndButton: Button = findViewById&lt;Button&gt;(R.id.addRow)
+         val removeRowFromEndButton: Button = findViewById&lt;Button&gt;(R.id.removeRow)
+         addRowAtEndButton.setOnClickListener { _: View? -&gt;
+             m_listModel.addRow()
+         }
+         removeRowFromEndButton.setOnClickListener { _: View? -&gt;
+             m_listModel.removeRow()
+         }
+</pre>
+<p>Once the UI setup and listeners are done, the QML component can be prepared and loaded. The example sets the <code translate="no">MainActivity</code> as a listener for the status change signal of the QML component and tells <code translate="no">QtQuickView</code> to load the QML component.</p>
+<pre class="cpp" translate="no">
+         m_mainQmlContent.setStatusChangeListener(this)
+         qtQuickView.loadContent(m_mainQmlContent)
+</pre>
+<p>Finally, once the QML component is successfully loaded, the example assigns the value of the MyDataModel instance into the <code translate="no">dataModel</code> property in the QML component.</p>
+<pre class="cpp" translate="no">
+     override fun onStatusChanged(qtQmlStatus: QtQmlStatus) {
+         if (qtQmlStatus === QtQmlStatus.READY) {
+             m_mainQmlContent.setDataModel(m_listModel)
+         }
+     }
+</pre>
+</div>
+<!-- @@@qtabstractlistmoder-kotlin-example.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtabstractitemmodel-in-android-studio-projects-example.html">Using QtAbstractItemModel in Android Studio Projects</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="quick-changes-qt6.html">Upgrading from Qt 5</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

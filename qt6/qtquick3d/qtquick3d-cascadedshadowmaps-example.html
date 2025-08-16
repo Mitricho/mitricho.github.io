@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cascadedshadowmaps.qdoc -->
+  <meta name="description" content="Demonstrates cascaded shadow maps.">
+  <title>Qt Quick 3D - Cascaded Shadow Maps Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Cascaded Shadow Maps Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Cascaded Shadow Maps Example</h1>
+<!-- $$$cascadedshadowmaps-brief -->
+<p>Demonstrates cascaded shadow maps.</p>
+<!-- @@@cascadedshadowmaps -->
+<!-- $$$cascadedshadowmaps-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/cascadedshadowmaps.webp" alt="" /></p><p>This example demonstrates how to use a <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> with cascaded shadow maps.</p>
+<p>Let's have a look at the scene's QML code:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">id</span>: <span class="name">view</span>
+     <span class="name">x</span>: <span class="name">settings</span>.<span class="name">viewX</span>
+     <span class="name">y</span>: <span class="number">0</span>
+     <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">settings</span>.<span class="name">viewX</span>
+     <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+     <span class="name">camera</span>: <span class="name">camera</span>
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">clearColor</span>: <span class="string">&quot;lightblue&quot;</span>
+         <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+         <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">MSAA</span>
+         <span class="name">antialiasingQuality</span>: <span class="name">SceneEnvironment</span>.<span class="name">High</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+         <span class="name">id</span>: <span class="name">camera</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">458</span>, <span class="number">300</span>, <span class="number">515</span>)
+         <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">14</span>, <span class="number">19</span>, <span class="number">0</span>)
+         <span class="name">clipFar</span>: <span class="name">settings</span>.<span class="name">clipFar</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         <span class="name">visible</span>: <span class="number">true</span>
+         <span class="name">castsShadow</span>: <span class="number">true</span>
+         <span class="name">shadowFactor</span>: <span class="name">settings</span>.<span class="name">shadowFactor</span>
+         <span class="name">eulerRotation</span>: <span class="name">settings</span>.<span class="name">eulerRotation</span>
+         <span class="name">csmSplit1</span>: <span class="name">settings</span>.<span class="name">csmSplit1</span>
+         <span class="name">csmSplit2</span>: <span class="name">settings</span>.<span class="name">csmSplit2</span>
+         <span class="name">csmSplit3</span>: <span class="name">settings</span>.<span class="name">csmSplit3</span>
+         <span class="name">csmNumSplits</span>: <span class="name">settings</span>.<span class="name">csmNumSplits</span>
+         <span class="name">shadowMapQuality</span>: <span class="name">settings</span>.<span class="name">shadowMapQuality</span>
+         <span class="name">csmBlendRatio</span>: <span class="name">settings</span>.<span class="name">csmBlendRatio</span>
+         <span class="name">shadowBias</span>: <span class="name">settings</span>.<span class="name">shadowBias</span>
+         <span class="name">pcfFactor</span>: <span class="name">settings</span>.<span class="name">pcfFactor</span>
+         <span class="name">softShadowQuality</span>: <span class="name">settings</span>.<span class="name">softShadowQuality</span>
+         <span class="name">shadowMapFar</span>: <span class="name">settings</span>.<span class="name">shadowMapFar</span>
+         <span class="name">lockShadowmapTexels</span>: <span class="name">settings</span>.<span class="name">lockShadowmapTexels</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">id</span>: <span class="name">ground</span>
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">25</span>, <span class="number">0.01</span>, <span class="number">135</span>)
+         <span class="name">z</span>: -<span class="number">5500</span>
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;gray&quot;</span>
+         }
+         <span class="name">castsShadows</span>: <span class="number">false</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+         <span class="name">id</span>: <span class="name">shapeSpawner</span>
+         <span class="name">Component</span>.onCompleted: {
+             var conesAndCylinderTrio = <span class="name">Qt</span>.<span class="name">createComponent</span>(<span class="string">&quot;ConesAndCylinderTrio.qml&quot;</span>)
+             var z_pos = <span class="number">0</span>
+             <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="number">25</span>; i++) {
+                 <span class="name">conesAndCylinderTrio</span>.<span class="name">incubateObject</span>(<span class="name">shapeSpawner</span>, {
+                                                     &quot;z_positions&quot;: [
+                                                             <span class="name">z_pos</span>,
+                                                             <span class="name">z_pos</span> <span class="operator">-</span> <span class="number">125</span>,
+                                                             <span class="name">z_pos</span> <span class="operator">-</span> <span class="number">250</span>
+                                                         ]})
+                 <span class="name">z_pos</span> <span class="operator">-=</span> <span class="number">450</span>
+             }
+         }
+     }
+ }
+</pre>
+<p>The scene consists of a <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a>, a <a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a>, a floor <a href="qml-qtquick3d-model.html" translate="no">Model</a>, and a long array of cones and cylinder <a href="qml-qtquick3d-model.html" translate="no">Model</a>s. This long array is laid out like this to show how cascades can help increase the graphical fidelity of the scene. With just one shadow map it will cause artifacts but with cascades these can be remedied. The <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> contains a lot of properties that are tweakable through a settings pane in the UI.</p>
+<p>The reader is encouraged to see the <a href="quick3d-shadow-mapping.html">Shadow Mapping</a> article for more information on the different properties and to try out the example to see how they interact.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/cascadedshadowmaps?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@cascadedshadowmaps -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

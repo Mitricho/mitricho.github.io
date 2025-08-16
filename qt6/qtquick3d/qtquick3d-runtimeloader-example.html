@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-runtimeloader.qdoc -->
+  <meta name="description" content="Demonstrates how assets can be loaded at runtime.">
+  <title>Qt Quick 3D - RuntimeLoader Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - RuntimeLoader Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level2"><a href="#error-handling">Error handling</a></li>
+<li class="level2"><a href="#moving-the-camera">Moving the camera</a></li>
+<li class="level2"><a href="#instancing">Instancing</a></li>
+<li class="level2"><a href="#material-overrides">Material Overrides</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - RuntimeLoader Example</h1>
+<!-- $$$runtimeloader-brief -->
+<p>Demonstrates how assets can be loaded at runtime.</p>
+<!-- @@@runtimeloader -->
+<!-- $$$runtimeloader-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/runtimeloader-example.jpg" alt="" /></p><p>This example shows how to implement a simple asset viewer using the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a>.</p>
+<p>See the <a href="qtquick3d-intro-example.html">introductory example documentation</a> for an explanation of how to set up a basic scene. Once we have the scene set up we can add the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> item:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a></span> {
+     <span class="name">id</span>: <span class="name">importNode</span>
+     <span class="name">source</span>: <span class="name">windowRoot</span>.<span class="name">importUrl</span>
+     <span class="name">instancing</span>: <span class="name">instancingButton</span>.<span class="name">checked</span> ? <span class="name">instancing</span> : <span class="number">null</span>
+     <span class="name">onBoundsChanged</span>: <span class="name">helper</span>.<span class="name">updateBounds</span>(<span class="name">bounds</span>)
+ }
+</pre>
+<p>Loading an asset is done by setting the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a>'s <a href="qml-qtquick3d-assetutils-runtimeloader.html#source-prop" translate="no">source</a> property. In this example the <a href="qml-qtquick3d-assetutils-runtimeloader.html#source-prop" translate="no">source</a> is bound to the <code translate="no">importUrl</code> which will be changed when the user selects a file in the file-dialog.</p>
+<p>Assuming the asset can be loaded, the content will be created as children of the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> <code translate="no">importNode</code>. Note that the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> is a <a href="qml-qtquick3d-node.html" translate="no">Node</a> type, and since it is also the root node for the loaded asset, any transforms applied to the <code translate="no">importNode</code> will also affect its children.</p>
+<h5 id="error-handling">Error handling</h5>
+<p>If an asset fails to load then the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a>'s <a href="qml-qtquick3d-assetutils-runtimeloader.html#status-prop" translate="no">status</a> property will be set to <code translate="no">Error</code>. The <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a>'s <a href="qml-qtquick3d-assetutils-runtimeloader.html#errorString-prop" translate="no">errorString</a> can then be queried to get a more detailed description of the error.</p>
+<p>In this example we will be displaying the error message in a red message box in the middle of the screen, like this:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">messageBox</span>
+     <span class="name">visible</span>: <span class="name">importNode</span>.<span class="name">status</span> <span class="operator">!==</span> <span class="name">RuntimeLoader</span>.<span class="name">Success</span>
+     <span class="name">color</span>: <span class="string">&quot;red&quot;</span>
+     <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.8</span>
+     <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.8</span>
+     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+     <span class="name">radius</span>: <span class="name">Math</span>.<span class="name">min</span>(<span class="name">width</span>, <span class="name">height</span>) <span class="operator">/</span> <span class="number">10</span>
+     <span class="name">opacity</span>: <span class="number">0.6</span>
+     <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">font</span>.pixelSize: <span class="number">36</span>
+         <span class="name">text</span>: <span class="string">&quot;Status: &quot;</span> <span class="operator">+</span> <span class="name">importNode</span>.<span class="name">errorString</span> <span class="operator">+</span> <span class="string">&quot;\nPress \&quot;Import...\&quot; to import a model&quot;</span>
+         <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+         <span class="name">wrapMode</span>: <span class="name">Text</span>.<span class="name">Wrap</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+ }
+</pre>
+<h5 id="moving-the-camera">Moving the camera</h5>
+<p>To make it possible to change the position of the camera we use the <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a> from the <a href="qtquick3d-helpers-qmlmodule.html" translate="no">Helpers</a> module and bind it to our camera, like this:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-helpers-orbitcameracontroller.html" translate="no">OrbitCameraController</a></span> {
+     <span class="name">id</span>: <span class="name">orbitController</span>
+     <span class="name">origin</span>: <span class="name">orbitCameraNode</span>
+     <span class="name">camera</span>: <span class="name">orbitCamera</span>
+     <span class="name">enabled</span>: <span class="name">helper</span>.<span class="name">orbitControllerEnabled</span>
+ }
+ <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+     <span class="name">id</span>: <span class="name">wasdController</span>
+     <span class="name">controlledObject</span>: <span class="name">wasdCamera</span>
+     <span class="name">enabled</span>: !<span class="name">helper</span>.<span class="name">orbitControllerEnabled</span>
+ }
+</pre>
+<p>In addition to the <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a>, the example uses a <a href="../qtquick/qtquick-qmlmodule.html" translate="no">WheelHandler</a> and a <a href="../qtquick/qtquick-qmlmodule.html" translate="no">PointerHandler</a> to scale and rotate the model.</p>
+<h5 id="instancing">Instancing</h5>
+<p>The <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> item can also be used in combination with instancing, as shown here:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-helpers-randominstancing.html" translate="no">RandomInstancing</a></span> {
+     <span class="name">id</span>: <span class="name">instancing</span>
+     <span class="name">instanceCount</span>: <span class="number">30</span>
+     <span class="name">position</span>: <span class="name">InstanceRange</span> {
+         property <span class="type">alias</span> <span class="name">boundsDiameter</span>: <span class="name">helper</span>.<span class="name">boundsDiameter</span>
+         <span class="name">from</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>, -<span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>, -<span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>);
+         <span class="name">to</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>, <span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>, <span class="number">3</span><span class="operator">*</span><span class="name">boundsDiameter</span>)
+     }
+     <span class="name">color</span>: <span class="name">InstanceRange</span> { <span class="name">from</span>: <span class="string">&quot;black&quot;</span>; <span class="name">to</span>: <span class="string">&quot;white&quot;</span> }
+ }
+</pre>
+<p><a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> does not inherit from Model, but it has its own <a href="qml-qtquick3d-assetutils-runtimeloader.html#instancing-prop" translate="no">instancing</a> property which allows us to instance a complex imported asset as if it were a simple model. In this case we use the <a href="qml-qtquick3d-helpers-randominstancing.html" translate="no">RandomInstancing</a> component from the <a href="qtquick3d-helpers-qmlmodule.html" translate="no">Helpers</a> module to randomly position items within a fixed area and with a random color.</p>
+<h5 id="material-overrides">Material Overrides</h5>
+<p>Sometimes when loading an asset, it is possible that it may not look as expected. The <a href="qml-qtquick3d-debugsettings.html#materialOverride-prop" translate="no">materialOverride</a> property will change how each material in the scene is rendered to display a particular contribution to the overall rendering. This can be useful for determining what exactly about the asset is not correct so that the original asset can be adjusted if necessary.</p>
+<p class="centerAlign"><img src="images/runtimeloader-normals.jpg" alt="" /></p><p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/runtimeloader?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@runtimeloader -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtmultimedia-building-FFmpeg-windows.qdoc -->
+  <meta name="description" content="This document describes how to build FFmpeg from source code.">
+  <title>Building FFmpeg from source on Windows | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-building-from-source.html">Building Qt Multimedia from sources</a></li>
+<li><a href="qtmultimedia-building-ffmpeg.html">Building FFmpeg from source</a></li>
+<li>Building FFmpeg from source on Windows</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtmultimedia-building-ffmpeg.html" />
+  <link rel="next" href="qtmultimedia-building-ffmpeg-macos.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtmultimedia-building-ffmpeg.html">Building FFmpeg</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg-macos.html">Building FFmpeg on macOS</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#get-the-ffmpeg-source-code">Get the FFmpeg source code</a></li>
+<li class="level1"><a href="#prerequisites">Prerequisites</a></li>
+<li class="level2"><a href="#installing-msys2">Installing MSYS2</a></li>
+<li class="level2"><a href="#preparing-the-msys-environment-for-building-with-mingw-w64">Preparing the MSYS environment for building with Mingw-w64</a></li>
+<li class="level2"><a href="#preparing-the-msys2-environment-for-the-msvc">Preparing the MSYS2 environment for the MSVC</a></li>
+<li class="level1"><a href="#configuring-and-building-ffmpeg">Configuring and building FFmpeg</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Building FFmpeg from source on Windows</h1>
+<!-- $$$qtmultimedia-building-ffmpeg-windows.html-description -->
+<div class="descr" id="details">
+<p>This page explains how to configure and build <a href="qtmultimedia-attribution-ffmpeg.html#ffmpeg">FFmpeg</a> on Windows. This involves:</p>
+<ul>
+<li>Get the FFmpeg source code.</li>
+<li>Install the required dependencies.</li>
+<li>Configure FFmpeg from the command line for MSVC or for MinGW-w64.</li>
+<li>Build the development libraries.</li>
+</ul>
+<h2 id="get-the-ffmpeg-source-code">Get the FFmpeg source code</h2>
+<p>You can get the FFmpeg source code in these ways:</p>
+<ul>
+<li>Download from the <a href="https://ffmpeg.org/download.html#get-sources">FFmpeg download page</a>.</li>
+<li>Clone from git. For example, this command clones the version 7.1 of the FFmpeg sources to <code translate="no">C:\FFmpeg\ffmpeg</code>.<pre class="cpp plain" translate="no">
+ C:\FFmpeg&gt; git clone --branch n7.1 https://git.ffmpeg.org/ffmpeg.git ffmpeg
+</pre>
+</li>
+</ul>
+<p>It is recommended to use the same FFmpeg version as documented in the <a href="qtmultimedia-index.html">Qt Multimedia main page</a>.</p>
+<p>The following paragraphs assumes that you store the FFmpeg source code under <code translate="no">C:\FFmpeg\ffmpeg</code>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To build FFmpeg, these tools and packages are required:</p>
+<ul>
+<li>Microsoft Visual Studio compiler (MSVC) or MinGW-w64.</li>
+<li><a href="https://www.msys2.org/">MSYS2</a>.</li>
+<li>MSYS packages (perl, make, yasm, and diffutils).</li>
+</ul>
+<p>See Qt for Windows - Building from Source for recommended compilers that are also supported by Qt. You can install a supported MinGW-w64 compiler using the Qt Online Installer.</p>
+<h3 id="installing-msys2">Installing MSYS2</h3>
+<p>To install MSYS2, you can:</p>
+<ul>
+<li>Use the <a href="https://www.msys2.org/#installation">MSYS2 installer</a>.</li>
+<li>Use the <a href="https://learn.microsoft.com/en-us/windows/package-manager/">winget</a> package manager.<pre class="cpp plain" translate="no">
+ winget install msys2.msys2
+</pre>
+</li>
+</ul>
+<p>The instructions in this document rely on MSYS2 installed to <code translate="no">C:\msys64\</code>, which is the default path when using <code translate="no">winget</code>.</p>
+<p>Once installed, start the <code translate="no">MSYS2 MINGW64</code> shell from the Windows start menu, and use it to install the necessary libraries.</p>
+<pre class="cpp plain" translate="no">
+ pacman -S --noconfirm perl make yasm diffutils
+</pre>
+<p>Before building FFmpeg, MSYS2 must have a compiler in its <code translate="no">PATH</code>. This is done differently for MSVC and MinGW-w64. Prepare the MSYS2 environment for the compiler you use.</p>
+<h3 id="preparing-the-msys-environment-for-building-with-mingw-w64">Preparing the MSYS environment for building with Mingw-w64</h3>
+<p>For MinGW-w64 installed under <code translate="no">C:\Qt\Tools\mingw1310_64\bin</code>, you can add it to the <code translate="no">PATH</code> by exporting the PATH environment variable.</p>
+<pre class="cpp plain" translate="no">
+ $ export PATH=/c/Qt/Tools/mingw1310_64/bin:$PATH
+</pre>
+<p>Note that it is also possible to install MinGW-w64 using pacman.</p>
+<pre class="cpp plain" translate="no">
+ $ pacman -S mingw-w64-x86_64-toolchain
+</pre>
+<h3 id="preparing-the-msys2-environment-for-the-msvc">Preparing the MSYS2 environment for the MSVC</h3>
+<p>Building FFmpeg with the MSVC compiler under MSYS2 requires that MSYS2 is started with the appropriate C and C++ compiler in the path. For a 64 bit build, you can:</p>
+<ul>
+<li>Start <b>Visual Studio x64 Native Tools Command Prompt</b> from the Windows start menu.</li>
+<li>Enable the MSVC compiler from an existing command prompt by running:<pre class="cpp plain" translate="no">
+ &quot;C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat&quot; amd64
+</pre>
+</li>
+</ul>
+<p>From this command prompt, launch the MSYS2 shell with the options to select the MINGW64 environment and enable path inheritance.</p>
+<pre class="cpp plain" translate="no">
+ C:\msys64\msys2_shell.cmd -mingw64 -full-path
+</pre>
+<p>This launches a new shell window where you can verify that the MSVC compiler is available.</p>
+<pre class="cpp plain" translate="no">
+ $ which cl.exe
+</pre>
+<h2 id="configuring-and-building-ffmpeg">Configuring and building FFmpeg</h2>
+<p>From the prepared MSYS2 shell, navigate to the <code translate="no">/c/FFmpeg</code> directory. In this directory, create a <code translate="no">build</code> directory which will contain the FFmpeg build artifacts, and navigate into it.</p>
+<pre class="cpp plain" translate="no">
+ $ cd /c/FFmpeg/build
+</pre>
+<p>To configure FFmpeg for building with MinGW-w64, run:</p>
+<pre class="cpp plain" translate="no">
+ $ ../ffmpeg/configure --prefix=../install --disable-doc --enable-network --enable-shared
+</pre>
+<p>To configure FFmpeg for building with MSVC, specify the toolchain in addition to the other command line options:</p>
+<pre class="cpp plain" translate="no">
+ $ ../ffmpeg/configure --prefix=../install --disable-doc --enable-network --enable-shared --toolchain=msvc
+</pre>
+<p>The <code translate="no">--prefix</code> argument specifies a path where the FFmpeg development libraries are installed after building. The documentation is not needed, but network features should be enabled. To build FFmpeg as static libraries, omit the <code translate="no">--enable-shared</code> option.</p>
+<p>Once the <code translate="no">configure</code> command finishes, build and install FFmpeg using the <code translate="no">make</code> command.</p>
+<pre class="cpp plain" translate="no">
+ $ make -j install
+</pre>
+<p>If the build completes without errors, FFmpeg development libraries are installed in the <code translate="no">C:\FFmpeg\install</code> directory. If you build Qt Multimedia, this path is stored in the <code translate="no">FFMPEG_DIR</code> variable used when configuring Qt Multimedia.</p>
+</div>
+<!-- @@@qtmultimedia-building-ffmpeg-windows.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtmultimedia-building-ffmpeg.html">Building FFmpeg</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg-macos.html">Building FFmpeg on macOS</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

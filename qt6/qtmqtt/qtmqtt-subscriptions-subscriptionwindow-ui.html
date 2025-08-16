@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- subscriptions.qdoc -->
+  <meta name="description" content="Creating a application that communicates with an MQTT broker.">
+  <title>MQTT Subscriptions | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-examples.html">Qt MQTT Examples</a></li>
+<li>MQTT Subscriptions</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">MQTT Subscriptions</h1>
+<pre class="cpp" translate="no">
+ &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+ &lt;ui version=&quot;4.0&quot;&gt;
+  &lt;class&gt;SubscriptionWindow&lt;/class&gt;
+  &lt;widget class=&quot;QWidget&quot; name=&quot;SubscriptionWindow&quot;&gt;
+   &lt;property name=&quot;geometry&quot;&gt;
+    &lt;rect&gt;
+     &lt;x&gt;0&lt;/x&gt;
+     &lt;y&gt;0&lt;/y&gt;
+     &lt;width&gt;400&lt;/width&gt;
+     &lt;height&gt;300&lt;/height&gt;
+    &lt;/rect&gt;
+   &lt;/property&gt;
+   &lt;property name=&quot;windowTitle&quot;&gt;
+    &lt;string&gt;Form&lt;/string&gt;
+   &lt;/property&gt;
+   &lt;layout class=&quot;QVBoxLayout&quot; name=&quot;verticalLayout&quot;&gt;
+    &lt;item&gt;
+     &lt;layout class=&quot;QFormLayout&quot; name=&quot;formLayout&quot;&gt;
+      &lt;item row=&quot;0&quot; column=&quot;0&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;label&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;Subscription:&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+      &lt;item row=&quot;0&quot; column=&quot;1&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;labelSub&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;TextLabel&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+      &lt;item row=&quot;1&quot; column=&quot;0&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;label_2&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;Status:&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+      &lt;item row=&quot;1&quot; column=&quot;1&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;labelStatus&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;TextLabel&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+      &lt;item row=&quot;2&quot; column=&quot;0&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;label_3&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;QoS:&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+      &lt;item row=&quot;2&quot; column=&quot;1&quot;&gt;
+       &lt;widget class=&quot;QLabel&quot; name=&quot;labelQoS&quot;&gt;
+        &lt;property name=&quot;text&quot;&gt;
+         &lt;string&gt;TextLabel&lt;/string&gt;
+        &lt;/property&gt;
+       &lt;/widget&gt;
+      &lt;/item&gt;
+     &lt;/layout&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+     &lt;widget class=&quot;QListWidget&quot; name=&quot;listWidget&quot;/&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+     &lt;widget class=&quot;QPushButton&quot; name=&quot;pushButton&quot;&gt;
+      &lt;property name=&quot;text&quot;&gt;
+       &lt;string&gt;Unsubscribe&lt;/string&gt;
+      &lt;/property&gt;
+     &lt;/widget&gt;
+    &lt;/item&gt;
+   &lt;/layout&gt;
+  &lt;/widget&gt;
+  &lt;resources/&gt;
+  &lt;connections/&gt;
+ &lt;/ui&gt;
+</pre>

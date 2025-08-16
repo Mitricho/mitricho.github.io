@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qqmllistmodel.cpp -->
+  <meta name="description" content="Defines a free-form list data source.">
+  <title>ListModel QML Type | Qt 6.9</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QtQml.Models</a></li>
+<li>ListModel</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#example-usage">Example Usage</a></li>
+<li class="level2"><a href="#modifying-list-models">Modifying List Models</a></li>
+<li class="level2"><a href="#using-threaded-list-models-with-workerscript">Using Threaded List Models with WorkerScript</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ListModel QML Type</h1>
+<!-- $$$ListModel-brief -->
+<p>Defines a free-form list data source. <a href="#details">More...</a></p>
+<!-- @@@ListModel -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQml.Models</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtqml-models-listmodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#count-prop" translate="no">count</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#dynamicRoles-prop" translate="no">dynamicRoles</a></b> : bool</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a></b>(jsobject <i>dict</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#clear-method" translate="no">clear</a></b>()</li>
+<li class="fn" translate="no">object <b><a href="qml-qtqml-models-listmodel.html#get-method" translate="no">get</a></b>(int <i>index</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#insert-method" translate="no">insert</a></b>(int <i>index</i>, jsobject <i>dict</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#move-method" translate="no">move</a></b>(int <i>from</i>, int <i>to</i>, int <i>n</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#remove-method" translate="no">remove</a></b>(int <i>index</i>, int <i>count</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#set-method" translate="no">set</a></b>(int <i>index</i>, jsobject <i>dict</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#setProperty-method" translate="no">setProperty</a></b>(int <i>index</i>, string <i>property</i>, variant <i>value</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-listmodel.html#sync-method" translate="no">sync</a></b>()</li>
+</ul>
+<!-- $$$ListModel-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The ListModel is a simple container of <a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a> definitions, each containing data roles. The contents can be defined dynamically, or explicitly in QML.</p>
+<p>The number of elements in the model can be obtained from its <a href="qml-qtqml-models-listmodel.html#count-prop" translate="no">count</a> property. A number of familiar methods are also provided to manipulate the contents of the model, including <a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>(), <a href="qml-qtqml-models-listmodel.html#insert-method" translate="no">insert</a>(), <a href="qml-qtqml-models-listmodel.html#move-method" translate="no">move</a>(), <a href="qml-qtqml-models-listmodel.html#remove-method" translate="no">remove</a>() and <a href="qml-qtqml-models-listmodel.html#set-method" translate="no">set</a>(). These methods accept dictionaries as their arguments; these are translated to <a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a> objects by the model.</p>
+<p>Elements can be manipulated via the model using the <a href="qml-qtqml-models-listmodel.html#setProperty-method" translate="no">setProperty</a>() method, which allows the roles of the specified element to be set and changed.</p>
+<p>ListModel inherits from <a href="../qtcore/qabstractlistmodel.html" translate="no">QAbstractListModel</a> and provides its <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a> methods. You can, for example use <a href="../qtcore/qabstractitemmodel.html#index" translate="no">QAbstractItemModel::index</a> to retrieve a <a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a> for a row and column.</p>
+<h2 id="example-usage">Example Usage</h2>
+<p>The following example shows a ListModel containing three elements, with the roles &quot;name&quot; and &quot;cost&quot;.</p>
+<div class="float-right"><p><img src="images/listmodel.png" alt="" /></p>
+</div><pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a></span> {
+     <span class="name">id</span>: <span class="name">fruitModel</span>
+
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Apple&quot;</span>
+         <span class="name">cost</span>: <span class="number">2.45</span>
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Orange&quot;</span>
+         <span class="name">cost</span>: <span class="number">3.25</span>
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Banana&quot;</span>
+         <span class="name">cost</span>: <span class="number">1.95</span>
+     }
+ }
+</pre>
+<p>Roles (properties) in each element must begin with a lower-case letter and should be common to all elements in a model. The <a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a> documentation provides more guidelines for how elements should be defined.</p>
+<p>Since the example model contains an <code translate="no">id</code> property, it can be referenced by views, such as the <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a> in this example:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">width</span>: <span class="number">200</span>; <span class="name">height</span>: <span class="number">200</span>
+
+     <span class="type"><a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a></span> {
+         <span class="name">id</span>: <span class="name">fruitModel</span>
+         ...
+     }
+
+     <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+         <span class="name">id</span>: <span class="name">fruitDelegate</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+             <span class="name">spacing</span>: <span class="number">10</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="name">name</span> }
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">'$'</span> <span class="operator">+</span> <span class="name">cost</span> }
+         }
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">model</span>: <span class="name">fruitModel</span>
+         <span class="name">delegate</span>: <span class="name">fruitDelegate</span>
+     }
+ }
+</pre>
+<p>It is possible for roles to contain list data. In the following example we create a list of fruit attributes:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a></span> {
+     <span class="name">id</span>: <span class="name">fruitModel</span>
+
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Apple&quot;</span>
+         <span class="name">cost</span>: <span class="number">2.45</span>
+         <span class="name">attributes</span>: [
+             <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> { <span class="name">description</span>: <span class="string">&quot;Core&quot;</span> },
+             <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> { <span class="name">description</span>: <span class="string">&quot;Deciduous&quot;</span> }
+         ]
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Orange&quot;</span>
+         <span class="name">cost</span>: <span class="number">3.25</span>
+         <span class="name">attributes</span>: [
+             <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> { <span class="name">description</span>: <span class="string">&quot;Citrus&quot;</span> }
+         ]
+     }
+     <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> {
+         <span class="name">name</span>: <span class="string">&quot;Banana&quot;</span>
+         <span class="name">cost</span>: <span class="number">1.95</span>
+         <span class="name">attributes</span>: [
+             <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> { <span class="name">description</span>: <span class="string">&quot;Tropical&quot;</span> },
+             <span class="type"><a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a></span> { <span class="name">description</span>: <span class="string">&quot;Seedless&quot;</span> }
+         ]
+     }
+ }
+</pre>
+<p>The delegate displays all the fruit attributes:</p>
+<div class="float-right"><p><img src="images/listmodel-nested.png" alt="" /></p>
+</div><pre class="qml" translate="no">
+ <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+     <span class="name">id</span>: <span class="name">fruitDelegate</span>
+     <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         <span class="name">width</span>: <span class="number">200</span>; <span class="name">height</span>: <span class="number">50</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">id</span>: <span class="name">nameField</span>; <span class="name">text</span>: <span class="name">name</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">'$'</span> <span class="operator">+</span> <span class="name">cost</span>; <span class="name">anchors</span>.left: <span class="name">nameField</span>.<span class="name">right</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+             <span class="name">anchors</span>.top: <span class="name">nameField</span>.<span class="name">bottom</span>
+             <span class="name">spacing</span>: <span class="number">5</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">&quot;Attributes:&quot;</span> }
+             <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+                 <span class="name">model</span>: <span class="name">attributes</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="name">description</span> }
+             }
+         }
+     }
+ }
+</pre>
+<h2 id="modifying-list-models">Modifying List Models</h2>
+<p>The content of a ListModel may be created and modified using the <a href="qml-qtqml-models-listmodel.html#clear-method" translate="no">clear</a>(), <a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>(), <a href="qml-qtqml-models-listmodel.html#set-method" translate="no">set</a>(), <a href="qml-qtqml-models-listmodel.html#insert-method" translate="no">insert</a>() and <a href="qml-qtqml-models-listmodel.html#setProperty-method" translate="no">setProperty</a>() methods. For example:</p>
+<pre class="qml" translate="no">
+     <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+         <span class="name">id</span>: <span class="name">fruitDelegate</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+             <span class="name">width</span>: <span class="number">200</span>; <span class="name">height</span>: <span class="number">50</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="name">name</span> }
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="string">'$'</span> <span class="operator">+</span> <span class="name">cost</span>; <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span> }
+
+             <span class="comment">// Double the price when clicked.</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a></span> {
+                 <span class="name">anchors</span>.fill: <span class="name">parent</span>
+                 <span class="name">onClicked</span>: <span class="name">fruitModel</span>.<span class="name">setProperty</span>(<span class="name">index</span>, <span class="string">&quot;cost&quot;</span>, <span class="name">cost</span> <span class="operator">*</span> <span class="number">2</span>)
+             }
+         }
+     }
+</pre>
+<p>Note that when creating content dynamically the set of available properties cannot be changed once set. Whatever properties are first added to the model are the only permitted properties in the model.</p>
+<h2 id="using-threaded-list-models-with-workerscript">Using Threaded List Models with WorkerScript</h2>
+<p>ListModel can be used together with <a href="../qtqmlworkerscript/qml-qtqml-workerscript-workerscript.html" translate="no">WorkerScript</a> to access a list model from multiple threads. This is useful if list modifications are synchronous and take some time: the list operations can be moved to a different thread to avoid blocking of the main GUI thread.</p>
+<p>Here is an example that uses <a href="../qtqmlworkerscript/qml-qtqml-workerscript-workerscript.html" translate="no">WorkerScript</a> to periodically append the current time to a list model:</p>
+<pre class="qml" translate="no">
+         <span class="type"><a href="../qtqml/qml-qtqml-timer.html" translate="no">Timer</a></span> {
+             <span class="name">id</span>: <span class="name">timer</span>
+             <span class="name">interval</span>: <span class="number">2000</span>; <span class="name">repeat</span>: <span class="number">true</span>
+             <span class="name">running</span>: <span class="number">true</span>
+             <span class="name">triggeredOnStart</span>: <span class="number">true</span>
+
+             <span class="name">onTriggered</span>: {
+                 var msg = {'action': <span class="string">'appendCurrentTime'</span>, 'model': <span class="name">listModel</span>};
+                 <span class="name">worker</span>.<span class="name">sendMessage</span>(<span class="name">msg</span>);
+             }
+         }
+</pre>
+<p>The included file, <code translate="no">dataloader.mjs</code>, looks like this:</p>
+<pre class="cpp" translate="no">
+ WorkerScript.onMessage = function(msg) {
+     if (msg.action == 'appendCurrentTime') {
+         var data = {'time': new Date().toTimeString()};
+         msg.model.append(data);
+         msg.model.sync();   // updates the changes to the list
+     }
+ }
+</pre>
+<p>The timer in the main example sends messages to the worker script by calling <a href="../qtqmlworkerscript/qml-qtqml-workerscript-workerscript.html#sendMessage-method" translate="no">WorkerScript::sendMessage</a>(). When this message is received, <code translate="no">WorkerScript.onMessage()</code> is invoked in <code translate="no">dataloader.mjs</code>, which appends the current time to the list model.</p>
+<p>Note the call to <a href="qml-qtqml-models-listmodel.html#sync-method" translate="no">sync</a>() from the external thread. You must call <a href="qml-qtqml-models-listmodel.html#sync-method" translate="no">sync</a>() or else the changes made to the list from that thread will not be reflected in the list model in the main thread.</p>
+<p><b>See also </b><a href="../qtquick/qtquick-modelviewsdata-modelview.html#qml-data-models">Data Models</a> and <a href="../qtqml/qtqml-index.html">Qt Qml</a>.</p>
+<!-- @@@ListModel -->
+<h2>Property Documentation</h2>
+<!-- $$$count -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="count-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">count</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The number of data entries in the model.</p>
+</div></div><!-- @@@count -->
+<br/>
+<!-- $$$dynamicRoles -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="dynamicRoles-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">dynamicRoles</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>By default, the type of a role is fixed the first time the role is used. For example, if you create a role called &quot;data&quot; and assign a number to it, you can no longer assign a string to the &quot;data&quot; role. However, when the dynamicRoles property is enabled, the type of a given role is not fixed and can be different between elements.</p>
+<p>The dynamicRoles property must be set before any data is added to the <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a>, and must be set from the main thread.</p>
+<p>A <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a> that has data statically defined (via the <a href="qml-qtqml-models-listelement.html" translate="no">ListElement</a> QML syntax) cannot have the dynamicRoles property enabled.</p>
+<p>There is a significant performance cost to using a <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a> with dynamic roles enabled. The cost varies from platform to platform but is typically somewhere between 4-6x slower than using static role types.</p>
+<p>Due to the performance cost of using dynamic roles, they are disabled by default.</p>
+</div></div><!-- @@@dynamicRoles -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$append[overload1]$$$appendjsobject -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="append-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">append</span>(<span class="type">jsobject</span> <i>dict</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Adds a new item to the end of the list model, with the values in <i translate="no">dict</i>.</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>append({<span class="string">&quot;cost&quot;</span>: <span class="number">5.95</span><span class="operator">,</span> <span class="string">&quot;name&quot;</span>:<span class="string">&quot;Pizza&quot;</span>})
+</pre>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#set-method" translate="no">set</a>() and <a href="qml-qtqml-models-listmodel.html#remove-method" translate="no">remove</a>().</p>
+</div></div><!-- @@@append -->
+<br/>
+<!-- $$$clear[overload1]$$$clear -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="clear-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">clear</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Deletes all content from the model. In particular this invalidates all objects you may have retrieved using <a href="qml-qtqml-models-listmodel.html#get-method" translate="no">get</a>().</p>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>(), <a href="qml-qtqml-models-listmodel.html#remove-method" translate="no">remove</a>(), and <a href="qml-qtqml-models-listmodel.html#get-method" translate="no">get</a>().</p>
+</div></div><!-- @@@clear -->
+<br/>
+<!-- $$$get[overload1]$$$getint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="get-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type">object</span> <span class="name">get</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the item at <i translate="no">index</i> in the list model. This allows the item data to be accessed or modified from JavaScript:</p>
+<pre class="cpp" translate="no">
+ Component<span class="operator">.</span>onCompleted: {
+     fruitModel<span class="operator">.</span>append({<span class="string">&quot;cost&quot;</span>: <span class="number">5.95</span><span class="operator">,</span> <span class="string">&quot;name&quot;</span>:<span class="string">&quot;Jackfruit&quot;</span>});
+     console<span class="operator">.</span>log(fruitModel<span class="operator">.</span>get(<span class="number">0</span>)<span class="operator">.</span>cost);
+     fruitModel<span class="operator">.</span>get(<span class="number">0</span>)<span class="operator">.</span>cost <span class="operator">=</span> <span class="number">10.95</span>;
+ }
+</pre>
+<p>The <i translate="no">index</i> must be an element in the list.</p>
+<p>Note that properties of the returned object that are themselves objects will also be models, and this get() method is used to access elements:</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>append(<span class="operator">.</span><span class="operator">.</span><span class="operator">.</span><span class="operator">,</span> <span class="string">&quot;attributes&quot;</span>:
+     <span class="operator">[</span>{<span class="string">&quot;name&quot;</span>:<span class="string">&quot;spikes&quot;</span><span class="operator">,</span><span class="string">&quot;value&quot;</span>:<span class="string">&quot;7mm&quot;</span>}<span class="operator">,</span>
+      {<span class="string">&quot;name&quot;</span>:<span class="string">&quot;color&quot;</span><span class="operator">,</span><span class="string">&quot;value&quot;</span>:<span class="string">&quot;green&quot;</span>}<span class="operator">]</span>);
+ fruitModel<span class="operator">.</span>get(<span class="number">0</span>)<span class="operator">.</span>attributes<span class="operator">.</span>get(<span class="number">1</span>)<span class="operator">.</span>value; <span class="comment">// == &quot;green&quot;</span>
+</pre>
+<div class="admonition warning">
+<p><b>Warning: </b>The returned object is not guaranteed to remain valid. It should not be used in <a href="../qtqml/qtqml-syntax-propertybinding.html">property bindings</a> or for storing data across modifications of its origin <a href="qml-qtqml-models-listmodel.html" translate="no">ListModel</a>.</p>
+</div>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>() and <a href="qml-qtqml-models-listmodel.html#clear-method" translate="no">clear</a>().</p>
+</div></div><!-- @@@get -->
+<br/>
+<!-- $$$insert[overload1]$$$insertintjsobject -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="insert-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">insert</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type">jsobject</span> <i>dict</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Adds a new item to the list model at position <i translate="no">index</i>, with the values in <i translate="no">dict</i>.</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>insert(<span class="number">2</span><span class="operator">,</span> {<span class="string">&quot;cost&quot;</span>: <span class="number">5.95</span><span class="operator">,</span> <span class="string">&quot;name&quot;</span>:<span class="string">&quot;Pizza&quot;</span>})
+</pre>
+<p>The <i translate="no">index</i> must be to an existing item in the list, or one past the end of the list (equivalent to append).</p>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#set-method" translate="no">set</a>() and <a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@insert -->
+<br/>
+<!-- $$$move[overload1]$$$moveintintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="move-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">move</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>from</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>to</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>n</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Moves <i translate="no">n</i> items <i translate="no">from</i> one position <i translate="no">to</i> another.</p>
+<p>The from and to ranges must exist; for example, to move the first 3 items to the end of the list:</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>move(<span class="number">0</span><span class="operator">,</span> fruitModel<span class="operator">.</span>count <span class="operator">-</span> <span class="number">3</span><span class="operator">,</span> <span class="number">3</span>)
+</pre>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@move -->
+<br/>
+<!-- $$$remove[overload1]$$$removeintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="remove-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">remove</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>count</i> = 1)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Deletes <i translate="no">count</i> number of items at <i translate="no">index</i> from the model.</p>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#clear-method" translate="no">clear</a>().</p>
+</div></div><!-- @@@remove -->
+<br/>
+<!-- $$$set[overload1]$$$setintjsobject -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="set-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">set</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type">jsobject</span> <i>dict</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Changes the item at <i translate="no">index</i> in the list model with the values in <i translate="no">dict</i>. Properties not appearing in <i translate="no">dict</i> are left unchanged.</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>set(<span class="number">3</span><span class="operator">,</span> {<span class="string">&quot;cost&quot;</span>: <span class="number">5.95</span><span class="operator">,</span> <span class="string">&quot;name&quot;</span>:<span class="string">&quot;Pizza&quot;</span>})
+</pre>
+<p>If <i translate="no">index</i> is equal to count() then a new item is appended to the list. Otherwise, <i translate="no">index</i> must be an element in the list.</p>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@set -->
+<br/>
+<!-- $$$setProperty[overload1]$$$setPropertyintstringvariant -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="setProperty-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">setProperty</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <i>property</i>, <span class="type"><a href="../qtqml/qml-variant.html" translate="no">variant</a></span> <i>value</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Changes the <i translate="no">property</i> of the item at <i translate="no">index</i> in the list model to <i translate="no">value</i>.</p>
+<pre class="cpp" translate="no">
+ fruitModel<span class="operator">.</span>setProperty(<span class="number">3</span><span class="operator">,</span> <span class="string">&quot;cost&quot;</span><span class="operator">,</span> <span class="number">5.95</span>)
+</pre>
+<p>The <i translate="no">index</i> must be an element in the list.</p>
+<p><b>See also </b><a href="qml-qtqml-models-listmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@setProperty -->
+<br/>
+<!-- $$$sync[overload1]$$$sync -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="sync-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">sync</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Writes any unsaved changes to the list model after it has been modified from a worker script.</p>
+</div></div><!-- @@@sync -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

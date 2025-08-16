@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qstringconverter.cpp -->
+  <meta name="description" content="The QStringConverter class provides a base class for encoding and decoding text.">
+  <title>QStringConverter Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QStringConverter</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QStringConverter Class</h1>
+<!-- $$$QStringConverter-brief -->
+<p>The QStringConverter class provides a base class for encoding and decoding text. <a href="#details">More...</a></p>
+<!-- @@@QStringConverter -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QStringConverter&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qstringdecoder.html" translate="no">QStringDecoder</a> and <a href="qstringencoder.html" translate="no">QStringEncoder</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qstringconverter-members.html">List of all members, including inherited members</a></li>
+<li>QStringConverter is part of <a href="string-processing.html">Classes for string data</a>.</li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#Encoding-enum" translate="no">Encoding</a></b> { Utf8, Utf16, Utf16BE, Utf16LE, Utf32, &hellip;, System }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#Flag-enum" translate="no">Flag</a></b> { Default, ConvertInvalidToNull, WriteBom, ConvertInitialBom, Stateless }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#Flag-enum" translate="no">Flags</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#hasError" translate="no">hasError</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const char *</td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#name" translate="no">name</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#resetState" translate="no">resetState</a></b>()</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#availableCodecs" translate="no">availableCodecs</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QStringConverter::Encoding&gt; </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#encodingForData" translate="no">encodingForData</a></b>(QByteArrayView <i>data</i>, char16_t <i>expectedFirstCharacter</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QStringConverter::Encoding&gt; </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#encodingForHtml" translate="no">encodingForHtml</a></b>(QByteArrayView <i>data</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QStringConverter::Encoding&gt; </td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#encodingForName" translate="no">encodingForName</a></b>(QAnyStringView <i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const char *</td><td class="memItemRight bottomAlign"><b><a href="qstringconverter.html#nameForEncoding" translate="no">nameForEncoding</a></b>(QStringConverter::Encoding <i>e</i>)</td></tr>
+</table></div>
+<!-- $$$QStringConverter-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Qt uses UTF-16 to store, draw and manipulate strings. In many situations you may wish to deal with data that uses a different encoding. Most text data transferred over files and network connections is encoded in UTF-8.</p>
+<p>The QStringConverter class is a base class for the <a href="qstringencoder.html" translate="no">QStringEncoder</a> and <a href="qstringdecoder.html" translate="no">QStringDecoder</a> classes that help with converting between different text encodings. <a href="qstringdecoder.html" translate="no">QStringDecoder</a> can decode a string from an encoded representation into UTF-16, the format Qt uses internally. <a href="qstringencoder.html" translate="no">QStringEncoder</a> does the opposite operation, encoding UTF-16 encoded data (usually in the form of a <a href="qstring.html" translate="no">QString</a>) to the requested encoding.</p>
+<p>The following encodings are always supported:</p>
+<ul>
+<li>UTF-8</li>
+<li>UTF-16</li>
+<li>UTF-16BE</li>
+<li>UTF-16LE</li>
+<li>UTF-32</li>
+<li>UTF-32BE</li>
+<li>UTF-32LE</li>
+<li>ISO-8859-1 (Latin-1)</li>
+<li>The system encoding</li>
+</ul>
+<p>QStringConverter may support more encodings depending on how Qt was compiled. If more codecs are supported, they can be listed using <a href="qstringconverter.html#availableCodecs" translate="no">availableCodecs</a>().</p>
+<p><a href="qstringconverter.html" translate="no">QStringConverter</a>s can be used as follows to convert some encoded string to and from UTF-16.</p>
+<p>Suppose you have some string encoded in UTF-8, and want to convert it to a <a href="qstring.html" translate="no">QString</a>. The simple way to do it is to use a <a href="qstringdecoder.html" translate="no">QStringDecoder</a> like this:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> encodedString <span class="operator">=</span> <span class="string">&quot;...&quot;</span>;
+ <span class="keyword">auto</span> toUtf16 <span class="operator">=</span> <span class="type"><a href="qstringdecoder.html" translate="no">QStringDecoder</a></span>(<span class="type"><a href="qstringdecoder.html" translate="no">QStringDecoder</a></span><span class="operator">::</span>Utf8);
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string <span class="operator">=</span> toUtf16(encodedString);
+</pre>
+<p>After this, <code translate="no">string</code> holds the text in decoded form. Converting a string from Unicode to the local encoding is just as easy using the <a href="qstringencoder.html" translate="no">QStringEncoder</a> class:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string <span class="operator">=</span> <span class="string">&quot;...&quot;</span>;
+ <span class="keyword">auto</span> fromUtf16 <span class="operator">=</span> <span class="type"><a href="qstringencoder.html" translate="no">QStringEncoder</a></span>(<span class="type"><a href="qstringencoder.html" translate="no">QStringEncoder</a></span><span class="operator">::</span>Utf8);
+ <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> encodedString <span class="operator">=</span> fromUtf16(string);
+</pre>
+<p>To read or write text files in various encodings, use <a href="qtextstream.html" translate="no">QTextStream</a> and its <a href="qtextstream.html#setEncoding" translate="no">setEncoding</a>() function.</p>
+<p>Some care must be taken when trying to convert the data in chunks, for example, when receiving it over a network. In such cases it is possible that a multi-byte character will be split over two chunks. At best this might result in the loss of a character and at worst cause the entire conversion to fail.</p>
+<p>Both <a href="qstringencoder.html" translate="no">QStringEncoder</a> and <a href="qstringdecoder.html" translate="no">QStringDecoder</a> make this easy, by tracking this in an internal state. So simply calling the encoder or decoder again with the next chunk of data will automatically continue encoding or decoding the data correctly:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">auto</span> toUtf16 <span class="operator">=</span> <span class="type"><a href="qstringdecoder.html" translate="no">QStringDecoder</a></span>(<span class="type"><a href="qstringdecoder.html" translate="no">QStringDecoder</a></span><span class="operator">::</span>Utf8);
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> string;
+ <span class="keyword">while</span> (new_data_available()) {
+     <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> chunk <span class="operator">=</span> get_new_data();
+     string <span class="operator">+</span><span class="operator">=</span> toUtf16(chunk);
+ }
+</pre>
+<p>The <a href="qstringdecoder.html" translate="no">QStringDecoder</a> object maintains state between chunks and therefore works correctly even if a multi-byte character is split between chunks.</p>
+<p>QStringConverter objects can't be copied because of their internal state, but can be moved.</p>
+</div>
+<p><b>See also </b><a href="qtextstream.html" translate="no">QTextStream</a>, <a href="qstringdecoder.html" translate="no">QStringDecoder</a>, and <a href="qstringencoder.html" translate="no">QStringEncoder</a>.</p>
+<!-- @@@QStringConverter -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Encoding$$$Utf8$$$Utf16$$$Utf16LE$$$Utf16BE$$$Utf32$$$Utf32LE$$$Utf32BE$$$Latin1$$$System$$$LastEncoding -->
+<h3 class="fn" translate="no" id="Encoding-enum">enum QStringConverter::<span class="name">Encoding</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf8</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Create a converter to or from UTF-8</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf16</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Create a converter to or from UTF-16. When decoding, the byte order will get automatically detected by a leading byte order mark. If none exists or when encoding, the system byte order will be assumed.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf16BE</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">Create a converter to or from big-endian UTF-16.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf16LE</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">Create a converter to or from little-endian UTF-16.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf32</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">Create a converter to or from UTF-32. When decoding, the byte order will get automatically detected by a leading byte order mark. If none exists or when encoding, the system byte order will be assumed.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf32BE</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">Create a converter to or from big-endian UTF-32.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Utf32LE</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">Create a converter to or from little-endian UTF-32.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Latin1</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign">Create a converter to or from ISO-8859-1 (Latin1).</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::System</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign">Create a converter to or from the underlying encoding of the operating systems locale. This is always assumed to be UTF-8 for Unix based systems. On Windows, this converts to and from the locale code page.</td></tr>
+</table></div>
+<!-- @@@Encoding -->
+<!-- $$$Flag$$$Default$$$Stateless$$$ConvertInvalidToNull$$$WriteBom$$$ConvertInitialBom$$$UsesIcu -->
+<h3 class="flags" id="Flag-enum">enum class QStringConverter::<span class="name">Flag</span><br/>flags QStringConverter::<span class="name">Flags</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Flag::Default</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Default conversion rules apply.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Flag::ConvertInvalidToNull</code></td><td class="topAlign tblval"><code translate="no">0x2</code></td><td class="topAlign">If this flag is set, each invalid input character is output as a null character. If it is not set, invalid input characters are represented as <a href="qchar.html#SpecialCharacter-enum" translate="no">QChar::ReplacementCharacter</a> if the output encoding can represent that character, otherwise as a question mark.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Flag::WriteBom</code></td><td class="topAlign tblval"><code translate="no">0x4</code></td><td class="topAlign">When converting from a <a href="qstring.html" translate="no">QString</a> to an output encoding, write a <a href="qchar.html#SpecialCharacter-enum" translate="no">QChar::ByteOrderMark</a> as the first character if the output encoding supports this. This is the case for UTF-8, UTF-16 and UTF-32 encodings.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Flag::ConvertInitialBom</code></td><td class="topAlign tblval"><code translate="no">0x8</code></td><td class="topAlign">When converting from an input encoding to a <a href="qstring.html" translate="no">QString</a> the <a href="qstringdecoder.html" translate="no">QStringDecoder</a> usually skips an leading <a href="qchar.html#SpecialCharacter-enum" translate="no">QChar::ByteOrderMark</a>. When this flag is set, the byte order mark will not be skipped, but converted to utf-16 and inserted at the start of the created <a href="qstring.html" translate="no">QString</a>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QStringConverter::Flag::Stateless</code></td><td class="topAlign tblval"><code translate="no">0x1</code></td><td class="topAlign">Ignore possible converter states between different function calls to encode or decode strings. This will also cause the <a href="qstringconverter.html" translate="no">QStringConverter</a> to raise an error if an incomplete sequence of data is encountered.</td></tr>
+</table></div>
+<p>The Flags type is a typedef for <a href="qflags.html">QFlags</a>&lt;Flag&gt;. It stores an OR combination of Flag values.</p>
+<!-- @@@Flag -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$availableCodecs[overload1]$$$availableCodecs -->
+<h3 class="fn" translate="no" id="availableCodecs"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QStringConverter::<span class="name">availableCodecs</span>()</h3>
+<p>Returns a list of names of supported codecs. The names returned by this function can be passed to <a href="qstringencoder.html" translate="no">QStringEncoder</a>'s and <a href="qstringdecoder.html" translate="no">QStringDecoder</a>'s constructor to create a en- or decoder for the given codec.</p>
+<p>This function may be used to obtain a listing of additional codecs beyond the standard ones. Support for additional codecs requires Qt be compiled with support for the ICU library.</p>
+<div class="admonition note">
+<p><b>Note: </b>The order of codecs is an internal implementation detail and not guaranteed to be stable.</p>
+</div>
+<!-- @@@availableCodecs -->
+<!-- $$$encodingForData[overload1]$$$encodingForDataQByteArrayViewchar16_t -->
+<h3 class="fn" translate="no" id="encodingForData"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">std::optional</span>&lt;<span class="type"><a href="qstringconverter.html#Encoding-enum" translate="no">QStringConverter::Encoding</a></span>&gt; QStringConverter::<span class="name">encodingForData</span>(<span class="type"><a href="qbytearrayview.html" translate="no">QByteArrayView</a></span> <i>data</i>, <span class="type">char16_t</span> <i>expectedFirstCharacter</i> = 0)</h3>
+<p>Returns the encoding for the content of <i translate="no">data</i> if it can be determined. <i translate="no">expectedFirstCharacter</i> can be passed as an additional hint to help determine the encoding.</p>
+<p>The returned optional is empty, if the encoding is unclear.</p>
+<!-- @@@encodingForData -->
+<!-- $$$encodingForHtml[overload1]$$$encodingForHtmlQByteArrayView -->
+<h3 class="fn" translate="no" id="encodingForHtml"><code class="details extra" translate="no">[static]</code> <span class="type">std::optional</span>&lt;<span class="type"><a href="qstringconverter.html#Encoding-enum" translate="no">QStringConverter::Encoding</a></span>&gt; QStringConverter::<span class="name">encodingForHtml</span>(<span class="type"><a href="qbytearrayview.html" translate="no">QByteArrayView</a></span> <i>data</i>)</h3>
+<p>Tries to determine the encoding of the HTML in <i translate="no">data</i> by looking at leading byte order marks or a charset specifier in the HTML meta tag. If the optional is empty, the encoding specified is not supported by <a href="qstringconverter.html" translate="no">QStringConverter</a>. If no encoding is detected, the method returns Utf8.</p>
+<p><b>See also </b><a href="qstringdecoder.html#decoderForHtml" translate="no">QStringDecoder::decoderForHtml</a>().</p>
+<!-- @@@encodingForHtml -->
+<!-- $$$encodingForName[overload1]$$$encodingForNameQAnyStringView -->
+<h3 class="fn" translate="no" id="encodingForName"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">std::optional</span>&lt;<span class="type"><a href="qstringconverter.html#Encoding-enum" translate="no">QStringConverter::Encoding</a></span>&gt; QStringConverter::<span class="name">encodingForName</span>(<span class="type"><a href="qanystringview.html" translate="no">QAnyStringView</a></span> <i>name</i>)</h3>
+<p>Convert <i translate="no">name</i> to the corresponding <a href="qstringconverter.html#Encoding-enum" translate="no">Encoding</a> member, if there is one.</p>
+<p>If the <i translate="no">name</i> is not the name of a codec listed in the Encoding enumeration, <code translate="no">std::nullopt</code> is returned. Such a name may, none the less, be accepted by the <a href="qstringconverter.html" translate="no">QStringConverter</a> constructor when Qt is built with ICU, if ICU provides a converter with the given name.</p>
+<div class="admonition note">
+<p><b>Note: </b>In Qt versions prior to 6.8, this function took only a <code translate="no">const char *</code>, which was expected to be UTF-8-encoded.</p>
+</div>
+<!-- @@@encodingForName -->
+<!-- $$$hasError[overload1]$$$hasError -->
+<h3 class="fn" translate="no" id="hasError"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QStringConverter::<span class="name">hasError</span>() const</h3>
+<p>Returns true if a conversion could not correctly convert a character. This could for example get triggered by an invalid UTF-8 sequence or when a character can't get converted due to limitations in the target encoding.</p>
+<!-- @@@hasError -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QStringConverter::<span class="name">isValid</span>() const</h3>
+<p>Returns true if this is a valid string converter that can be used for encoding or decoding text.</p>
+<p>Default constructed string converters or converters constructed with an unsupported name are not valid.</p>
+<!-- @@@isValid -->
+<!-- $$$name[overload1]$$$name -->
+<h3 class="fn" translate="no" id="name"><code class="details extra" translate="no">[noexcept]</code> const <span class="type">char</span> *QStringConverter::<span class="name">name</span>() const</h3>
+<p>Returns the canonical name of the encoding this <a href="qstringconverter.html" translate="no">QStringConverter</a> can encode or decode. Returns a nullptr if the converter is not valid. The returned name is UTF-8 encoded.</p>
+<p><b>See also </b><a href="qstringconverter.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@name -->
+<!-- $$$nameForEncoding[overload1]$$$nameForEncodingQStringConverter::Encoding -->
+<h3 class="fn" translate="no" id="nameForEncoding"><code class="details extra" translate="no">[static]</code> const <span class="type">char</span> *QStringConverter::<span class="name">nameForEncoding</span>(<span class="type"><a href="qstringconverter.html#Encoding-enum" translate="no">QStringConverter::Encoding</a></span> <i>e</i>)</h3>
+<p>Returns the canonical name for encoding <i translate="no">e</i>.</p>
+<!-- @@@nameForEncoding -->
+<!-- $$$resetState[overload1]$$$resetState -->
+<h3 class="fn" translate="no" id="resetState"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QStringConverter::<span class="name">resetState</span>()</h3>
+<p>Resets the internal state of the converter, clearing potential errors or partial conversions.</p>
+<!-- @@@resetState -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

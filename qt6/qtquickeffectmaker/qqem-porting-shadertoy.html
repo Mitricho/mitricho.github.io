@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qqem-porting-shadertoy.qdoc -->
+  <title>Porting Shadertoy effects to Qt Quick Effect Maker | Qt Quick Effect Maker | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickeffectmaker-index.html">Qt Quick Effect Maker</a></li>
+<li>Porting Shadertoy effects to Qt Quick Effect Maker</li>
+<li id="buildversion"><a href="qtquickeffectmaker-index.html">Qt Quick Effect Maker 6.9.0</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qqem-creating-blur-effect.html" />
+  <link rel="next" href="qtquickeffectmaker-wiggly-example.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qqem-creating-blur-effect.html">Creating a blur effect</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickeffectmaker-wiggly-example.html">Wiggly</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#using-a-shadertoy-effect-in-qt-quick-effect-maker">Using a Shadertoy effect in Qt Quick Effect Maker</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Porting Shadertoy effects to Qt Quick Effect Maker</h1>
+<!-- $$$qqem-porting-shadertoy.html-description -->
+<div class="descr" id="details">
+<p>You can use effects created in Shadertoy in Qt Quick Effect Maker. When you use Shadertoy effects, consider the following:</p>
+<ul>
+<li>Qt Quick Effect Maker doesn't support the following Shadertoy features:<ul>
+<li>Multipass effects (Buffer tabs)</li>
+<li>Audio</li>
+<li>Cube maps</li>
+<li>3D textures</li>
+</ul>
+</li>
+<li>Shadertoy supports only fragment shaders and built-in textures. To improve the effect performance in Qt Quick Effect Maker, move some calculations to the vertex shader and use custom images to simplify the shader code.</li>
+<li>The coordinate system differs between Shadertoy and Qt Quick Effect Maker. In Shadertoy, the origin (0,0) is located in the lower-left corner while Qt Quick Effect Maker has the origin in the upper-left corner.</li>
+</ul>
+<h2 id="using-a-shadertoy-effect-in-qt-quick-effect-maker">Using a Shadertoy effect in Qt Quick Effect Maker</h2>
+<p>To use a Shadertoy effect in Qt Quick Effect Maker:</p>
+<ol class="1" type="1"><li>In Qt Quick Effect Maker, create a new effect.</li>
+<li>In the node editor, select <b translate="no">Add node</b> and then, under <b translate="no">Common</b>, select <b translate="no">Custom</b>. This creates an empty node.<p class="centerAlign"><img src="images/add-custom-node.webp" alt="" /></p></li>
+<li>In Shadertoy, copy all the code from the <b translate="no">Image</b> tab.</li>
+<li>In Qt Quick Effect Maker, double-click the <b translate="no">Custom</b> node in the node editor. This opens the code editor.</li>
+<li>Paste the Shadertoy code to the <b translate="no">Frag</b> tab.</li>
+<li>Find the <code translate="no">Main</code> function in the code, it looks something like:<pre class="cpp plain" translate="no">
+ void mainImage( out vec4 fragColor, in vec2 fragCoord )
+</pre>
+</li>
+<li>Replace this line with:<pre class="cpp plain" translate="no">
+ @main
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>You can't have <code translate="no">@main</code> and the following { on the same line.</p>
+</div>
+</li>
+<li>Optional. If the effect depends on the coordinate system, it appears flipped upside down. To solve this, you need to flip the y-coordinate:<ol class="1" type="1"><li>Go to the <b translate="no">Vert</b> tab.<p class="centerAlign"><img src="images/vert-tab.png" alt="" /></p></li>
+<li>In the drop-down menu, select <b translate="no">Main</b>.</li>
+<li>Find the <code translate="no">fragCoord</code> line, it should look something like:<pre class="cpp plain" translate="no">
+ fragCoord = qt_Vertex.xy;
+</pre>
+</li>
+<li>Replace this line with:<pre class="cpp plain" translate="no">
+ fragCoord = vec2(qt_Vertex.x, iResolution.y - qt_Vertex.y);
+</pre>
+</li>
+<li>Similarly, you might need to adjust <code translate="no">texCoord</code> and <code translate="no">iMouse</code>.</li>
+</ol>
+</li>
+</ol>
+<p>Now, the effect runs and looks the same as the Shadertoy effect.</p>
+</div>
+<!-- @@@qqem-porting-shadertoy.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qqem-creating-blur-effect.html">Creating a blur effect</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickeffectmaker-wiggly-example.html">Wiggly</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

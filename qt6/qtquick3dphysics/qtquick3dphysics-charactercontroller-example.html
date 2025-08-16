@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-charactercontroller.qdoc -->
+  <meta name="description" content="Demonstrates the CharacterController type.">
+  <title>Qt Quick 3D Physics - CharacterController Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - CharacterController Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-scene">The scene</a></li>
+<li class="level1"><a href="#the-character-controller">The character controller</a></li>
+<li class="level2"><a href="#position-and-movement">Position and movement</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D Physics - CharacterController Example</h1>
+<!-- $$$charactercontroller-brief -->
+<p>Demonstrates the <a href="qml-qtquick3d-physics-charactercontroller.html" translate="no">CharacterController</a> type.</p>
+<!-- @@@charactercontroller -->
+<!-- $$$charactercontroller-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/charactercontroller-example.jpg" alt="" /></p><p>This example shows how to use a <a href="qml-qtquick3d-physics-charactercontroller.html" translate="no">CharacterController</a> to move the camera in a scene, giving a first-person view. The character controller represents the viewpoint of the user as an entity that is constrained by the physical geometry of the scene, walks on the ground, climbs up/down stairs, and interacts with triggers.</p>
+<h4 id="the-scene">The scene</h4>
+<p>The scene consists of a simple building which is defined in Building.qml, and will not be explained in detail. (The mesh <code translate="no">building.mesh</code> was made using Blender. It can be recreated from building.gltf using the <i>balsam</i> tool.)</p>
+<p>The building contains three triggers:</p>
+<ul>
+<li>A trigger that opens the door. Implemented internally in Building.qml</li>
+<li>A &quot;gravityField&quot; trigger that sets a property <code translate="no">inGravityField</code> when something is inside it.</li>
+<li>A &quot;teleport&quot; trigger that emits a signal <code translate="no">teleporterTriggered</code> when something enters it.</li>
+</ul>
+<h4 id="the-character-controller">The character controller</h4>
+<p>The complete character controller logic is as follows:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-charactercontroller.html" translate="no">CharacterController</a></span> {
+     <span class="name">id</span>: <span class="name">character</span>
+     property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">startPos</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">800</span>, <span class="number">175</span>, -<span class="number">850</span>)
+     <span class="name">position</span>: <span class="name">startPos</span>
+     <span class="keyword">function</span> <span class="name">teleportHome</span>() {
+         <span class="name">character</span>.<span class="name">teleport</span>(<span class="name">character</span>.<span class="name">startPos</span>)
+         <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">x</span> <span class="operator">=</span> <span class="number">180</span>
+     }
+
+     <span class="name">collisionShapes</span>: <span class="name">CapsuleShape</span> {
+         <span class="name">id</span>: <span class="name">capsuleShape</span>
+         <span class="name">diameter</span>: <span class="number">50</span>
+         <span class="name">height</span>: <span class="name">wasd</span>.<span class="name">crouchActive</span> ? <span class="number">0</span> : <span class="number">100</span>
+         Behavior on <span class="name">height</span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">duration</span>: <span class="number">300</span> }
+         }
+     }
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">characterHeight</span>: <span class="name">capsuleShape</span>.<span class="name">height</span> <span class="operator">+</span> <span class="name">capsuleShape</span>.<span class="name">diameter</span>
+
+     <span class="name">sendTriggerReports</span>: <span class="number">true</span>
+
+     <span class="name">movement</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">wasd</span>.<span class="name">sideSpeed</span>, <span class="number">0</span>, <span class="name">wasd</span>.<span class="name">forwardSpeed</span>)
+     Behavior on <span class="name">movement</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">duration</span>: <span class="number">200</span> }
+     }
+
+     <span class="name">gravity</span>: <span class="name">building</span>.<span class="name">inGravityField</span> ? <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>) : <span class="name">physicsWorld</span>.<span class="name">gravity</span>
+
+     <span class="name">eulerRotation</span>.y: <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">x</span>
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+         <span class="name">id</span>: <span class="name">camera</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="name">character</span>.<span class="name">characterHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">10</span>, <span class="number">0</span>)
+         <span class="name">eulerRotation</span>.x: <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">y</span>
+         <span class="name">clipFar</span>: <span class="number">10000</span>
+         <span class="name">clipNear</span>: <span class="number">10</span>
+     }
+ }
+</pre>
+<p>The character controller needs a shape. Only <a href="qml-qtquick3d-physics-capsuleshape.html" translate="no">CapsuleShape</a> is supported. Note that the <i>height</i> property refers to the height of the cylinder part of the capsule: the total height of the character is calculated by adding the height of the bottom and top hemispheres:</p>
+<pre class="qml" translate="no">
+ <span class="name">collisionShapes</span>: <span class="name">CapsuleShape</span> {
+     <span class="name">id</span>: <span class="name">capsuleShape</span>
+     <span class="name">diameter</span>: <span class="number">50</span>
+     <span class="name">height</span>: <span class="name">wasd</span>.<span class="name">crouchActive</span> ? <span class="number">0</span> : <span class="number">100</span>
+     Behavior on <span class="name">height</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">duration</span>: <span class="number">300</span> }
+     }
+ }
+ property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">characterHeight</span>: <span class="name">capsuleShape</span>.<span class="name">height</span> <span class="operator">+</span> <span class="name">capsuleShape</span>.<span class="name">diameter</span>
+</pre>
+<p>In order to trigger a <a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a>, the character controller must have the <a href="qml-qtquick3d-physics-physicsnode.html#sendTriggerReports-prop" translate="no">sendTriggerReports</a> property set to <code translate="no">true</code>:</p>
+<pre class="qml" translate="no">
+ <span class="name">sendTriggerReports</span>: <span class="number">true</span>
+</pre>
+<p><a href="qml-qtquick3d-physics-charactercontroller.html" translate="no">CharacterController</a> has its own <a href="qml-qtquick3d-physics-charactercontroller.html#gravity-prop" translate="no">gravity</a> property, independent of <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a>. The common use case is to switch between walking and flying. In this example, we implement an antigravity field by changing the <code translate="no">gravity</code> property to point upwards when the character is inside the &quot;gravityField&quot; trigger:</p>
+<pre class="qml" translate="no">
+ <span class="name">gravity</span>: <span class="name">building</span>.<span class="name">inGravityField</span> ? <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>) : <span class="name">physicsWorld</span>.<span class="name">gravity</span>
+</pre>
+<h5 id="position-and-movement">Position and movement</h5>
+<p>When the <code translate="no">teleporterTriggered</code> signal is emitted, we change the position and orientation of the character back to its initial position. Note that the <a href="../qtquick3d/qml-qtquick3d-node.html#position-prop" translate="no">position</a> property should not be changed while the simulation is running. Use the <a href="qml-qtquick3d-physics-charactercontroller.html#teleport-method" translate="no">teleport</a> function instead:</p>
+<pre class="qml" translate="no">
+ property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">startPos</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">800</span>, <span class="number">175</span>, -<span class="number">850</span>)
+ <span class="name">position</span>: <span class="name">startPos</span>
+ <span class="keyword">function</span> <span class="name">teleportHome</span>() {
+     <span class="name">character</span>.<span class="name">teleport</span>(<span class="name">character</span>.<span class="name">startPos</span>)
+     <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">x</span> <span class="operator">=</span> <span class="number">180</span>
+ }
+</pre>
+<p>The motion of the character is defined by setting the <a href="qml-qtquick3d-physics-charactercontroller.html#movement-prop" translate="no">movement</a> property to a velocity. The character will then try to move with that velocity, relative to the forward vector. The character may end up moving at a different speed, since it may be blocked by a wall, or be in free fall. Mouse/keyboard input comes from the <code translate="no">wasd</code> object, which is a stripped-down version of <a href="../qtquick3d/qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a>.</p>
+<pre class="qml" translate="no">
+ <span class="name">movement</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">wasd</span>.<span class="name">sideSpeed</span>, <span class="number">0</span>, <span class="name">wasd</span>.<span class="name">forwardSpeed</span>)
+ Behavior on <span class="name">movement</span> {
+     <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">duration</span>: <span class="number">200</span> }
+ }
+</pre>
+<p>The two rotational axes are handled differently, in order to follow common practice for WASD movement when walking on the ground:</p>
+<ul>
+<li>Vertical rotation changes the view direction, but does <i>not</i> make the character fly up into the air or dig down into the ground.</li>
+<li>Horizontal rotation changes the forward direction of the character. (This is an exeption to the rule that transformations should not be changed when the physics simulation is running: It is safe to change the rotation of the character controller, since that doesn't change the state of the physics engine: it only changes the interpretation of the <a href="qml-qtquick3d-physics-charactercontroller.html#movement-prop" translate="no">movement</a> vector.)</li>
+</ul>
+<pre class="qml" translate="no">
+ <span class="name">eulerRotation</span>.y: <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">x</span>
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+     <span class="name">id</span>: <span class="name">camera</span>
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="name">character</span>.<span class="name">characterHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">10</span>, <span class="number">0</span>)
+     <span class="name">eulerRotation</span>.x: <span class="name">wasd</span>.<span class="name">cameraRotation</span>.<span class="name">y</span>
+     <span class="name">clipFar</span>: <span class="number">10000</span>
+     <span class="name">clipNear</span>: <span class="number">10</span>
+ }
+</pre>
+<p>Files:</p>
+<ul>
+<li><a href="qtquick3dphysics-charactercontroller-building-qml.html" translate="no">charactercontroller/Building.qml</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-cmakelists-txt.html" translate="no">charactercontroller/CMakeLists.txt</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-wasd-qml.html" translate="no">charactercontroller/Wasd.qml</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-charactercontroller-pro.html" translate="no">charactercontroller/charactercontroller.pro</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-main-cpp.html" translate="no">charactercontroller/main.cpp</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-main-qml.html" translate="no">charactercontroller/main.qml</a></li>
+<li><a href="qtquick3dphysics-charactercontroller-qml-qrc.html" translate="no">charactercontroller/qml.qrc</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tape001_1K_Color.jpg" translate="no">charactercontroller/maps/Tape001_1K_Color.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tape001_1K_NormalGL.jpg" translate="no">charactercontroller/maps/Tape001_1K_NormalGL.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tape001_1K_Roughness.jpg" translate="no">charactercontroller/maps/Tape001_1K_Roughness.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tiles107_1K_Color.jpg" translate="no">charactercontroller/maps/Tiles107_1K_Color.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tiles107_1K_NormalGL.jpg" translate="no">charactercontroller/maps/Tiles107_1K_NormalGL.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tiles107_1K_Roughness.jpg" translate="no">charactercontroller/maps/Tiles107_1K_Roughness.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/Tiles108_1K_Color.jpg" translate="no">charactercontroller/maps/Tiles108_1K_Color.jpg</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/sign.png" translate="no">charactercontroller/maps/sign.png</a></li>
+<li><a href="images/used-in-examples/charactercontroller/maps/sphere.png" translate="no">charactercontroller/maps/sphere.png</a></li>
+</ul>
+</div>
+<!-- @@@charactercontroller -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

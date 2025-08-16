@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qchar.cpp -->
+  <meta name="description" content="The QChar class provides a 16-bit Unicode character.">
+  <title>QChar Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QChar</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QChar Class</h1>
+<!-- $$$QChar-brief -->
+<p>The QChar class provides a 16-bit Unicode character. <a href="#details">More...</a></p>
+<!-- @@@QChar -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QChar&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qchar-members.html">List of all members, including inherited members</a></li>
+<li>QChar is part of <a href="string-processing.html">Classes for string data</a>.</li>
+</ul>
+<p>This class is <i>strongly comparable</i>.</p>
+<p>This class is <b>strongly comparable</b> with char16_t, <a href="qstring.html" translate="no">QString</a>, <a href="qstringview.html" translate="no">QStringView</a>, <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a>, and <a href="qutf8stringview.html" translate="no">QUtf8StringView</a>.</p>
+<p>This class is <b>strongly comparable</b> with const char *, <a href="qbytearray.html" translate="no">QByteArray</a>, and <a href="qbytearrayview.html" translate="no">QByteArrayView</a>.</p>
+<p>The contents of the byte array is interpreted as UTF-8.</p>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#Category-enum" translate="no">Category</a></b> { Mark_NonSpacing, Mark_SpacingCombining, Mark_Enclosing, Number_DecimalDigit, Number_Letter, &hellip;, Symbol_Other }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#Decomposition-enum" translate="no">Decomposition</a></b> { NoDecomposition, Canonical, Circle, Compat, Final, &hellip;, Wide }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#Direction-enum" translate="no">Direction</a></b> { DirAL, DirAN, DirB, DirBN, DirCS, &hellip;, DirWS }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#JoiningType-enum" translate="no">JoiningType</a></b> { Joining_None, Joining_Causing, Joining_Dual, Joining_Right, Joining_Left, Joining_Transparent }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#Script-enum" translate="no">Script</a></b> { Script_Unknown, Script_Inherited, Script_Common, Script_Adlam, Script_Ahom, &hellip;, Script_ZanabazarSquare }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#SpecialCharacter-enum" translate="no">SpecialCharacter</a></b> { Null, Tabulation, LineFeed, FormFeed, CarriageReturn, &hellip;, LastValidCodePoint }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#UnicodeVersion-enum" translate="no">UnicodeVersion</a></b> { Unicode_1_1, Unicode_2_0, Unicode_2_1_2, Unicode_3_0, Unicode_3_1, &hellip;, Unicode_Unassigned }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar" translate="no">QChar</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-1" translate="no">QChar</a></b>(QChar::SpecialCharacter <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-2" translate="no">QChar</a></b>(QLatin1Char <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-3" translate="no">QChar</a></b>(char <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-4" translate="no">QChar</a></b>(char16_t <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-5" translate="no">QChar</a></b>(char32_t <i>code</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-6" translate="no">QChar</a></b>(int <i>code</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-7" translate="no">QChar</a></b>(short <i>code</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-8" translate="no">QChar</a></b>(uchar <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-9" translate="no">QChar</a></b>(uint <i>code</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-10" translate="no">QChar</a></b>(ushort <i>code</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-11" translate="no">QChar</a></b>(wchar_t <i>ch</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#QChar-12" translate="no">QChar</a></b>(uchar <i>cell</i>, uchar <i>row</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Category </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#category" translate="no">category</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> uchar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#cell" translate="no">cell</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> unsigned char </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#combiningClass" translate="no">combiningClass</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#decomposition" translate="no">decomposition</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Decomposition </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#decompositionTag" translate="no">decompositionTag</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#digitValue" translate="no">digitValue</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Direction </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#direction" translate="no">direction</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#hasMirrored" translate="no">hasMirrored</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isDigit" translate="no">isDigit</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isHighSurrogate" translate="no">isHighSurrogate</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLetter" translate="no">isLetter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLetterOrNumber" translate="no">isLetterOrNumber</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLowSurrogate" translate="no">isLowSurrogate</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLower" translate="no">isLower</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isMark" translate="no">isMark</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isNonCharacter" translate="no">isNonCharacter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isNumber" translate="no">isNumber</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isPrint" translate="no">isPrint</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isPunct" translate="no">isPunct</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSpace" translate="no">isSpace</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSurrogate" translate="no">isSurrogate</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSymbol" translate="no">isSymbol</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isTitleCase" translate="no">isTitleCase</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isUpper" translate="no">isUpper</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::JoiningType </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#joiningType" translate="no">joiningType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#mirroredChar" translate="no">mirroredChar</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> uchar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#row" translate="no">row</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Script </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#script" translate="no">script</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toCaseFolded" translate="no">toCaseFolded</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toLatin1" translate="no">toLatin1</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toLower" translate="no">toLower</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toTitleCase" translate="no">toTitleCase</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toUpper" translate="no">toUpper</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char16_t &amp;</td><td class="memItemRight bottomAlign"><b><a href="qchar.html#unicode" translate="no">unicode</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char16_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#unicode-1" translate="no">unicode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::UnicodeVersion </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#unicodeVersion" translate="no">unicodeVersion</a></b>() const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Category </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#category-1" translate="no">category</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> unsigned char </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#combiningClass-1" translate="no">combiningClass</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::UnicodeVersion </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#currentUnicodeVersion" translate="no">currentUnicodeVersion</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#decomposition-1" translate="no">decomposition</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Decomposition </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#decompositionTag-1" translate="no">decompositionTag</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#digitValue-1" translate="no">digitValue</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Direction </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#direction-1" translate="no">direction</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#fromLatin1" translate="no">fromLatin1</a></b>(char <i>c</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QChar </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#fromUcs2" translate="no">fromUcs2</a></b>(char16_t <i>c</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#fromUcs4" translate="no">fromUcs4</a></b>(char32_t <i>c</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#hasMirrored-1" translate="no">hasMirrored</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char16_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#highSurrogate" translate="no">highSurrogate</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isDigit-1" translate="no">isDigit</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isHighSurrogate-1" translate="no">isHighSurrogate</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLetter-1" translate="no">isLetter</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLetterOrNumber-1" translate="no">isLetterOrNumber</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLowSurrogate-1" translate="no">isLowSurrogate</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isLower-1" translate="no">isLower</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isMark-1" translate="no">isMark</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isNonCharacter-1" translate="no">isNonCharacter</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isNumber-1" translate="no">isNumber</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isPrint-1" translate="no">isPrint</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isPunct-1" translate="no">isPunct</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSpace-1" translate="no">isSpace</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSurrogate-1" translate="no">isSurrogate</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isSymbol-1" translate="no">isSymbol</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isTitleCase-1" translate="no">isTitleCase</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#isUpper-1" translate="no">isUpper</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::JoiningType </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#joiningType-1" translate="no">joiningType</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char16_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#lowSurrogate" translate="no">lowSurrogate</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#mirroredChar-1" translate="no">mirroredChar</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#requiresSurrogates" translate="no">requiresSurrogates</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::Script </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#script-1" translate="no">script</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#surrogateToUcs4" translate="no">surrogateToUcs4</a></b>(char16_t <i>high</i>, char16_t <i>low</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#surrogateToUcs4-1" translate="no">surrogateToUcs4</a></b>(QChar <i>high</i>, QChar <i>low</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toCaseFolded-1" translate="no">toCaseFolded</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toLower-1" translate="no">toLower</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toTitleCase-1" translate="no">toTitleCase</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> char32_t </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#toUpper-1" translate="no">toUpper</a></b>(char32_t <i>ucs4</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QChar::UnicodeVersion </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#unicodeVersion-1" translate="no">unicodeVersion</a></b>(char32_t <i>ucs4</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-not-eq" translate="no">operator!=</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-lt" translate="no">operator&lt;</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-lt-lt" translate="no">operator&lt;&lt;</a></b>(QDataStream &amp;<i>out</i>, QChar <i>chr</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-lt-eq" translate="no">operator&lt;=</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-eq-eq" translate="no">operator==</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-gt" translate="no">operator&gt;</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-gt-eq" translate="no">operator&gt;=</a></b>(const QChar &amp;<i>c1</i>, const QChar &amp;<i>c2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qchar.html#operator-gt-gt-2" translate="no">operator&gt;&gt;</a></b>(QDataStream &amp;<i>in</i>, QChar &amp;<i>chr</i>)</td></tr>
+</table></div>
+<!-- $$$QChar-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>In Qt, Unicode characters are 16-bit entities without any markup or structure. This class represents such an entity. It is lightweight, so it can be used everywhere. Most compilers treat it like an <code translate="no">unsigned short</code>.</p>
+<p>QChar provides a full complement of testing/classification functions, converting to and from other formats, converting from composed to decomposed Unicode, and trying to compare and case-convert if you ask it to.</p>
+<p>The classification functions include functions like those in the standard C++ header &lt;cctype&gt; (formerly &lt;ctype.h&gt;), but operating on the full range of Unicode characters, not just for the ASCII range. They all return true if the character is a certain type of character; otherwise they return false. These classification functions are <a href="qchar.html#isNull" translate="no">isNull</a>() (returns <code translate="no">true</code> if the character is '\0'), <a href="qchar.html#isPrint" translate="no">isPrint</a>() (true if the character is any sort of printable character, including whitespace), <a href="qchar.html#isPunct" translate="no">isPunct</a>() (any sort of punctation), <a href="qchar.html#isMark" translate="no">isMark</a>() (Unicode Mark), <a href="qchar.html#isLetter" translate="no">isLetter</a>() (a letter), <a href="qchar.html#isNumber" translate="no">isNumber</a>() (any sort of numeric character, not just 0-9), <a href="qchar.html#isLetterOrNumber" translate="no">isLetterOrNumber</a>(), and <a href="qchar.html#isDigit" translate="no">isDigit</a>() (decimal digits). All of these are wrappers around <a href="qchar.html#category" translate="no">category</a>() which return the Unicode-defined category of each character. Some of these also calculate the derived properties (for example <a href="qchar.html#isSpace" translate="no">isSpace</a>() returns <code translate="no">true</code> if the character is of category Separator_* or an exceptional code point from <a href="qchar.html#Category-enum" translate="no">Other_Control</a> category).</p>
+<p>QChar also provides <a href="qchar.html#direction" translate="no">direction</a>(), which indicates the &quot;natural&quot; writing direction of this character. The <a href="qchar.html#joiningType" translate="no">joiningType</a>() function indicates how the character joins with it's neighbors (needed mostly for Arabic or Syriac) and finally <a href="qchar.html#hasMirrored" translate="no">hasMirrored</a>(), which indicates whether the character needs to be mirrored when it is printed in it's &quot;unnatural&quot; writing direction.</p>
+<p>Composed Unicode characters (like <i translate="no">ring</i>) can be converted to decomposed Unicode (&quot;a&quot; followed by &quot;ring above&quot;) by using <a href="qchar.html#decomposition" translate="no">decomposition</a>().</p>
+<p>In Unicode, comparison is not necessarily possible and case conversion is very difficult at best. Unicode, covering the &quot;entire&quot; world, also includes most of the world's case and sorting problems. operator==() and friends will do comparison based purely on the numeric Unicode value (code point) of the characters, and <a href="qchar.html#toUpper" translate="no">toUpper</a>() and <a href="qchar.html#toLower" translate="no">toLower</a>() will do case changes when the character has a well-defined uppercase/lowercase equivalent. For locale-dependent comparisons, use <a href="qstring.html#localeAwareCompare" translate="no">QString::localeAwareCompare</a>().</p>
+<p>The conversion functions include <a href="qchar.html#unicode" translate="no">unicode</a>() (to a scalar), <a href="qchar.html#toLatin1" translate="no">toLatin1</a>() (to scalar, but converts all non-Latin-1 characters to 0), <a href="qchar.html#row" translate="no">row</a>() (gives the Unicode row), <a href="qchar.html#cell" translate="no">cell</a>() (gives the Unicode cell), <a href="qchar.html#digitValue" translate="no">digitValue</a>() (gives the integer value of any of the numerous digit characters), and a host of constructors.</p>
+<p>QChar provides constructors and cast operators that make it easy to convert to and from traditional 8-bit <code translate="no">char</code>s. If you defined <code translate="no">QT_NO_CAST_FROM_ASCII</code> and <code translate="no">QT_NO_CAST_TO_ASCII</code>, as explained in the <a href="qstring.html" translate="no">QString</a> documentation, you will need to explicitly call <a href="qchar.html#fromLatin1" translate="no">fromLatin1</a>(), or use <a href="qlatin1char.html" translate="no">QLatin1Char</a>, to construct a QChar from an 8-bit <code translate="no">char</code>, and you will need to call <a href="qchar.html#toLatin1" translate="no">toLatin1</a>() to get the 8-bit value back.</p>
+<p>Starting with Qt 6.0, most QChar constructors are <code translate="no">explicit</code>. This is done to avoid dangerous mistakes when accidentally mixing integral types and strings.</p>
+<p>For more information see <a href="https://www.unicode.org/ucd/">&quot;About the Unicode Character Database&quot;</a>.</p>
+</div>
+<p><b>See also </b>Unicode, <a href="qstring.html" translate="no">QString</a>, and <a href="qlatin1char.html" translate="no">QLatin1Char</a>.</p>
+<!-- @@@QChar -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Category$$$Mark_NonSpacing$$$Mark_SpacingCombining$$$Mark_Enclosing$$$Number_DecimalDigit$$$Number_Letter$$$Number_Other$$$Separator_Space$$$Separator_Line$$$Separator_Paragraph$$$Other_Control$$$Other_Format$$$Other_Surrogate$$$Other_PrivateUse$$$Other_NotAssigned$$$Letter_Uppercase$$$Letter_Lowercase$$$Letter_Titlecase$$$Letter_Modifier$$$Letter_Other$$$Punctuation_Connector$$$Punctuation_Dash$$$Punctuation_Open$$$Punctuation_Close$$$Punctuation_InitialQuote$$$Punctuation_FinalQuote$$$Punctuation_Other$$$Symbol_Math$$$Symbol_Currency$$$Symbol_Modifier$$$Symbol_Other -->
+<h3 class="fn" translate="no" id="Category-enum">enum QChar::<span class="name">Category</span></h3>
+<p>This enum maps the Unicode character categories.</p>
+<p>The following characters are normative in Unicode:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Mark_NonSpacing</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Unicode class name Mn</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Mark_SpacingCombining</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Unicode class name Mc</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Mark_Enclosing</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">Unicode class name Me</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Number_DecimalDigit</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">Unicode class name Nd</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Number_Letter</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">Unicode class name Nl</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Number_Other</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">Unicode class name No</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Separator_Space</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">Unicode class name Zs</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Separator_Line</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign">Unicode class name Zl</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Separator_Paragraph</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign">Unicode class name Zp</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Other_Control</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign">Unicode class name Cc</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Other_Format</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign">Unicode class name Cf</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Other_Surrogate</code></td><td class="topAlign tblval"><code translate="no">11</code></td><td class="topAlign">Unicode class name Cs</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Other_PrivateUse</code></td><td class="topAlign tblval"><code translate="no">12</code></td><td class="topAlign">Unicode class name Co</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Other_NotAssigned</code></td><td class="topAlign tblval"><code translate="no">13</code></td><td class="topAlign">Unicode class name Cn</td></tr>
+</table></div>
+<p>The following categories are informative in Unicode:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Letter_Uppercase</code></td><td class="topAlign tblval"><code translate="no">14</code></td><td class="topAlign">Unicode class name Lu</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Letter_Lowercase</code></td><td class="topAlign tblval"><code translate="no">15</code></td><td class="topAlign">Unicode class name Ll</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Letter_Titlecase</code></td><td class="topAlign tblval"><code translate="no">16</code></td><td class="topAlign">Unicode class name Lt</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Letter_Modifier</code></td><td class="topAlign tblval"><code translate="no">17</code></td><td class="topAlign">Unicode class name Lm</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Letter_Other</code></td><td class="topAlign tblval"><code translate="no">18</code></td><td class="topAlign">Unicode class name Lo</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_Connector</code></td><td class="topAlign tblval"><code translate="no">19</code></td><td class="topAlign">Unicode class name Pc</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_Dash</code></td><td class="topAlign tblval"><code translate="no">20</code></td><td class="topAlign">Unicode class name Pd</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_Open</code></td><td class="topAlign tblval"><code translate="no">21</code></td><td class="topAlign">Unicode class name Ps</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_Close</code></td><td class="topAlign tblval"><code translate="no">22</code></td><td class="topAlign">Unicode class name Pe</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_InitialQuote</code></td><td class="topAlign tblval"><code translate="no">23</code></td><td class="topAlign">Unicode class name Pi</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_FinalQuote</code></td><td class="topAlign tblval"><code translate="no">24</code></td><td class="topAlign">Unicode class name Pf</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Punctuation_Other</code></td><td class="topAlign tblval"><code translate="no">25</code></td><td class="topAlign">Unicode class name Po</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Symbol_Math</code></td><td class="topAlign tblval"><code translate="no">26</code></td><td class="topAlign">Unicode class name Sm</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Symbol_Currency</code></td><td class="topAlign tblval"><code translate="no">27</code></td><td class="topAlign">Unicode class name Sc</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Symbol_Modifier</code></td><td class="topAlign tblval"><code translate="no">28</code></td><td class="topAlign">Unicode class name Sk</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Symbol_Other</code></td><td class="topAlign tblval"><code translate="no">29</code></td><td class="topAlign">Unicode class name So</td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#category" translate="no">category</a>().</p>
+<!-- @@@Category -->
+<!-- $$$Decomposition$$$NoDecomposition$$$Canonical$$$Font$$$NoBreak$$$Initial$$$Medial$$$Final$$$Isolated$$$Circle$$$Super$$$Sub$$$Vertical$$$Wide$$$Narrow$$$Small$$$Square$$$Compat$$$Fraction -->
+<h3 class="fn" translate="no" id="Decomposition-enum">enum QChar::<span class="name">Decomposition</span></h3>
+<p>This enum type defines the Unicode decomposition attributes. See the <a href="https://www.unicode.org/">Unicode standard</a> for a description of the values.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::NoDecomposition</code></td><td class="topAlign tblval"><code translate="no">0</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Canonical</code></td><td class="topAlign tblval"><code translate="no">1</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Circle</code></td><td class="topAlign tblval"><code translate="no">8</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Compat</code></td><td class="topAlign tblval"><code translate="no">16</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Final</code></td><td class="topAlign tblval"><code translate="no">6</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Font</code></td><td class="topAlign tblval"><code translate="no">2</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Fraction</code></td><td class="topAlign tblval"><code translate="no">17</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Initial</code></td><td class="topAlign tblval"><code translate="no">4</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Isolated</code></td><td class="topAlign tblval"><code translate="no">7</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Medial</code></td><td class="topAlign tblval"><code translate="no">5</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Narrow</code></td><td class="topAlign tblval"><code translate="no">13</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::NoBreak</code></td><td class="topAlign tblval"><code translate="no">3</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Small</code></td><td class="topAlign tblval"><code translate="no">14</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Square</code></td><td class="topAlign tblval"><code translate="no">15</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Sub</code></td><td class="topAlign tblval"><code translate="no">10</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Super</code></td><td class="topAlign tblval"><code translate="no">9</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Vertical</code></td><td class="topAlign tblval"><code translate="no">11</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Wide</code></td><td class="topAlign tblval"><code translate="no">12</code></td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#decomposition" translate="no">decomposition</a>().</p>
+<!-- @@@Decomposition -->
+<!-- $$$Direction$$$DirL$$$DirR$$$DirEN$$$DirES$$$DirET$$$DirAN$$$DirCS$$$DirB$$$DirS$$$DirWS$$$DirON$$$DirLRE$$$DirLRO$$$DirAL$$$DirRLE$$$DirRLO$$$DirPDF$$$DirNSM$$$DirBN$$$DirLRI$$$DirRLI$$$DirFSI$$$DirPDI -->
+<h3 class="fn" translate="no" id="Direction-enum">enum QChar::<span class="name">Direction</span></h3>
+<p>This enum type defines the Unicode direction attributes. See the <a href="https://www.unicode.org/reports/tr9/tr9-35.html#Table_Bidirectional_Character_Types">Unicode Standard</a> for a description of the values.</p>
+<p>In order to conform to C/C++ naming conventions &quot;Dir&quot; is prepended to the codes used in the Unicode Standard.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirAL</code></td><td class="topAlign tblval"><code translate="no">13</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirAN</code></td><td class="topAlign tblval"><code translate="no">5</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirB</code></td><td class="topAlign tblval"><code translate="no">7</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirBN</code></td><td class="topAlign tblval"><code translate="no">18</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirCS</code></td><td class="topAlign tblval"><code translate="no">6</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirEN</code></td><td class="topAlign tblval"><code translate="no">2</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirES</code></td><td class="topAlign tblval"><code translate="no">3</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirET</code></td><td class="topAlign tblval"><code translate="no">4</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirFSI (since Qt 5.3)</code></td><td class="topAlign tblval"><code translate="no">21</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirL</code></td><td class="topAlign tblval"><code translate="no">0</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirLRE</code></td><td class="topAlign tblval"><code translate="no">11</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirLRI (since Qt 5.3)</code></td><td class="topAlign tblval"><code translate="no">19</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirLRO</code></td><td class="topAlign tblval"><code translate="no">12</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirNSM</code></td><td class="topAlign tblval"><code translate="no">17</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirON</code></td><td class="topAlign tblval"><code translate="no">10</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirPDF</code></td><td class="topAlign tblval"><code translate="no">16</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirPDI (since Qt 5.3)</code></td><td class="topAlign tblval"><code translate="no">22</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirR</code></td><td class="topAlign tblval"><code translate="no">1</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirRLE</code></td><td class="topAlign tblval"><code translate="no">14</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirRLI (since Qt 5.3)</code></td><td class="topAlign tblval"><code translate="no">20</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirRLO</code></td><td class="topAlign tblval"><code translate="no">15</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirS</code></td><td class="topAlign tblval"><code translate="no">8</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::DirWS</code></td><td class="topAlign tblval"><code translate="no">9</code></td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#direction" translate="no">direction</a>().</p>
+<!-- @@@Direction -->
+<!-- $$$JoiningType$$$Joining_None$$$Joining_Causing$$$Joining_Dual$$$Joining_Right$$$Joining_Left$$$Joining_Transparent -->
+<h3 class="fn" translate="no" id="JoiningType-enum">enum QChar::<span class="name">JoiningType</span></h3>
+<p>since 5.3</p>
+<p>This enum type defines the Unicode joining type attributes. See the <a href="https://www.unicode.org/">Unicode standard</a> for a description of the values.</p>
+<p>In order to conform to C/C++ naming conventions &quot;Joining_&quot; is prepended to the codes used in the Unicode Standard.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_None</code></td><td class="topAlign tblval"><code translate="no">0</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_Causing</code></td><td class="topAlign tblval"><code translate="no">1</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_Dual</code></td><td class="topAlign tblval"><code translate="no">2</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_Right</code></td><td class="topAlign tblval"><code translate="no">3</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_Left</code></td><td class="topAlign tblval"><code translate="no">4</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Joining_Transparent</code></td><td class="topAlign tblval"><code translate="no">5</code></td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#joiningType" translate="no">joiningType</a>().</p>
+<!-- @@@JoiningType -->
+<!-- $$$Script$$$Script_Unknown$$$Script_Inherited$$$Script_Common$$$Script_Latin$$$Script_Greek$$$Script_Cyrillic$$$Script_Armenian$$$Script_Hebrew$$$Script_Arabic$$$Script_Syriac$$$Script_Thaana$$$Script_Devanagari$$$Script_Bengali$$$Script_Gurmukhi$$$Script_Gujarati$$$Script_Oriya$$$Script_Tamil$$$Script_Telugu$$$Script_Kannada$$$Script_Malayalam$$$Script_Sinhala$$$Script_Thai$$$Script_Lao$$$Script_Tibetan$$$Script_Myanmar$$$Script_Georgian$$$Script_Hangul$$$Script_Ethiopic$$$Script_Cherokee$$$Script_CanadianAboriginal$$$Script_Ogham$$$Script_Runic$$$Script_Khmer$$$Script_Mongolian$$$Script_Hiragana$$$Script_Katakana$$$Script_Bopomofo$$$Script_Han$$$Script_Yi$$$Script_OldItalic$$$Script_Gothic$$$Script_Deseret$$$Script_Tagalog$$$Script_Hanunoo$$$Script_Buhid$$$Script_Tagbanwa$$$Script_Coptic$$$Script_Limbu$$$Script_TaiLe$$$Script_LinearB$$$Script_Ugaritic$$$Script_Shavian$$$Script_Osmanya$$$Script_Cypriot$$$Script_Braille$$$Script_Buginese$$$Script_NewTaiLue$$$Script_Glagolitic$$$Script_Tifinagh$$$Script_SylotiNagri$$$Script_OldPersian$$$Script_Kharoshthi$$$Script_Balinese$$$Script_Cuneiform$$$Script_Phoenician$$$Script_PhagsPa$$$Script_Nko$$$Script_Sundanese$$$Script_Lepcha$$$Script_OlChiki$$$Script_Vai$$$Script_Saurashtra$$$Script_KayahLi$$$Script_Rejang$$$Script_Lycian$$$Script_Carian$$$Script_Lydian$$$Script_Cham$$$Script_TaiTham$$$Script_TaiViet$$$Script_Avestan$$$Script_EgyptianHieroglyphs$$$Script_Samaritan$$$Script_Lisu$$$Script_Bamum$$$Script_Javanese$$$Script_MeeteiMayek$$$Script_ImperialAramaic$$$Script_OldSouthArabian$$$Script_InscriptionalParthian$$$Script_InscriptionalPahlavi$$$Script_OldTurkic$$$Script_Kaithi$$$Script_Batak$$$Script_Brahmi$$$Script_Mandaic$$$Script_Chakma$$$Script_MeroiticCursive$$$Script_MeroiticHieroglyphs$$$Script_Miao$$$Script_Sharada$$$Script_SoraSompeng$$$Script_Takri$$$Script_CaucasianAlbanian$$$Script_BassaVah$$$Script_Duployan$$$Script_Elbasan$$$Script_Grantha$$$Script_PahawhHmong$$$Script_Khojki$$$Script_LinearA$$$Script_Mahajani$$$Script_Manichaean$$$Script_MendeKikakui$$$Script_Modi$$$Script_Mro$$$Script_OldNorthArabian$$$Script_Nabataean$$$Script_Palmyrene$$$Script_PauCinHau$$$Script_OldPermic$$$Script_PsalterPahlavi$$$Script_Siddham$$$Script_Khudawadi$$$Script_Tirhuta$$$Script_WarangCiti$$$Script_Ahom$$$Script_AnatolianHieroglyphs$$$Script_Hatran$$$Script_Multani$$$Script_OldHungarian$$$Script_SignWriting$$$Script_Adlam$$$Script_Bhaiksuki$$$Script_Marchen$$$Script_Newa$$$Script_Osage$$$Script_Tangut$$$Script_MasaramGondi$$$Script_Nushu$$$Script_Soyombo$$$Script_ZanabazarSquare$$$Script_Dogra$$$Script_GunjalaGondi$$$Script_HanifiRohingya$$$Script_Makasar$$$Script_Medefaidrin$$$Script_OldSogdian$$$Script_Sogdian$$$Script_Elymaic$$$Script_Nandinagari$$$Script_NyiakengPuachueHmong$$$Script_Wancho$$$Script_Chorasmian$$$Script_DivesAkuru$$$Script_KhitanSmallScript$$$Script_Yezidi$$$Script_CyproMinoan$$$Script_OldUyghur$$$Script_Tangsa$$$Script_Toto$$$Script_Vithkuqi$$$Script_Kawi$$$Script_NagMundari$$$Script_Garay$$$Script_GurungKhema$$$Script_KiratRai$$$Script_OlOnal$$$Script_Sunuwar$$$Script_Todhri$$$Script_TuluTigalari$$$ScriptCount -->
+<h3 class="fn" translate="no" id="Script-enum">enum QChar::<span class="name">Script</span></h3>
+<p>This enum type defines the Unicode script property values.</p>
+<p>For details about the Unicode script property values see <a href="https://www.unicode.org/reports/tr24/">Unicode Standard Annex #24</a>.</p>
+<p>In order to conform to C/C++ naming conventions &quot;Script_&quot; is prepended to the codes used in the Unicode Standard.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Unknown</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">For unassigned, private-use, noncharacter, and surrogate code points.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Inherited</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">For characters that may be used with multiple scripts and that inherit their script from the preceding characters. These include nonspacing marks, enclosing marks, and zero width joiner/non-joiner characters.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Common</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">For characters that may be used with multiple scripts and that do not inherit their script from the preceding characters.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Adlam (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">132</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Ahom (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">126</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_AnatolianHieroglyphs (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">127</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Arabic</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Armenian</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Avestan</code></td><td class="topAlign tblval"><code translate="no">80</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Balinese</code></td><td class="topAlign tblval"><code translate="no">62</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Bamum</code></td><td class="topAlign tblval"><code translate="no">84</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_BassaVah (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">104</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Batak</code></td><td class="topAlign tblval"><code translate="no">93</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Bengali</code></td><td class="topAlign tblval"><code translate="no">12</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Bhaiksuki (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">133</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Bopomofo</code></td><td class="topAlign tblval"><code translate="no">36</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Brahmi</code></td><td class="topAlign tblval"><code translate="no">94</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Braille</code></td><td class="topAlign tblval"><code translate="no">54</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Buginese</code></td><td class="topAlign tblval"><code translate="no">55</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Buhid</code></td><td class="topAlign tblval"><code translate="no">44</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_CanadianAboriginal</code></td><td class="topAlign tblval"><code translate="no">29</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Carian</code></td><td class="topAlign tblval"><code translate="no">75</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_CaucasianAlbanian (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">103</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Chakma</code></td><td class="topAlign tblval"><code translate="no">96</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Cham</code></td><td class="topAlign tblval"><code translate="no">77</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Cherokee</code></td><td class="topAlign tblval"><code translate="no">28</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Chorasmian (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">153</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Coptic</code></td><td class="topAlign tblval"><code translate="no">46</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Cuneiform</code></td><td class="topAlign tblval"><code translate="no">63</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Cypriot</code></td><td class="topAlign tblval"><code translate="no">53</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_CyproMinoan (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">157</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Cyrillic</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Deseret</code></td><td class="topAlign tblval"><code translate="no">41</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Devanagari</code></td><td class="topAlign tblval"><code translate="no">11</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_DivesAkuru (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">154</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Dogra (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">142</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Duployan (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">105</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_EgyptianHieroglyphs</code></td><td class="topAlign tblval"><code translate="no">81</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Elbasan (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">106</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Elymaic (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">149</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Ethiopic</code></td><td class="topAlign tblval"><code translate="no">27</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Garay (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">164</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Georgian</code></td><td class="topAlign tblval"><code translate="no">25</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Glagolitic</code></td><td class="topAlign tblval"><code translate="no">57</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Gothic</code></td><td class="topAlign tblval"><code translate="no">40</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Grantha (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">107</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Greek</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Gujarati</code></td><td class="topAlign tblval"><code translate="no">14</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_GunjalaGondi (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">143</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Gurmukhi</code></td><td class="topAlign tblval"><code translate="no">13</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_GurungKhema (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">165</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Han</code></td><td class="topAlign tblval"><code translate="no">37</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Hangul</code></td><td class="topAlign tblval"><code translate="no">26</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_HanifiRohingya (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">144</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Hanunoo</code></td><td class="topAlign tblval"><code translate="no">43</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Hatran (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">128</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Hebrew</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Hiragana</code></td><td class="topAlign tblval"><code translate="no">34</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_ImperialAramaic</code></td><td class="topAlign tblval"><code translate="no">87</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_InscriptionalPahlavi</code></td><td class="topAlign tblval"><code translate="no">90</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_InscriptionalParthian</code></td><td class="topAlign tblval"><code translate="no">89</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Javanese</code></td><td class="topAlign tblval"><code translate="no">85</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Kaithi</code></td><td class="topAlign tblval"><code translate="no">92</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Kannada</code></td><td class="topAlign tblval"><code translate="no">18</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Katakana</code></td><td class="topAlign tblval"><code translate="no">35</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Kawi (since Qt 6.5)</code></td><td class="topAlign tblval"><code translate="no">162</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_KayahLi</code></td><td class="topAlign tblval"><code translate="no">72</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Kharoshthi</code></td><td class="topAlign tblval"><code translate="no">61</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_KhitanSmallScript (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">155</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Khmer</code></td><td class="topAlign tblval"><code translate="no">32</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Khojki (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">109</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Khudawadi (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">123</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_KiratRai (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">166</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Lao</code></td><td class="topAlign tblval"><code translate="no">22</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Latin</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Lepcha</code></td><td class="topAlign tblval"><code translate="no">68</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Limbu</code></td><td class="topAlign tblval"><code translate="no">47</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_LinearA (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">110</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_LinearB</code></td><td class="topAlign tblval"><code translate="no">49</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Lisu</code></td><td class="topAlign tblval"><code translate="no">83</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Lycian</code></td><td class="topAlign tblval"><code translate="no">74</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Lydian</code></td><td class="topAlign tblval"><code translate="no">76</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Mahajani (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">111</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Makasar (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">145</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Malayalam</code></td><td class="topAlign tblval"><code translate="no">19</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Mandaic</code></td><td class="topAlign tblval"><code translate="no">95</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Manichaean (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">112</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Marchen (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">134</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_MasaramGondi (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">138</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Medefaidrin (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">146</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_MeeteiMayek</code></td><td class="topAlign tblval"><code translate="no">86</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_MendeKikakui (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">113</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_MeroiticCursive</code></td><td class="topAlign tblval"><code translate="no">97</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_MeroiticHieroglyphs</code></td><td class="topAlign tblval"><code translate="no">98</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Miao</code></td><td class="topAlign tblval"><code translate="no">99</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Modi (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">114</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Mongolian</code></td><td class="topAlign tblval"><code translate="no">33</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Mro (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">115</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Multani (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">129</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Myanmar</code></td><td class="topAlign tblval"><code translate="no">24</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Nabataean (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">117</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_NagMundari (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">163</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Nandinagari (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">150</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Newa (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">135</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_NewTaiLue</code></td><td class="topAlign tblval"><code translate="no">56</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Nko</code></td><td class="topAlign tblval"><code translate="no">66</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Nushu (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">139</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_NyiakengPuachueHmong (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">151</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Ogham</code></td><td class="topAlign tblval"><code translate="no">30</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OlChiki</code></td><td class="topAlign tblval"><code translate="no">69</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OlOnal (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">167</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldHungarian (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">130</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldItalic</code></td><td class="topAlign tblval"><code translate="no">39</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldNorthArabian (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">116</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldPermic (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">120</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldPersian</code></td><td class="topAlign tblval"><code translate="no">60</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldSogdian (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">147</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldSouthArabian</code></td><td class="topAlign tblval"><code translate="no">88</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldTurkic</code></td><td class="topAlign tblval"><code translate="no">91</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_OldUyghur (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">158</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Oriya</code></td><td class="topAlign tblval"><code translate="no">15</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Osage (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">136</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Osmanya</code></td><td class="topAlign tblval"><code translate="no">52</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_PahawhHmong (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">108</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Palmyrene (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">118</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_PauCinHau (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">119</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_PhagsPa</code></td><td class="topAlign tblval"><code translate="no">65</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Phoenician</code></td><td class="topAlign tblval"><code translate="no">64</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_PsalterPahlavi (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">121</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Rejang</code></td><td class="topAlign tblval"><code translate="no">73</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Runic</code></td><td class="topAlign tblval"><code translate="no">31</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Samaritan</code></td><td class="topAlign tblval"><code translate="no">82</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Saurashtra</code></td><td class="topAlign tblval"><code translate="no">71</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Sharada</code></td><td class="topAlign tblval"><code translate="no">100</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Shavian</code></td><td class="topAlign tblval"><code translate="no">51</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Siddham (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">122</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_SignWriting (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">131</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Sinhala</code></td><td class="topAlign tblval"><code translate="no">20</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Sogdian (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">148</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_SoraSompeng</code></td><td class="topAlign tblval"><code translate="no">101</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Soyombo (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">140</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Sundanese</code></td><td class="topAlign tblval"><code translate="no">67</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Sunuwar (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">168</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_SylotiNagri</code></td><td class="topAlign tblval"><code translate="no">59</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Syriac</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tagalog</code></td><td class="topAlign tblval"><code translate="no">42</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tagbanwa</code></td><td class="topAlign tblval"><code translate="no">45</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_TaiLe</code></td><td class="topAlign tblval"><code translate="no">48</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_TaiTham</code></td><td class="topAlign tblval"><code translate="no">78</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_TaiViet</code></td><td class="topAlign tblval"><code translate="no">79</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Takri</code></td><td class="topAlign tblval"><code translate="no">102</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tamil</code></td><td class="topAlign tblval"><code translate="no">16</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tangut (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">137</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tangsa (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">159</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Telugu</code></td><td class="topAlign tblval"><code translate="no">17</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Thaana</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Thai</code></td><td class="topAlign tblval"><code translate="no">21</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tibetan</code></td><td class="topAlign tblval"><code translate="no">23</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tifinagh</code></td><td class="topAlign tblval"><code translate="no">58</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Tirhuta (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">124</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Todhri (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">169</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Toto (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">160</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_TuluTigalari (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">170</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Ugaritic</code></td><td class="topAlign tblval"><code translate="no">50</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Vai</code></td><td class="topAlign tblval"><code translate="no">70</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Vithkuqi (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">161</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Wancho (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">152</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_WarangCiti (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">125</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Yezidi (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">156</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_Yi</code></td><td class="topAlign tblval"><code translate="no">38</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Script_ZanabazarSquare (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">141</code></td><td class="topAlign">&nbsp;</td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#script" translate="no">script</a>().</p>
+<!-- @@@Script -->
+<!-- $$$SpecialCharacter$$$Null$$$Tabulation$$$LineFeed$$$FormFeed$$$CarriageReturn$$$Space$$$Nbsp$$$SoftHyphen$$$ReplacementCharacter$$$ObjectReplacementCharacter$$$ByteOrderMark$$$ByteOrderSwapped$$$ParagraphSeparator$$$LineSeparator$$$VisualTabCharacter$$$LastValidCodePoint -->
+<h3 class="fn" translate="no" id="SpecialCharacter-enum">enum QChar::<span class="name">SpecialCharacter</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Null</code></td><td class="topAlign tblval"><code translate="no">0x0000</code></td><td class="topAlign">A <a href="qchar.html" translate="no">QChar</a> with this value <a href="qchar.html#isNull" translate="no">isNull</a>().</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Tabulation</code></td><td class="topAlign tblval"><code translate="no">0x0009</code></td><td class="topAlign">Character tabulation.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::LineFeed</code></td><td class="topAlign tblval"><code translate="no">0x000a</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::FormFeed</code></td><td class="topAlign tblval"><code translate="no">0x000c</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::CarriageReturn</code></td><td class="topAlign tblval"><code translate="no">0x000d</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Space</code></td><td class="topAlign tblval"><code translate="no">0x0020</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Nbsp</code></td><td class="topAlign tblval"><code translate="no">0x00a0</code></td><td class="topAlign">Non-breaking space.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::SoftHyphen</code></td><td class="topAlign tblval"><code translate="no">0x00ad</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::ReplacementCharacter</code></td><td class="topAlign tblval"><code translate="no">0xfffd</code></td><td class="topAlign">The character shown when a font has no glyph for a certain codepoint. A special question mark character is often used. Codecs use this codepoint when input data cannot be represented in Unicode.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::ObjectReplacementCharacter</code></td><td class="topAlign tblval"><code translate="no">0xfffc</code></td><td class="topAlign">Used to represent an object such as an image when such objects cannot be presented.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::ByteOrderMark</code></td><td class="topAlign tblval"><code translate="no">0xfeff</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::ByteOrderSwapped</code></td><td class="topAlign tblval"><code translate="no">0xfffe</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::ParagraphSeparator</code></td><td class="topAlign tblval"><code translate="no">0x2029</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::LineSeparator</code></td><td class="topAlign tblval"><code translate="no">0x2028</code></td><td class="topAlign">&nbsp;</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::VisualTabCharacter (since Qt 6.2)</code></td><td class="topAlign tblval"><code translate="no">0x2192</code></td><td class="topAlign">Used to represent a tabulation as a horizontal arrow.</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::LastValidCodePoint</code></td><td class="topAlign tblval"><code translate="no">0x10ffff</code></td><td class="topAlign">&nbsp;</td></tr>
+</table></div>
+<!-- @@@SpecialCharacter -->
+<!-- $$$UnicodeVersion$$$Unicode_Unassigned$$$Unicode_1_1$$$Unicode_2_0$$$Unicode_2_1_2$$$Unicode_3_0$$$Unicode_3_1$$$Unicode_3_2$$$Unicode_4_0$$$Unicode_4_1$$$Unicode_5_0$$$Unicode_5_1$$$Unicode_5_2$$$Unicode_6_0$$$Unicode_6_1$$$Unicode_6_2$$$Unicode_6_3$$$Unicode_7_0$$$Unicode_8_0$$$Unicode_9_0$$$Unicode_10_0$$$Unicode_11_0$$$Unicode_12_0$$$Unicode_12_1$$$Unicode_13_0$$$Unicode_14_0$$$Unicode_15_0$$$Unicode_15_1$$$Unicode_16_0 -->
+<h3 class="fn" translate="no" id="UnicodeVersion-enum">enum QChar::<span class="name">UnicodeVersion</span></h3>
+<p>Specifies which version of the <a href="https://www.unicode.org/">Unicode standard</a> introduced a certain character.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_1_1</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Version 1.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_2_0</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">Version 2.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_2_1_2</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">Version 2.1.2</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_3_0</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">Version 3.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_3_1</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">Version 3.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_3_2</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">Version 3.2</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_4_0</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign">Version 4.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_4_1</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign">Version 4.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_5_0</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign">Version 5.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_5_1</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign">Version 5.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_5_2</code></td><td class="topAlign tblval"><code translate="no">11</code></td><td class="topAlign">Version 5.2</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_6_0</code></td><td class="topAlign tblval"><code translate="no">12</code></td><td class="topAlign">Version 6.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_6_1</code></td><td class="topAlign tblval"><code translate="no">13</code></td><td class="topAlign">Version 6.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_6_2</code></td><td class="topAlign tblval"><code translate="no">14</code></td><td class="topAlign">Version 6.2</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_6_3 (since Qt 5.3)</code></td><td class="topAlign tblval"><code translate="no">15</code></td><td class="topAlign">Version 6.3</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_7_0 (since Qt 5.5)</code></td><td class="topAlign tblval"><code translate="no">16</code></td><td class="topAlign">Version 7.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_8_0 (since Qt 5.6)</code></td><td class="topAlign tblval"><code translate="no">17</code></td><td class="topAlign">Version 8.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_9_0 (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">18</code></td><td class="topAlign">Version 9.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_10_0 (since Qt 5.11)</code></td><td class="topAlign tblval"><code translate="no">19</code></td><td class="topAlign">Version 10.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_11_0 (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">20</code></td><td class="topAlign">Version 11.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_12_0 (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">21</code></td><td class="topAlign">Version 12.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_12_1 (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">22</code></td><td class="topAlign">Version 12.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_13_0 (since Qt 5.15)</code></td><td class="topAlign tblval"><code translate="no">23</code></td><td class="topAlign">Version 13.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_14_0 (since Qt 6.3)</code></td><td class="topAlign tblval"><code translate="no">24</code></td><td class="topAlign">Version 14.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_15_0 (since Qt 6.5)</code></td><td class="topAlign tblval"><code translate="no">25</code></td><td class="topAlign">Version 15.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_15_1 (since Qt 6.8)</code></td><td class="topAlign tblval"><code translate="no">26</code></td><td class="topAlign">Version 15.1</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_16_0 (since Qt 6.9)</code></td><td class="topAlign tblval"><code translate="no">27</code></td><td class="topAlign">Version 16.0</td></tr>
+<tr><td class="topAlign"><code translate="no">QChar::Unicode_Unassigned</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The value is not assigned to any character in version 8.0 of Unicode.</td></tr>
+</table></div>
+<p><b>See also </b><a href="qchar.html#unicodeVersion" translate="no">unicodeVersion</a>() and <a href="qchar.html#currentUnicodeVersion" translate="no">currentUnicodeVersion</a>().</p>
+<!-- @@@UnicodeVersion -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QChar[overload1]$$$QChar -->
+<h3 class="fn" translate="no" id="QChar"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>()</h3>
+<p>Constructs a null QChar ('\0').</p>
+<p><b>See also </b><a href="qchar.html#isNull" translate="no">isNull</a>().</p>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharQChar::SpecialCharacter -->
+<h3 class="fn" translate="no" id="QChar-1"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qchar.html#SpecialCharacter-enum" translate="no">QChar::SpecialCharacter</a></span> <i>ch</i>)</h3>
+<p>Constructs a QChar for the predefined character value <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharQLatin1Char -->
+<h3 class="fn" translate="no" id="QChar-2"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qlatin1char.html" translate="no">QLatin1Char</a></span> <i>ch</i>)</h3>
+<p>Constructs a QChar corresponding to ASCII/Latin-1 character <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharchar -->
+<h3 class="fn" translate="no" id="QChar-3"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type">char</span> <i>ch</i>)</h3>
+<p>Constructs a QChar corresponding to ASCII/Latin-1 character <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor is not available when <code translate="no">QT_NO_CAST_FROM_ASCII</code> is defined.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<p><b>See also </b><a href="qstring.html#QT_NO_CAST_FROM_ASCII" translate="no">QT_NO_CAST_FROM_ASCII</a>.</p>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharchar16_t -->
+<h3 class="fn" translate="no" id="QChar-4"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type">char16_t</span> <i>ch</i>)</h3>
+<p>Constructs a QChar corresponding to the UTF-16 character <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharchar32_t -->
+<h3 class="fn" translate="no" id="QChar-5"><code class="details extra" translate="no">[default]</code> QChar::<span class="name">QChar</span>(<span class="type">char32_t</span> <i>code</i>)</h3>
+<p>Constructs a QChar for the character with Unicode code point <i translate="no">code</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharint -->
+<h3 class="fn" translate="no" id="QChar-6"><code class="details extra" translate="no">[explicit constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type">int</span> <i>code</i>)</h3>
+<p>Constructs a QChar for the character with Unicode code point <i translate="no">code</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharshort -->
+<h3 class="fn" translate="no" id="QChar-7"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type">short</span> <i>code</i>)</h3>
+<p>Constructs a QChar for the character with Unicode code point <i translate="no">code</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharuchar -->
+<h3 class="fn" translate="no" id="QChar-8"><code class="details extra" translate="no">[explicit constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qttypes.html#uchar-typedef" translate="no">uchar</a></span> <i>ch</i>)</h3>
+<p>Constructs a QChar corresponding to ASCII/Latin-1 character <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor is not available when <code translate="no">QT_NO_CAST_FROM_ASCII</code> or <code translate="no">QT_RESTRICTED_CAST_FROM_ASCII</code> is defined.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<p><b>See also </b><a href="qstring.html#QT_NO_CAST_FROM_ASCII" translate="no">QT_NO_CAST_FROM_ASCII</a> and <a href="qstring.html#QT_RESTRICTED_CAST_FROM_ASCII" translate="no">QT_RESTRICTED_CAST_FROM_ASCII</a>.</p>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharuint -->
+<h3 class="fn" translate="no" id="QChar-9"><code class="details extra" translate="no">[explicit constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qttypes.html#uint-typedef" translate="no">uint</a></span> <i>code</i>)</h3>
+<p>Constructs a QChar for the character with Unicode code point <i translate="no">code</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharushort -->
+<h3 class="fn" translate="no" id="QChar-10"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qttypes.html#ushort-typedef" translate="no">ushort</a></span> <i>code</i>)</h3>
+<p>Constructs a QChar for the character with Unicode code point <i translate="no">code</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharwchar_t -->
+<h3 class="fn" translate="no" id="QChar-11"><code class="details extra" translate="no">[constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type">wchar_t</span> <i>ch</i>)</h3>
+<p>Constructs a QChar corresponding to the wide character <i translate="no">ch</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor is only available on Windows.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Since Qt 6.9, implicit conversions are disabled for this constructor. That means it accepts only the constructor argument type and not everything that implicitly converts to it. A backwards-compatible fix is to explicitly cast to one of the supported argument types of QChar constructors.</p>
+</div>
+<!-- @@@QChar -->
+<!-- $$$QChar$$$QCharucharuchar -->
+<h3 class="fn" translate="no" id="QChar-12"><code class="details extra" translate="no">[explicit constexpr noexcept]</code> QChar::<span class="name">QChar</span>(<span class="type"><a href="qttypes.html#uchar-typedef" translate="no">uchar</a></span> <i>cell</i>, <span class="type"><a href="qttypes.html#uchar-typedef" translate="no">uchar</a></span> <i>row</i>)</h3>
+<p>Constructs a QChar for Unicode cell <i translate="no">cell</i> in row <i translate="no">row</i>.</p>
+<p><b>See also </b><a href="qchar.html#cell" translate="no">cell</a>() and <a href="qchar.html#row" translate="no">row</a>().</p>
+<!-- @@@QChar -->
+<!-- $$$category[overload1]$$$category -->
+<h3 class="fn" translate="no" id="category"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#Category-enum" translate="no">QChar::Category</a></span> QChar::<span class="name">category</span>() const</h3>
+<p>Returns the character's category.</p>
+<!-- @@@category -->
+<!-- $$$category$$$categorychar32_t -->
+<h3 class="fn" translate="no" id="category-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#Category-enum" translate="no">QChar::Category</a></span> QChar::<span class="name">category</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the category of the UCS-4-encoded character specified by <i translate="no">ucs4</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@category -->
+<!-- $$$cell[overload1]$$$cell -->
+<h3 class="fn" translate="no" id="cell"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#uchar-typedef" translate="no">uchar</a></span> QChar::<span class="name">cell</span>() const</h3>
+<p>Returns the cell (least significant byte) of the Unicode character.</p>
+<p><b>See also </b><a href="qchar.html#row" translate="no">row</a>().</p>
+<!-- @@@cell -->
+<!-- $$$combiningClass[overload1]$$$combiningClass -->
+<h3 class="fn" translate="no" id="combiningClass"><code class="details extra" translate="no">[noexcept]</code> <span class="type">unsigned</span> <span class="type">char</span> QChar::<span class="name">combiningClass</span>() const</h3>
+<p>Returns the combining class for the character as defined in the Unicode standard. This is mainly useful as a positioning hint for marks attached to a base character.</p>
+<p>The Qt text rendering engine uses this information to correctly position non-spacing marks around a base character.</p>
+<!-- @@@combiningClass -->
+<!-- $$$combiningClass$$$combiningClasschar32_t -->
+<h3 class="fn" translate="no" id="combiningClass-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">unsigned</span> <span class="type">char</span> QChar::<span class="name">combiningClass</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the combining class for the UCS-4-encoded character specified by <i translate="no">ucs4</i>, as defined in the Unicode standard.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@combiningClass -->
+<!-- $$$currentUnicodeVersion[overload1]$$$currentUnicodeVersion -->
+<h3 class="fn" translate="no" id="currentUnicodeVersion"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#UnicodeVersion-enum" translate="no">QChar::UnicodeVersion</a></span> QChar::<span class="name">currentUnicodeVersion</span>()</h3>
+<p>Returns the most recent supported Unicode version.</p>
+<!-- @@@currentUnicodeVersion -->
+<!-- $$$decomposition[overload1]$$$decomposition -->
+<h3 class="fn" translate="no" id="decomposition"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QChar::<span class="name">decomposition</span>() const</h3>
+<p>Decomposes a character into it's constituent parts. Returns an empty string if no decomposition exists.</p>
+<!-- @@@decomposition -->
+<!-- $$$decomposition$$$decompositionchar32_t -->
+<h3 class="fn" translate="no" id="decomposition-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qstring.html" translate="no">QString</a></span> QChar::<span class="name">decomposition</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Decomposes the UCS-4-encoded character specified by <i translate="no">ucs4</i> into it's constituent parts. Returns an empty string if no decomposition exists.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@decomposition -->
+<!-- $$$decompositionTag[overload1]$$$decompositionTag -->
+<h3 class="fn" translate="no" id="decompositionTag"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#Decomposition-enum" translate="no">QChar::Decomposition</a></span> QChar::<span class="name">decompositionTag</span>() const</h3>
+<p>Returns the tag defining the composition of the character. Returns <a href="qchar.html#Decomposition-enum" translate="no">QChar::NoDecomposition</a> if no decomposition exists.</p>
+<!-- @@@decompositionTag -->
+<!-- $$$decompositionTag$$$decompositionTagchar32_t -->
+<h3 class="fn" translate="no" id="decompositionTag-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#Decomposition-enum" translate="no">QChar::Decomposition</a></span> QChar::<span class="name">decompositionTag</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the tag defining the composition of the UCS-4-encoded character specified by <i translate="no">ucs4</i>. Returns <a href="qchar.html#Decomposition-enum" translate="no">QChar::NoDecomposition</a> if no decomposition exists.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@decompositionTag -->
+<!-- $$$digitValue[overload1]$$$digitValue -->
+<h3 class="fn" translate="no" id="digitValue"><code class="details extra" translate="no">[noexcept]</code> <span class="type">int</span> QChar::<span class="name">digitValue</span>() const</h3>
+<p>Returns the numeric value of the digit, or -1 if the character is not a digit.</p>
+<!-- @@@digitValue -->
+<!-- $$$digitValue$$$digitValuechar32_t -->
+<h3 class="fn" translate="no" id="digitValue-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">int</span> QChar::<span class="name">digitValue</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the numeric value of the digit specified by the UCS-4-encoded character, <i translate="no">ucs4</i>, or -1 if the character is not a digit.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@digitValue -->
+<!-- $$$direction[overload1]$$$direction -->
+<h3 class="fn" translate="no" id="direction"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#Direction-enum" translate="no">QChar::Direction</a></span> QChar::<span class="name">direction</span>() const</h3>
+<p>Returns the character's direction.</p>
+<!-- @@@direction -->
+<!-- $$$direction$$$directionchar32_t -->
+<h3 class="fn" translate="no" id="direction-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#Direction-enum" translate="no">QChar::Direction</a></span> QChar::<span class="name">direction</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the direction of the UCS-4-encoded character specified by <i translate="no">ucs4</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@direction -->
+<!-- $$$fromLatin1[overload1]$$$fromLatin1char -->
+<h3 class="fn" translate="no" id="fromLatin1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">fromLatin1</span>(<span class="type">char</span> <i>c</i>)</h3>
+<p>Converts the Latin-1 character <i translate="no">c</i> to its equivalent <a href="qchar.html" translate="no">QChar</a>. This is mainly useful for non-internationalized software.</p>
+<p>An alternative is to use <a href="qlatin1char.html" translate="no">QLatin1Char</a>.</p>
+<p><b>See also </b><a href="qchar.html#toLatin1" translate="no">toLatin1</a>() and <a href="qchar.html#unicode" translate="no">unicode</a>().</p>
+<!-- @@@fromLatin1 -->
+<!-- $$$fromUcs2[overload1]$$$fromUcs2char16_t -->
+<h3 class="fn" translate="no" id="fromUcs2"><code class="details extra" translate="no">[static constexpr noexcept, since 6.0]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">fromUcs2</span>(<span class="type">char16_t</span> <i>c</i>)</h3>
+<p>Constructs a <a href="qchar.html" translate="no">QChar</a> from UTF-16 character <i translate="no">c</i>.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qchar.html#fromUcs4" translate="no">fromUcs4</a>().</p>
+<!-- @@@fromUcs2 -->
+<!-- $$$fromUcs4[overload1]$$$fromUcs4char32_t -->
+<h3 class="fn" translate="no" id="fromUcs4"><code class="details extra" translate="no">[static constexpr noexcept, since 6.0]</code> <span class="type">auto</span> QChar::<span class="name">fromUcs4</span>(<span class="type">char32_t</span> <i>c</i>)</h3>
+<p>Returns an anonymous struct that</p>
+<ul>
+<li>contains a <code translate="no">char16_t chars[2]</code> array,</li>
+<li>can be implicitly converted to a <a href="qstringview.html" translate="no">QStringView</a>, and</li>
+<li>iterated over with a C++11 ranged for loop.</li>
+</ul>
+<p>If <i translate="no">c</i> requires surrogates, <code translate="no">chars[0]</code> contains the high surrogate and <code translate="no">chars[1]</code> the low surrogate, and the <a href="qstringview.html" translate="no">QStringView</a> has size 2. Otherwise, <code translate="no">chars[0]</code> contains <i translate="no">c</i> and <code translate="no">chars[1]</code> is <a href="qchar.html#isNull" translate="no">null</a>, and the <a href="qstringview.html" translate="no">QStringView</a> has size 1.</p>
+<p>This allows easy use of the result:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> s;
+ s <span class="operator">+</span><span class="operator">=</span> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span><span class="operator">::</span>fromUcs4(ch);
+</pre>
+<pre class="cpp" translate="no">
+ <span class="keyword">for</span> (char16_t c16 : <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span><span class="operator">::</span>fromUcs4(ch))
+     use(c16);
+</pre>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qchar.html#fromUcs2" translate="no">fromUcs2</a>() and <a href="qchar.html#requiresSurrogates" translate="no">requiresSurrogates</a>().</p>
+<!-- @@@fromUcs4 -->
+<!-- $$$hasMirrored[overload1]$$$hasMirrored -->
+<h3 class="fn" translate="no" id="hasMirrored"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QChar::<span class="name">hasMirrored</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character should be reversed if the text direction is reversed; otherwise returns <code translate="no">false</code>.</p>
+<p>A bit faster equivalent of (ch.<a href="qchar.html#mirroredChar" translate="no">mirroredChar</a>() != ch).</p>
+<p><b>See also </b><a href="qchar.html#mirroredChar" translate="no">mirroredChar</a>().</p>
+<!-- @@@hasMirrored -->
+<!-- $$$hasMirrored$$$hasMirroredchar32_t -->
+<h3 class="fn" translate="no" id="hasMirrored-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">bool</span> QChar::<span class="name">hasMirrored</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> should be reversed if the text direction is reversed; otherwise returns <code translate="no">false</code>.</p>
+<p>A bit faster equivalent of (<a href="qchar.html#mirroredChar" translate="no">QChar::mirroredChar</a>(ucs4) != ucs4).</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#mirroredChar" translate="no">mirroredChar</a>().</p>
+<!-- @@@hasMirrored -->
+<!-- $$$highSurrogate[overload1]$$$highSurrogatechar32_t -->
+<h3 class="fn" translate="no" id="highSurrogate"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">char16_t</span> QChar::<span class="name">highSurrogate</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>Returns the high surrogate part of a UCS-4-encoded code point. The returned result is undefined if <i translate="no">ucs4</i> is smaller than 0x10000.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">ushort</code>.</p>
+</div>
+<!-- @@@highSurrogate -->
+<!-- $$$isDigit[overload1]$$$isDigit -->
+<h3 class="fn" translate="no" id="isDigit"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isDigit</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a decimal digit (<a href="qchar.html#Category-enum" translate="no">Number_DecimalDigit</a>); otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qchar.html#isNumber" translate="no">isNumber</a>().</p>
+<!-- @@@isDigit -->
+<!-- $$$isDigit$$$isDigitchar32_t -->
+<h3 class="fn" translate="no" id="isDigit-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isDigit</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a decimal digit (<a href="qchar.html#Category-enum" translate="no">Number_DecimalDigit</a>); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#isNumber" translate="no">isNumber</a>().</p>
+<!-- @@@isDigit -->
+<!-- $$$isHighSurrogate[overload1]$$$isHighSurrogate -->
+<h3 class="fn" translate="no" id="isHighSurrogate"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isHighSurrogate</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the <a href="qchar.html" translate="no">QChar</a> is the high part of a UTF16 surrogate (for example if its code point is in range [0xd800..0xdbff]); false otherwise.</p>
+<!-- @@@isHighSurrogate -->
+<!-- $$$isHighSurrogate$$$isHighSurrogatechar32_t -->
+<h3 class="fn" translate="no" id="isHighSurrogate-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isHighSurrogate</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is the high part of a UTF16 surrogate (for example if its code point is in range [0xd800..0xdbff]); false otherwise.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isHighSurrogate -->
+<!-- $$$isLetter[overload1]$$$isLetter -->
+<h3 class="fn" translate="no" id="isLetter"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLetter</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a letter (Letter_* categories); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isLetter -->
+<!-- $$$isLetter$$$isLetterchar32_t -->
+<h3 class="fn" translate="no" id="isLetter-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLetter</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a letter (Letter_* categories); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isLetter -->
+<!-- $$$isLetterOrNumber[overload1]$$$isLetterOrNumber -->
+<h3 class="fn" translate="no" id="isLetterOrNumber"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLetterOrNumber</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a letter or number (Letter_* or Number_* categories); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isLetterOrNumber -->
+<!-- $$$isLetterOrNumber$$$isLetterOrNumberchar32_t -->
+<h3 class="fn" translate="no" id="isLetterOrNumber-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLetterOrNumber</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a letter or number (Letter_* or Number_* categories); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isLetterOrNumber -->
+<!-- $$$isLowSurrogate[overload1]$$$isLowSurrogate -->
+<h3 class="fn" translate="no" id="isLowSurrogate"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLowSurrogate</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the <a href="qchar.html" translate="no">QChar</a> is the low part of a UTF16 surrogate (for example if its code point is in range [0xdc00..0xdfff]); false otherwise.</p>
+<!-- @@@isLowSurrogate -->
+<!-- $$$isLowSurrogate$$$isLowSurrogatechar32_t -->
+<h3 class="fn" translate="no" id="isLowSurrogate-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLowSurrogate</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is the low part of a UTF16 surrogate (for example if its code point is in range [0xdc00..0xdfff]); false otherwise.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isLowSurrogate -->
+<!-- $$$isLower[overload1]$$$isLower -->
+<h3 class="fn" translate="no" id="isLower"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLower</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a lowercase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Lowercase</a>.</p>
+<p><b>See also </b><a href="qchar.html#isUpper" translate="no">isUpper</a>(), <a href="qchar.html#toLower" translate="no">toLower</a>(), and <a href="qchar.html#toUpper" translate="no">toUpper</a>().</p>
+<!-- @@@isLower -->
+<!-- $$$isLower$$$isLowerchar32_t -->
+<h3 class="fn" translate="no" id="isLower-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isLower</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a lowercase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Lowercase</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#isUpper" translate="no">isUpper</a>(), <a href="qchar.html#toLower" translate="no">toLower</a>(), and <a href="qchar.html#toUpper" translate="no">toUpper</a>().</p>
+<!-- @@@isLower -->
+<!-- $$$isMark[overload1]$$$isMark -->
+<h3 class="fn" translate="no" id="isMark"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isMark</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a mark (Mark_* categories); otherwise returns <code translate="no">false</code>.</p>
+<p>See <a href="qchar.html#Category-enum" translate="no">QChar::Category</a> for more information regarding marks.</p>
+<!-- @@@isMark -->
+<!-- $$$isMark$$$isMarkchar32_t -->
+<h3 class="fn" translate="no" id="isMark-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isMark</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a mark (Mark_* categories); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isMark -->
+<!-- $$$isNonCharacter[overload1]$$$isNonCharacter -->
+<h3 class="fn" translate="no" id="isNonCharacter"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isNonCharacter</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the <a href="qchar.html" translate="no">QChar</a> is a non-character; false otherwise.</p>
+<p>Unicode has a certain number of code points that are classified as &quot;non-characters:&quot; that is, they can be used for internal purposes in applications but cannot be used for text interchange. Those are the last two entries each Unicode Plane ([0xfffe..0xffff], [0x1fffe..0x1ffff], etc.) as well as the entries in range [0xfdd0..0xfdef].</p>
+<!-- @@@isNonCharacter -->
+<!-- $$$isNonCharacter$$$isNonCharacterchar32_t -->
+<h3 class="fn" translate="no" id="isNonCharacter-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isNonCharacter</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a non-character; false otherwise.</p>
+<p>Unicode has a certain number of code points that are classified as &quot;non-characters:&quot; that is, they can be used for internal purposes in applications but cannot be used for text interchange. Those are the last two entries each Unicode Plane ([0xfffe..0xffff], [0x1fffe..0x1ffff], etc.) as well as the entries in range [0xfdd0..0xfdef].</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isNonCharacter -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is the Unicode character 0x0000 ('\0'); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isNull -->
+<!-- $$$isNumber[overload1]$$$isNumber -->
+<h3 class="fn" translate="no" id="isNumber"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isNumber</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a number (Number_* categories, not just 0-9); otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qchar.html#isDigit" translate="no">isDigit</a>().</p>
+<!-- @@@isNumber -->
+<!-- $$$isNumber$$$isNumberchar32_t -->
+<h3 class="fn" translate="no" id="isNumber-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isNumber</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a number (Number_* categories, not just 0-9); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#isDigit" translate="no">isDigit</a>().</p>
+<!-- @@@isNumber -->
+<!-- $$$isPrint[overload1]$$$isPrint -->
+<h3 class="fn" translate="no" id="isPrint"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isPrint</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a printable character; otherwise returns <code translate="no">false</code>. This is any character not of category <a href="qjniobject.html#other" translate="no">Other_</a>*.</p>
+<p>Note that this gives no indication of whether the character is available in a particular font.</p>
+<!-- @@@isPrint -->
+<!-- $$$isPrint$$$isPrintchar32_t -->
+<h3 class="fn" translate="no" id="isPrint-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isPrint</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a printable character; otherwise returns <code translate="no">false</code>. This is any character not of category <a href="qjniobject.html#other" translate="no">Other_</a>*.</p>
+<p>Note that this gives no indication of whether the character is available in a particular font.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isPrint -->
+<!-- $$$isPunct[overload1]$$$isPunct -->
+<h3 class="fn" translate="no" id="isPunct"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isPunct</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a punctuation mark (Punctuation_* categories); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isPunct -->
+<!-- $$$isPunct$$$isPunctchar32_t -->
+<h3 class="fn" translate="no" id="isPunct-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isPunct</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a punctuation mark (Punctuation_* categories); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isPunct -->
+<!-- $$$isSpace[overload1]$$$isSpace -->
+<h3 class="fn" translate="no" id="isSpace"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSpace</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a separator character (Separator_* categories or certain code points from <a href="qchar.html#Category-enum" translate="no">Other_Control</a> category); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isSpace -->
+<!-- $$$isSpace$$$isSpacechar32_t -->
+<h3 class="fn" translate="no" id="isSpace-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSpace</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a separator character (Separator_* categories or certain code points from <a href="qchar.html#Category-enum" translate="no">Other_Control</a> category); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isSpace -->
+<!-- $$$isSurrogate[overload1]$$$isSurrogate -->
+<h3 class="fn" translate="no" id="isSurrogate"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSurrogate</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the <a href="qchar.html" translate="no">QChar</a> contains a code point that is in either the high or the low part of the UTF-16 surrogate range (for example if its code point is in range [0xd800..0xdfff]); false otherwise.</p>
+<!-- @@@isSurrogate -->
+<!-- $$$isSurrogate$$$isSurrogatechar32_t -->
+<h3 class="fn" translate="no" id="isSurrogate-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSurrogate</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> contains a code point that is in either the high or the low part of the UTF-16 surrogate range (for example if its code point is in range [0xd800..0xdfff]); false otherwise.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isSurrogate -->
+<!-- $$$isSymbol[overload1]$$$isSymbol -->
+<h3 class="fn" translate="no" id="isSymbol"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSymbol</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a symbol (Symbol_* categories); otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isSymbol -->
+<!-- $$$isSymbol$$$isSymbolchar32_t -->
+<h3 class="fn" translate="no" id="isSymbol-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isSymbol</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a symbol (Symbol_* categories); otherwise returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@isSymbol -->
+<!-- $$$isTitleCase[overload1]$$$isTitleCase -->
+<h3 class="fn" translate="no" id="isTitleCase"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isTitleCase</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is a titlecase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Titlecase</a>.</p>
+<p><b>See also </b><a href="qchar.html#isLower" translate="no">isLower</a>(), <a href="qchar.html#toUpper" translate="no">toUpper</a>(), <a href="qchar.html#toLower" translate="no">toLower</a>(), and <a href="qchar.html#toTitleCase" translate="no">toTitleCase</a>().</p>
+<!-- @@@isTitleCase -->
+<!-- $$$isTitleCase$$$isTitleCasechar32_t -->
+<h3 class="fn" translate="no" id="isTitleCase-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isTitleCase</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a titlecase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Titlecase</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#isLower" translate="no">isLower</a>(), <a href="qchar.html#toUpper" translate="no">toUpper</a>(), <a href="qchar.html#toLower" translate="no">toLower</a>(), and <a href="qchar.html#toTitleCase" translate="no">toTitleCase</a>().</p>
+<!-- @@@isTitleCase -->
+<!-- $$$isUpper[overload1]$$$isUpper -->
+<h3 class="fn" translate="no" id="isUpper"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isUpper</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the character is an uppercase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Uppercase</a>.</p>
+<p><b>See also </b><a href="qchar.html#isLower" translate="no">isLower</a>(), <a href="qchar.html#toUpper" translate="no">toUpper</a>(), and <a href="qchar.html#toLower" translate="no">toLower</a>().</p>
+<!-- @@@isUpper -->
+<!-- $$$isUpper$$$isUpperchar32_t -->
+<h3 class="fn" translate="no" id="isUpper-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">isUpper</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is an uppercase letter, for example <a href="qchar.html#category" translate="no">category</a>() is <a href="qchar.html#Category-enum" translate="no">Letter_Uppercase</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#isLower" translate="no">isLower</a>(), <a href="qchar.html#toUpper" translate="no">toUpper</a>(), and <a href="qchar.html#toLower" translate="no">toLower</a>().</p>
+<!-- @@@isUpper -->
+<!-- $$$joiningType[overload1]$$$joiningType -->
+<h3 class="fn" translate="no" id="joiningType"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#JoiningType-enum" translate="no">QChar::JoiningType</a></span> QChar::<span class="name">joiningType</span>() const</h3>
+<p>Returns information about the joining type attributes of the character (needed for certain languages such as Arabic or Syriac).</p>
+<!-- @@@joiningType -->
+<!-- $$$joiningType$$$joiningTypechar32_t -->
+<h3 class="fn" translate="no" id="joiningType-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#JoiningType-enum" translate="no">QChar::JoiningType</a></span> QChar::<span class="name">joiningType</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns information about the joining type attributes of the UCS-4-encoded character specified by <i translate="no">ucs4</i> (needed for certain languages such as Arabic or Syriac).</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@joiningType -->
+<!-- $$$lowSurrogate[overload1]$$$lowSurrogatechar32_t -->
+<h3 class="fn" translate="no" id="lowSurrogate"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">char16_t</span> QChar::<span class="name">lowSurrogate</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>Returns the low surrogate part of a UCS-4-encoded code point. The returned result is undefined if <i translate="no">ucs4</i> is smaller than 0x10000.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">ushort</code>.</p>
+</div>
+<!-- @@@lowSurrogate -->
+<!-- $$$mirroredChar[overload1]$$$mirroredChar -->
+<h3 class="fn" translate="no" id="mirroredChar"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">mirroredChar</span>() const</h3>
+<p>Returns the mirrored character if this character is a mirrored character; otherwise returns the character itself.</p>
+<p><b>See also </b><a href="qchar.html#hasMirrored" translate="no">hasMirrored</a>().</p>
+<!-- @@@mirroredChar -->
+<!-- $$$mirroredChar$$$mirroredCharchar32_t -->
+<h3 class="fn" translate="no" id="mirroredChar-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">mirroredChar</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the mirrored character if the UCS-4-encoded character specified by <i translate="no">ucs4</i> is a mirrored character; otherwise returns the character itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">uint</code>.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#hasMirrored" translate="no">hasMirrored</a>().</p>
+<!-- @@@mirroredChar -->
+<!-- $$$requiresSurrogates[overload1]$$$requiresSurrogateschar32_t -->
+<h3 class="fn" translate="no" id="requiresSurrogates"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">bool</span> QChar::<span class="name">requiresSurrogates</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>Returns <code translate="no">true</code> if the UCS-4-encoded character specified by <i translate="no">ucs4</i> can be split into the high and low parts of a UTF16 surrogate (for example if its code point is greater than or equals to 0x10000); false otherwise.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@requiresSurrogates -->
+<!-- $$$row[overload1]$$$row -->
+<h3 class="fn" translate="no" id="row"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qttypes.html#uchar-typedef" translate="no">uchar</a></span> QChar::<span class="name">row</span>() const</h3>
+<p>Returns the row (most significant byte) of the Unicode character.</p>
+<p><b>See also </b><a href="qchar.html#cell" translate="no">cell</a>().</p>
+<!-- @@@row -->
+<!-- $$$script[overload1]$$$script -->
+<h3 class="fn" translate="no" id="script"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#Script-enum" translate="no">QChar::Script</a></span> QChar::<span class="name">script</span>() const</h3>
+<p>Returns the Unicode script property value for this character.</p>
+<!-- @@@script -->
+<!-- $$$script$$$scriptchar32_t -->
+<h3 class="fn" translate="no" id="script-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#Script-enum" translate="no">QChar::Script</a></span> QChar::<span class="name">script</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the Unicode script property value for the character specified in its UCS-4-encoded form as <i translate="no">ucs4</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@script -->
+<!-- $$$surrogateToUcs4[overload1]$$$surrogateToUcs4char16_tchar16_t -->
+<h3 class="fn" translate="no" id="surrogateToUcs4"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">surrogateToUcs4</span>(<span class="type">char16_t</span> <i>high</i>, <span class="type">char16_t</span> <i>low</i>)</h3>
+<p>Converts a UTF16 surrogate pair with the given <i translate="no">high</i> and <i translate="no">low</i> values to it's UCS-4-encoded code point.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took <code translate="no">ushort</code> arguments and returned <code translate="no">uint</code>.</p>
+</div>
+<!-- @@@surrogateToUcs4 -->
+<!-- $$$surrogateToUcs4$$$surrogateToUcs4QCharQChar -->
+<h3 class="fn" translate="no" id="surrogateToUcs4-1"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">surrogateToUcs4</span>(<span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> <i>high</i>, <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> <i>low</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Converts a UTF16 surrogate pair (<i translate="no">high</i>, <i translate="no">low</i>) to it's UCS-4-encoded code point.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function returned <code translate="no">uint</code>.</p>
+</div>
+<!-- @@@surrogateToUcs4 -->
+<!-- $$$toCaseFolded[overload1]$$$toCaseFolded -->
+<h3 class="fn" translate="no" id="toCaseFolded"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">toCaseFolded</span>() const</h3>
+<p>Returns the case folded equivalent of the character. For most Unicode characters this is the same as <a href="qchar.html#toLower" translate="no">toLower</a>().</p>
+<!-- @@@toCaseFolded -->
+<!-- $$$toCaseFolded$$$toCaseFoldedchar32_t -->
+<h3 class="fn" translate="no" id="toCaseFolded-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">toCaseFolded</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the case folded equivalent of the UCS-4-encoded character specified by <i translate="no">ucs4</i>. For most Unicode characters this is the same as <a href="qchar.html#toLower" translate="no">toLower</a>().</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">uint</code>.</p>
+</div>
+<!-- @@@toCaseFolded -->
+<!-- $$$toLatin1[overload1]$$$toLatin1 -->
+<h3 class="fn" translate="no" id="toLatin1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">char</span> QChar::<span class="name">toLatin1</span>() const</h3>
+<p>Returns the Latin-1 character equivalent to the <a href="qchar.html" translate="no">QChar</a>, or 0. This is mainly useful for non-internationalized software.</p>
+<div class="admonition note">
+<p><b>Note: </b>It is not possible to distinguish a non-Latin-1 character from a Latin-1 0 (NUL) character. Prefer to use <a href="qchar.html#unicode" translate="no">unicode</a>(), which does not have this ambiguity.</p>
+</div>
+<p><b>See also </b><a href="qchar.html#unicode" translate="no">unicode</a>().</p>
+<!-- @@@toLatin1 -->
+<!-- $$$toLower[overload1]$$$toLower -->
+<h3 class="fn" translate="no" id="toLower"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">toLower</span>() const</h3>
+<p>Returns the lowercase equivalent if the character is uppercase or titlecase; otherwise returns the character itself.</p>
+<!-- @@@toLower -->
+<!-- $$$toLower$$$toLowerchar32_t -->
+<h3 class="fn" translate="no" id="toLower-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">toLower</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the lowercase equivalent of the UCS-4-encoded character specified by <i translate="no">ucs4</i> if the character is uppercase or titlecase; otherwise returns the character itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">uint</code>.</p>
+</div>
+<!-- @@@toLower -->
+<!-- $$$toTitleCase[overload1]$$$toTitleCase -->
+<h3 class="fn" translate="no" id="toTitleCase"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">toTitleCase</span>() const</h3>
+<p>Returns the title case equivalent if the character is lowercase or uppercase; otherwise returns the character itself.</p>
+<!-- @@@toTitleCase -->
+<!-- $$$toTitleCase$$$toTitleCasechar32_t -->
+<h3 class="fn" translate="no" id="toTitleCase-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">toTitleCase</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the title case equivalent of the UCS-4-encoded character specified by <i translate="no">ucs4</i> if the character is lowercase or uppercase; otherwise returns the character itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">uint</code>.</p>
+</div>
+<!-- @@@toTitleCase -->
+<!-- $$$toUpper[overload1]$$$toUpper -->
+<h3 class="fn" translate="no" id="toUpper"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> QChar::<span class="name">toUpper</span>() const</h3>
+<p>Returns the uppercase equivalent if the character is lowercase or titlecase; otherwise returns the character itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function also returns the original character in the rare case of the uppercase form of the character requiring two or more characters.</p>
+</div>
+<p><b>See also </b><a href="qstring.html#toUpper" translate="no">QString::toUpper</a>().</p>
+<!-- @@@toUpper -->
+<!-- $$$toUpper$$$toUpperchar32_t -->
+<h3 class="fn" translate="no" id="toUpper-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">char32_t</span> QChar::<span class="name">toUpper</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the uppercase equivalent of the UCS-4-encoded character specified by <i translate="no">ucs4</i> if the character is lowercase or titlecase; otherwise returns the character itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function also returns the original character in the rare case of the uppercase form of the character requiring two or more characters.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument and returned <code translate="no">uint</code>.</p>
+</div>
+<p><b>See also </b><a href="qstring.html#toUpper" translate="no">QString::toUpper</a>().</p>
+<!-- @@@toUpper -->
+<!-- $$$unicode[overload1]$$$unicode -->
+<h3 class="fn" translate="no" id="unicode"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">char16_t</span> &amp;QChar::<span class="name">unicode</span>()</h3>
+<p>Returns a reference to the numeric Unicode value of the <a href="qchar.html" translate="no">QChar</a>.</p>
+<!-- @@@unicode -->
+<!-- $$$unicode$$$unicode -->
+<h3 class="fn" translate="no" id="unicode-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">char16_t</span> QChar::<span class="name">unicode</span>() const</h3>
+<p>Returns the numeric Unicode value of the <a href="qchar.html" translate="no">QChar</a>.</p>
+<!-- @@@unicode -->
+<!-- $$$unicodeVersion[overload1]$$$unicodeVersion -->
+<h3 class="fn" translate="no" id="unicodeVersion"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qchar.html#UnicodeVersion-enum" translate="no">QChar::UnicodeVersion</a></span> QChar::<span class="name">unicodeVersion</span>() const</h3>
+<p>Returns the Unicode version that introduced this character.</p>
+<!-- @@@unicodeVersion -->
+<!-- $$$unicodeVersion$$$unicodeVersionchar32_t -->
+<h3 class="fn" translate="no" id="unicodeVersion-1"><code class="details extra" translate="no">[static noexcept]</code> <span class="type"><a href="qchar.html#UnicodeVersion-enum" translate="no">QChar::UnicodeVersion</a></span> QChar::<span class="name">unicodeVersion</span>(<span class="type">char32_t</span> <i>ucs4</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the Unicode version that introduced the character specified in its UCS-4-encoded form as <i translate="no">ucs4</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Before Qt 6, this function took a <code translate="no">uint</code> argument.</p>
+</div>
+<!-- @@@unicodeVersion -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$operator!=[overload1]$$$operator!=constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">c1</i> and <i translate="no">c2</i> are not the same Unicode character; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator<[overload1]$$$operator<constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-lt"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&lt;</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if the numeric Unicode value of <i translate="no">c1</i> is less than that of <i translate="no">c2</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator< -->
+<!-- $$$operator<<[overload1]$$$operator<<QDataStream&QChar -->
+<h3 class="fn" translate="no" id="operator-lt-lt"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&lt;&lt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>out</i>, <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> <i>chr</i>)</h3>
+<p>Writes the char <i translate="no">chr</i> to the stream <i translate="no">out</i>.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator<=[overload1]$$$operator<=constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-lt-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&lt;=</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if the numeric Unicode value of <i translate="no">c1</i> is less than or equal to that of <i translate="no">c2</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator<= -->
+<!-- $$$operator==[overload1]$$$operator==constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">c1</i> and <i translate="no">c2</i> are the same Unicode character; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator== -->
+<!-- $$$operator>[overload1]$$$operator>constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-gt"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&gt;</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if the numeric Unicode value of <i translate="no">c1</i> is greater than that of <i translate="no">c2</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator> -->
+<!-- $$$operator>=[overload1]$$$operator>=constQChar&constQChar& -->
+<h3 class="fn" translate="no" id="operator-gt-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator&gt;=</span>(const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c1</i>, const <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>c2</i>)</h3>
+<p>Returns <code translate="no">true</code> if the numeric Unicode value of <i translate="no">c1</i> is greater than or equal to that of <i translate="no">c2</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator>= -->
+<!-- $$$operator>>$$$operator>>QDataStream&QChar& -->
+<h3 class="fn" translate="no" id="operator-gt-gt-2"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&gt;&gt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>in</i>, <span class="type"><a href="qchar.html#QChar" translate="no">QChar</a></span> &amp;<i>chr</i>)</h3>
+<p>Reads a char from the stream <i translate="no">in</i> into char <i translate="no">chr</i>.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator>> -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

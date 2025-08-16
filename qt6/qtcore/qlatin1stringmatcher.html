@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qlatin1stringmatcher.cpp -->
+  <meta name="description" content="Optimized search for substring in Latin-1 text.">
+  <title>QLatin1StringMatcher Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QLatin1StringMatcher</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QLatin1StringMatcher Class</h1>
+<!-- $$$QLatin1StringMatcher-brief -->
+<p>Optimized search for substring in Latin-1 text. <a href="#details">More...</a></p>
+<!-- @@@QLatin1StringMatcher -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QLatin1StringMatcher&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.5</td></tr>
+</table></div>
+<ul>
+<li><a href="qlatin1stringmatcher-members.html">List of all members, including inherited members</a></li>
+<li>QLatin1StringMatcher is part of <a href="string-processing.html">Classes for string data</a>.</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#QLatin1StringMatcher" translate="no">QLatin1StringMatcher</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#QLatin1StringMatcher-1" translate="no">QLatin1StringMatcher</a></b>(QLatin1StringView <i>pattern</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#dtor.QLatin1StringMatcher" translate="no">~QLatin1StringMatcher</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt::CaseSensitivity </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#caseSensitivity" translate="no">caseSensitivity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a></b>(QLatin1StringView <i>haystack</i>, qsizetype <i>from</i> = 0) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#indexIn-1" translate="no">indexIn</a></b>(QStringView <i>haystack</i>, qsizetype <i>from</i> = 0) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QLatin1StringView </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#pattern" translate="no">pattern</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#setCaseSensitivity" translate="no">setCaseSensitivity</a></b>(Qt::CaseSensitivity <i>cs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qlatin1stringmatcher.html#setPattern" translate="no">setPattern</a></b>(QLatin1StringView <i>pattern</i>)</td></tr>
+</table></div>
+<!-- $$$QLatin1StringMatcher-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A QLatin1StringMatcher can search for one <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a> as a substring of another, either ignoring case or taking it into account.</p>
+<p>This class is useful when you have a Latin-1 encoded string that you want to repeatedly search for in some QLatin1StringViews (perhaps in a loop), or when you want to search for all instances of it in a given <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a>. Using a matcher object and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>() is faster than matching a plain <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a> with <a href="qlatin1stringview.html#indexOf" translate="no">QLatin1StringView::indexOf</a>() if repeated matching takes place. This class offers no benefit if you are doing one-off matches. The string to be searched for must not be destroyed or changed before the matcher object is destroyed, as the matcher accesses the string when searching for it.</p>
+<p>Create a QLatin1StringMatcher for the <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a> you want to search for and the case sensitivity. Then call <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>() with the <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a> that you want to search within.</p>
+</div>
+<p><b>See also </b><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a>, <a href="qstringmatcher.html" translate="no">QStringMatcher</a>, and <a href="qbytearraymatcher.html" translate="no">QByteArrayMatcher</a>.</p>
+<!-- @@@QLatin1StringMatcher -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QLatin1StringMatcher[overload1]$$$QLatin1StringMatcher -->
+<h3 class="fn" translate="no" id="QLatin1StringMatcher"><code class="details extra" translate="no">[noexcept]</code> QLatin1StringMatcher::<span class="name">QLatin1StringMatcher</span>()</h3>
+<p>Construct an empty Latin-1 string matcher. This will match at each position in any string.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#setPattern" translate="no">setPattern</a>(), <a href="qlatin1stringmatcher.html#setCaseSensitivity" translate="no">setCaseSensitivity</a>(), and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>().</p>
+<!-- @@@QLatin1StringMatcher -->
+<!-- $$$QLatin1StringMatcher$$$QLatin1StringMatcherQLatin1StringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="QLatin1StringMatcher-1"><code class="details extra" translate="no">[explicit noexcept]</code> QLatin1StringMatcher::<span class="name">QLatin1StringMatcher</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>pattern</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>Constructs a Latin-1 string matcher that searches for the given <i translate="no">pattern</i> with given case sensitivity <i translate="no">cs</i>. The <i translate="no">pattern</i> argument must not be destroyed before this matcher object. Call <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>() to find the <i translate="no">pattern</i> in the given <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a>.</p>
+<!-- @@@QLatin1StringMatcher -->
+<!-- $$$~QLatin1StringMatcher[overload1]$$$~QLatin1StringMatcher -->
+<h3 class="fn" translate="no" id="dtor.QLatin1StringMatcher"><code class="details extra" translate="no">[noexcept]</code> QLatin1StringMatcher::<span class="name">~QLatin1StringMatcher</span>()</h3>
+<p>Destroys the Latin-1 string matcher.</p>
+<!-- @@@~QLatin1StringMatcher -->
+<!-- $$$caseSensitivity[overload1]$$$caseSensitivity -->
+<h3 class="fn" translate="no" id="caseSensitivity"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> QLatin1StringMatcher::<span class="name">caseSensitivity</span>() const</h3>
+<p>Returns the case sensitivity the matcher uses.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#setCaseSensitivity" translate="no">setCaseSensitivity</a>() and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>().</p>
+<!-- @@@caseSensitivity -->
+<!-- $$$indexIn[overload1]$$$indexInQLatin1StringViewqsizetype -->
+<h3 class="fn" translate="no" id="indexIn"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QLatin1StringMatcher::<span class="name">indexIn</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>haystack</i>, <span class="type">qsizetype</span> <i>from</i> = 0) const</h3>
+<p>Searches for the pattern in the given <i translate="no">haystack</i> starting from <i translate="no">from</i>.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#caseSensitivity" translate="no">caseSensitivity</a>() and <a href="qlatin1stringmatcher.html#pattern" translate="no">pattern</a>().</p>
+<!-- @@@indexIn -->
+<!-- $$$indexIn$$$indexInQStringViewqsizetype -->
+<h3 class="fn" translate="no" id="indexIn-1"><code class="details extra" translate="no">[noexcept, since 6.8]</code> <span class="type">qsizetype</span> QLatin1StringMatcher::<span class="name">indexIn</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>haystack</i>, <span class="type">qsizetype</span> <i>from</i> = 0) const</h3>
+<p>This is an overloaded function.</p>
+<p>Searches for the pattern in the given <i translate="no">haystack</i> starting from index position <i translate="no">from</i>.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#caseSensitivity" translate="no">caseSensitivity</a>() and <a href="qlatin1stringmatcher.html#pattern" translate="no">pattern</a>().</p>
+<!-- @@@indexIn -->
+<!-- $$$pattern[overload1]$$$pattern -->
+<h3 class="fn" translate="no" id="pattern"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> QLatin1StringMatcher::<span class="name">pattern</span>() const</h3>
+<p>Returns the Latin-1 pattern that the matcher searches for.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#setPattern" translate="no">setPattern</a>() and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>().</p>
+<!-- @@@pattern -->
+<!-- $$$setCaseSensitivity[overload1]$$$setCaseSensitivityQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="setCaseSensitivity"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QLatin1StringMatcher::<span class="name">setCaseSensitivity</span>(<span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i>)</h3>
+<p>Sets the case sensitivity to <i translate="no">cs</i>.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#caseSensitivity" translate="no">caseSensitivity</a>() and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>().</p>
+<!-- @@@setCaseSensitivity -->
+<!-- $$$setPattern[overload1]$$$setPatternQLatin1StringView -->
+<h3 class="fn" translate="no" id="setPattern"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QLatin1StringMatcher::<span class="name">setPattern</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>pattern</i>)</h3>
+<p>Sets the <i translate="no">pattern</i> to search for. The string pointed to by the <a href="qlatin1stringview.html" translate="no">QLatin1StringView</a> must not be destroyed before the matcher is destroyed, unless it is set to point to a different <i translate="no">pattern</i> with longer lifetime first.</p>
+<p><b>See also </b><a href="qlatin1stringmatcher.html#pattern" translate="no">pattern</a>() and <a href="qlatin1stringmatcher.html#indexIn" translate="no">indexIn</a>().</p>
+<!-- @@@setPattern -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

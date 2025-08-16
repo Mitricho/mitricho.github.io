@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtnetworkauth-oauth2-browsersupport.qdoc -->
+  <meta name="description" content="An overview of QtNetworkAuth OAuth2 browser support">
+  <title>Qt OAuth2 Browser Support | Qt Network Authorization | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtnetworkauth-index.html">Qt Network Authorization</a></li>
+<li>Qt OAuth2 Browser Support</li>
+<li id="buildversion"><a href="qtnetworkauth-index.html">Qt Network Authorization | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#oauth2-user-agents">OAuth2 User-Agents</a></li>
+<li class="level2"><a href="#using-system-browser">Using System Browser</a></li>
+<li class="level2"><a href="#using-qt-webengine">Using Qt WebEngine</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt OAuth2 Browser Support</h1>
+<!-- $$$qt-oauth2-browsersupport.html-description -->
+<div class="descr" id="details">
+<h2 id="oauth2-user-agents">OAuth2 User-Agents</h2>
+<p>OAuth2 <a href="qt-oauth2-overview.html">Authorization stage</a> <a href="https://datatracker.ietf.org/doc/html/rfc6749#section-9">relies on a user-agent</a>, which is typically either the system browser or an embedded user-agent such as Qt WebEngine.</p>
+<p>The choice between system browser and an embedded user-agent depends on several factors. The following describes few main considerations:</p>
+<ul>
+<li>System browser may already have active logins by the user. Therefore the user authentication during authorization stage may be more straightforward as the existing login can be used. In contrast with an embedded user-agent user typically needs to perform a new login. On the other hand, leaving a login session behind in the system browser may not always be desirable. System browsers may also share application usage data with other parties.</li>
+<li>System browser is typically familiar for the user, and provides a familiar user experience for logging in. On the other hand, while an embedded user-agent may provide less familiar look-and-feel, the application developer is able to embed the login interaction as part of the application window, rather than it occurring on a separate browser window. Furthermore the application developer can automate closing of the embedded user-agent when no longer needed.</li>
+<li>System browsers provide familiar security visuals, such as the address bar and certificate validation for the user. These may not be visible on an embedded user-agent. Furthermore the system browsers may better leverage security features of the underlying operating system.</li>
+<li>An embedded user-agent potentially has access to all security credentials the user enters.</li>
+<li>Not all platforms provide support for handling <code translate="no">https</code> or custom uri-scheme redirect URLs (see <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a>). With these platforms an embedded user-agent can be used to work around the limitation.</li>
+<li>Including an embedded user-agent as part of the application is typically a large component, increasing the storage footprint of the application. On the other hand, all use cases may not have a system browser available, or the application may use an embedded user-agent already for other purposes.</li>
+</ul>
+<p>Given these considerations, using the system browser <a href="https://www.rfc-editor.org/rfc/rfc8252#section-8.12">is recommended for native applications</a>. But as hinted by some of the points above, there may still be valid use cases for using an embedded user-agent.</p>
+<h3 id="using-system-browser">Using System Browser</h3>
+<p>Using the system browser requires opening it and navigating to the authorization URL configured by the application. Typical usage looks as follows:</p>
+<pre class="cpp" translate="no">
+ connect(<span class="operator">&amp;</span>m_oauth<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qabstractoauth.html" translate="no">QAbstractOAuth</a></span><span class="operator">::</span>authorizeWithBrowser<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtgui/qdesktopservices.html" translate="no">QDesktopServices</a></span><span class="operator">::</span>openUrl);
+</pre>
+<p>The code connects <a href="qabstractoauth.html#authorizeWithBrowser" translate="no">QAbstractOAuth::authorizeWithBrowser</a> signal and <a href="../qtgui/qdesktopservices.html#openUrl" translate="no">QDesktopServices::openUrl</a> slot. This opens the system browser, where user performs the necessary authentication and authorization. The application or Qt libraries have no direct control over the system browser, and it typically remains open once the authorization is concluded.</p>
+<p>For further details and supported redirect URL schemes with system browser please see <a href="qt-oauth2-overview.html">Qt OAuth2 Overview</a>, <a href="qoauthhttpserverreplyhandler.html" translate="no">QOAuthHttpServerReplyHandler</a>, and <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a>.</p>
+<h3 id="using-qt-webengine">Using Qt WebEngine</h3>
+<p>Qt WebEngine provides a web browser engine to embed web content directly into the Qt application.</p>
+<p>Along with core control features, it comes with easy-to-use views for both QtWidgets and QtQuick applications. These views can be used as the user-agent in an OAuth2 authorization. Qt WebEngine is a large and versatile module, and the focus of this documentation is on using it with OAuth2 authorization.</p>
+<p>There are many ways to embed the Qt WebEngine as part of the application. From practical point of view the main considerations are:</p>
+<ul>
+<li>QtQuick vs QtWidgets Applications. This impacts how to set up the necessary integration with <a href="qtnetworkauth-module.html" translate="no">QtNetworkAuth</a> classes.</li>
+<li>Redirect URI scheme. This impacts which <a href="qtnetworkauth-module.html" translate="no">QtNetworkAuth</a> reply handler classes to use, and how (see <a href="qt-oauth2-overview.html">Qt OAuth2 Overview</a>).</li>
+</ul>
+<h4 id="qtquick-and-qtwidgets-applications">QtQuick and QtWidgets Applications</h4>
+<p>Qt WebEngine can be used with both QtQuick and QtWidgets applications for OAuth2 authorization. The main difference is in how set up the few necessary enablers.</p>
+<p>Following illustrates a simplified QWebEngineView (QtWidget) setup. Error handling and any potential Qt WebEngine configuration is omitted for brevity.</p>
+<p>Assuming following widgets:</p>
+<pre class="cpp" translate="no">
+ <span class="type">QWebEngineView</span> <span class="operator">*</span>webView <span class="operator">=</span> nullptr;
+ <span class="type">QMainWindow</span> mainWindow;
+</pre>
+<p>Instead of opening the system browser, we use the QWebEngineView to perform the authorization:</p>
+<pre class="cpp" translate="no">
+ connect(<span class="operator">&amp;</span>m_oauth<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qabstractoauth.html" translate="no">QAbstractOAuth</a></span><span class="operator">::</span>authorizeWithBrowser<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url) {
+     mainWindow<span class="operator">.</span>show();
+     webView<span class="operator">-</span><span class="operator">&gt;</span>load(url);
+     webView<span class="operator">-</span><span class="operator">&gt;</span>show();
+ });
+</pre>
+<p>Once the authorization is finished, we close the view:</p>
+<pre class="cpp" translate="no">
+ connect(<span class="operator">&amp;</span>m_oauth<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qabstractoauth.html" translate="no">QAbstractOAuth</a></span><span class="operator">::</span>granted<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+     <span class="comment">// Here we use QNetworkRequestFactory to store the access token</span>
+     m_api<span class="operator">.</span>setBearerToken(m_oauth<span class="operator">.</span>token()<span class="operator">.</span>toLatin1());
+     m_handler<span class="operator">-</span><span class="operator">&gt;</span>close();
+     webView<span class="operator">-</span><span class="operator">&gt;</span>close();
+ });
+</pre>
+<p>For QtQuick applications the flow is in principle the same, but instead of QWebEngineView widget we use WebEngineView QML element:</p>
+<pre class="qml" translate="no">
+ <span class="type">WebEngineView</span> {
+     <span class="name">id</span>: <span class="name">authorizationWebView</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">visible</span>: <span class="number">false</span>
+ }
+</pre>
+<p>This simplified example exposes needed APIs from C++ class</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> HttpExample : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+ <span class="preprocessor">#ifdef QT_QML_LIB</span>
+     QML_NAMED_ELEMENT(OAuth2)
+ <span class="preprocessor">#endif</span>
+ <span class="keyword">public</span>:
+     Q_INVOKABLE <span class="type">void</span> authorize();
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> authorizationCompleted(<span class="type">bool</span> success);
+     <span class="type">void</span> authorizeWithBrowser(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url);
+</pre>
+<p>Which are then used on the QML-side for invoking WebEngineView to handle the authorization:</p>
+<pre class="qml" translate="no">
+ <span class="name">onAuthorizeWithBrowser</span>:
+     (<span class="keyword"></span>url) =&gt; {
+         <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Starting authorization with WebView&quot;</span>)
+         <span class="name">authorizationWebView</span>.<span class="name">url</span> <span class="operator">=</span> <span class="name">url</span>
+         <span class="name">authorizationWebView</span>.<span class="name">visible</span> <span class="operator">=</span> <span class="number">true</span>
+     }
+ <span class="name">onAuthorizationCompleted</span>:
+     (<span class="keyword"></span>success) =&gt; {
+         <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Authorized: &quot;</span> <span class="operator">+</span> <span class="name">success</span>);
+         <span class="name">authorizationWebView</span>.<span class="name">visible</span> <span class="operator">=</span> <span class="number">false</span>
+     }
+</pre>
+<h4 id="redirect-uri-schemes">Redirect URI Schemes</h4>
+<p>The choice of redirect URI scheme (<code translate="no">http</code>, <code translate="no">https</code>, or <code translate="no">custom-uri</code> scheme) has an impact how to use Qt WebEngine.</p>
+<h5 id="http-loopback-uris">http Loopback URIs</h5>
+<p>With <code translate="no">http</code> loopback redirect URI and <a href="qoauthhttpserverreplyhandler.html" translate="no">QOAuthHttpServerReplyHandler</a> the handling works similarly as with system browser. Qt WebEngine redirects the authorization to the reply handler's localhost server similarly as the system browser.</p>
+<h5 id="custom-scheme-uris">Custom scheme URIs</h5>
+<p>With custom-scheme URIs (such as <code translate="no">com.example.myqtapp:/redirect</code>) and <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a> the flow works also similarly as with system browser.</p>
+<p>The main difference is that the application does not need to be configured similarly as the <a href="https://developer.apple.com/ios/universal-links/">Universal Links on iOS/macOS</a> or <a href="https://developer.android.com/training/app-links">App Links on Android</a>, as described in <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a> documentation.</p>
+<pre class="cpp" translate="no">
+ m_handler<span class="operator">.</span>setRedirectUrl(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>{<span class="string">&quot;com.example.myqtapp://oauth2redirect&quot;</span>_L1});
+ m_oauth<span class="operator">.</span>setReplyHandler(<span class="operator">&amp;</span>m_handler);
+
+ connect(<span class="operator">&amp;</span>m_oauth<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qabstractoauth.html" translate="no">QAbstractOAuth</a></span><span class="operator">::</span>authorizeWithBrowser<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url) {
+     mainWindow<span class="operator">.</span>show();
+     webView<span class="operator">-</span><span class="operator">&gt;</span>load(url);
+     webView<span class="operator">-</span><span class="operator">&gt;</span>show();
+ });
+ connect(<span class="operator">&amp;</span>m_oauth<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qabstractoauth.html" translate="no">QAbstractOAuth</a></span><span class="operator">::</span>granted<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+     <span class="comment">// Here we use QNetworkRequestFactory to store the access token</span>
+     m_api<span class="operator">.</span>setBearerToken(m_oauth<span class="operator">.</span>token()<span class="operator">.</span>toLatin1());
+     m_handler<span class="operator">.</span>close();
+     webView<span class="operator">-</span><span class="operator">&gt;</span>close();
+ });
+</pre>
+<p>Technically this works so that Qt WebEngine calls the <a href="../qtgui/qdesktopservices.html#openUrl" translate="no">QDesktopServices::openUrl</a>() for unhandled URI-schemes, whose counterpart <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a> listens to.</p>
+<h5 id="https-uris">https URIs</h5>
+<p>With <code translate="no">https</code> URIs and <a href="qoauthurischemereplyhandler.html" translate="no">QOAuthUriSchemeReplyHandler</a> the logic changes slightly. Similarly as with <a href="qt-oauth2-browsersupport.html#custom-scheme-uris">Custom scheme URIs</a> the application doesn't need to be configured, but we need to supply the redirection at the end of authorization stage to the web engine.</p>
+<pre class="cpp" translate="no">
+ connect(webView, &amp;QWebEngineView::urlChanged, this, [this](const QUrl &amp;url){
+     m_handler.handleAuthorizationRedirect(url);
+ });
+</pre>
+<p>This needs to be done because from Qt WebEngine point of view the redirect URL is a valid <code translate="no">https</code> URL, and by default will attempt to navigate to it.</p>
+<p>To prevent such navigation attempts and accidental authorization code exposure (consider the case the redirect URL domain isn't in your control), a more involved filtering should be used. Also the use of <a href="qoauth2authorizationcodeflow.html#PkceMethod-enum" translate="no">QOAuth2AuthorizationCodeFlow::PkceMethod</a> is strongly recommended as it mitigates the impact of authorization code hijacking.</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+ connect(webView<span class="operator">-</span><span class="operator">&gt;</span>page()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type">QWebEnginePage</span><span class="operator">::</span>navigationRequested<span class="operator">,</span>
+         <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>(<span class="type">QWebEngineNavigationRequest</span> <span class="operator">&amp;</span>request) {
+     <span class="keyword">if</span> (request<span class="operator">.</span>navigationType() <span class="operator">=</span><span class="operator">=</span> <span class="type">QWebEngineNavigationRequest</span><span class="operator">::</span>RedirectNavigation
+         <span class="operator">&amp;</span><span class="operator">&amp;</span> m_handler<span class="operator">.</span>handleAuthorizationRedirect(request<span class="operator">.</span>url())) {
+         request<span class="operator">.</span>reject();
+         webView<span class="operator">-</span><span class="operator">&gt;</span>close();
+     } <span class="keyword">else</span> {
+         request<span class="operator">.</span>accept();
+     }
+ });
+</pre>
+</div>
+<!-- @@@qt-oauth2-browsersupport.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

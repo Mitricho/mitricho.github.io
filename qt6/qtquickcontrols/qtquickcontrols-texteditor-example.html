@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-texteditor.qdoc -->
+  <meta name="description" content="A rich-text editor app using Qt Quick Controls.">
+  <title>Qt Quick Controls - Text Editor | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-examples.html">Qt Quick Controls Examples</a></li>
+<li>Qt Quick Controls - Text Editor</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#desktop-user-interface">Desktop User Interface</a></li>
+<li class="level1"><a href="#touch-user-interface">Touch User Interface</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick Controls - Text Editor</h1>
+<!-- $$$texteditor-brief -->
+<p>A rich-text editor app using Qt Quick Controls.</p>
+<!-- @@@texteditor -->
+<!-- $$$texteditor-description -->
+<div class="descr" id="details">
+<p>The <i>Text Editor Example</i> allows WYSIWYG editing of an HTML, Markdown or plain text file. The application comes with two user interfaces: one for larger screens, and a simplified UI for small touch-based devices. Both are &quot;pure&quot; QML. <code translate="no">texteditor.cpp</code> contains the <code translate="no">main()</code> function, which calls <a href="../qtgui/qfontdatabase.html#addApplicationFont" translate="no">QFontDatabase::addApplicationFont</a>() to add an icon font. (<a href="../qtquick/qml-qtquick-fontloader.html" translate="no">FontLoader</a> would be an alternative way to achieve the same result.)</p>
+<h4 id="desktop-user-interface">Desktop User Interface</h4>
+<p class="centerAlign"><img src="images/qtquickcontrols-texteditor-desktop.jpg" alt="" /></p><p>The desktop version is a complete text editor with capabilities for formatting text, and opening and saving HTML, Markdown and plain text files.</p>
+<p>In the <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">model-view-control (MVC)</a> design pattern, the <i>control</i> layer includes the set of operations that can be performed. In Qt Quick Controls, the <a href="qml-qtquick-controls-action.html" translate="no">Action</a> type is used to encapsulate a single operation or command. Accordingly, we begin with a set of Action objects:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+         <span class="name">id</span>: <span class="name">openAction</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Open&quot;</span>)
+         <span class="name">shortcut</span>: <span class="name">StandardKey</span>.<span class="name">Open</span>
+         <span class="name">onTriggered</span>: {
+             <span class="keyword">if</span> (<span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">modified</span>)
+                 <span class="name">discardDialog</span>.<span class="name">open</span>()
+             <span class="keyword">else</span>
+                 <span class="name">openDialog</span>.<span class="name">open</span>()
+         }
+     }
+</pre>
+<p>The <a href="qml-qtquick-controls-action.html" translate="no">Action</a> for opening a file must first prompt the user if the existing document has been changed, to avoid losing the user's changes. Otherwise it simply opens the <a href="../qtquickdialogs/qml-qtquick-dialogs-filedialog.html" translate="no">FileDialog</a> which is declared further below.</p>
+<p>The <a href="qml-qtquick-controls-action.html" translate="no">Action</a> for saving the file is enabled only if there are changes to save:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+         <span class="name">id</span>: <span class="name">saveAction</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Save…&quot;</span>)
+         <span class="name">shortcut</span>: <span class="name">StandardKey</span>.<span class="name">Save</span>
+         <span class="name">enabled</span>: <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">modified</span>
+         <span class="name">onTriggered</span>: <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">save</span>()
+     }
+</pre>
+<p>The <a href="qml-qtquick-controls-action.html" translate="no">Action</a> for copying selected text is enabled only if some text is selected:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+         <span class="name">id</span>: <span class="name">copyAction</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Copy&quot;</span>)
+         <span class="name">shortcut</span>: <span class="name">StandardKey</span>.<span class="name">Copy</span>
+         <span class="name">enabled</span>: <span class="name">textArea</span>.<span class="name">selectedText</span>
+         <span class="name">onTriggered</span>: <span class="name">textArea</span>.<span class="name">copy</span>()
+     }
+</pre>
+<p>Each Action to change text formatting (such as bold, italic and alignment) is <a href="qml-qtquick-controls-action.html#checkable-prop" translate="no">checkable</a>, and its boolean <code translate="no">checked</code> state is in sync with the relevant property in the <a href="../qtquick/qml-qtquick-textedit.html#selectedText-prop" translate="no">selected text</a>. Since declarative bidirectional synchronization is difficult, we use an <code translate="no">onTriggered</code> script to change the property when the Action is activated. The <a href="../qtquick/qml-qtquick-textedit.html#cursorSelection-prop" translate="no">cursorSelection</a> property is new in Qt 6.7 and makes this much easier than it was.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+         <span class="name">id</span>: <span class="name">boldAction</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Bold&quot;</span>)
+         <span class="name">shortcut</span>: <span class="name">StandardKey</span>.<span class="name">Bold</span>
+         <span class="name">checkable</span>: <span class="number">true</span>
+         <span class="name">checked</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">font</span>.<span class="name">bold</span>
+         <span class="name">onTriggered</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">font</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">font</span>({ bold: <span class="name">checked</span> })
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> {
+         <span class="name">id</span>: <span class="name">alignCenterAction</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Center&quot;</span>)
+         <span class="name">shortcut</span>: <span class="string">&quot;Ctrl+|&quot;</span>
+         <span class="name">checkable</span>: <span class="number">true</span>
+         <span class="name">checked</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">alignment</span> <span class="operator">===</span> <span class="name">Qt</span>.<span class="name">AlignCenter</span>
+         <span class="name">onTriggered</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">alignment</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">AlignCenter</span>
+     }
+</pre>
+<p>We have a <a href="qml-qtquick-controls-menubar.html" translate="no">MenuBar</a> containing the hierarchy of <a href="qml-qtquick-controls-menu.html" translate="no">Menus</a> and MenuItems. Each <a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a> merely needs to bind the relevant <a href="qml-qtquick-controls-abstractbutton.html#action-prop" translate="no">action</a>, which encapsulates the UI representation and the implementation.</p>
+<pre class="cpp" translate="no">
+     <span class="name">menuBar</span>: <span class="name">MenuBar</span> {
+         <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+             <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;File&quot;</span>)
+
+             <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+                 <span class="name">action</span>: <span class="name">openAction</span>
+             }
+             <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+                 <span class="name">action</span>: <span class="name">saveAction</span>
+             }
+             <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+                 <span class="name">action</span>: <span class="name">saveAsAction</span>
+             }
+             <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+                 <span class="name">action</span>: <span class="name">quitAction</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+             <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;&amp;Edit&quot;</span>)
+
+             <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+                 <span class="name">action</span>: <span class="name">copyAction</span>
+             }
+         ...
+</pre>
+<p>The same <a href="qml-qtquick-controls-action.html" translate="no">Action</a> objects are reused in the <a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a>; but here we override each Action's <a href="qml-qtquick-controls-abstractbutton.html#text-prop" translate="no">text</a> property to choose a textual icon from our icon font:</p>
+<pre class="cpp" translate="no">
+     <span class="name">header</span>: <span class="name">ToolBar</span> {
+         <span class="name">leftPadding</span>: <span class="number">8</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-flow.html" translate="no">Flow</a></span> {
+             <span class="name">id</span>: <span class="name">flow</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+
+             <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+                 <span class="name">id</span>: <span class="name">fileRow</span>
+                 <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+                     <span class="name">id</span>: <span class="name">openButton</span>
+                     <span class="name">text</span>: <span class="string">&quot;\uF115&quot;</span> <span class="comment">// icon-folder-open-empty</span>
+                     <span class="name">font</span>.family: <span class="string">&quot;fontello&quot;</span>
+                     <span class="name">action</span>: <span class="name">openAction</span>
+                     <span class="name">focusPolicy</span>: <span class="name">Qt</span>.<span class="name">TabFocus</span>
+                 }
+                 <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+                     <span class="name">id</span>: <span class="name">saveButton</span>
+                     <span class="name">text</span>: <span class="string">&quot;\uE80A&quot;</span> <span class="comment">// icon-floppy-disk</span>
+                     <span class="name">font</span>.family: <span class="string">&quot;fontello&quot;</span>
+                     <span class="name">action</span>: <span class="name">saveAction</span>
+                     <span class="name">focusPolicy</span>: <span class="name">Qt</span>.<span class="name">TabFocus</span>
+                 }
+                 <span class="type"><a href="qml-qtquick-controls-toolseparator.html" translate="no">ToolSeparator</a></span> {
+                     <span class="name">contentItem</span>.visible: <span class="name">fileRow</span>.<span class="name">y</span> <span class="operator">===</span> <span class="name">editRow</span>.<span class="name">y</span>
+                 }
+             }
+
+             <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+                 <span class="name">id</span>: <span class="name">editRow</span>
+                 <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+                     <span class="name">id</span>: <span class="name">copyButton</span>
+                     <span class="name">text</span>: <span class="string">&quot;\uF0C5&quot;</span> <span class="comment">// icon-docs</span>
+                     <span class="name">font</span>.family: <span class="string">&quot;fontello&quot;</span>
+                     <span class="name">focusPolicy</span>: <span class="name">Qt</span>.<span class="name">TabFocus</span>
+                     <span class="name">action</span>: <span class="name">copyAction</span>
+                 }
+             ...
+</pre>
+<p>The main part of the text editor is a <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> inside a <a href="../qtquick/qml-qtquick-flickable.html" translate="no">Flickable</a>:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtquick/qml-qtquick-flickable.html" translate="no">Flickable</a></span> {
+         <span class="name">id</span>: <span class="name">flickable</span>
+         <span class="name">flickableDirection</span>: <span class="name">Flickable</span>.<span class="name">VerticalFlick</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">ScrollBar</span>.vertical: <span class="name">ScrollBar</span> {}
+
+         <span class="name">TextArea</span>.flickable: <span class="name">TextArea</span> {
+             <span class="name">id</span>: <span class="name">textArea</span>
+             <span class="name">textFormat</span>: <span class="name">Qt</span>.<span class="name">AutoText</span>
+             <span class="name">wrapMode</span>: <span class="name">TextArea</span>.<span class="name">Wrap</span>
+             <span class="name">focus</span>: <span class="number">true</span>
+             <span class="name">selectByMouse</span>: <span class="number">true</span>
+             <span class="name">persistentSelection</span>: <span class="number">true</span>
+             ...
+</pre>
+<p>A <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a> is attached to the vertical axis. Since word-wrapping is enabled via <a href="../qtquick/qml-qtquick-textedit.html#wrapMode-prop" translate="no">wrapMode</a>, we don't need a horizontal <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a>.</p>
+<p>The <a href="qml-qtquick-controls-textarea.html#flickable-attached-prop" translate="no">TextArea.flickable</a> attached property is used so that when the text cursor is moved out of the viewport (for example via arrow keys, or by typing a lot of text), <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> scrolls the <a href="../qtquick/qml-qtquick-flickable.html" translate="no">Flickable</a> to keep the cursor visible.</p>
+<p>There is a context menu; we use a <a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a> to detect a right-click and open it:</p>
+<pre class="cpp" translate="no">
+             <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+                 <span class="name">acceptedButtons</span>: <span class="name">Qt</span>.<span class="name">RightButton</span>
+                 <span class="name">onTapped</span>: <span class="name">contextMenu</span>.<span class="name">popup</span>()
+             }
+</pre>
+<p>The context <a href="qml-qtquick-controls-menu.html" translate="no">Menu</a> contains <a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItems</a> that reuse the same <a href="qml-qtquick-controls-action.html" translate="no">Action</a> objects as the main <a href="qml-qtquick-controls-menubar.html" translate="no">MenuBar</a> and <a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a> are using. As before, it's enough to bind <a href="qml-qtquick-controls-abstractbutton.html#action-prop" translate="no">action</a> to the reusable Action that represents the operation to be performed. However, we override each menu item's <a href="../qtlabsplatform/qml-qt-labs-platform-menuitem.html#text-prop" translate="no">text</a> to omit the underlined mnemonics on the context menu.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+         <span class="name">id</span>: <span class="name">contextMenu</span>
+
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Copy&quot;</span>)
+             <span class="name">action</span>: <span class="name">copyAction</span>
+         }
+         ...
+</pre>
+<p>We consistently use the <a href="../qtqml/qml-qtqml-qt.html#qsTr-method" translate="no">qsTr</a>() function to enable translation of UI text, so that the application will make sense regardless of the end user's native language.</p>
+<p>We use several kinds of <a href="../qtquickdialogs/qtquick-dialogs-qmlmodule.html" translate="no">dialogs</a>:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-filedialog.html" translate="no">FileDialog</a></span> {
+         <span class="name">id</span>: <span class="name">openDialog</span>
+         <span class="name">fileMode</span>: <span class="name">FileDialog</span>.<span class="name">OpenFile</span>
+         <span class="name">selectedNameFilter</span>.index: <span class="number">1</span>
+         <span class="name">nameFilters</span>: [<span class="string">&quot;Text files (*.txt)&quot;</span>, <span class="string">&quot;HTML files (*.html *.htm)&quot;</span>, <span class="string">&quot;Markdown files (*.md *.markdown)&quot;</span>]
+         <span class="name">currentFolder</span>: <span class="name">StandardPaths</span>.<span class="name">writableLocation</span>(<span class="name">StandardPaths</span>.<span class="name">DocumentsLocation</span>)
+         <span class="name">onAccepted</span>: {
+             <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">modified</span> <span class="operator">=</span> <span class="number">false</span> <span class="comment">// we asked earlier, if necessary</span>
+             <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">source</span> <span class="operator">=</span> <span class="name">selectedFile</span>
+         }
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-filedialog.html" translate="no">FileDialog</a></span> {
+         <span class="name">id</span>: <span class="name">saveDialog</span>
+         <span class="name">fileMode</span>: <span class="name">FileDialog</span>.<span class="name">SaveFile</span>
+         <span class="name">nameFilters</span>: <span class="name">openDialog</span>.<span class="name">nameFilters</span>
+         <span class="name">currentFolder</span>: <span class="name">StandardPaths</span>.<span class="name">writableLocation</span>(<span class="name">StandardPaths</span>.<span class="name">DocumentsLocation</span>)
+         <span class="name">onAccepted</span>: <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">saveAs</span>(<span class="name">selectedFile</span>)
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-fontdialog.html" translate="no">FontDialog</a></span> {
+         <span class="name">id</span>: <span class="name">fontDialog</span>
+         <span class="name">onAccepted</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">font</span> <span class="operator">=</span> <span class="name">selectedFont</span>
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-colordialog.html" translate="no">ColorDialog</a></span> {
+         <span class="name">id</span>: <span class="name">colorDialog</span>
+         <span class="name">selectedColor</span>: <span class="string">&quot;black&quot;</span>
+         <span class="name">onAccepted</span>: <span class="name">textArea</span>.<span class="name">cursorSelection</span>.<span class="name">color</span> <span class="operator">=</span> <span class="name">selectedColor</span>
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-messagedialog.html" translate="no">MessageDialog</a></span> {
+         <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Error&quot;</span>)
+         <span class="name">id</span>: <span class="name">errorDialog</span>
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-messagedialog.html" translate="no">MessageDialog</a></span> {
+         <span class="name">id</span> : <span class="name">quitDialog</span>
+         <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Quit?&quot;</span>)
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;The file has been modified. Quit anyway?&quot;</span>)
+         <span class="name">buttons</span>: <span class="name">MessageDialog</span>.<span class="name">Yes</span> <span class="operator">|</span> <span class="name">MessageDialog</span>.<span class="name">No</span>
+         <span class="name">onButtonClicked</span>: <span class="keyword">function</span> (button, role) {
+             <span class="keyword">if</span> (<span class="name">role</span> <span class="operator">===</span> <span class="name">MessageDialog</span>.<span class="name">YesRole</span>) {
+                 <span class="name">textArea</span>.<span class="name">textDocument</span>.<span class="name">modified</span> <span class="operator">=</span> <span class="number">false</span>
+                 <span class="name">Qt</span>.<span class="name">quit</span>()
+             }
+         }
+     }
+
+     <span class="type"><a href="../qtquickdialogs/qml-qtquick-dialogs-messagedialog.html" translate="no">MessageDialog</a></span> {
+         <span class="name">id</span> : <span class="name">discardDialog</span>
+         <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Discard changes?&quot;</span>)
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;The file has been modified. Open a new file anyway?&quot;</span>)
+         <span class="name">buttons</span>: <span class="name">MessageDialog</span>.<span class="name">Yes</span> <span class="operator">|</span> <span class="name">MessageDialog</span>.<span class="name">No</span>
+         <span class="name">onButtonClicked</span>: <span class="keyword">function</span> (button, role) {
+             <span class="keyword">if</span> (<span class="name">role</span> <span class="operator">===</span> <span class="name">MessageDialog</span>.<span class="name">YesRole</span>)
+                 <span class="name">openDialog</span>.<span class="name">open</span>()
+         }
+     }
+</pre>
+<p>It's generally easier to declare separate instances for each purpose. We have two instances of <a href="../qtquickdialogs/qml-qtquick-dialogs-filedialog.html" translate="no">FileDialog</a>, for opening and saving files respectively. This became easier in Qt 6.7, with new features in <a href="../qtquick/qml-qtquick-textdocument.html" translate="no">TextDocument</a>.</p>
+<p>A <a href="../qtquickdialogs/qml-qtquick-dialogs-fontdialog.html" translate="no">FontDialog</a> and a <a href="../qtquickdialogs/qml-qtquick-dialogs-colordialog.html" translate="no">ColorDialog</a> allow changing text formatting. (In Markdown format, there's no syntax to represent specific font and color choices; but font characteristics such as bold, italic and monospace are saved. In HTML format, all formatting is saved.)</p>
+<p>We have a <a href="../qtquickdialogs/qml-qtquick-dialogs-messagedialog.html" translate="no">MessageDialog</a> to show error messages, and two more for prompting the user what to do when a file has been modified.</p>
+<h4 id="touch-user-interface">Touch User Interface</h4>
+<p class="centerAlign"><img src="images/qtquickcontrols-texteditor-touch.jpg" alt="" /></p><p>The touch user interface is a simplified version of the text editor. It is suitable for touch devices with limited screen size. The example uses <a href="qtquickcontrols-fileselectors.html">file selectors</a> to load the appropriate user interface automatically.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quickcontrols/texteditor?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@texteditor -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

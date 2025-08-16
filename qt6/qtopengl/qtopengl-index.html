@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtopengl-index.qdoc -->
+  <meta name="description" content="The Qt OpenGL module offers classes that make it easy to use OpenGL in Qt applications.">
+  <title>Qt OpenGL</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li>Qt OpenGL</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#qt-opengl-and-qt-widgets">Qt OpenGL and Qt Widgets</a></li>
+<li class="level1"><a href="#qt-opengl-and-qt-quick">Qt OpenGL and Qt Quick</a></li>
+<li class="level1"><a href="#using-the-module">Using the Module</a></li>
+<li class="level2"><a href="#building-with-cmake">Building with CMake</a></li>
+<li class="level2"><a href="#building-with-qmake">Building with qmake</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level1"><a href="#reference">Reference</a></li>
+<li class="level1"><a href="#module-evolution">Module Evolution</a></li>
+<li class="level1"><a href="#licenses-and-trademarks">Licenses and Trademarks</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt OpenGL</h1>
+<!-- $$$qtopengl-index.html-description -->
+<div class="descr" id="details">
+<p>Qt has two main approaches to UI development: <a href="../qtquick/qtquick-index.html">Qt Quick</a> and <a href="../qtwidgets/qtwidgets-index.html">Qt Widgets</a>. They exist to support different types of user interfaces, and build on separate graphics engines that have been optimized for each of these types.</p>
+<p>It is possible to combine code written in the OpenGL graphics API with both of these user interface types in Qt. This can be useful when the application has its own OpenGL-dependent code, or when it is integrating with a third-party OpenGL-based renderer.</p>
+<p>The Qt OpenGL module contains convenience classes to make this type of integration easier and faster.</p>
+<h2 id="qt-opengl-and-qt-widgets">Qt OpenGL and Qt Widgets</h2>
+<p><a href="../qtwidgets/qtwidgets-index.html">Qt Widgets</a> is typically rendered by a highly optimized and accurate software rasterizer, and the final content reproduced on screen using a method appropriate for the platform where the application is running.</p>
+<p>But it is also possible to combine <a href="../qtwidgets/qtwidgets-index.html">Qt Widgets</a> with OpenGL. The main entry point for this is the <a href="qopenglwidget.html" translate="no">QOpenGLWidget</a> class. This class can be used to enable OpenGL rendering for a certain part of the widget tree, and the classes in the Qt OpenGL module can be used to facilitate any application-side OpenGL code.</p>
+<h2 id="qt-opengl-and-qt-quick">Qt OpenGL and Qt Quick</h2>
+<p><a href="../qtquick/qtquick-index.html">Qt Quick</a> is optimized for hardware-accelerated rendering. By default, it will be built on the low-level graphics API most appropriate for the target platform.</p>
+<p>For instance, it will default to <code translate="no">Direct3D</code> on Windows, whereas on macOS, it will default to <code translate="no">Metal</code>. But it is also possible to manually select OpenGL as the active graphics API on platforms where this is supported.</p>
+<p>For more details on enabling OpenGL with <a href="../qtquick/qtquick-index.html">Qt Quick</a>, see <a href="../qtquick/qtquick-visualcanvas-scenegraph-renderer.html#rendering-via-the-qt-rendering-hardware-interface">scenegraph renderer documentation</a>.</p>
+<h2 id="using-the-module">Using the Module</h2>
+<p>Using a Qt module's C++ API requires linking against the module library, either directly or through other dependencies. Several build tools have dedicated support for this, including CMake and <a href="../qmake/qmake-manual.html">qmake</a>.</p>
+<h3 id="building-with-cmake">Building with CMake</h3>
+<p>Use the <code translate="no">find_package()</code> command to locate the needed module component in the <code translate="no">Qt6</code> package:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS OpenGL)
+ target_link_libraries(mytarget PRIVATE Qt6<span class="operator">::</span>OpenGL)
+</pre>
+<p>For more details, see the Build with CMake overview.</p>
+<h3 id="building-with-qmake">Building with qmake</h3>
+<p>To configure the module for building with qmake, add the module as a value of the <code translate="no">QT</code> variable in the project's .pro file:</p>
+<pre class="cpp" translate="no">
+ QT <span class="operator">+</span><span class="operator">=</span> opengl
+</pre>
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="examples-widgets-opengl.html">Qt OpenGL Examples</a></li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="qtopengl-module.html" translate="no">C++ Classes</a></li>
+</ul>
+<h2 id="module-evolution">Module Evolution</h2>
+<p><a href="opengl-changes-qt6.html">Changes to Qt OpenGL</a> lists important changes in the module API and functionality that were done for the Qt 6 series of Qt.</p>
+<h2 id="licenses-and-trademarks">Licenses and Trademarks</h2>
+<p>The Qt OpenGL module is available under commercial licenses from The Qt Company. In addition, it is available under free software licenses: The GNU Lesser General Public License, version 3, or the GNU General Public License, version 2. See Qt Licensing for further details.</p>
+<p>OpenGL<sup>&reg;</sup> is a trademark of Silicon Graphics, Inc. in the United States and other countries.</p>
+</div>
+<!-- @@@qtopengl-index.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

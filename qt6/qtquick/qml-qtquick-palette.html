@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickpalette.cpp -->
+  <meta name="description" content="Contains color groups for each QML item state.">
+  <title>Palette QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Palette</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Palette QML Type</h1>
+<!-- $$$Palette-brief -->
+<p>Contains color groups for each QML item state. <a href="#details">More...</a></p>
+<!-- @@@Palette -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-colorgroup.html" translate="no">ColorGroup</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-palette-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-palette.html#active-prop" translate="no">active</a></b> : ColorGroup</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-palette.html#disabled-prop" translate="no">disabled</a></b> : ColorGroup</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-palette.html#inactive-prop" translate="no">inactive</a></b> : ColorGroup</li>
+</ul>
+<!-- $$$Palette-description -->
+<h2 id="details">Detailed Description</h2>
+<p>A palette consists of three color groups: <code translate="no">active</code>, <code translate="no">disabled</code>, and <code translate="no">inactive</code>. The <code translate="no">active</code> color group is the default group: its colors are used for other groups if colors of these groups aren't explicitly specified.</p>
+<p>In the following example, color is applied for all color groups:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">palette</span>.buttonText: <span class="string">&quot;salmon&quot;</span>
+
+     <span class="type"><a href="qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+         <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Disabled button&quot;</span>)
+             <span class="name">enabled</span>: <span class="number">false</span>
+         }
+
+         <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enabled button&quot;</span>)
+         }
+     }
+ }
+</pre>
+<p>It means that text color will be the same for both buttons.</p>
+<p>In the following example, colors will be different for enabled and disabled states:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">palette</span>.buttonText: <span class="string">&quot;salmon&quot;</span>
+     <span class="name">palette</span>.disabled.buttonText: <span class="string">&quot;lavender&quot;</span>
+
+     <span class="type"><a href="qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+         <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Disabled button&quot;</span>)
+             <span class="name">enabled</span>: <span class="number">false</span>
+         }
+
+         <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enabled button&quot;</span>)
+         }
+     }
+ }
+</pre>
+<p>It is also possible to specify colors like this:</p>
+<pre class="qml" translate="no">
+ <span class="type">palette</span> {
+     <span class="name">buttonText</span>: <span class="string">&quot;red&quot;</span>
+     <span class="name">button</span>: <span class="string">&quot;khaki&quot;</span>
+
+     <span class="type">disabled</span> {
+         <span class="name">buttonText</span>: <span class="string">&quot;lavender&quot;</span>
+         <span class="name">button</span>: <span class="string">&quot;coral&quot;</span>
+     }
+ }
+</pre>
+<p>This approach is especially convenient when you need to specify a whole palette with all color groups; but as with the other cases above, the colors that are not specified are initialized from <a href="qml-qtquick-systempalette.html" translate="no">SystemPalette</a>, or potentially the <a href="../qtquickcontrols/qtquickcontrols-styles.html">Qt Quick Controls style</a>, if one is in use.</p>
+<div class="admonition note">
+<p><b>Note: </b>Some Controls styles use some palette colors, but many styles use independent colors.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick-window.html#palette-prop" translate="no">Window::palette</a>, <a href="qml-qtquick-item.html#palette-prop" translate="no">Item::palette</a>, <a href="../qtquickcontrols/qml-qtquick-controls-popup.html#palette-prop" translate="no">Popup::palette</a>, and <a href="qml-qtquick-systempalette.html" translate="no">SystemPalette</a>.</p>
+<!-- @@@Palette -->
+<h2>Property Documentation</h2>
+<!-- $$$active -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="active-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">active</span> : <span class="type"><a href="qml-qtquick-colorgroup.html" translate="no">ColorGroup</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The Active group is used for windows that are in focus.</p>
+<p><b>See also </b><a href="../qtgui/qpalette.html#ColorGroup-enum" translate="no">QPalette::Active</a>.</p>
+</div></div><!-- @@@active -->
+<br/>
+<!-- $$$disabled -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="disabled-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">disabled</span> : <span class="type"><a href="qml-qtquick-colorgroup.html" translate="no">ColorGroup</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The Disabled group is used for elements that are disabled for some reason.</p>
+<p><b>See also </b><a href="../qtgui/qpalette.html#ColorGroup-enum" translate="no">QPalette::Disabled</a>.</p>
+</div></div><!-- @@@disabled -->
+<br/>
+<!-- $$$inactive -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="inactive-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">inactive</span> : <span class="type"><a href="qml-qtquick-colorgroup.html" translate="no">ColorGroup</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The Inactive group is used for windows that have no keyboard focus.</p>
+<p><b>See also </b><a href="../qtgui/qpalette.html#ColorGroup-enum" translate="no">QPalette::Inactive</a>.</p>
+</div></div><!-- @@@inactive -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

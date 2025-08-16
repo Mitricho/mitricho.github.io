@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquicktableviewdelegate.cpp -->
+  <meta name="description" content="A delegate that can be assigned to a TableView.">
+  <title>TableViewDelegate QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>TableViewDelegate</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#interacting-with-pointers">Interacting with pointers</a></li>
+<li class="level2"><a href="#editing-cells-in-the-table">Editing cells in the table</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">TableViewDelegate QML Type</h1>
+<!-- $$$TableViewDelegate-brief -->
+<p>A delegate that can be assigned to a <a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a>. <a href="#details">More...</a></p>
+<!-- @@@TableViewDelegate -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.9</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-tableviewdelegate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-tableviewdelegate.html#current-prop" translate="no">current</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-tableviewdelegate.html#editing-prop" translate="no">editing</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-tableviewdelegate.html#selected-prop" translate="no">selected</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-tableviewdelegate.html#tableView-prop" translate="no">tableView</a></b> : TableView</li>
+</ul>
+<!-- $$$TableViewDelegate-description -->
+<h2 id="details">Detailed Description</h2>
+<p class="centerAlign"><img src="images/qtquickcontrols-tableviewdelegate.png" alt="" /></p><p>A TableViewDelegate is a delegate that can be assigned to the <a href="../qtquick/qml-qtquick-tableview.html#delegate-prop" translate="no">delegate property</a> of a <a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a>. It renders each cell of the table in the view using the application style.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">delegate</span>: <span class="name">TableViewDelegate</span> {}
+     <span class="comment">// model: yourModel</span>
+ }
+</pre>
+<p>TableViewDelegate inherits <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a>, which means that it's composed of two items: a <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and a <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>.</p>
+<p>The position of the contentItem is controlled with <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>.</p>
+<h3 id="interacting-with-pointers">Interacting with pointers</h3>
+<p>TableViewDelegate inherits <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a>. This means that it will emit signals such as <a href="qml-qtquick-controls-abstractbutton.html#clicked-signal" translate="no">clicked</a> when the user clicks on the delegate. You can connect to this signal to implement application-specific functionality.</p>
+<p>However, the <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a> API does not give you information about the position of the click, or which modifiers are being held. If this is needed, a better approach would be to use pointer handlers, for example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a></span> {
+     <span class="name">id</span>: <span class="name">tableView</span>
+     <span class="name">delegate</span>: <span class="name">TableViewDelegate</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+             <span class="name">acceptedButtons</span>: <span class="name">Qt</span>.<span class="name">RightButton</span>
+             <span class="name">onTapped</span>: <span class="name">someContextMenu</span>.<span class="name">open</span>()
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+             <span class="name">acceptedModifiers</span>: <span class="name">Qt</span>.<span class="name">ControlModifier</span>
+             <span class="name">onTapped</span>: <span class="name">tableView</span>.<span class="name">doSomethingToCell</span>(<span class="name">row</span>, <span class="name">column</span>)
+         }
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If you want to disable the default behavior that occurs when the user clicks on the delegate (like changing the current index), you can set <a href="../qtquick/qml-qtquick-tableview.html#pointerNavigationEnabled-prop" translate="no">pointerNavigationEnabled</a> to <code translate="no">false</code>.</p>
+</div>
+<h3 id="editing-cells-in-the-table">Editing cells in the table</h3>
+<p>TableViewDelegate has a default <a href="../qtquick/qml-qtquick-tableview.html#editDelegate-attached-prop" translate="no">edit delegate</a> assigned. If <a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a> has <a href="../qtquick/qml-qtquick-tableview.html#editTriggers-prop" translate="no">edit triggers</a> set, and the <a href="../qtquick/qml-qtquick-tableview.html#model-prop" translate="no">model</a> has support for <a href="../qtquick/qml-qtquick-tableview.html#editing-cells" translate="no">editing model items</a>, then the user can activate any of the edit triggers to edit the text of the <a href="qml-qtquick-controls-tableviewdelegate.html#current-prop" translate="no">current</a> table cell.</p>
+<p>The default edit delegate will use the <code translate="no">Qt.EditRole</code> to read and write data to the <a href="../qtquick/qml-qtquick-tableview.html#model-prop" translate="no">model</a>. If you need to use another role, or otherwise have needs outside what the default edit delegate offers, you can always assign your own delegate to <a href="../qtquick/qml-qtquick-tableview.html#editDelegate-attached-prop" translate="no">TableView.editDelegate</a>.</p>
+<p><b>See also </b><a href="qtquickcontrols-customize.html#customizing-tableviewdelegate">Customizing TableViewDelegate</a> and <a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a>.</p>
+<!-- @@@TableViewDelegate -->
+<h2>Property Documentation</h2>
+<!-- $$$current -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="current-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">current</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether or not the delegate represents the <a href="../qtcore/qitemselectionmodel.html#currentIndex" translate="no">current index</a> in the <a href="../qtquick/qml-qtquick-tableview.html#selectionModel-prop" translate="no">selection model</a>.</p>
+</div></div><!-- @@@current -->
+<br/>
+<!-- $$$editing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="editing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">editing</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether or not the delegate is being <a href="../qtquick/qml-qtquick-tableview.html#editing-cells" translate="no">edited</a>.</p>
+</div></div><!-- @@@editing -->
+<br/>
+<!-- $$$selected -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selected-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selected</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether or not the delegate represents a <a href="../qtcore/qitemselectionmodel.html#selection" translate="no">selected index</a> in the <a href="../qtquick/qml-qtquick-tableview.html#selectionModel-prop" translate="no">selection model</a>.</p>
+</div></div><!-- @@@selected -->
+<br/>
+<!-- $$$tableView -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="tableView-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">tableView</span> : <span class="type"><a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property points to the <a href="../qtquick/qml-qtquick-tableview.html" translate="no">TableView</a> that contains the delegate item.</p>
+</div></div><!-- @@@tableView -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

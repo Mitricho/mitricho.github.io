@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- rsslisting.qdoc -->
+  <meta name="description" content="A demonstration of how to fetch and display a network resource.">
+  <title>A minimal RSS listing application | Qt Network | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtnetwork-index.html">Qt Network</a></li>
+<li>A minimal RSS listing application</li>
+<li id="buildversion"><a href="qtnetwork-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-rsslisting-class">The RSSListing class</a></li>
+<li class="level2"><a href="#construction">Construction</a></li>
+<li class="level2"><a href="#the-slots">The slots</a></li>
+<li class="level2"><a href="#the-get-method">The get() method</a></li>
+<li class="level2"><a href="#the-parsexml-method">The parseXml() method</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">A minimal RSS listing application</h1>
+<!-- $$$rsslisting-brief -->
+<p>A demonstration of how to fetch and display a network resource.</p>
+<!-- @@@rsslisting -->
+<!-- $$$rsslisting-description -->
+<div class="descr" id="details">
+<p>This example shows how to fetch a resource the user has requested and display data contained in the response, illustrated by an RSS listing application. (RDF Site Summary, or Really Simple Syndication, is a standard format for communicating updates to web sites. See https://www.rssboard.org/rss-specification for details.) The user inferface in the illustration is simple, as the focus of this example is on how to use networking, but naturally a more sophisticated interface would be wanted for a serious RSS reader.</p>
+<p>The example also illustrates how to do asynchronous parsing of data as it is received, preserving state in member variables so that an incremental parser can consume chunks of data as they arrive over the network. Constituents of the parsed content may start in one chunk of data but not be completed until a later chunk, requiring the parser to retain state between calls.</p>
+<p class="centerAlign"><img src="images/rsslisting.png" alt="" /></p><p>The main program is fairly minimal. It simply instantiates a <a href="../qtwidgets/qapplication.html" translate="no">QApplication</a> and the <code translate="no">RSSListing</code> widget, shows the latter and hands over control to the former. For the sake of illustration, it gives the widget the Qt blog's URL as default value for the resource to check.</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+ {
+     <span class="type"><a href="../qtwidgets/qapplication.html" translate="no">QApplication</a></span> app(argc<span class="operator">,</span> argv);
+     RSSListing rsslisting(u<span class="string">&quot;https://www.qt.io/blog/rss.xml&quot;</span>_s);
+     rsslisting<span class="operator">.</span>show();
+     <span class="keyword">return</span> app<span class="operator">.</span>exec();
+ }
+</pre>
+<h4 id="the-rsslisting-class">The RSSListing class</h4>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> RSSListing : <span class="keyword">public</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>
+ {
+     Q_OBJECT
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> RSSListing(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>url <span class="operator">=</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>()<span class="operator">,</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>widget <span class="operator">=</span> nullptr);
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> fetch();
+     <span class="type">void</span> finished(<span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span> <span class="operator">*</span>reply);
+     <span class="type">void</span> consumeData();
+     <span class="type">void</span> error(<span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span><span class="operator">::</span>NetworkError);
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> parseXml();
+     <span class="type">void</span> get(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url);
+
+     <span class="comment">// Parser state:</span>
+     <span class="type"><a href="../qtcore/qxmlstreamreader.html" translate="no">QXmlStreamReader</a></span> xml;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> currentTag;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> linkString;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> titleString;
+
+     <span class="comment">// Network state:</span>
+     <span class="type"><a href="qnetworkaccessmanager.html" translate="no">QNetworkAccessManager</a></span> manager;
+     <span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span> <span class="operator">*</span>currentReply;
+
+     <span class="comment">// UI elements:</span>
+     <span class="type"><a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a></span> <span class="operator">*</span>lineEdit;
+     <span class="type"><a href="../qtwidgets/qtreewidget.html" translate="no">QTreeWidget</a></span> <span class="operator">*</span>treeWidget;
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>fetchButton;
+ };
+</pre>
+<p>The widget itself provides a simple user interface for specifying the URL to fetch and, once available updates are displayed, controlling the downloading of updated items. A <a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a> provides for input of the URL, and a <a href="../qtwidgets/qtreewidget.html" translate="no">QTreeWidget</a> for display of the results once fetched.</p>
+<p>The widget downloads and parses the RSS (a form of XML) asynchronously, feeding the data to an XML reader as it arrives. This supports reading of very large data sources. Because the data is streamed from the network through the XML reader, there is no need to retain the full text of the XML in memory. In other context, a similar approach can allow the user to interrupt such incremental loading.</p>
+<h5 id="construction">Construction</h5>
+<pre class="cpp" translate="no">
+ RSSListing<span class="operator">::</span>RSSListing(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>url<span class="operator">,</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)<span class="operator">,</span> currentReply(<span class="number">0</span>)
+ {
+     connect(<span class="operator">&amp;</span>manager<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qnetworkaccessmanager.html" translate="no">QNetworkAccessManager</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>RSSListing<span class="operator">::</span>finished);
+
+     lineEdit <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a></span>(<span class="keyword">this</span>);
+     lineEdit<span class="operator">-</span><span class="operator">&gt;</span>setText(url);
+     connect(lineEdit<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a></span><span class="operator">::</span>returnPressed<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>RSSListing<span class="operator">::</span>fetch);
+
+     fetchButton <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Fetch&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     connect(fetchButton<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span><span class="operator">::</span>clicked<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>RSSListing<span class="operator">::</span>fetch);
+
+     treeWidget <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qtreewidget.html" translate="no">QTreeWidget</a></span>(<span class="keyword">this</span>);
+     connect(treeWidget<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qtreewidget.html" translate="no">QTreeWidget</a></span><span class="operator">::</span>itemActivated<span class="operator">,</span>
+             <span class="comment">// Open the link in the browser:</span>
+             <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="operator">]</span>(<span class="type"><a href="../qtwidgets/qtreewidgetitem.html" translate="no">QTreeWidgetItem</a></span> <span class="operator">*</span>item) { <span class="type"><a href="../qtgui/qdesktopservices.html" translate="no">QDesktopServices</a></span><span class="operator">::</span>openUrl(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(item<span class="operator">-</span><span class="operator">&gt;</span>text(<span class="number">1</span>))); });
+     treeWidget<span class="operator">-</span><span class="operator">&gt;</span>setHeaderLabels(<span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> { tr(<span class="string">&quot;Title&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Link&quot;</span>) });
+     treeWidget<span class="operator">-</span><span class="operator">&gt;</span>header()<span class="operator">-</span><span class="operator">&gt;</span>setSectionResizeMode(<span class="type"><a href="../qtwidgets/qheaderview.html" translate="no">QHeaderView</a></span><span class="operator">::</span>ResizeToContents);
+
+     <span class="type"><a href="../qtwidgets/qhboxlayout.html" translate="no">QHBoxLayout</a></span> <span class="operator">*</span>hboxLayout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qhboxlayout.html" translate="no">QHBoxLayout</a></span>;
+     hboxLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(lineEdit);
+     hboxLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(fetchButton);
+
+     <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span> <span class="operator">*</span>layout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span>(<span class="keyword">this</span>);
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addLayout(hboxLayout);
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(treeWidget);
+
+     setWindowTitle(tr(<span class="string">&quot;RSS listing example&quot;</span>));
+     resize(<span class="number">640</span><span class="operator">,</span> <span class="number">480</span>);
+ }
+</pre>
+<p>The constructor sets up the assorted components of the widget and connects their various signals to the slots it shall use to handle them.</p>
+<p>The user interface consists of a line edit, a push button, and a list view widget. The line edit is used for entering the URL to fetch; the push button starts the process of fetching updates. The line edit is empty by default, but the constructor's caller can override that, as our <code translate="no">main()</code> has done. In any case, the user can replace the default with the URL of another RSS feed.</p>
+<p>The list view shows the updated items reported in the RSS feed. Double-clicking on one of these sends its URL to the user's browser or other user agent using <a href="../qtgui/qdesktopservices.html#openUrl" translate="no">QDesktopServices::openUrl</a>().</p>
+<h5 id="the-slots">The slots</h5>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RSSListing<span class="operator">::</span>fetch()
+ {
+     lineEdit<span class="operator">-</span><span class="operator">&gt;</span>setReadOnly(<span class="keyword">true</span>);
+     fetchButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     treeWidget<span class="operator">-</span><span class="operator">&gt;</span>clear();
+
+     get(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(lineEdit<span class="operator">-</span><span class="operator">&gt;</span>text()));
+ }
+
+ <span class="type">void</span> RSSListing<span class="operator">::</span>consumeData()
+ {
+     <span class="type">int</span> statusCode <span class="operator">=</span> currentReply<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qnetworkrequest.html" translate="no">QNetworkRequest</a></span><span class="operator">::</span>HttpStatusCodeAttribute)<span class="operator">.</span>toInt();
+     <span class="keyword">if</span> (statusCode <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">200</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> statusCode <span class="operator">&lt;</span> <span class="number">300</span>)
+         parseXml();
+ }
+
+ <span class="type">void</span> RSSListing<span class="operator">::</span>error(<span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span><span class="operator">::</span>NetworkError)
+ {
+     <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;error retrieving RSS feed&quot;</span>);
+     xml<span class="operator">.</span>clear();
+     currentReply<span class="operator">-</span><span class="operator">&gt;</span>disconnect(<span class="keyword">this</span>);
+     currentReply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+     currentReply <span class="operator">=</span> nullptr;
+ }
+
+ <span class="type">void</span> RSSListing<span class="operator">::</span>finished(<span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span> <span class="operator">*</span>reply)
+ {
+     Q_UNUSED(reply);
+     lineEdit<span class="operator">-</span><span class="operator">&gt;</span>setReadOnly(<span class="keyword">false</span>);
+     fetchButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">true</span>);
+ }
+</pre>
+<p>All slots are kept simple by delegating any hard work to private methods.</p>
+<p>When the user completes input of a URL, either by clicking the &quot;Fetch&quot; button or by pressing the return key in the line edit, the <code translate="no">fetch()</code> slot disables the &quot;Fetch&quot; button and disables further editing of the line edit. It clears the display of available updates and delegates to <code translate="no">get()</code> the initiating of an HTTP GET request.</p>
+<p>When data is received, the network reply triggers its <a href="../qtcore/qiodevice.html#readyRead" translate="no">readyRead</a>() signal, which <code translate="no">get()</code> connects to the <code translate="no">consumeData()</code> slot. This checks the response got a successful status code and, if it did, calls <code translate="no">parseXml()</code> to consume the data.</p>
+<p>If the network reply gets an error, this is delivered to the <code translate="no">error()</code> slot, which reports the error, clears the XML stream reader then disconnects from the reply and deletes it.</p>
+<p>On completion (whether successful or otherwise) of a network reply, the <code translate="no">finished()</code> slot restores the UI to be ready to accept a new URL to fetch by re-enabling the line edit and &quot;Fetch&quot; button.</p>
+<h5 id="the-get-method">The get() method</h5>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RSSListing<span class="operator">::</span>get(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url)
+ {
+     <span class="keyword">if</span> (currentReply) {
+         currentReply<span class="operator">-</span><span class="operator">&gt;</span>disconnect(<span class="keyword">this</span>);
+         currentReply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+     }
+     currentReply <span class="operator">=</span> url<span class="operator">.</span>isValid() <span class="operator">?</span> manager<span class="operator">.</span>get(<span class="type"><a href="qnetworkrequest.html" translate="no">QNetworkRequest</a></span>(url)) : nullptr;
+     <span class="keyword">if</span> (currentReply) {
+         connect(currentReply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span><span class="operator">::</span>readyRead<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>RSSListing<span class="operator">::</span>consumeData);
+         connect(currentReply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qnetworkreply.html" translate="no">QNetworkReply</a></span><span class="operator">::</span>errorOccurred<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>RSSListing<span class="operator">::</span>error);
+
+     }
+     xml<span class="operator">.</span>setDevice(currentReply); <span class="comment">// Equivalent to clear() if currentReply is null.</span>
+ }
+</pre>
+<p>The private <code translate="no">get()</code> method is used by the <code translate="no">fetch()</code> slot to initiate an HTTP GET request. It first clears the XML stream reader and, if a reply is currently active, disconnects and deletes it. If the URL it has been passed is valid, it asks the network access manager to GET it. It connects its relevant slots to signals of the resulting reply (if any) and sets up its XML stream reader to read data from the reply - a network reply object is also a <code translate="no">QIODevice</code>, from which data can be read.</p>
+<h5 id="the-parsexml-method">The parseXml() method</h5>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RSSListing<span class="operator">::</span>parseXml()
+ {
+     <span class="keyword">while</span> (<span class="operator">!</span>xml<span class="operator">.</span>atEnd()) {
+         xml<span class="operator">.</span>readNext();
+         <span class="keyword">if</span> (xml<span class="operator">.</span>isStartElement()) {
+             <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;item&quot;</span>) {
+                 linkString <span class="operator">=</span> xml<span class="operator">.</span>attributes()<span class="operator">.</span>value(<span class="string">&quot;rss:about&quot;</span>)<span class="operator">.</span>toString();
+                 titleString<span class="operator">.</span>clear();
+             }
+             currentTag <span class="operator">=</span> xml<span class="operator">.</span>name()<span class="operator">.</span>toString();
+         } <span class="keyword">else</span> <span class="keyword">if</span> (xml<span class="operator">.</span>isEndElement()) {
+             <span class="keyword">if</span> (xml<span class="operator">.</span>name() <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;item&quot;</span>) {
+
+                 <span class="type"><a href="../qtwidgets/qtreewidgetitem.html" translate="no">QTreeWidgetItem</a></span> <span class="operator">*</span>item <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qtreewidgetitem.html" translate="no">QTreeWidgetItem</a></span>;
+                 item<span class="operator">-</span><span class="operator">&gt;</span>setText(<span class="number">0</span><span class="operator">,</span> titleString);
+                 item<span class="operator">-</span><span class="operator">&gt;</span>setText(<span class="number">1</span><span class="operator">,</span> linkString);
+                 treeWidget<span class="operator">-</span><span class="operator">&gt;</span>addTopLevelItem(item);
+             }
+         } <span class="keyword">else</span> <span class="keyword">if</span> (xml<span class="operator">.</span>isCharacters() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>xml<span class="operator">.</span>isWhitespace()) {
+             <span class="keyword">if</span> (currentTag <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;title&quot;</span>)
+                 titleString <span class="operator">+</span><span class="operator">=</span> xml<span class="operator">.</span>text();
+             <span class="keyword">else</span> <span class="keyword">if</span> (currentTag <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;link&quot;</span>)
+                 linkString <span class="operator">+</span><span class="operator">=</span> xml<span class="operator">.</span>text();
+         }
+     }
+     <span class="keyword">if</span> (xml<span class="operator">.</span>error() <span class="operator">&amp;</span><span class="operator">&amp;</span> xml<span class="operator">.</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qxmlstreamreader.html" translate="no">QXmlStreamReader</a></span><span class="operator">::</span>PrematureEndOfDocumentError)
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;XML ERROR:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> xml<span class="operator">.</span>lineNumber() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;: &quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> xml<span class="operator">.</span>errorString();
+ }
+</pre>
+<p>When data is received, and thus made available to the XML stream reader, <code translate="no">parseXml()</code> reads from the XML stream, checking for <code translate="no">item</code> elements and, within them, <code translate="no">title</code> and <code translate="no">link</code> elements. It will use the <code translate="no">rss:about</code> attribute of an <code translate="no">item</code> as URL in the Link column of the tree-view, failing that the content of its <code translate="no">link</code> element; and it uses the content of the <code translate="no">title</code> element in the Title column of the tree-view. As each <code translate="no">item</code> element closes, its details are turned into a new row in the tree widget, with the extracted title and URL in the Title and Link columns.</p>
+<p>The variables that keep track of the parsing state - <code translate="no">linkString</code>, <code translate="no">titleString</code> and <code translate="no">currentTag</code> - are member variables of the <code translate="no">RSSListing</code> class, even though they are only accessed from this method, because this method may be called repeatedly, as new data arrives, and one chunk of received data may start an element that isn't completed until a later chunk arrives. This enables the parser to operate asynchronously as the data arrives, instead of having to wait until all the data has arrived.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/network/rsslisting?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="qnetworkreply.html" translate="no">QNetworkReply</a> and <a href="../qtcore/qxmlstreamreader.html" translate="no">QXmlStreamReader</a>.</p>
+<!-- @@@rsslisting -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

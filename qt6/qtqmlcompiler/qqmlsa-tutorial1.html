@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- tutorial.qdoc -->
+  <title>QML Static Analysis 1 - Basic Setup | Qt QML Compiler | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqmlcompiler-index.html">Qt QML Compiler</a></li>
+<li><a href="qqmlsa-tutorial.html">QML Static Analysis Tutorial</a></li>
+<li>QML Static Analysis 1 - Basic Setup</li>
+<li id="buildversion"><a href="qtqmlcompiler-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qqmlsa-tutorial.html" />
+  <link rel="next" href="qqmlsa-tutorial2.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qqmlsa-tutorial.html">QML Static Analysis Tutorial</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qqmlsa-tutorial2.html">Custom Pass</a>
+</p>
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML Static Analysis 1 - Basic Setup</h1>
+<!-- $$$qqmlsa-tutorial1.html-description -->
+<div class="descr" id="details">
+<p>This chapter introduces the basic structure of a qmllint extension plugin, and how it can be used with qmllint.</p>
+<p>To create our plugin, we first need to make the QmlCompiler module available:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS QmlCompiler)
+</pre>
+<p>We then create a plugin, and link it against the QmlCompiler module.</p>
+<pre class="cpp" translate="no">
+ qt_add_plugin(HelloWorldPlugin)
+
+ target_sources(HelloWorldPlugin
+     PRIVATE
+         helloplugin.h
+         helloplugin.cpp
+ )
+
+ target_link_libraries(HelloWorldPlugin PRIVATE Qt::QmlCompiler)
+</pre>
+<p>The implementation follows the pattern for extending Qt with a plugin: We subclass the <a href="qqmlsa-lintplugin.html" translate="no">QQmlSA::LintPlugin</a>,</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> HelloWorldPlugin : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">,</span> <span class="keyword">public</span> <span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>LintPlugin
+ {
+     Q_OBJECT
+     Q_PLUGIN_METADATA(IID QmlLintPluginInterface_iid FILE <span class="string">&quot;plugin.json&quot;</span>)
+     Q_INTERFACES(<span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>LintPlugin)
+
+ <span class="keyword">public</span>:
+     <span class="type">void</span> registerPasses(<span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>PassManager <span class="operator">*</span>manager<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>Element <span class="operator">&amp;</span>rootElement) override;
+ };
+</pre>
+<p>The plugin references a <code translate="no">plugin.json</code> file, which contains some important information:</p>
+<pre class="cpp" translate="no">
+ {
+     &quot;name&quot;: &quot;HelloWorld&quot;,
+     &quot;author&quot;: &quot;Qt Example&quot;,
+     &quot;description&quot;: &quot;Demonstrates how to write a qmllint plugin&quot;,
+     &quot;version&quot;: &quot;1.0&quot;,
+     &quot;loggingCategories&quot;: [
+         {
+             &quot;name&quot;: &quot;hello-world&quot;,
+             &quot;settingsName&quot;: &quot;HelloWorld&quot;,
+             &quot;description&quot;: &quot;Used to create test messages&quot;
+         }
+     ]
+ }
+</pre>
+<p><code translate="no">name</code>, <code translate="no">author</code>, <code translate="no">version</code> and <code translate="no">description</code> are meta-data to describe the plugin.</p>
+<p>Each plugin can have one or more logging categories, which are used to thematically group warnings. <code translate="no">loggingCategories</code> takes an array of categories, each consisting of</p>
+<ul>
+<li><code translate="no">name</code>, which is used to identify the category, and as the flag name in qmllint,</li>
+<li><code translate="no">settingsName</code>, which is used to configure the category in qmllint.ini</li>
+<li><code translate="no">description</code>, which should describe what kind of warning messages are tagged with the category</li>
+</ul>
+<p>In our example, we have only one logging category, <code translate="no">hello-world</code>. For each category, we have to create a <a href="qqmlsa-loggerwarningid.html" translate="no">LoggerWarningId</a> object in our plugin.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> constexpr <span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>LoggerWarningId helloWorld { <span class="string">&quot;Plugin.HelloWorld.hello-world&quot;</span> };
+</pre>
+<p>We construct it with a string literal which should have the format <code translate="no">Plugin.&lt;plugin name&gt;.&lt;category name&gt;</code>.</p>
+<p>Lastly, for our plugin to actually do anything useful, we have to implement the <code translate="no">registerPasses</code> function.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> HelloWorldPlugin<span class="operator">::</span>registerPasses(<span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>PassManager <span class="operator">*</span>manager<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qqmlsa.html" translate="no">QQmlSA</a></span><span class="operator">::</span>Element <span class="operator">&amp;</span>rootElement)
+ {
+     <span class="keyword">const</span> <span class="type">bool</span> pluginIsEnabled <span class="operator">=</span> manager<span class="operator">-</span><span class="operator">&gt;</span>isCategoryEnabled(helloWorld);
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Hello World plugin is&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> (pluginIsEnabled <span class="operator">?</span> <span class="string">&quot;enabled&quot;</span> : <span class="string">&quot;disabled&quot;</span>);
+     <span class="keyword">if</span> (<span class="operator">!</span>pluginIsEnabled)
+         <span class="keyword">return</span>; <span class="comment">// skip registration if the plugin is disabled anyway</span>
+     <span class="comment">// here we will later register our passes</span>
+ }
+</pre>
+<p>We check whether our category is enabled, and print a diagnostic indicating its status via <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>. Note that the plugin currently does not do anything useful, as we do not register any passes. This will done in the next part of this tutorial.</p>
+<p>We can however already verify that our plugin is correctly detected. We use the following command to check it:</p>
+<pre class="cpp plain" translate="no">
+ qmllint -P /path/to/the/directory/containing/the/plugin --Plugin.HelloWorld.hello-world info test.qml
+</pre>
+<p>The <code translate="no">-P</code> options tells qmllint to look for plugins in the specified folder. To avoid conflicts with Qt internal categories, plugin categories are always prefixed with &quot;Plugin&quot;, then followed by a dot, the plugin name, another dot and finally the category. Running the command should print <code translate="no">Hello World Plugin is enabled</code>.</p>
+</div>
+<!-- @@@qqmlsa-tutorial1.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qqmlsa-tutorial.html">QML Static Analysis Tutorial</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qqmlsa-tutorial2.html">Custom Pass</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

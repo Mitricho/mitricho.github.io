@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- wiggly.qdoc -->
+  <meta name="description" content="Demonstrates how to use an effect created with the Qt Quick Effect Maker (QQEM).">
+  <title>Wiggly | Qt Quick Effect Maker | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickeffectmaker-index.html">Qt Quick Effect Maker</a></li>
+<li><a href="quickeffectmaker-examples.html">Qt Quick Effect Maker examples</a></li>
+<li>Wiggly</li>
+<li id="buildversion"><a href="qtquickeffectmaker-index.html">Qt Quick Effect Maker 6.9.0</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qqem-porting-shadertoy.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qqem-porting-shadertoy.html">Porting Shadertoy effects to Qt Quick Effect Maker</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#application-basics">Application basics</a></li>
+<li class="level1"><a href="#modifying-the-effect-in-qqem">Modifying the effect in QQEM</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Wiggly</h1>
+<!-- $$$wiggly-brief -->
+<p>Demonstrates how to use an effect created with the Qt Quick Effect Maker (QQEM).</p>
+<!-- @@@wiggly -->
+<!-- $$$wiggly-description -->
+<div class="descr" id="details">
+<p><i>Wiggly</i> demonstrates how to use a shader effect, created with the Qt Quick Effect Maker (QQEM), in your Qt Quick application. A simple Qt Quick user interface allows changing the wiggly text and the wave size, as well as applying the electric cloud effect.</p>
+<p class="centerAlign"><img src="images/wiggly-example.png" alt="" /></p><h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="application-basics">Application basics</h4>
+<p>Most of the example is contained and set up in the <i>main.qml</i> file. First, create an item which is used as the source for the effect.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">sourceItem</span>
+     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+     <span class="name">width</span>: <span class="name">textItem</span>.<span class="name">width</span> <span class="operator">+</span> <span class="number">60</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">px</span>
+     <span class="name">height</span>: <span class="name">textItem</span>.<span class="name">height</span> <span class="operator">+</span> <span class="number">30</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">px</span>
+     <span class="name">color</span>: <span class="string">&quot;#d0d0d0d0&quot;</span>
+     <span class="name">border</span>.color: <span class="string">&quot;#d0ffffff&quot;</span>
+     <span class="name">border</span>.width: <span class="number">4</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">px</span>
+     <span class="name">radius</span>: <span class="number">20</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">px</span>
+     <span class="name">layer</span>.enabled: <span class="number">true</span>
+     <span class="name">layer</span>.smooth: <span class="number">true</span>
+     <span class="name">visible</span>: <span class="number">false</span>
+     <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+         <span class="name">id</span>: <span class="name">textItem</span>
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         <span class="name">text</span>: <span class="name">wigglyTextField</span>.<span class="name">text</span>
+         <span class="name">font</span>.family: <span class="name">font1</span>.<span class="name">font</span>.<span class="name">family</span>
+         <span class="name">font</span>.pixelSize: <span class="name">Math</span>.<span class="name">min</span>(<span class="number">200</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">px</span>, <span class="number">0.8</span> <span class="operator">*</span> <span class="name">mainWindow</span>.<span class="name">width</span> <span class="operator">/</span> <span class="name">text</span>.<span class="name">length</span>)
+     }
+ }
+</pre>
+<p>The item is a <a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a> with a <a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a> element inside. The size of the rectangle depends on the number of characters in the text to make it fit nicely into the application window. The important lines here are <i>layer.enabled: true</i> that creates the offscreen texture for the effect and <i>visible: false</i> that hides this element as the effect will replace its content. If the item is visible, it looks like this without the wiggly effect:</p>
+<p class="centerAlign"><img src="images/wiggly-sourceitem.png" alt="" /></p><p>Next, create the settings toolbar used for controlling the effect.</p>
+<p class="centerAlign"><img src="images/wiggly-settings.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-textfield.html" translate="no">TextField</a></span> {
+     <span class="name">id</span>: <span class="name">wigglyTextField</span>
+     <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+     <span class="name">width</span>: <span class="name">mainWindow</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.3</span>
+     <span class="name">text</span>: <span class="string">&quot;Wiggly&quot;</span>
+ }
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-slider.html" translate="no">Slider</a></span> {
+     <span class="name">id</span>: <span class="name">wigglyAmountYSlider</span>
+     <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+     <span class="name">width</span>: <span class="name">mainWindow</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.15</span>
+     <span class="name">from</span>: <span class="number">0</span>
+     <span class="name">to</span>: <span class="number">100</span>
+     <span class="name">value</span>: <span class="number">40</span>
+ }
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-slider.html" translate="no">Slider</a></span> {
+     <span class="name">id</span>: <span class="name">wigglyAmountXSlider</span>
+     <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+     <span class="name">width</span>: <span class="name">mainWindow</span>.<span class="name">width</span> <span class="operator">*</span> <span class="number">0.15</span>
+     <span class="name">from</span>: <span class="number">0</span>
+     <span class="name">to</span>: <span class="number">100</span>
+     <span class="name">value</span>: <span class="number">20</span>
+ }
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+     <span class="name">id</span>: <span class="name">electricSwitch</span>
+     <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+ }
+</pre>
+<p>These components use the <a href="../qtquickcontrols/qtquickcontrols-index.html">Qt Quick Controls</a>, stacked inside a <a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a> element. The first one is a <a href="../qtquickcontrols/qml-qtquick-controls-textfield.html" translate="no">TextField</a>, which you can use to change the wiggly text. Then there are separate <a href="../qtquickcontrols/qml-qtquick-controls-slider.html" translate="no">Slider</a> elements, to control the wave size in X and Y coordinates. The last control is a <a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a>, to enable the electric clouds effect.</p>
+<pre class="qml" translate="no">
+ <span class="type">WigglyEffect</span> {
+     <span class="name">id</span>: <span class="name">wigglyEffect</span>
+     <span class="name">source</span>: <span class="name">sourceItem</span>
+     <span class="name">anchors</span>.fill: <span class="name">sourceItem</span>
+     <span class="name">timeRunning</span>: <span class="number">true</span>
+     <span class="name">wigglyAmountX</span>: <span class="name">wigglyAmountXSlider</span>.<span class="name">value</span>
+     <span class="name">wigglyAmountY</span>: <span class="name">wigglyAmountYSlider</span>.<span class="name">value</span>
+     <span class="name">electricCloudColor</span>.a: <span class="name">electricSwitch</span>.<span class="name">checked</span> ? <span class="number">1.0</span> : <span class="number">0.0</span>
+     <span class="name">wigglyShadows</span>: <span class="number">0.5</span>
+ }
+</pre>
+<p>This WigglyEffect is applied to the <code translate="no">sourceItem</code> defined earlier. Code sets <code translate="no">timeRunning</code> to true to animate the effect. Finally, it connects some shader effect properties to the controlling components.</p>
+<p>You can also look at the <code translate="no">WigglyEffect.qml</code> file for details of the effect. But that file is created by the QQEM tool, so you should not usually modify it manually. Instead, use the Qt Quick Effect Maker as instructed in the next section.</p>
+<h4 id="modifying-the-effect-in-qqem">Modifying the effect in QQEM</h4>
+<p>As mentioned above, the <i>WigglyEffect</i> has been created using the Qt Quick Effect Maker. For more information about QQEM installation, see the <a href="qqem-installing.html">Installing Qt Quick Effect Maker</a> documentation.</p>
+<p>To modify the effects:</p>
+<ol class="1" type="1"><li>Open the effect project file (qep) in the QQEM tool.</li>
+<li>Modify the effect nodes, properties or the shader code and see the live preview.</li>
+<li>When ready, export the modified effect into your application.</li>
+</ol>
+<p>When the <code translate="no">WigglyEffect/WigglyEffect.qep</code> project is opened in QQEM, you should see something like this:</p>
+<p class="centerAlign"><img src="images/wiggly-qqem.png" alt="" /></p><p>On the left side, you can see the <b translate="no">Node view</b> with different nodes of this effect. The top-right view is <b translate="no">Property view</b>, with properties (API) of the effect. The bottom-right corner shows <b translate="no">Live view</b> of the effect, with the currently selected preview source item. To see the live preview with the actual content, add the image of the <code translate="no">sourceItem</code> to the sources list in <b translate="no">Edit</b> &gt; <b translate="no">Preferences</b> and select it from the preview toolbar popup list.</p>
+<p>To modify the shader code for the wiggly effect, double-click the <i>Wiggly</i> node or select it and switch from <b translate="no">DESIGN</b> mode to <b translate="no">CODE</b> mode. Then select the <b translate="no">VERT</b> tab to see the vertex shader, where most of the effect code is:</p>
+<pre class="cpp plain" translate="no">
+ @mesh 63, 1
+ out vec3 wigglyColor;
+
+ float rainbowColor(float phase) {
+     return abs(sin(texCoord.x * 2.0 + iTime + phase));
+ }
+
+ @main
+ {
+     float wave = sin(vertCoord.x * 0.01 + iTime * 3.0);
+     vertCoord.x += wigglyAmountX * wave;
+     vertCoord.y += wigglyAmountY * wave;
+     const float tau = 6.28318530718;
+     wigglyColor.r = rainbowColor(0.0);
+     wigglyColor.g = rainbowColor(1.0/3.0 * tau);
+     wigglyColor.b = rainbowColor(2.0/3.0 * tau);
+     float shadowAmount = (wigglyAmountX + wigglyAmountY) * wave;
+     wigglyColor.rgb += shadowAmount * wigglyShadows * 0.01;
+ }
+</pre>
+<p>The first line sets up the <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> mesh grid size. This is needed, as by default there are vertices only in the corners and the wiggly effect requires more moving vertices. Then, set the vertex shader to output <code translate="no">wigglyColor</code> variable, which will be later used in the fragment shader for applying some shadow. Next, introduce a function called <code translate="no">rainbowColor</code>, which returns the color of a single channel at the phase.</p>
+<p>Inside the main method, code first sets the <code translate="no">vertCoord</code> to move the vertex positions in a sin wave. The next lines set the red, green, and blue channels of the wiggly rainbow. The last two lines then apply some shadowing following the wave.</p>
+<p>Next, select the <b translate="no">FRAG</b> tab to see the fragment shader code:</p>
+<pre class="cpp plain" translate="no">
+ @main
+ {
+     fragColor.rgb *= wigglyColor * fragColor.a;
+ }
+</pre>
+<p>The fragment shader is very simple and only multiplies the current source color with the <code translate="no">wigglyColor</code> received from the vertex shader.</p>
+<p>More of the processing could have been done on the fragment shader side, but having the code on the vertex shader generally is more performant due to the number of vertices being notably lower than the number of fragments (pixels). Some tools, like the <a href="http://www.shadertoy.com">Shadertoy</a>, only allow writing a fragment shader. But as Qt Quick and QQEM also support custom vertex shaders, you should try to take advantage of them.</p>
+<p>When you modify these shaders, the output of the <b translate="no">Live view</b> changes instantly. To get the modified shader into use in the example application, select <b translate="no">File</b> &gt; <b translate="no">Export</b> from the menu.</p>
+<p>You can now play more with the QQEM features. For example, add new nodes, change or add new properties, utilize these properties in the shader code, and so on. Here is an example of what the effect looks like with <code translate="no">LedScreen</code> node added to the beginning of the node graph:</p>
+<p class="centerAlign"><img src="images/wiggly-ledscreen.png" alt="" /></p><p>Files:</p>
+<ul>
+<li><a href="qtquickeffectmaker-wiggly-cmakelists-txt.html" translate="no">wiggly/CMakeLists.txt</a></li>
+<li><a href="qtquickeffectmaker-wiggly-wigglyeffect-wigglyeffect-qml.html" translate="no">wiggly/WigglyEffect/WigglyEffect.qml</a></li>
+<li><a href="qtquickeffectmaker-wiggly-main-cpp.html" translate="no">wiggly/main.cpp</a></li>
+<li><a href="qtquickeffectmaker-wiggly-main-qml.html" translate="no">wiggly/main.qml</a></li>
+<li><a href="qtquickeffectmaker-wiggly-qml-qrc.html" translate="no">wiggly/qml.qrc</a></li>
+<li><a href="qtquickeffectmaker-wiggly-wiggly-pro.html" translate="no">wiggly/wiggly.pro</a></li>
+</ul>
+</div>
+<!-- @@@wiggly -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qqem-porting-shadertoy.html">Porting Shadertoy effects to Qt Quick Effect Maker</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

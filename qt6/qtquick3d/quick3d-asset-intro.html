@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-assetintro.qdoc -->
+  <title>Qt Quick 3D Introduction with glTF Assets | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li>Qt Quick 3D Introduction with glTF Assets</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="quick3d-asset-conditioning-anti-aliasing.html" />
+  <link rel="next" href="qtquick3d-tool-shadergen.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="quick3d-asset-conditioning-anti-aliasing.html">Antialiasing best practices</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-shadergen.html">Build-time materials</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#our-skeleton-application">Our Skeleton Application</a></li>
+<li class="level1"><a href="#importing-an-asset">Importing an Asset</a></li>
+<li class="level2"><a href="#importing-via-balsam">Importing via balsam</a></li>
+<li class="level2"><a href="#importing-via-balsamui">Importing via balsamui</a></li>
+<li class="level1"><a href="#making-it-look-better">Making it Look Better</a></li>
+<li class="level2"><a href="#more-light">More light</a></li>
+<li class="level2"><a href="#light-debugging">Light debugging</a></li>
+<li class="level2"><a href="#skybox-and-image-based-lighting">Skybox and image-based lighting</a></li>
+<li class="level1"><a href="#basic-performance-investigations">Basic Performance Investigations</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D Introduction with glTF Assets</h1>
+<!-- $$$quick3d-asset-intro-description -->
+<div class="descr" id="details">
+<p>The <a href="qtquick3d-intro-example.html">Qt Quick 3D - Introduction</a> example provides a quick introduction to creating QML-based applications with Qt Quick 3D, but it does so using only built-in primitives, such as spheres and cylinders. This page provides an introduction using <a href="https://en.wikipedia.org/wiki/GlTF#glTF_2.0">glTF 2.0</a> assets, using some of the models from the <a href="https://github.com/KhronosGroup/glTF-Sample-Models">Khronos glTF Sample Models repository</a>.</p>
+<h2 id="our-skeleton-application">Our Skeleton Application</h2>
+<p>Let's start with the following application. This code snippet is runnable as-is with the <code translate="no">qml</code> command-line tool. The result is a very green 3D view with nothing else in it.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+ }
+</pre>
+<p class="centerAlign"><img src="images/assetintro_empty.jpg" alt="" /></p><h2 id="importing-an-asset">Importing an Asset</h2>
+<p>We are going to use two glTF 2.0 models from the Sample Models repository: Sponza and Suzanne.</p>
+<p>These models typically come with a number of texture maps and the mesh (geometry) data stored in a separate binary file, in addition to the .gltf file:</p>
+<p class="centerAlign"><img src="images/assetintro_sponza_dir.jpg" alt="" /></p><p>How do we get all this into our Qt Quick 3D scene?</p>
+<p>There are a number of options:</p>
+<ul>
+<li>Generate QML components that can be instantiated in the scene. The command-line tool to perform this conversion is the <a href="qtquick3d-tool-balsam.html">Balsam</a> tool. Besides generating a .qml file, that is effectively a subscene, this also repacks the mesh (geometry) data into an optimized, fast-to-load format, and copies the texture map image files as well.</li>
+<li>Perform the same using <code translate="no">balsamui</code>, a GUI frontend for <a href="qtquick3d-tool-balsam.html">Balsam</a>.</li>
+<li>If using <a href="../qtquick/qtquick-tools-and-utilities.html#qt-design-studio">Qt Design Studio</a>, the asset import process is integrated into the visual design tools. Importing can be triggered, for example, by dragging and dropping the .gltf file onto the appropriate panel.</li>
+<li>For glTF 2.0 assets in particular, there is a runtime option as well: the <a href="qml-qtquick3d-assetutils-runtimeloader.html" translate="no">RuntimeLoader</a> type. This allows loading a .gltf file (and the associated binary and texture data files) at runtime, without doing any pre-processing via tools such as <a href="qtquick3d-tool-balsam.html">Balsam</a>. This is very handy in applications that wish to open and load user-provided assets. On the other hand, this approach is significantly less efficient when it comes to performance. Therefore, we will not be focusing on this approach in this introduction. Check the <a href="qtquick3d-runtimeloader-example.html">Qt Quick 3D - RuntimeLoader Example</a> for an example of this approach.</li>
+</ul>
+<p>Both the <code translate="no">balsam</code> and <code translate="no">balsamui</code> applications are shipped with Qt, and should be present in the directory with other similar executable tools, assuming Qt Quick 3D is installed or built. In many cases, running <a href="qtquick3d-tool-balsam.html">balsam</a> from the command-line on the .gltf file is sufficient, without having to specify any additional arguments. It is worth being aware however of the many command-line, or interactive if using <code translate="no">balsamui</code> or Qt Design Studio, options. For example, when working with <a href="quick3d-lightmap.html">baked lightmaps to provide static global illumination</a>, it is likely that one will want to pass <code translate="no">--generateLightmapUV</code> to get the additional lightmap UV channel generated at asset import time, instead of performing this potentially consuming process at run-time. Similarly, <code translate="no">--generateMeshLevelsOfDetail</code> is essential when it is desirable to have simplified versions of the meshes generated in order to have <a href="qtquick3d-lod.html">automatic LOD</a> enabled in the scene. Other options allow generating missing data (e.g. <code translate="no">--generateNormals</code>) and performing various optimizations.</p>
+<p>In <code translate="no">balsamui</code> the command-line options are mapped to interactive elements:</p>
+<p class="centerAlign"><img src="images/assetintro_balsamui_options.jpg" alt="" /></p><h3 id="importing-via-balsam">Importing via balsam</h3>
+<p>Let's get started! Assuming that the <a href="https://github.com/KhronosGroup/glTF-Sample-Models">https://github.com/KhronosGroup/glTF-Sample-Models</a> <code translate="no">git</code> repository is checked out somewhere, we can simply run balsam from our example application directory, by specifying an absolute path to the .gltf files:</p>
+<p><code translate="no">balsam c:\work\glTF-Sample-Models\2.0\Sponza\glTF\Sponza.gltf</code></p>
+<p>This gives us a <code translate="no">Sponza.qml</code>, a <code translate="no">.mesh</code> file under the <code translate="no">meshes</code> subdirectory, and the texture maps copied under <code translate="no">maps</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This qml file is not runnable on its own. It is a <i>component</i>, that should be instantiated within a 3D scene associated with a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</p>
+</div>
+<p>Our project structure is very simple here, as the asset qml files live right next to our main .qml scene. This allows us to simply instantiate the Sponza type using the <a href="../qtqml/qtqml-documents-topic.html">standard QML component system</a>. (at run-time this will then look for Sponza.qml in the filesystem)</p>
+<p>Just adding the model (subscene) is pointless however, since by default the materials feature the full <a href="quick3d-pbr.html">PBR lighting calculations</a>, so nothing is shown from our scene without a light such as <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a>, <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>, or <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a>, or having <a href="quick3d-asset-conditioning-ibl.html">image-based lighting</a> enabled via <a href="qml-qtquick3d-sceneenvironment.html#lightProbe-prop" translate="no">the environment</a>.</p>
+<p>For now, we choose to add a <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> with the default settings. (meaning the color is <code translate="no">white</code>, and the light emits in the direction of the Z axis)</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         }
+
+         <span class="type">Sponza</span> {
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+ }
+</pre>
+<p>Running this with the <code translate="no">qml</code> tool will load and run, but the scene is all empty by default since the Sponza model is behind the camera. The scale is also not ideal, e.g. moving around with WASD keys and the mouse (enabled by the <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a>) does not feel right.</p>
+<p>To remedy this, we scale the Sponza model (subscene) by <code translate="no">100</code> along the X, Y, and Z axis. In addition, the camera's starting Y position is bumped to 100.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">y</span>: <span class="number">100</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         }
+
+         <span class="type">Sponza</span> {
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+ }
+</pre>
+<p>Running this gives us:</p>
+<p class="centerAlign"><img src="images/assetintro_sponza_first.jpg" alt="" /></p><p>With the mouse and the WASDRF keys we can move around:</p>
+<p class="centerAlign"><img src="images/assetintro_sponza_second.jpg" alt="" /></p><p class="centerAlign"><img src="images/assetintro_sponza_out.jpg" alt="" /></p><div class="admonition note">
+<p><b>Note: </b>We mentioned <code translate="no">subscene</code> a number of times above as an alternative to &quot;model&quot;. Why is this? While not obvious with the Sponza asset, which in its glTF form is a single model with 103 submeshes, mapping to a single <a href="qml-qtquick3d-model.html" translate="no">Model</a> object with 103 elements in its <a href="qml-qtquick3d-model.html#materials-prop" translate="no">materials list</a>, an asset can contain any number of <a href="qml-qtquick3d-model.html" translate="no">models</a>, each with multiple submeshes and associated materials. These Models can form parent-child relationships and can be combined with additional <a href="qml-qtquick3d-node.html" translate="no">nodes</a> to perform transforms such as translate, rotate, or scale. It is therefore more appropriate to look at the imported asset as a complete subscene, an arbitrary tree of <a href="qml-qtquick3d-node.html" translate="no">nodes</a>, even if the rendered result is visually perceived as a single model. Open the generated Sponza.qml, or any other QML file generated from such assets, in a plain text editor to get an impression of the structure (which naturally always depends on how the source asset, in this case the glTF file, was designed).</p>
+</div>
+<h3 id="importing-via-balsamui">Importing via balsamui</h3>
+<p>For our second model, let's use the graphical user interface of <code translate="no">balsam</code> instead.</p>
+<p>Running <code translate="no">balsamui</code> opens the tool:</p>
+<p class="centerAlign"><img src="images/assetintro_balsamui_startup.jpg" alt="" /></p><p>Let's import the <a href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Suzanne">Suzanne</a> model. This is a simpler model with two texture maps.</p>
+<p class="centerAlign"><img src="images/assetintro_balsamui_open.jpg" alt="" /></p><p>As there is no need for any additional configuration options, we can just Convert. The result is the same as running <code translate="no">balsam</code>: a Suzanne.qml and some additional files generated in the specific output directory.</p>
+<p class="centerAlign"><img src="images/assetintro_balsamui_convert.jpg" alt="" /></p><p>From this point on, working with the generated assets is the same as in the previous section.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">y</span>: <span class="number">100</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         }
+
+         <span class="type">Sponza</span> {
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)
+         }
+
+         <span class="type">Suzanne</span> {
+             <span class="name">y</span>: <span class="number">100</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">50</span>)
+             <span class="name">eulerRotation</span>.y: -<span class="number">90</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+ }
+</pre>
+<p>Again, a scale is applied to the instantiated Suzanne node, and the Y position is altered a bit so that the model does not end up in the floor of the Sponza building.</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_first.jpg" alt="" /></p><p>All properties can be changed, bound to, and animated, just like with Qt Quick. For example, let's apply a continuous rotation to our Suzanne model:</p>
+<pre class="qml" translate="no">
+ <span class="type">Suzanne</span> {
+     <span class="name">y</span>: <span class="number">100</span>
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">50</span>)
+     NumberAnimation on <span class="name">eulerRotation</span>.y {
+         <span class="name">from</span>: <span class="number">0</span>
+         <span class="name">to</span>: <span class="number">360</span>
+         <span class="name">duration</span>: <span class="number">3000</span>
+         <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+     }
+ }
+</pre>
+<h2 id="making-it-look-better">Making it Look Better</h2>
+<h3 id="more-light">More light</h3>
+<p>Now, our scene is a bit dark. Let's add another light. This time a <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>, and one that casts a shadow.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">y</span>: <span class="number">100</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         }
+
+         <span class="type">Sponza</span> {
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)
+         }
+
+         <span class="type"><a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a></span> {
+             <span class="name">y</span>: <span class="number">200</span>
+             <span class="name">color</span>: <span class="string">&quot;#d9c62b&quot;</span>
+             <span class="name">brightness</span>: <span class="number">5</span>
+             <span class="name">castsShadow</span>: <span class="number">true</span>
+             <span class="name">shadowFactor</span>: <span class="number">75</span>
+         }
+
+         <span class="type">Suzanne</span> {
+             <span class="name">y</span>: <span class="number">100</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">50</span>)
+             NumberAnimation on <span class="name">eulerRotation</span>.y {
+                 <span class="name">from</span>: <span class="number">0</span>
+                 <span class="name">to</span>: <span class="number">360</span>
+                 <span class="name">duration</span>: <span class="number">3000</span>
+                 <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+ }
+</pre>
+<p>Launching this scene and moving the camera around a bit reveals that this is indeed starting to look better than before:</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_morelight.jpg" alt="" /></p><h3 id="light-debugging">Light debugging</h3>
+<p>The <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> is placed slightly above the Suzanne model. When designing the scene using visual tools, such as Qt Design Studio, this is obvious, but when developing without any design tools it may become handy to be able to quickly visualize the location of <a href="qml-qtquick3d-light.html" translate="no">lights</a> and other <a href="qml-qtquick3d-node.html" translate="no">nodes</a>.</p>
+<p>This we can do by adding a child node, a <a href="qml-qtquick3d-model.html" translate="no">Model</a> to the <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>. The position of the child node is relative to the parent, so the default <code translate="no">(0, 0, 0)</code> is effectively the position of the <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> in this case. Enclosing the light within some geometry (the built-in cube in this case) is not a problem for the standard real-time lighting calculations since this system has no concept of occlusion, meaning the light has no problems with traveling through &quot;walls&quot;. If we used <a href="quick3d-lightmap.html">pre-baked lightmaps</a>, where lighting is calculated using raytracing, that would be a different story. In that case we would need to make sure the cube is not blocking the light, perhaps by moving our debug cube a bit above the light.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a></span> {
+     <span class="name">y</span>: <span class="number">200</span>
+     <span class="name">color</span>: <span class="string">&quot;#d9c62b&quot;</span>
+     <span class="name">brightness</span>: <span class="number">5</span>
+     <span class="name">castsShadow</span>: <span class="number">true</span>
+     <span class="name">shadowFactor</span>: <span class="number">75</span>
+     <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.01</span>, <span class="number">0.01</span>, <span class="number">0.01</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+         }
+     }
+ }
+</pre>
+<p>Another trick we use here is turning off lighting for the material used with the cube. It will just appear using the default base color (white), without being affected by lighting. This is handy for objects used for debugging and visualizing purposes.</p>
+<p>The result, note the small, white cube appearing, visualizing the position of the <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>:</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_cube.jpg" alt="" /></p><h3 id="skybox-and-image-based-lighting">Skybox and image-based lighting</h3>
+<p>Another obvious improvement is doing something about the background. That green clear color is not quite ideal. How about some environment that also contributes to lighting?</p>
+<p>As we do not necessarily have suitable HDRI panorama image available, let's use a procedurally generated high dynamic range sky image. This is easy to do with the help of <a href="qml-qtquick3d-helpers-proceduralskytexturedata.html" translate="no">ProceduralSkyTextureData</a> and <a href="qml-qtquick3d-texture.html" translate="no">Texture</a>'s support for non-file based, dynamically generated image data. Instead of specifying <a href="qml-qtquick3d-texture.html#source-prop" translate="no">source</a>, we rather use the <a href="qml-qtquick3d-texture.html#textureData-prop" translate="no">textureData</a> property.</p>
+<pre class="qml" translate="no">
+ environment: SceneEnvironment {
+     backgroundMode: SceneEnvironment.SkyBox
+     lightProbe: Texture {
+         textureData: ProceduralSkyTextureData {
+         }
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The example code prefers defining objects inline. This is not mandatory, the <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> or <a href="qml-qtquick3d-helpers-proceduralskytexturedata.html" translate="no">ProceduralSkyTextureData</a> objects could have also been defined elsewhere in the object tree, and then referenced by <code translate="no">id</code>.</p>
+</div>
+<p>As a result, we have both a skybox and improved lighting. (the former due to the <a href="qml-qtquick3d-sceneenvironment.html#backgroundMode-prop" translate="no">backgroundMode</a> being set to SkyBox and <a href="qml-qtquick3d-sceneenvironment.html#lightProbe-prop" translate="no">light probe</a> being set to a valid <a href="qml-qtquick3d-texture.html" translate="no">Texture</a>; the latter due to <a href="qml-qtquick3d-sceneenvironment.html#lightProbe-prop" translate="no">light probe</a> being set to a valid <a href="qml-qtquick3d-texture.html" translate="no">Texture</a>)</p>
+<p class="centerAlign"><img src="images/assetintro_sponza_ibl.jpg" alt="" /></p><p class="centerAlign"><img src="images/assetintro_sponza_ibl_2.jpg" alt="" /></p><h2 id="basic-performance-investigations">Basic Performance Investigations</h2>
+<p>To get some basic insights into the resource and performance aspects of the scene, it is a good idea to add a way to show an interactive <a href="qml-qtquick3d-helpers-debugview.html" translate="no">DebugView</a> item early on in the development process. Here we choose to add a <a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a> that toggles the <a href="qml-qtquick3d-helpers-debugview.html" translate="no">DebugView</a>, both anchored in the top-right corner.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+ import QtQuick3D
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="name">width</span>: <span class="number">1280</span>
+     <span class="name">height</span>: <span class="number">720</span>
+
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">id</span>: <span class="name">view3D</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">SkyBox</span>
+             <span class="name">lightProbe</span>: <span class="name">Texture</span> {
+                 <span class="name">textureData</span>: <span class="name">ProceduralSkyTextureData</span> {
+                 }
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">y</span>: <span class="number">100</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+         }
+
+         <span class="type">Sponza</span> {
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)
+         }
+
+         <span class="type"><a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a></span> {
+             <span class="name">y</span>: <span class="number">200</span>
+             <span class="name">color</span>: <span class="string">&quot;#d9c62b&quot;</span>
+             <span class="name">brightness</span>: <span class="number">5</span>
+             <span class="name">castsShadow</span>: <span class="number">true</span>
+             <span class="name">shadowFactor</span>: <span class="number">75</span>
+             <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+                 <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.01</span>, <span class="number">0.01</span>, <span class="number">0.01</span>)
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+                 }
+             }
+         }
+
+         <span class="type">Suzanne</span> {
+             <span class="name">y</span>: <span class="number">100</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">50</span>)
+             NumberAnimation on <span class="name">eulerRotation</span>.y {
+                 <span class="name">from</span>: <span class="number">0</span>
+                 <span class="name">to</span>: <span class="number">360</span>
+                 <span class="name">duration</span>: <span class="number">3000</span>
+                 <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+             <span class="name">controlledObject</span>: <span class="name">camera</span>
+         }
+     }
+
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+         <span class="name">text</span>: <span class="string">&quot;Toggle DebugView&quot;</span>
+         <span class="name">onClicked</span>: <span class="name">debugView</span>.<span class="name">visible</span> <span class="operator">=</span> !<span class="name">debugView</span>.<span class="name">visible</span>
+         <span class="type"><a href="qml-qtquick3d-helpers-debugview.html" translate="no">DebugView</a></span> {
+             <span class="name">id</span>: <span class="name">debugView</span>
+             <span class="name">source</span>: <span class="name">view3D</span>
+             <span class="name">visible</span>: <span class="number">false</span>
+             <span class="name">anchors</span>.top: <span class="name">parent</span>.<span class="name">bottom</span>
+             <span class="name">anchors</span>.right: <span class="name">parent</span>.<span class="name">right</span>
+         }
+     }
+ }
+</pre>
+<p class="centerAlign"><img src="images/assetintro_suzanne_debugview.jpg" alt="" /></p><p>This panel shows live timings, allows examining the live list of texture maps and meshes, and gives an insight into the render passes that need to be performed before the final color buffer can be rendered.</p>
+<p>Due to making the <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> a shadow casting light, there are multiple render passes involved:</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_debugview_2.jpg" alt="" /></p><p>In the <code translate="no">Textures</code> section we see the texture maps from the Suzanne and Sponza assets (the latter has a lot of them), as well as the procedurally generated sky texture.</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_debugview_3.jpg" alt="" /></p><p>The <code translate="no">Models</code> page presents no surprises:</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_debugview_4.jpg" alt="" /></p><p>On the <code translate="no">Tools</code> page there are some interactive controls to toggle <a href="qml-qtquick3d-debugsettings.html#wireframeEnabled-prop" translate="no">wireframe mode</a> and various <a href="qml-qtquick3d-debugsettings.html#materialOverride-prop" translate="no">material overrides</a>.</p>
+<p>Here with wireframe mode enabled and forcing rendering to only use the <a href="qml-qtquick3d-principledmaterial.html#baseColor-prop" translate="no">base color</a> component of the materials:</p>
+<p class="centerAlign"><img src="images/assetintro_suzanne_override.jpg" alt="" /></p><p>This concludes our tour of the basics of building a <a href="qtquick3d-index.html">Qt Quick 3D</a> scene with imported assets.</p>
+</div>
+<!-- @@@quick3d-asset-intro -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="quick3d-asset-conditioning-anti-aliasing.html">Antialiasing best practices</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-shadergen.html">Build-time materials</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

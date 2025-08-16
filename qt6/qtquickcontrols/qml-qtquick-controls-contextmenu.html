@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickcontextmenu.cpp -->
+  <meta name="description" content="The ContextMenu attached type provides a way to open a context menu in a platform-appropriate manner.">
+  <title>ContextMenu QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>ContextMenu</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#sharing-context-menus">Sharing context menus</a></li>
+<li class="level2"><a href="#performance">Performance</a></li>
+<li class="level2"><a href="#interaction-with-other-menus">Interaction with other menus</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ContextMenu QML Type</h1>
+<!-- $$$ContextMenu-brief -->
+<p>The ContextMenu attached type provides a way to open a context menu in a platform-appropriate manner. <a href="#details">More...</a></p>
+<!-- @@@ContextMenu -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.9</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-contextmenu-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-contextmenu.html#menu-prop" translate="no">menu</a></b> : Menu</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-contextmenu.html#requested-signal" translate="no">requested</a></b>(point <i>position</i>)</li>
+</ul>
+<!-- $$$ContextMenu-description -->
+<h2 id="details">Detailed Description</h2>
+<p>ContextMenu can be attached to any <a href="../qtquick/qquickitem.html" translate="no">item</a> in order to show a context menu upon a platform-specific event, such as a right click or the context menu key.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="name">ContextMenu</span>.menu: <span class="name">Menu</span> {
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Eat Tomato&quot;</span>)
+             <span class="name">onTriggered</span>: { <span class="comment">/* ... */</span> }
+         }
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Throw Tomato&quot;</span>)
+             <span class="name">onTriggered</span>: { <span class="comment">/* ... */</span> }
+         }
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Squash Tomato&quot;</span>)
+             <span class="name">onTriggered</span>: { <span class="comment">/* ... */</span> }
+         }
+     }
+ }
+</pre>
+<h2 id="sharing-context-menus">Sharing context menus</h2>
+<p>It's possible to share a <a href="qml-qtquick-controls-menu.html" translate="no">Menu</a> amongst several attached context menu objects. This allows reusing a single Menu when the items that need context menus have data in common. For example:</p>
+<pre class="qml" translate="no">
+ pragma ComponentBehavior: Bound
+
+ import QtQuick
+ import QtQuick.Controls.Basic
+ import QtQuick.Templates as T
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">width</span>: <span class="number">600</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     component Tomato: <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">id</span>: <span class="name">tomato</span>
+         <span class="name">objectName</span>: <span class="name">text</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Label</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Label</span>.<span class="name">AlignVCenter</span>
+         <span class="name">width</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="number">200</span>, <span class="name">contentWidth</span> <span class="operator">*</span> <span class="number">1.5</span>, <span class="name">contentWidth</span> <span class="operator">*</span> <span class="number">1.5</span>)
+         <span class="name">height</span>: <span class="name">width</span>
+         <span class="name">color</span>: <span class="name">skinColor</span>
+
+         <span class="keyword">function</span> <span class="name">eat</span>() { <span class="name">print</span>(<span class="string">&quot;Ate &quot;</span> <span class="operator">+</span> <span class="name">text</span>) }
+         <span class="keyword">function</span> <span class="name">ditch</span>() { <span class="name">print</span>(<span class="string">&quot;Threw &quot;</span> <span class="operator">+</span> <span class="name">text</span>) }
+         <span class="keyword">function</span> <span class="name">squash</span>() { <span class="name">print</span>(<span class="string">&quot;Squashed &quot;</span> <span class="operator">+</span> <span class="name">text</span>) }
+
+         property <span class="type"><a href="../qtquick/qml-color.html" translate="no">color</a></span> <span class="name">skinColor</span>: <span class="string">&quot;tomato&quot;</span>
+
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">color</span>: <span class="name">tomato</span>.<span class="name">skinColor</span>
+             <span class="name">radius</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         }
+
+         <span class="name">ContextMenu</span>.menu: <span class="name">contextMenu</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+         <span class="name">id</span>: <span class="name">contextMenu</span>
+
+         readonly property <span class="type">Tomato</span> <span class="name">triggerItem</span>: <span class="name">parent</span> <span class="operator">as</span> <span class="name">Tomato</span>
+         readonly property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">triggerItemText</span>: <span class="name">triggerItem</span>?.<span class="name">text</span> <span class="operator">??</span> <span class="string">&quot;&quot;</span>
+
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Eat %1&quot;</span>).<span class="name">arg</span>(<span class="name">contextMenu</span>.<span class="name">triggerItemText</span>)
+             <span class="name">onTriggered</span>: <span class="name">contextMenu</span>.<span class="name">triggerItem</span>.<span class="name">eat</span>()
+         }
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Throw %1&quot;</span>).<span class="name">arg</span>(<span class="name">contextMenu</span>.<span class="name">triggerItemText</span>)
+             <span class="name">onTriggered</span>: <span class="name">contextMenu</span>.<span class="name">triggerItem</span>.<span class="name">ditch</span>()
+         }
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Squash %1&quot;</span>).<span class="name">arg</span>(<span class="name">contextMenu</span>.<span class="name">triggerItemText</span>)
+             <span class="name">onTriggered</span>: <span class="name">contextMenu</span>.<span class="name">triggerItem</span>.<span class="name">squash</span>()
+         }
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type">Tomato</span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;tomato&quot;</span>)
+         }
+
+         <span class="type">Tomato</span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;really ripe tomato&quot;</span>)
+             <span class="name">skinColor</span>: <span class="string">&quot;maroon&quot;</span>
+         }
+     }
+ }
+</pre>
+<h2 id="performance">Performance</h2>
+<p>ContextMenu lazily creates its <code translate="no">Menu</code> only when it's requested. If it wasn't for this optimization, the <code translate="no">Menu</code> would be created when the containing component is being loaded, which is typically at application startup.</p>
+<p>It is recommended not to give the <code translate="no">Menu</code> assigned to ContextMenu's <a href="qml-qtquick-controls-contextmenu.html#menu-prop" translate="no">menu</a> property an id when it's defined where it's assigned. Doing so prevents this optimization. For example:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="name">ContextMenu</span>.menu: <span class="name">Menu</span> {
+         <span class="comment">// This prevents lazy creation of the Menu.</span>
+         <span class="name">id</span>: <span class="name">myMenu</span>
+
+         <span class="comment">// ...</span>
+     }
+ }
+</pre>
+<p>The example in the <a href="qml-qtquick-controls-contextmenu.html#sharing-context-menus" translate="no">Sharing context menus</a> section works because the <code translate="no">Menu</code> is defined separately from its assignment.</p>
+<h2 id="interaction-with-other-menus">Interaction with other menus</h2>
+<p>If a <code translate="no">Menu</code> is opened via e.g. a <a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a> or other means, ContextMenu will not open at the same time. This allows legacy applications that were written before ContextMenu was introduced to continue working as expected.</p>
+<!-- @@@ContextMenu -->
+<h2>Property Documentation</h2>
+<!-- $$$menu -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="menu-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">menu</span> : <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the context menu that will be opened. It can be set to any <a href="qml-qtquick-controls-menu.html" translate="no">Menu</a> object.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="qml-qtquick-controls-menu.html" translate="no">Menu</a> assigned to this property cannot be given an id. See <a href="qml-qtquick-controls-contextmenu.html#sharing-context-menus" translate="no">Sharing context menus</a> for more information.</p>
+</div>
+</div></div><!-- @@@menu -->
+<br/>
+<h2>Signal Documentation</h2>
+<!-- $$$requested[overload1]$$$requestedpoint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="requested-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">requested</span>(<span class="type"><a href="../qtqml/qml-point.html" translate="no">point</a></span> <i>position</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when a context menu is requested.</p>
+<p>If it was requested by a right mouse button click, <i translate="no">position</i> gives the position of the click relative to the parent.</p>
+<p>The example below shows how to programmatically open a context menu:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">id</span>: <span class="name">button</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Click me!&quot;</span>)
+     <span class="name">ContextMenu</span>.onRequested: <span class="keyword"></span>position =&gt; {
+         const menu = <span class="name">buttonMenu</span>.<span class="name">createObject</span>(<span class="name">button</span>)
+         <span class="name">menu</span>.<span class="name">popup</span>(<span class="name">position</span>)
+     }
+ }
+
+ <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+     <span class="name">id</span>: <span class="name">buttonMenu</span>
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+         <span class="type"><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Open&quot;</span>) }
+     }
+ }
+</pre>
+<p>If no menu is set, but this signal is connected, the context menu event will be accepted and will not propagate.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onRequested</code>.</p>
+</div><p><b>See also </b><a href="../qtgui/qcontextmenuevent.html#pos" translate="no">QContextMenuEvent::pos</a>().</p>
+</div></div><!-- @@@requested -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

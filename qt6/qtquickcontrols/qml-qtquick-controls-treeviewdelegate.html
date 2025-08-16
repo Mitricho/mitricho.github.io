@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquicktreeviewdelegate.cpp -->
+  <meta name="description" content="A delegate that can be assigned to a TreeView.">
+  <title>TreeViewDelegate QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>TreeViewDelegate</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#interacting-with-pointers">Interacting with pointers</a></li>
+<li class="level2"><a href="#editing-nodes-in-the-tree">Editing nodes in the tree</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">TreeViewDelegate QML Type</h1>
+<!-- $$$TreeViewDelegate-brief -->
+<p>A delegate that can be assigned to a <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a>. <a href="#details">More...</a></p>
+<!-- @@@TreeViewDelegate -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.3</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-treeviewdelegate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#current-prop" translate="no">current</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#depth-prop" translate="no">depth</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#editing-prop" translate="no">editing</a></b> : bool <code class="summary extra" translate="no">(since 6.5)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#expanded-prop" translate="no">expanded</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#hasChildren-prop" translate="no">hasChildren</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indentation</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#isTreeNode-prop" translate="no">isTreeNode</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#leftMargin-prop" translate="no">leftMargin</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#rightMargin-prop" translate="no">rightMargin</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#selected-prop" translate="no">selected</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-treeviewdelegate.html#treeView-prop" translate="no">treeView</a></b> : TreeView</li>
+</ul>
+<!-- $$$TreeViewDelegate-description -->
+<h2 id="details">Detailed Description</h2>
+<p class="centerAlign"><img src="images/qtquickcontrols-treeviewdelegate.png" alt="" /></p><p>A TreeViewDelegate is a delegate that can be assigned to the <a href="../qtquick/qml-qtquick-tableview.html#delegate-prop" translate="no">delegate property</a> of a <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a>. It renders the tree, as well as the other columns, in the view using the application style.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">delegate</span>: <span class="name">TreeViewDelegate</span> {}
+     <span class="comment">// The model needs to be a QAbstractItemModel</span>
+     <span class="comment">// model: yourTreeModel</span>
+ }
+</pre>
+<p>TreeViewDelegate inherits <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a>, which means that it's composed of three items: a <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, a <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>, and an <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>. TreeViewDelegate takes care of <a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indenting</a> the contentItem and the indicator according their location in the tree. The indicator will only be visible if the delegate item is inside the <a href="qml-qtquick-controls-treeviewdelegate.html#isTreeNode-prop" translate="no">tree column</a>, and renders a model item <a href="qml-qtquick-controls-treeviewdelegate.html#hasChildren-prop" translate="no">with children</a>.</p>
+<p>If you change the indicator, it will no longer be indented by default. Instead you need to indent it yourself by setting the <a href="../qtquick/qml-qtquick-item.html#x-prop" translate="no">x position</a> of the indicator, taking the <a href="qml-qtquick-controls-treeviewdelegate.html#depth-prop" translate="no">depth</a> and <a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indentation</a> into account. Below is an example of how to do that:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-treeviewdelegate.html" translate="no">TreeViewDelegate</a></span> {
+     <span class="name">indicator</span>: <span class="name">Item</span> {
+         <span class="name">x</span>: <span class="name">leftMargin</span> <span class="operator">+</span> (<span class="name">depth</span> <span class="operator">*</span> <span class="name">indentation</span>)
+     }
+ }
+</pre>
+<p>The position of the contentItem is controlled with <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>. This means that you can change the contentItem without dealing with indentation. But it also means that you should avoid changing padding to something else, as that will remove the indentation. The space to the left of the indicator is instead controlled with <a href="qml-qtquick-controls-treeviewdelegate.html#leftMargin-prop" translate="no">leftMargin</a>. The space between the indicator and the contentItem is controlled with <a href="qml-qtquick-controls-control.html#spacing-prop" translate="no">spacing</a>. And the space to the right of the contentItem is controlled with <a href="qml-qtquick-controls-treeviewdelegate.html#rightMargin-prop" translate="no">rightMargin</a>.</p>
+<h3 id="interacting-with-pointers">Interacting with pointers</h3>
+<p>TreeViewDelegate inherits <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a>. This means that it will emit signals such as <a href="qml-qtquick-controls-abstractbutton.html#clicked-signal" translate="no">clicked</a> when the user clicks on the delegate. If needed, you could connect to that signal to implement application specific functionality, in addition to the default expand/collapse behavior (and even set <a href="../qtquick/qml-qtquick-tableview.html#pointerNavigationEnabled-prop" translate="no">pointerNavigationEnabled</a> to <code translate="no">false</code>, to disable the default behavior as well).</p>
+<p>But the <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a> API does not give you information about the position of the click, or which modifiers are being held. If this is needed, a better approach would be to use pointer handlers, for example:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a></span> {
+     <span class="name">id</span>: <span class="name">treeView</span>
+     <span class="name">delegate</span>: <span class="name">TreeViewDelegate</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+             <span class="name">acceptedButtons</span>: <span class="name">Qt</span>.<span class="name">RightButton</span>
+             <span class="name">onTapped</span>: <span class="name">someContextMenu</span>.<span class="name">open</span>()
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+             <span class="name">acceptedModifiers</span>: <span class="name">Qt</span>.<span class="name">ControlModifier</span>
+             <span class="name">onTapped</span>: {
+                 <span class="keyword">if</span> (<span class="name">treeView</span>.<span class="name">isExpanded</span>(<span class="name">row</span>))
+                     <span class="name">treeView</span>.<span class="name">collapseRecursively</span>(<span class="name">row</span>)
+                 <span class="keyword">else</span>
+                     <span class="name">treeView</span>.<span class="name">expandRecursively</span>(<span class="name">row</span>)
+             }
+         }
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If you want to disable the default behavior that occurs when the user clicks on the delegate (like changing the current index), you can set <a href="../qtquick/qml-qtquick-tableview.html#pointerNavigationEnabled-prop" translate="no">pointerNavigationEnabled</a> to <code translate="no">false</code>.</p>
+</div>
+<h3 id="editing-nodes-in-the-tree">Editing nodes in the tree</h3>
+<p>TreeViewDelegate has a default <a href="../qtquick/qml-qtquick-tableview.html#editDelegate-attached-prop" translate="no">edit delegate</a> assigned. If <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a> has <a href="../qtquick/qml-qtquick-tableview.html#editTriggers-prop" translate="no">edit triggers</a> set, and the <a href="../qtquick/qml-qtquick-tableview.html#model-prop" translate="no">model</a> has support for <a href="../qtquick/qml-qtquick-tableview.html#editing-cells" translate="no">editing model items</a>, then the user can activate any of the edit triggers to edit the text of the <a href="qml-qtquick-controls-treeviewdelegate.html#current-prop" translate="no">current</a> tree node.</p>
+<p>The default edit delegate will try to use the <code translate="no">Qt.EditRole</code> to read and write data to the <a href="../qtquick/qml-qtquick-tableview.html#model-prop" translate="no">model</a>. If <a href="../qtcore/qabstractitemmodel.html#data" translate="no">QAbstractItemModel::data</a>() returns an empty string for this role, then <code translate="no">Qt.DisplayRole</code> will be used instead.</p>
+<p>You can always assign your own custom edit delegate to <a href="../qtquick/qml-qtquick-tableview.html#editDelegate-attached-prop" translate="no">TableView.editDelegate</a> if you have needs outside what the default edit delegate offers.</p>
+<p><b>See also </b><a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a>.</p>
+<!-- @@@TreeViewDelegate -->
+<h2>Property Documentation</h2>
+<!-- $$$current -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="current-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">current</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds if the delegate represent the <a href="../qtcore/qitemselectionmodel.html#currentIndex" translate="no">current index</a> in the <a href="../qtquick/qml-qtquick-tableview.html#selectionModel-prop" translate="no">selection model</a>.</p>
+</div></div><!-- @@@current -->
+<br/>
+<!-- $$$depth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="depth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">depth</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the depth of the model item drawn by the delegate. The depth of a model item is the same as the number of ancestors it has in the model.</p>
+</div></div><!-- @@@depth -->
+<br/>
+<!-- $$$editing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="editing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">editing</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.5]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds if the delegate is being <a href="../qtquick/qml-qtquick-tableview.html#editing-cells" translate="no">edited.</a></p>
+<p>This property was introduced in Qt 6.5.</p>
+</div></div><!-- @@@editing -->
+<br/>
+<!-- $$$expanded -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="expanded-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">expanded</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property is <code translate="no">true</code> if the model item drawn by the delegate is expanded in the view.</p>
+</div></div><!-- @@@expanded -->
+<br/>
+<!-- $$$hasChildren -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="hasChildren-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">hasChildren</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property is <code translate="no">true</code> if the model item drawn by the delegate has children in the model.</p>
+</div></div><!-- @@@hasChildren -->
+<br/>
+<!-- $$$indentation -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="indentation-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">indentation</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the space a child is indented horizontally relative to its parent.</p>
+</div></div><!-- @@@indentation -->
+<br/>
+<!-- $$$isTreeNode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="isTreeNode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">isTreeNode</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property is <code translate="no">true</code> if the delegate item draws a node in the tree. Only one column in the view will be used to draw the tree, and therefore, only delegate items in that column will have this property set to <code translate="no">true</code>.</p>
+<p>A node in the tree is <a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indented</a> according to its <code translate="no">depth</code>, and show an <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a> if <a href="qml-qtquick-controls-treeviewdelegate.html#hasChildren-prop" translate="no">hasChildren</a> is <code translate="no">true</code>. Delegate items in other columns will have this property set to <code translate="no">false</code>.</p>
+</div></div><!-- @@@isTreeNode -->
+<br/>
+<!-- $$$leftMargin -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="leftMargin-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">leftMargin</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the space between the left edge of the view and the left edge of the indicator (in addition to indentation). If no indicator is visible, the space will be between the left edge of the view and the left edge of the contentItem.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-treeviewdelegate.html#rightMargin-prop" translate="no">rightMargin</a>, <a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indentation</a>, and <a href="qquickcontrol.html#spacing-prop" translate="no">spacing</a>.</p>
+</div></div><!-- @@@leftMargin -->
+<br/>
+<!-- $$$rightMargin -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rightMargin-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">rightMargin</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the space between the right edge of the view and the right edge of the contentItem.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-treeviewdelegate.html#leftMargin-prop" translate="no">leftMargin</a>, <a href="qml-qtquick-controls-treeviewdelegate.html#indentation-prop" translate="no">indentation</a>, and <a href="qquickcontrol.html#spacing-prop" translate="no">spacing</a>.</p>
+</div></div><!-- @@@rightMargin -->
+<br/>
+<!-- $$$selected -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selected-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selected</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds if the delegate represent a <a href="../qtcore/qitemselectionmodel.html#selection" translate="no">selected index</a> in the <a href="../qtquick/qml-qtquick-tableview.html#selectionModel-prop" translate="no">selection model</a>.</p>
+</div></div><!-- @@@selected -->
+<br/>
+<!-- $$$treeView -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="treeView-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">treeView</span> : <span class="type"><a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property points to the <a href="../qtquick/qml-qtquick-treeview.html" translate="no">TreeView</a> that contains the delegate item.</p>
+</div></div><!-- @@@treeView -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qaxobject.cpp -->
+  <meta name="description" content="QAxBaseObject provides static properties and signals for QAxObject.">
+  <title>QAxBaseObject Class | Active Qt | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="activeqt-index.html">Active Qt</a></li>
+<li><a href="qaxcontainer-module.html" translate="no">QAxContainer</a></li>
+<li>QAxBaseObject</li>
+<li id="buildversion"><a href="activeqt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QAxBaseObject Class</h1>
+<!-- $$$QAxBaseObject-brief -->
+<p>QAxBaseObject provides static properties and signals for <a href="qaxobject.html" translate="no">QAxObject</a>. <a href="#details">More...</a></p>
+<!-- @@@QAxBaseObject -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QAxBaseObject&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS AxContainer)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::AxContainer)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += axcontainer</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qaxobject.html" translate="no">QAxObject</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qaxbaseobject-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qaxbaseobject.html#classContext-prop" translate="no">classContext</a></b> : const ulong</li>
+<li class="fn" translate="no"><b><a href="qaxbaseobject.html#control-prop" translate="no">control</a></b> : const QString</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaxbaseobject.html#exception" translate="no">exception</a></b>(int <i>code</i>, const QString &amp;<i>source</i>, const QString &amp;<i>desc</i>, const QString &amp;<i>help</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaxbaseobject.html#propertyChanged" translate="no">propertyChanged</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaxbaseobject.html#signal" translate="no">signal</a></b>(const QString &amp;<i>name</i>, int <i>argc</i>, void *<i>argv</i>)</td></tr>
+</table></div>
+<!-- $$$QAxBaseObject-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@QAxBaseObject -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$classContext-prop -->
+<h3 class="fn" translate="no" id="classContext-prop"><span class="name">classContext</span> : const <span class="type"><a href="../qtcore/qttypes.html#ulong-typedef" translate="no">ulong</a></span></h3>
+<p>This property holds the context the ActiveX control will run in (default CLSCTX_SERVER).</p>
+<p>The property affects the &quot;dwClsContext&quot; argument when calling CoCreateInstance. This can be used to control in-proc vs. out-of-proc startup for controls supporting both alternatives. Also, it can be used to modify/reduce control permissions when used with CLSCTX_ENABLE_CLOAKING and an impersonation token.</p>
+<p>Note that it must be set before setControl() to have any effect.</p>
+<p><b>See also </b><a href="qaxbasewidget.html#control-prop" translate="no">QAxBaseWidget::control</a>.</p>
+<!-- @@@classContext -->
+<!-- $$$control-prop -->
+<h3 class="fn" translate="no" id="control-prop"><span class="name">control</span> : const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds the name of the COM object wrapped by this <a href="qaxbaseobject.html" translate="no">QAxBaseObject</a> object.</p>
+<p>Setting this property initializes the COM object. Any COM object previously set is shut down.</p>
+<p>The most efficient way to set this property is by using the registered component's UUID, e.g.</p>
+<p><b>See also </b><a href="qaxbasewidget.html#control-prop" translate="no">QAxBaseWidget::control</a> and <a href="qaxbasewidget.html#classContext-prop" translate="no">QAxBaseWidget::classContext</a>.</p>
+<!-- @@@control -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$exception[overload1]$$$exceptionintconstQString&constQString&constQString& -->
+<h3 class="fn" translate="no" id="exception"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QAxBaseObject::<span class="name">exception</span>(<span class="type">int</span> <i>code</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>source</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>desc</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>help</i>)</h3>
+<p>This signal is emitted when the COM object throws an exception while called using the OLE automation interface IDispatch. <i translate="no">code</i>, <i translate="no">source</i>, <i translate="no">desc</i> and <i translate="no">help</i> provide information about the exception as provided by the COM server and can be used to provide useful feedback to the end user. <i translate="no">help</i> includes the help file, and the help context ID in brackets, e.g. &quot;filename [id]&quot;.</p>
+<p><b>See also </b><a href="qaxbasewidget.html#exception" translate="no">QAxBaseWidget::exception</a>().</p>
+<!-- @@@exception -->
+<!-- $$$propertyChanged[overload1]$$$propertyChangedconstQString& -->
+<h3 class="fn" translate="no" id="propertyChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QAxBaseObject::<span class="name">propertyChanged</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>If the COM object supports property notification, this signal gets emitted when the property called <i translate="no">name</i> is changed.</p>
+<p><b>See also </b><a href="qaxbasewidget.html#propertyChanged" translate="no">QAxBaseWidget::propertyChanged</a>().</p>
+<!-- @@@propertyChanged -->
+<!-- $$$signal[overload1]$$$signalconstQString&intvoid* -->
+<h3 class="fn" translate="no" id="signal"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QAxBaseObject::<span class="name">signal</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, <span class="type">int</span> <i>argc</i>, <span class="type">void</span> *<i>argv</i>)</h3>
+<p>This generic signal gets emitted when the COM object issues the event <i translate="no">name</i>. <i translate="no">argc</i> is the number of parameters provided by the event (DISPPARAMS.cArgs), and <i translate="no">argv</i> is the pointer to the parameter values (DISPPARAMS.rgvarg). Note that the order of parameter values is turned around, ie. the last element of the array is the first parameter in the function.</p>
+<p><b>See also </b><a href="qaxbasewidget.html#signal" translate="no">QAxBaseWidget::signal</a>().</p>
+<!-- @@@signal -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

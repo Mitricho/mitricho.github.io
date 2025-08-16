@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt6-modernize-qml-modules.qdoc -->
+  <meta name="description" content="Modernize your QML modules.">
+  <title>Modern QML modules | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li>Modern QML modules</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#use-qt-standard-project-setup">Use qt_standard_project_setup</a></li>
+<li class="level1"><a href="#use-the-new-standard-resource-path-prefix">Use the new standard resource path prefix</a></li>
+<li class="level1"><a href="#use-loadfrommodule-to-load-your-qml-files">Use loadFromModule to load your QML files</a></li>
+<li class="level1"><a href="#replace-output-directory-and-import-path-with-dependencies-target">Replace OUTPUT_DIRECTORY and IMPORT_PATH with DEPENDENCIES TARGET</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Modern QML modules</h1>
+<!-- $$$qt6-modernize-qml-modules.html-description -->
+<div class="descr" id="details">
+<p>QML modules have become more powerful and easier to use in Qt 6. The following sections describe how to modernize QML modules that already use <a href="qt-add-qml-module.html">qt_add_qml_module</a>.</p>
+<p>See also <a href="qt6-port-to-qt-add-qml-module.html">Port QML modules to CMake</a> on how to port a QML module to the <a href="qt-add-qml-module.html">qt_add_qml_module</a> CMake API.</p>
+<h2 id="use-qt-standard-project-setup">Use qt_standard_project_setup</h2>
+<p><a href="../qtcore/qt-standard-project-setup.html">qt_standard_project_setup</a> sets up Qt CMake policies needed for modern QML modules, among other things. To modernize your QML module and follow best practices, call <a href="../qtcore/qt-standard-project-setup.html">qt_standard_project_setup</a> in the project's top-level <code translate="no">CMakeLists.txt</code> file before any <a href="qt-add-qml-module.html">qt_add_qml_module</a> call:</p>
+<pre class="cpp plain" translate="no">
+ qt_standard_project_setup(REQUIRES 6.8)
+</pre>
+<h2 id="use-the-new-standard-resource-path-prefix">Use the new standard resource path prefix</h2>
+<p>The standard resource path for QML modules moved from <code translate="no">:/</code> to <code translate="no">:/qt/qml</code> with <a href="qt-cmake-policy-qtp0001.html">QTP0001</a>. Don't use custom resource prefixes nor extend import paths in the engine. Remove all <code translate="no">RESOURCE_PREFIX</code> arguments from all <a href="qt-add-qml-module.html">qt_add_qml_module</a> calls, as well as all calls to <a href="qqmlengine.html#addImportPath" translate="no">QQmlEngine::addImportPath</a> or similar. Change all qrc paths in your C++ and QML code to use the new resource path prefix:</p>
+<pre class="cpp plain" translate="no">
+ // C++ usages like:
+ QUrl someUrl(&quot;qrc:/MyQmlModule/MyResource1.png&quot;);
+ // need to be changed to
+ QUrl someUrl(&quot;qrc:/qt/qml/MyQmlModule/MyResource1.png&quot;);
+
+ // QML usages like:
+ &quot;:/MyQmlModule/MyResource1.png&quot;
+ // need to be changed to
+ &quot;:/qt/qml/MyQmlModule/MyResource1.png&quot;
+</pre>
+<p>See also Using the Qt Resource System with QML.</p>
+<h2 id="use-loadfrommodule-to-load-your-qml-files">Use loadFromModule to load your QML files</h2>
+<p>With the default import path, you can use the <code translate="no">loadFromModule</code> methods, like <a href="qqmlapplicationengine.html#loadFromModule" translate="no">QQmlApplicationEngine::loadFromModule</a>, <a href="../qtquick/qquickview.html#loadFromModule" translate="no">QQuickView::loadFromModule</a>, or <a href="qqmlcomponent.html#loadFromModule" translate="no">QQmlComponent::loadFromModule</a>, for example.</p>
+<p>Use <code translate="no">loadFromModule</code> to load your QML file, for example:</p>
+<pre class="cpp plain" translate="no">
+ engine.load(QUrl(QStringLiteral(&quot;qrc:/MyQmlModule/Main.qml&quot;)));
+ // becomes
+ engine.loadFromModule(&quot;MyQmlModule&quot;, &quot;Main&quot;);
+</pre>
+<h2 id="replace-output-directory-and-import-path-with-dependencies-target">Replace OUTPUT_DIRECTORY and IMPORT_PATH with DEPENDENCIES TARGET</h2>
+<p>Avoid setting an <code translate="no">IMPORT_PATH</code> in the <a href="qt-add-qml-module.html">qt_add_qml_module</a>. Instead, use <code translate="no">DEPENDENCIES TARGET</code> to declare dependencies to other QML modules that can't be found in the current import path.</p>
+<p>Using <code translate="no">DEPENDENCIES TARGET</code> also eliminates the need for the <code translate="no">QT_QML_OUTPUT_DIRECTORY</code> CMake variable and the <code translate="no">OUTPUT_DIRECTORY</code> argument to <a href="qt-add-qml-module.html">qt_add_qml_module</a>, so remove their definitions and usages.</p>
+<p>For example:</p>
+<pre class="cpp plain" translate="no">
+ ### in the CMakeLists.txt file defining the dependent QML module:
+ # don't set QT_QML_OUTPUT_DIRECTORY and remove lines like these:
+ set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/qml)
+
+ qt_add_qml_module(MyThirdPartyQmlLibraryDependency
+     URI MyThirdPartyQmlLibraryDependency
+     ....
+     # custom output paths are obsolete due to DEPENDENCIES TARGET below, so remove:
+     OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/qml
+ }
+
+ ### in the CMakeLists.txt file defining the QML module that uses the dependency:
+ qt_add_qml_module(MyQmlLibrary
+     URI MyQmlModule
+     ...
+     # replace import paths like these:
+     IMPORT_PATH ${CMAKE_CURRENT_BINARY_DIR}/thirdparty/qml
+     # with:
+     DEPENDENCIES TARGET MyThirdPartyQmlLibraryDependency
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>You might need to call <code translate="no">add_subdirectory()</code> before calling <a href="qt-add-qml-module.html">qt_add_qml_module</a> in your CMakeLists.txt for <code translate="no">DEPENDENCIES TARGET</code> to find the target.</p>
+</div>
+<p>For more information on how to declare module dependencies, see <a href="qt-add-qml-module.html#declaring-module-dependencies">Declaring module dependencies</a>.</p>
+</div>
+<p><b>See also </b><a href="qml-changes-qt6.html">Changes to Qt QML</a> and <a href="qt6-port-to-qt-add-qml-module.html">Port QML modules to CMake</a>.</p>
+<!-- @@@qt6-modernize-qml-modules.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

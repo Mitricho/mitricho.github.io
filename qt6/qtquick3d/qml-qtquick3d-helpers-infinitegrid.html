@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- infinitegrid.cpp -->
+  <meta name="description" content="Shows an infinite grid.">
+  <title>InfiniteGrid QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-helpers-qmlmodule.html" translate="no">QtQuick3D.Helpers</a></li>
+<li>InfiniteGrid</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">InfiniteGrid QML Type</h1>
+<!-- $$$InfiniteGrid-brief -->
+<p>Shows an infinite grid. <a href="#details">More...</a></p>
+<!-- @@@InfiniteGrid -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Helpers</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.5</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-helpers-infinitegrid-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-helpers-infinitegrid.html#gridAxes-prop" translate="no">gridAxes</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-helpers-infinitegrid.html#gridInterval-prop" translate="no">gridInterval</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-helpers-infinitegrid.html#visible-prop" translate="no">visible</a></b> : bool</li>
+</ul>
+<!-- $$$InfiniteGrid-description -->
+<h2 id="details">Detailed Description</h2>
+<p>This helper implements an infinite grid in the horizontal plane. The grid fades out as the grid lines converge or at the far clip distance, whichever comes first.</p>
+<p>The grid needs to be a child of the <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a>.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">SkyBox</span>
+         <span class="name">lightProbe</span>: <span class="name">Texture</span> {
+             <span class="name">textureData</span>: <span class="name">ProceduralSkyTextureData</span>{}
+         }
+         <span class="type"><a href="qml-qtquick3d-helpers-infinitegrid.html" translate="no">InfiniteGrid</a></span> {
+             <span class="name">gridInterval</span>: <span class="number">100</span>
+         }
+     }
+     <span class="comment">//...</span>
+  }
+</pre>
+<!-- @@@InfiniteGrid -->
+<h2>Property Documentation</h2>
+<!-- $$$gridAxes -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="gridAxes-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">gridAxes</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property determines whether the X and Y axes are marked. If <code translate="no">true</code>, the X-axis will be red and the Y-axis green. The default value is <code translate="no">true</code>.</p>
+</div></div><!-- @@@gridAxes -->
+<br/>
+<!-- $$$gridInterval -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="gridInterval-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">gridInterval</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the distance between grid lines. The default value is <code translate="no">1.0</code>.</p>
+</div></div><!-- @@@gridInterval -->
+<br/>
+<!-- $$$visible -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="visible-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">visible</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property determines whether the grid is shown. The default value is <code translate="no">true</code>.</p>
+</div></div><!-- @@@visible -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

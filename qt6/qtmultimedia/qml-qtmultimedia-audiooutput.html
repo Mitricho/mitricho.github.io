@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qaudiooutput.cpp -->
+  <meta name="description" content="An audio output to be used for playback or monitoring of a capture session.">
+  <title>AudioOutput QML Type | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-qmlmodule.html" translate="no">QML Types</a></li>
+<li>AudioOutput</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">AudioOutput QML Type</h1>
+<!-- $$$AudioOutput-brief -->
+<p>An audio output to be used for playback or monitoring of a capture session. <a href="#details">More...</a></p>
+<!-- @@@AudioOutput -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtMultimedia</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> In C++:</td><td class="memItemRight bottomAlign"> <a href="qaudiooutput.html" translate="no">QAudioOutput</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtmultimedia-audiooutput-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtmultimedia-audiooutput.html#device-prop" translate="no">device</a></b> : AudioDevice</li>
+<li class="fn" translate="no"><b><a href="qml-qtmultimedia-audiooutput.html#muted-prop" translate="no">muted</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtmultimedia-audiooutput.html#volume-prop" translate="no">volume</a></b> : real</li>
+</ul>
+<!-- $$$AudioOutput-description -->
+<h2 id="details">Detailed Description</h2>
+<pre class="qml" translate="no">
+ MediaPlayer {
+     id: playMusic
+     source: &quot;music.wav&quot;
+     audioOutput: AudioOutput {
+         volume: slider.value
+     }
+ }
+ Slider {
+     id: slider
+     from: 0.
+     to: 1.
+ }
+</pre>
+<p>You can use AudioOutput together with a QtMultiMedia::MediaPlayer to play audio content, or you can use it in conjunction with a MultiMedia::CaptureSession to monitor the audio processed by the capture session.</p>
+<p><b>See also </b><a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a> and <a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a>.</p>
+<!-- @@@AudioOutput -->
+<h2>Property Documentation</h2>
+<!-- $$$device -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="device-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">device</span> : <span class="type">AudioDevice</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property describes the audio device connected to this output.</p>
+<p>The device property represents the audio device this output is connected to. This property can be used to select an output device from the QtMultimedia::MediaDevices::audioOutputs() list.</p>
+</div></div><!-- @@@device -->
+<br/>
+<!-- $$$muted -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="muted-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">muted</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the audio output is muted.</p>
+<p>Defaults to <code translate="no">false</code>.</p>
+</div></div><!-- @@@muted -->
+<br/>
+<!-- $$$volume -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="volume-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">volume</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the volume of the audio output.</p>
+<p>The volume is scaled linearly from <code translate="no">0.0</code> (silence) to <code translate="no">1.0</code> (full volume). Values outside this range will be clamped: a value lower than 0.0 is set to 0.0, a value higher than 1.0 will set to 1.0.</p>
+<p>The default volume is <code translate="no">1.0</code>.</p>
+<p>UI <a href="https://www.dr-lex.be/info-stuff/volumecontrols.html">volume controls</a> should usually be scaled non-linearly. For example, using a logarithmic scale will produce linear changes in perceived <a href="http://www.sengpielaudio.com/calculator-loudness.htm">loudness</a>, which is what a user would normally expect from a volume control.</p>
+<p>See <a href="qtaudio.html#convertVolume" translate="no">QtMultimedia.convertVolume</a>() for more details.</p>
+</div></div><!-- @@@volume -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

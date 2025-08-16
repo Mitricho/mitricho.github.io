@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qsurface.cpp -->
+  <meta name="description" content="The QSurface class is an abstraction of renderable surfaces in Qt.">
+  <title>QSurface Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QSurface</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#protected-functions">Protected Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QSurface Class</h1>
+<!-- $$$QSurface-brief -->
+<p>The QSurface class is an abstraction of renderable surfaces in Qt. <a href="#details">More...</a></p>
+<!-- @@@QSurface -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QSurface&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qoffscreensurface.html" translate="no">QOffscreenSurface</a> and <a href="qwindow.html" translate="no">QWindow</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qsurface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#SurfaceClass-enum" translate="no">SurfaceClass</a></b> { Window, Offscreen }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#SurfaceType-enum" translate="no">SurfaceType</a></b> { RasterSurface, OpenGLSurface, RasterGLSurface, OpenVGSurface, VulkanSurface, &hellip;, Direct3DSurface }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#dtor.QSurface" translate="no">~QSurface</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSurfaceFormat </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#format" translate="no">format</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSize </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#size" translate="no">size</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#supportsOpenGL" translate="no">supportsOpenGL</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSurface::SurfaceClass </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#surfaceClass" translate="no">surfaceClass</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QPlatformSurface *</td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#surfaceHandle" translate="no">surfaceHandle</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSurface::SurfaceType </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#surfaceType" translate="no">surfaceType</a></b>() const = 0</td></tr>
+</table></div>
+<h2 id="protected-functions">Protected Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsurface.html#QSurface" translate="no">QSurface</a></b>(QSurface::SurfaceClass <i>type</i>)</td></tr>
+</table></div>
+<!-- $$$QSurface-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The size of the surface is accessible with the <a href="qsurface.html#size" translate="no">size</a>() function. The rendering specific attributes of the surface are accessible through the <a href="qsurface.html#format" translate="no">format</a>() function.</p>
+</div>
+<!-- @@@QSurface -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$SurfaceClass$$$Window$$$Offscreen -->
+<h3 class="fn" translate="no" id="SurfaceClass-enum">enum QSurface::<span class="name">SurfaceClass</span></h3>
+<p>The SurfaceClass enum describes the actual subclass of the surface.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::Window</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The surface is an instance of <a href="qwindow.html" translate="no">QWindow</a>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::Offscreen</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The surface is an instance of <a href="qoffscreensurface.html" translate="no">QOffscreenSurface</a>.</td></tr>
+</table></div>
+<!-- @@@SurfaceClass -->
+<!-- $$$SurfaceType$$$RasterSurface$$$OpenGLSurface$$$RasterGLSurface$$$OpenVGSurface$$$VulkanSurface$$$MetalSurface$$$Direct3DSurface -->
+<h3 class="fn" translate="no" id="SurfaceType-enum">enum QSurface::<span class="name">SurfaceType</span></h3>
+<p>The SurfaceType enum describes what type of surface this is.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::RasterSurface</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The surface is composed of pixels and can be rendered to using a software rasterizer like Qt's raster paint engine.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::OpenGLSurface</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The surface is an OpenGL compatible surface and can be used in conjunction with <a href="qopenglcontext.html" translate="no">QOpenGLContext</a>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::RasterGLSurface</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">The surface can be rendered to using a software rasterizer, and also supports OpenGL. This surface type is intended for internal Qt use, and requires the use of private API.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::OpenVGSurface</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">The surface is an OpenVG compatible surface and can be used in conjunction with OpenVG contexts.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::VulkanSurface</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">The surface is a Vulkan compatible surface and can be used in conjunction with the Vulkan graphics API.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::MetalSurface</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">The surface is a Metal compatible surface and can be used in conjunction with Apple's Metal graphics API. This surface type is only supported on macOS and iOS.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSurface::Direct3DSurface</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign">The surface is a Direct 3D 11 and 12 compatible surface and can be used in conjunction with the DXGI and Direct3D APIs. This surface type is only supported on Windows.</td></tr>
+</table></div>
+<!-- @@@SurfaceType -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QSurface[overload1]$$$QSurfaceQSurface::SurfaceClass -->
+<h3 class="fn" translate="no" id="QSurface"><code class="details extra" translate="no">[explicit protected]</code> QSurface::<span class="name">QSurface</span>(<span class="type"><a href="qsurface.html#SurfaceClass-enum" translate="no">QSurface::SurfaceClass</a></span> <i>type</i>)</h3>
+<p>Creates a surface with the given <i translate="no">type</i>.</p>
+<!-- @@@QSurface -->
+<!-- $$$~QSurface[overload1]$$$~QSurface -->
+<h3 class="fn" translate="no" id="dtor.QSurface"><code class="details extra" translate="no">[virtual noexcept]</code> QSurface::<span class="name">~QSurface</span>()</h3>
+<p>Destroys the surface.</p>
+<!-- @@@~QSurface -->
+<!-- $$$format[overload1]$$$format -->
+<h3 class="fn" translate="no" id="format"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qsurfaceformat.html" translate="no">QSurfaceFormat</a></span> QSurface::<span class="name">format</span>() const</h3>
+<p>Returns the format of the surface.</p>
+<!-- @@@format -->
+<!-- $$$size[overload1]$$$size -->
+<h3 class="fn" translate="no" id="size"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> QSurface::<span class="name">size</span>() const</h3>
+<p>Returns the size of the surface in pixels.</p>
+<!-- @@@size -->
+<!-- $$$supportsOpenGL[overload1]$$$supportsOpenGL -->
+<h3 class="fn" translate="no" id="supportsOpenGL"><span class="type">bool</span> QSurface::<span class="name">supportsOpenGL</span>() const</h3>
+<p>Returns true if the surface is OpenGL compatible and can be used in conjunction with <a href="qopenglcontext.html" translate="no">QOpenGLContext</a>; otherwise returns false.</p>
+<!-- @@@supportsOpenGL -->
+<!-- $$$surfaceClass[overload1]$$$surfaceClass -->
+<h3 class="fn" translate="no" id="surfaceClass"><span class="type"><a href="qsurface.html#SurfaceClass-enum" translate="no">QSurface::SurfaceClass</a></span> QSurface::<span class="name">surfaceClass</span>() const</h3>
+<p>Returns the surface class of this surface.</p>
+<!-- @@@surfaceClass -->
+<!-- $$$surfaceHandle[overload1]$$$surfaceHandle -->
+<h3 class="fn" translate="no" id="surfaceHandle"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">QPlatformSurface</span> *QSurface::<span class="name">surfaceHandle</span>() const</h3>
+<p>Returns a handle to the platform-specific implementation of the surface.</p>
+<!-- @@@surfaceHandle -->
+<!-- $$$surfaceType[overload1]$$$surfaceType -->
+<h3 class="fn" translate="no" id="surfaceType"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qsurface.html#SurfaceType-enum" translate="no">QSurface::SurfaceType</a></span> QSurface::<span class="name">surfaceType</span>() const</h3>
+<p>Returns the type of the surface.</p>
+<!-- @@@surfaceType -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

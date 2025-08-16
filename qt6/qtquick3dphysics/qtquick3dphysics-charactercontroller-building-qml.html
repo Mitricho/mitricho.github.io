@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-charactercontroller.qdoc -->
+  <meta name="description" content="Demonstrates the CharacterController type.">
+  <title>Qt Quick 3D Physics - CharacterController Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - CharacterController Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt Quick 3D Physics - CharacterController Example</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2023 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Physics
+ import QtQuick3D.Particles3D
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-node.html" translate="no">Node</a></span> {
+     property <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <span class="name">inGravityField</span>: <span class="number">false</span>
+     signal <span class="type">teleporterTriggered</span>
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">wallMateriall</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;#ff776644&quot;</span>
+         <span class="name">roughness</span>: <span class="number">0.7</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">triggerMaterial</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;#66aaff&quot;</span>
+         <span class="name">roughness</span>: <span class="number">0.5</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">doorMaterial</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;#ff10670e&quot;</span>
+         <span class="name">roughness</span>: <span class="number">0.5</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">whiteMaterial</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;white&quot;</span>
+         <span class="name">roughness</span>: <span class="number">0.8</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">tileColor_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tiles107_1K_Color.jpg&quot;</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">tileNormal_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tiles107_1K_NormalGL.jpg&quot;</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">tileRoughness_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tiles107_1K_Roughness.jpg&quot;</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">blackTileColor_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tiles108_1K_Color.jpg&quot;</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">internalWallMaterial</span>
+         <span class="name">baseColorMap</span>: <span class="name">tileColor_texture</span>
+         <span class="name">roughnessMap</span>: <span class="name">tileRoughness_texture</span>
+         <span class="name">roughness</span>: <span class="number">1</span>
+         <span class="name">normalMap</span>: <span class="name">tileNormal_texture</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">testFloor</span>
+         <span class="name">baseColorMap</span>: <span class="name">blackTileColor_texture</span>
+         <span class="name">roughnessMap</span>: <span class="name">tileRoughness_texture</span>
+         <span class="name">roughness</span>: <span class="number">1</span>
+         <span class="name">normalMap</span>: <span class="name">tileNormal_texture</span>
+         <span class="name">normalStrength</span>: <span class="number">0.5</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">warningColor_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tape001_1K_Color.jpg&quot;</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">warningNormal_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tape001_1K_NormalGL.jpg&quot;</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">warningRoughness_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/Tape001_1K_Roughness.jpg&quot;</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">warningMaterial</span>
+         <span class="name">baseColorMap</span>: <span class="name">warningColor_texture</span>
+         <span class="name">roughnessMap</span>: <span class="name">warningRoughness_texture</span>
+         <span class="name">roughness</span>: <span class="number">1</span>
+         <span class="name">normalMap</span>: <span class="name">warningNormal_texture</span>
+         <span class="name">cullMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+         <span class="name">id</span>: <span class="name">building</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">165.234</span>, -<span class="number">99.9</span>, -<span class="number">443.476</span>)
+         <span class="name">collisionShapes</span>: <span class="name">TriangleMeshShape</span> {
+             <span class="name">source</span>: <span class="string">&quot;meshes/building.mesh&quot;</span>
+         }
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;meshes/building.mesh&quot;</span>
+             <span class="name">materials</span>: [<span class="name">testFloor</span>, <span class="name">internalWallMaterial</span>, <span class="name">whiteMaterial</span>, <span class="name">warningMaterial</span>]
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a></span> {
+         <span class="name">id</span>: <span class="name">trigger</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">162.316</span>, -<span class="number">16.3654</span>, -<span class="number">743.701</span>)
+         <span class="name">scale</span>: <span class="string">&quot;13.26, 8.33, 5.58&quot;</span>
+         <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {}
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">materials</span>: <span class="name">triggerMaterial</span>
+             <span class="name">opacity</span>: <span class="number">0.1</span>
+         }
+         <span class="name">onBodyEntered</span>: <span class="name">inGravityField</span> <span class="operator">=</span> <span class="number">true</span>
+         <span class="name">onBodyExited</span>: <span class="name">inGravityField</span> <span class="operator">=</span> <span class="number">false</span>
+     }
+
+     <span class="type"><a href="../qtqml/qml-qtqml-timer.html" translate="no">Timer</a></span> {
+         <span class="name">id</span>: <span class="name">teleportTriggerDelay</span>
+         <span class="name">interval</span>: <span class="number">250</span>
+         <span class="name">onTriggered</span>: <span class="name">teleporterTriggered</span>() <span class="comment">// emit signal</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a></span> {
+         <span class="name">id</span>: <span class="name">teleportTrigger</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">762.058</span>, <span class="number">100</span>, <span class="number">424.581</span>)
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>)
+         <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {}
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cylinder&quot;</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;red&quot;</span>
+             }
+             <span class="name">opacity</span>: <span class="number">0.2</span>
+         }
+         <span class="name">onBodyEntered</span>: <span class="name">teleportTriggerDelay</span>.<span class="name">start</span>()
+         <span class="name">onBodyExited</span>: <span class="name">teleportTriggerDelay</span>.<span class="name">stop</span>()
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-particles3d-particlesystem3d.html" translate="no">ParticleSystem3D</a></span> {
+         <span class="name">id</span>: <span class="name">psystem</span>
+
+         <span class="name">startTime</span>: <span class="number">5000</span>
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-particles3d-spriteparticle3d.html" translate="no">SpriteParticle3D</a></span> {
+             <span class="name">id</span>: <span class="name">spriteParticle</span>
+             <span class="name">sprite</span>: <span class="name">Texture</span> {
+                 <span class="name">source</span>: <span class="string">&quot;maps/sphere.png&quot;</span>
+             }
+             <span class="name">maxAmount</span>: <span class="number">10000</span>
+             <span class="name">color</span>: <span class="string">&quot;#aaccff&quot;</span>
+             <span class="name">colorVariation</span>: <span class="name">Qt</span>.<span class="name">vector4d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.5</span>)
+             <span class="name">fadeInDuration</span>: <span class="number">1000</span>
+             <span class="name">fadeOutDuration</span>: <span class="number">1000</span>
+             <span class="name">billboard</span>: <span class="number">true</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-particles3d-particleemitter3d.html" translate="no">ParticleEmitter3D</a></span> {
+             <span class="name">id</span>: <span class="name">emitter</span>
+             <span class="name">particle</span>: <span class="name">spriteParticle</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">200</span>, -<span class="number">600</span>, -<span class="number">750</span>)
+             <span class="name">depthBias</span>: -<span class="number">100</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">12.0</span>, <span class="number">0.5</span>, <span class="number">5.0</span>)
+             <span class="name">shape</span>: <span class="name">ParticleShape3D</span> {
+                 <span class="name">type</span>: <span class="name">ParticleShape3D</span>.<span class="name">Cube</span>
+             }
+             <span class="name">particleScale</span>: <span class="number">2.0</span>
+             <span class="name">particleScaleVariation</span>: <span class="number">1.0</span>
+             <span class="name">velocity</span>: <span class="name">VectorDirection3D</span> {
+                 <span class="name">direction</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>)
+                 <span class="name">directionVariation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">20</span>, <span class="number">50</span>, <span class="number">20</span>)
+             }
+             <span class="name">emitRate</span>: <span class="number">1000</span>
+             <span class="name">lifeSpan</span>: <span class="number">10000</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-particles3d-spriteparticle3d.html" translate="no">SpriteParticle3D</a></span> {
+             <span class="name">id</span>: <span class="name">teleportParticle</span>
+             <span class="name">sprite</span>: <span class="name">Texture</span> {
+                 <span class="name">source</span>: <span class="string">&quot;maps/sphere.png&quot;</span>
+             }
+             <span class="name">maxAmount</span>: <span class="number">5000</span>
+             <span class="name">color</span>: <span class="string">&quot;#ffccaa&quot;</span>
+             <span class="name">colorVariation</span>: <span class="name">Qt</span>.<span class="name">vector4d</span>(<span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">0.5</span>)
+             <span class="name">fadeInDuration</span>: <span class="number">500</span>
+             <span class="name">fadeOutDuration</span>: <span class="number">500</span>
+             <span class="name">billboard</span>: <span class="number">true</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-particles3d-particleemitter3d.html" translate="no">ParticleEmitter3D</a></span> {
+             <span class="name">id</span>: <span class="name">teleportEmitter</span>
+             <span class="name">particle</span>: <span class="name">teleportParticle</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">712.058</span>, <span class="number">100</span>, <span class="number">424.581</span>)
+             <span class="name">depthBias</span>: -<span class="number">100</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.1</span>, <span class="number">4</span>, <span class="number">1</span>)
+             <span class="name">shape</span>: <span class="name">ParticleShape3D</span> {
+                 <span class="name">type</span>: <span class="name">ParticleShape3D</span>.<span class="name">Cube</span>
+             }
+             <span class="name">particleScale</span>: <span class="number">0.5</span>
+             <span class="name">particleScaleVariation</span>: <span class="number">1.0</span>
+             <span class="name">velocity</span>: <span class="name">VectorDirection3D</span> {
+                 <span class="name">direction</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">100</span>, <span class="number">0</span>, <span class="number">0</span>)
+                 <span class="name">directionVariation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">20</span>, <span class="number">50</span>, <span class="number">20</span>)
+             }
+             <span class="name">emitRate</span>: <span class="number">5000</span>
+             <span class="name">lifeSpan</span>: <span class="number">1000</span>
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a></span> {
+         <span class="name">id</span>: <span class="name">doorTrigger</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">864.5</span>, <span class="number">200.4</span>, -<span class="number">461</span>)
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.5</span>, <span class="number">2</span>, <span class="number">3</span>)
+         <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {}
+         <span class="name">onBodyEntered</span>: <span class="name">door</span>.<span class="name">open</span> <span class="operator">=</span> <span class="number">true</span>
+         <span class="name">onBodyExited</span>: <span class="name">door</span>.<span class="name">open</span> <span class="operator">=</span> <span class="number">false</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-node.html" translate="no">Node</a></span> {
+         <span class="name">id</span>: <span class="name">doorNode</span>
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">864.5</span>, <span class="number">200</span>, -<span class="number">461</span>)
+         <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+             <span class="name">id</span>: <span class="name">door</span>
+             property <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <span class="name">open</span>: <span class="number">false</span>
+             <span class="name">isKinematic</span>: <span class="number">true</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.8</span>, <span class="number">2</span>, <span class="number">0.1</span>)
+             <span class="name">kinematicPosition</span>.x: <span class="name">open</span> ? <span class="number">79</span> : <span class="number">0</span>
+             <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {}
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+                 <span class="name">materials</span>: <span class="name">doorMaterial</span>
+             }
+             Behavior on <span class="name">kinematicPosition</span>.x {
+                 <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> {
+                     <span class="name">duration</span>: <span class="number">1000</span>
+                     <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>
+                 }
+             }
+         }
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">sign_texture</span>
+         <span class="name">generateMipmaps</span>: <span class="number">true</span>
+         <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         <span class="name">flipV</span>: <span class="number">true</span>
+         <span class="name">flipU</span>: <span class="number">true</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/sign.png&quot;</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">sign_material</span>
+         <span class="name">baseColorMap</span>: <span class="name">sign_texture</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">id</span>: <span class="name">sign</span>
+
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">704.498</span>, <span class="number">269.974</span>, -<span class="number">476.206</span>)
+         <span class="name">rotation</span>: <span class="name">Qt</span>.<span class="name">quaternion</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>)
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.8</span>, <span class="number">1</span>, <span class="number">0.0687316</span>)
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">materials</span>: <span class="name">sign_material</span>
+     }
+ }
+</pre>

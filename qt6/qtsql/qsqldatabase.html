@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qsqldatabase.cpp -->
+  <meta name="description" content="The QSqlDatabase class handles a connection to a database.">
+  <title>QSqlDatabase Class | Qt SQL | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtsql-index.html">Qt SQL</a></li>
+<li><a href="qtsql-module.html" translate="no">C++ Classes</a></li>
+<li>QSqlDatabase</li>
+<li id="buildversion"><a href="qtsql-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#protected-functions">Protected Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QSqlDatabase Class</h1>
+<!-- $$$QSqlDatabase-brief -->
+<p>The QSqlDatabase class handles a connection to a database. <a href="#details">More...</a></p>
+<!-- @@@QSqlDatabase -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QSqlDatabase&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Sql)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Sql)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += sql</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qsqldatabase-members.html">List of all members, including inherited members</a></li>
+<li><a href="qsqldatabase-obsolete.html">Deprecated members</a></li>
+<li>QSqlDatabase is part of <a href="database.html">Database Classes</a>.</li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqldatabase.html#numericalPrecisionPolicy-prop" translate="no">numericalPrecisionPolicy</a></b> : QSql::NumericalPrecisionPolicy</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#QSqlDatabase-1" translate="no">QSqlDatabase</a></b>(const QSqlDatabase &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#dtor.QSqlDatabase" translate="no">~QSqlDatabase</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#close" translate="no">close</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#commit" translate="no">commit</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#connectOptions" translate="no">connectOptions</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#connectionName" translate="no">connectionName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#databaseName" translate="no">databaseName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDriver *</td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#driver" translate="no">driver</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#driverName" translate="no">driverName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#hostName" translate="no">hostName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#isOpen" translate="no">isOpen</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#isOpenError" translate="no">isOpenError</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlError </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#lastError" translate="no">lastError</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#moveToThread" translate="no">moveToThread</a></b>(QThread *<i>targetThread</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSql::NumericalPrecisionPolicy </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">numericalPrecisionPolicy</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#open" translate="no">open</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#open-1" translate="no">open</a></b>(const QString &amp;<i>user</i>, const QString &amp;<i>password</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#password" translate="no">password</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#port" translate="no">port</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlIndex </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#primaryIndex" translate="no">primaryIndex</a></b>(const QString &amp;<i>tablename</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlRecord </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#record" translate="no">record</a></b>(const QString &amp;<i>tablename</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#rollback" translate="no">rollback</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a></b>(const QString &amp;<i>options</i> = QString())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setHostName" translate="no">setHostName</a></b>(const QString &amp;<i>host</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setNumericalPrecisionPolicy" translate="no">setNumericalPrecisionPolicy</a></b>(QSql::NumericalPrecisionPolicy <i>precisionPolicy</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setPassword" translate="no">setPassword</a></b>(const QString &amp;<i>password</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setPort" translate="no">setPort</a></b>(int <i>port</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#setUserName" translate="no">setUserName</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#tables" translate="no">tables</a></b>(QSql::TableType <i>type</i> = QSql::Tables) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> QThread *</td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#thread" translate="no">thread</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#transaction" translate="no">transaction</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#userName" translate="no">userName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase &amp;</td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#operator-eq" translate="no">operator=</a></b>(const QSqlDatabase &amp;<i>other</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a></b>(const QString &amp;<i>type</i>, const QString &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#addDatabase-1" translate="no">addDatabase</a></b>(QSqlDriver *<i>driver</i>, const QString &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#cloneDatabase" translate="no">cloneDatabase</a></b>(const QSqlDatabase &amp;<i>other</i>, const QString &amp;<i>connectionName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#cloneDatabase-1" translate="no">cloneDatabase</a></b>(const QString &amp;<i>other</i>, const QString &amp;<i>connectionName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#connectionNames" translate="no">connectionNames</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#contains" translate="no">contains</a></b>(const QString &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlDatabase </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#database" translate="no">database</a></b>(const QString &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection), bool <i>open</i> = true)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#drivers" translate="no">drivers</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#isDriverAvailable" translate="no">isDriverAvailable</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#registerSqlDriver" translate="no">registerSqlDriver</a></b>(const QString &amp;<i>name</i>, QSqlDriverCreatorBase *<i>creator</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a></b>(const QString &amp;<i>connectionName</i>)</td></tr>
+</table></div>
+<h2 id="protected-functions">Protected Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#QSqlDatabase-2" translate="no">QSqlDatabase</a></b>(QSqlDriver *<i>driver</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqldatabase.html#QSqlDatabase-3" translate="no">QSqlDatabase</a></b>(const QString &amp;<i>type</i>)</td></tr>
+</table></div>
+<!-- $$$QSqlDatabase-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The QSqlDatabase class provides an interface for accessing a database through a connection. An instance of QSqlDatabase represents the connection. The connection provides access to the database via one of the <a href="sql-driver.html#supported-databases">supported database drivers</a>, which are derived from <a href="qsqldriver.html" translate="no">QSqlDriver</a>. Alternatively, you can subclass your own database driver from <a href="qsqldriver.html" translate="no">QSqlDriver</a>. See <a href="sql-driver.html#how-to-write-your-own-database-driver">How to Write Your Own Database Driver</a> for more information. A QSqlDatabase instance must only be accessed by the thread it was created in. Therefore you have to make sure to create them in the correct context. Alternatively you can change the context with <a href="qsqldatabase.html#moveToThread" translate="no">QSqlDatabase::moveToThread</a>().</p>
+<p>Create a connection (i.e., an instance of QSqlDatabase) by calling one of the static <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>() functions, where you specify <a href="sql-driver.html#supported-databases">the driver or type of driver</a> to use (depending on the type of database) and a connection name. A connection is known by its own name, <i>not</i> by the name of the database it connects to. You can have multiple connections to one database. QSqlDatabase also supports the concept of a <i>default</i> connection, which is the unnamed connection. To create the default connection, don't pass the connection name argument when you call <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>(). Subsequently, the default connection will be assumed if you call any static member function without specifying the connection name. The following snippet shows how to create and open a default connection to a PostgreSQL database:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>addDatabase(<span class="string">&quot;QPSQL&quot;</span>);
+     db<span class="operator">.</span>setHostName(<span class="string">&quot;acidalia&quot;</span>);
+     db<span class="operator">.</span>setDatabaseName(<span class="string">&quot;customdb&quot;</span>);
+     db<span class="operator">.</span>setUserName(<span class="string">&quot;mojito&quot;</span>);
+     db<span class="operator">.</span>setPassword(<span class="string">&quot;J0a1m8&quot;</span>);
+     <span class="type">bool</span> ok <span class="operator">=</span> db<span class="operator">.</span>open();
+</pre>
+<p>Once the QSqlDatabase object has been created, set the connection parameters with <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), and <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(). Then call <a href="qsqldatabase.html#open" translate="no">open</a>() to activate the physical connection to the database. The connection is not usable until you open it.</p>
+<p>The connection defined above will be the <i>default</i> connection, because we didn't give a connection name to <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>(). Subsequently, you can get the default connection by calling <a href="qsqldatabase.html#database" translate="no">database</a>() without the connection name argument:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database();
+</pre>
+<p>QSqlDatabase is a value class. Changes made to a database connection via one instance of QSqlDatabase will affect other instances of QSqlDatabase that represent the same connection. Use <a href="qsqldatabase.html#cloneDatabase" translate="no">cloneDatabase</a>() to create an independent database connection based on an existing one.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>It is highly recommended that you do not keep a copy of the QSqlDatabase around as a member of a class, as this will prevent the instance from being correctly cleaned up on shutdown. If you need to access an existing QSqlDatabase, it should be accessed with <a href="qsqldatabase.html#database" translate="no">database</a>(). If you chose to have a QSqlDatabase member variable, this needs to be deleted before the <a href="../qtcore/qcoreapplication.html" translate="no">QCoreApplication</a> instance is deleted, otherwise it may lead to undefined behavior.</p>
+</div>
+<p>If you create multiple database connections, specify a unique connection name for each one, when you call <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>(). Use <a href="qsqldatabase.html#database" translate="no">database</a>() with a connection name to get that connection. Use <a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a>() with a connection name to remove a connection. QSqlDatabase outputs a warning if you try to remove a connection referenced by other QSqlDatabase objects. Use <a href="qsqldatabase.html#contains" translate="no">contains</a>() to see if a given connection name is in the list of connections.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th  colspan="2">Some utility methods:</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qsqldatabase.html#tables" translate="no">tables</a>()</td><td >returns the list of tables</td></tr>
+<tr valign="top" class="even"><td ><a href="qsqldatabase.html#primaryIndex" translate="no">primaryIndex</a>()</td><td >returns a table's primary index</td></tr>
+<tr valign="top" class="odd"><td ><a href="qsqldatabase.html#record" translate="no">record</a>()</td><td >returns meta-information about a table's fields</td></tr>
+<tr valign="top" class="even"><td ><a href="qsqldatabase.html#transaction" translate="no">transaction</a>()</td><td >starts a transaction</td></tr>
+<tr valign="top" class="odd"><td ><a href="qsqldatabase.html#commit" translate="no">commit</a>()</td><td >saves and completes a transaction</td></tr>
+<tr valign="top" class="even"><td ><a href="qsqldatabase.html#rollback" translate="no">rollback</a>()</td><td >cancels a transaction</td></tr>
+<tr valign="top" class="odd"><td >hasFeature()</td><td >checks if a driver supports transactions</td></tr>
+<tr valign="top" class="even"><td ><a href="qsqldatabase.html#lastError" translate="no">lastError</a>()</td><td >returns information about the last error</td></tr>
+<tr valign="top" class="odd"><td ><a href="qsqldatabase.html#drivers" translate="no">drivers</a>()</td><td >returns the names of the available SQL drivers</td></tr>
+<tr valign="top" class="even"><td ><a href="qsqldatabase.html#isDriverAvailable" translate="no">isDriverAvailable</a>()</td><td >checks if a particular driver is available</td></tr>
+<tr valign="top" class="odd"><td ><a href="qsqldatabase.html#registerSqlDriver" translate="no">registerSqlDriver</a>()</td><td >registers a custom-made driver</td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>When using transactions, you must start the transaction before you create your query.</p>
+</div>
+</div>
+<p><b>See also </b><a href="qsqldriver.html" translate="no">QSqlDriver</a>, <a href="qsqlquery.html" translate="no">QSqlQuery</a>, <a href="qtsql-index.html">Qt SQL</a>, and Threads and the SQL Module.</p>
+<!-- @@@QSqlDatabase -->
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$numericalPrecisionPolicy-prop$$$numericalPrecisionPolicy$$$setNumericalPrecisionPolicyQSql::NumericalPrecisionPolicy -->
+<h3 class="fn" translate="no" id="numericalPrecisionPolicy-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">numericalPrecisionPolicy</span> : <span class="type"><a href="qsql.html#NumericalPrecisionPolicy-enum" translate="no">QSql::NumericalPrecisionPolicy</a></span></h3>
+<p>This property holds the default numerical precision policy used by queries created on this database connection.</p>
+<p>Note: Drivers that don't support fetching numerical values with low precision will ignore the precision policy. You can use <a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>() to find out whether a driver supports this feature.</p>
+<p>Note: Setting the default precision policy to <i translate="no">precisionPolicy</i> doesn't affect any currently active queries.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QSql::NumericalPrecisionPolicy </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">numericalPrecisionPolicy</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqldatabase.html#setNumericalPrecisionPolicy" translate="no">setNumericalPrecisionPolicy</a></b></span>(QSql::NumericalPrecisionPolicy <i>precisionPolicy</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qsql.html#NumericalPrecisionPolicy-enum" translate="no">QSql::NumericalPrecisionPolicy</a>, <a href="qsqlquery.html#numericalPrecisionPolicy" translate="no">QSqlQuery::numericalPrecisionPolicy</a>, and <a href="qsqldriver.html#numericalPrecisionPolicy" translate="no">QSqlDriver::numericalPrecisionPolicy</a>.</p>
+<!-- @@@numericalPrecisionPolicy -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QSqlDatabase[overload1]$$$QSqlDatabase -->
+<h3 class="fn" translate="no" id="QSqlDatabase">QSqlDatabase::<span class="name">QSqlDatabase</span>()</h3>
+<p>Creates an empty, invalid QSqlDatabase object. Use <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>(), <a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a>(), and <a href="qsqldatabase.html#database" translate="no">database</a>() to get valid QSqlDatabase objects.</p>
+<!-- @@@QSqlDatabase -->
+<!-- $$$QSqlDatabase$$$QSqlDatabaseQSqlDriver* -->
+<h3 class="fn" translate="no" id="QSqlDatabase-2"><code class="details extra" translate="no">[explicit protected]</code> QSqlDatabase::<span class="name">QSqlDatabase</span>(<span class="type"><a href="qsqldriver.html" translate="no">QSqlDriver</a></span> *<i>driver</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Creates a database connection using the given <i translate="no">driver</i>.</p>
+<!-- @@@QSqlDatabase -->
+<!-- $$$QSqlDatabase$$$QSqlDatabaseconstQString& -->
+<h3 class="fn" translate="no" id="QSqlDatabase-3"><code class="details extra" translate="no">[explicit protected]</code> QSqlDatabase::<span class="name">QSqlDatabase</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>type</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Creates a QSqlDatabase connection that uses the driver referred to by <i translate="no">type</i>. If the <i translate="no">type</i> is not recognized, the database connection will have no functionality.</p>
+<p>The currently available driver types are:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Driver Type</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >QDB2</td><td >IBM DB2</td></tr>
+<tr valign="top" class="even"><td >QIBASE</td><td >Borland InterBase Driver</td></tr>
+<tr valign="top" class="odd"><td >QMYSQL</td><td >MySQL Driver</td></tr>
+<tr valign="top" class="even"><td >QOCI</td><td >Oracle Call Interface Driver</td></tr>
+<tr valign="top" class="odd"><td >QODBC</td><td >ODBC Driver (includes Microsoft SQL Server)</td></tr>
+<tr valign="top" class="even"><td >QPSQL</td><td >PostgreSQL Driver</td></tr>
+<tr valign="top" class="odd"><td >QSQLITE</td><td >SQLite version 3 or above</td></tr>
+<tr valign="top" class="even"><td >QMIMER</td><td >Mimer SQL 11 or above</td></tr>
+</table></div>
+<p>Additional third party drivers, including your own custom drivers, can be loaded dynamically.</p>
+<p><b>See also </b><a href="sql-driver.html">SQL Database Drivers</a>, <a href="qsqldatabase.html#registerSqlDriver" translate="no">registerSqlDriver</a>(), and <a href="qsqldatabase.html#drivers" translate="no">drivers</a>().</p>
+<!-- @@@QSqlDatabase -->
+<!-- $$$QSqlDatabase$$$QSqlDatabaseconstQSqlDatabase& -->
+<h3 class="fn" translate="no" id="QSqlDatabase-1">QSqlDatabase::<span class="name">QSqlDatabase</span>(const <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> &amp;<i>other</i>)</h3>
+<p>Creates a copy of <i translate="no">other</i>.</p>
+<!-- @@@QSqlDatabase -->
+<!-- $$$~QSqlDatabase[overload1]$$$~QSqlDatabase -->
+<h3 class="fn" translate="no" id="dtor.QSqlDatabase"><code class="details extra" translate="no">[noexcept]</code> QSqlDatabase::<span class="name">~QSqlDatabase</span>()</h3>
+<p>Destroys the object and frees any allocated resources.</p>
+<div class="admonition note">
+<p><b>Note: </b>When the last connection is destroyed, the destructor implicitly calls <a href="qsqldatabase.html#close" translate="no">close</a>() to release the database connection.</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#close" translate="no">close</a>().</p>
+<!-- @@@~QSqlDatabase -->
+<!-- $$$addDatabase[overload1]$$$addDatabaseconstQString&constQString& -->
+<h3 class="fn" translate="no" id="addDatabase"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> QSqlDatabase::<span class="name">addDatabase</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>type</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</h3>
+<p>Adds a database to the list of database connections using the driver <i translate="no">type</i> and the connection name <i translate="no">connectionName</i>. If there already exists a database connection called <i translate="no">connectionName</i>, that connection is removed.</p>
+<p>The database connection is referred to by <i translate="no">connectionName</i>. The newly added database connection is returned.</p>
+<p>If <i translate="no">type</i> is not available or could not be loaded, <a href="qsqldatabase.html#isValid" translate="no">isValid</a>() returns <code translate="no">false</code>.</p>
+<p>If <i translate="no">connectionName</i> is not specified, the new connection becomes the default connection for the application, and subsequent calls to <a href="qsqldatabase.html#database" translate="no">database</a>() without the connection name argument will return the default connection. If a <i translate="no">connectionName</i> is provided here, use database(<i translate="no">connectionName</i>) to retrieve the connection.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>If you add a connection with the same name as an existing connection, the new connection replaces the old one. If you call this function more than once without specifying <i translate="no">connectionName</i>, the default connection will be the one replaced.</p>
+</div>
+<p>Before using the connection, it must be initialized. e.g., call some or all of <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), and <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and, finally, <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p><b>See also </b><a href="qsqldatabase.html#database" translate="no">database</a>(), <a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a>(), and Threads and the SQL Module.</p>
+<!-- @@@addDatabase -->
+<!-- $$$addDatabase$$$addDatabaseQSqlDriver*constQString& -->
+<h3 class="fn" translate="no" id="addDatabase-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> QSqlDatabase::<span class="name">addDatabase</span>(<span class="type"><a href="qsqldriver.html" translate="no">QSqlDriver</a></span> *<i>driver</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</h3>
+<p>This is an overloaded function.</p>
+<p>This overload is useful when you want to create a database connection with a <a href="qsqldriver.html" translate="no">driver</a> you instantiated yourself. It might be your own database driver, or you might just need to instantiate one of the Qt drivers yourself. If you do this, it is recommended that you include the driver code in your application. For example, you can create a PostgreSQL connection with your own QPSQL driver like this:</p>
+<pre class="cpp" translate="no">
+ PGconn <span class="operator">*</span>con <span class="operator">=</span> PQconnectdb(<span class="string">&quot;host=server user=bart password=simpson dbname=springfield&quot;</span>);
+ <span class="type">QPSQLDriver</span> <span class="operator">*</span>drv <span class="operator">=</span> <span class="keyword">new</span> <span class="type">QPSQLDriver</span>(con);
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>addDatabase(drv); <span class="comment">// becomes the new default connection</span>
+ <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+ query<span class="operator">.</span>exec(<span class="string">&quot;SELECT NAME, ID FROM STAFF&quot;</span>);
+</pre>
+<p>The above code sets up a PostgreSQL connection and instantiates a QPSQLDriver object. Next, addDatabase() is called to add the connection to the known connections so that it can be used by the Qt SQL classes. When a driver is instantiated with a connection handle (or set of handles), Qt assumes that you have already opened the database connection.</p>
+<div class="admonition note">
+<p><b>Note: </b>We assume that <code translate="no">qtdir</code> is the directory where Qt is installed. This will pull in the code that is needed to use the PostgreSQL client library and to instantiate a QPSQLDriver object, assuming that you have the PostgreSQL headers somewhere in your include search path.</p>
+</div>
+<p>Remember that you must link your application against the database client library. Make sure the client library is in your linker's search path, and add lines like these to your <code translate="no">.pro</code> file:</p>
+<pre class="cpp" translate="no">
+ unix:LIBS <span class="operator">+</span><span class="operator">=</span> <span class="operator">-</span>lpq
+ win32:LIBS <span class="operator">+</span><span class="operator">=</span> libpqdll<span class="operator">.</span>lib
+</pre>
+<p>The method described works for all the supplied drivers. The only difference will be in the driver constructor arguments. Here is a table of the drivers included with Qt, their source code files, and their constructor arguments:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Driver</th><th >Class name</th><th >Constructor arguments</th><th >File to include</th></tr></thead>
+<tr valign="top" class="odd"><td >QPSQL</td><td >QPSQLDriver</td><td >PGconn *connection</td><td ><code translate="no">qsql_psql.cpp</code></td></tr>
+<tr valign="top" class="even"><td >QMYSQL</td><td >QMYSQLDriver</td><td >MYSQL *connection</td><td ><code translate="no">qsql_mysql.cpp</code></td></tr>
+<tr valign="top" class="odd"><td >QOCI</td><td >QOCIDriver</td><td >OCIEnv *environment, OCISvcCtx *serviceContext</td><td ><code translate="no">qsql_oci.cpp</code></td></tr>
+<tr valign="top" class="even"><td >QODBC</td><td >QODBCDriver</td><td >SQLHANDLE environment, SQLHANDLE connection</td><td ><code translate="no">qsql_odbc.cpp</code></td></tr>
+<tr valign="top" class="odd"><td >QDB2</td><td >QDB2</td><td >SQLHANDLE environment, SQLHANDLE connection</td><td ><code translate="no">qsql_db2.cpp</code></td></tr>
+<tr valign="top" class="even"><td >QSQLITE</td><td >QSQLiteDriver</td><td >sqlite *connection</td><td ><code translate="no">qsql_sqlite.cpp</code></td></tr>
+<tr valign="top" class="odd"><td >QMIMER</td><td >QMimerSQLDriver</td><td >MimerSession *connection</td><td ><code translate="no">qsql_mimer.cpp</code></td></tr>
+<tr valign="top" class="even"><td >QIBASE</td><td >QIBaseDriver</td><td >isc_db_handle connection</td><td ><code translate="no">qsql_ibase.cpp</code></td></tr>
+</table></div>
+<div class="admonition warning">
+<p><b>Warning: </b>Adding a database connection with the same connection name as an existing connection, causes the existing connection to be replaced by the new one.</p>
+</div>
+<div class="admonition warning">
+<p><b>Warning: </b>The SQL framework takes ownership of the <i translate="no">driver</i>. It must not be deleted. To remove the connection, use <a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a>().</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#drivers" translate="no">drivers</a>().</p>
+<!-- @@@addDatabase -->
+<!-- $$$cloneDatabase[overload1]$$$cloneDatabaseconstQSqlDatabase&constQString& -->
+<h3 class="fn" translate="no" id="cloneDatabase"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> QSqlDatabase::<span class="name">cloneDatabase</span>(const <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> &amp;<i>other</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i>)</h3>
+<p>Clones the database connection <i translate="no">other</i> and stores it as <i translate="no">connectionName</i>. All the settings from the original database, e.g. <a href="qsqldatabase.html#databaseName" translate="no">databaseName</a>(), <a href="qsqldatabase.html#hostName" translate="no">hostName</a>(), etc., are copied across. Does nothing if <i translate="no">other</i> is an invalid database. Returns the newly created database connection.</p>
+<div class="admonition note">
+<p><b>Note: </b>The new connection has not been opened. Before using the new connection, you must call <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+</div>
+<p><b>Note:</b> This function is reentrant.</p>
+<!-- @@@cloneDatabase -->
+<!-- $$$cloneDatabase$$$cloneDatabaseconstQString&constQString& -->
+<h3 class="fn" translate="no" id="cloneDatabase-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> QSqlDatabase::<span class="name">cloneDatabase</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>other</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Clones the database connection <i translate="no">other</i> and stores it as <i translate="no">connectionName</i>. All the settings from the original database, e.g. <a href="qsqldatabase.html#databaseName" translate="no">databaseName</a>(), <a href="qsqldatabase.html#hostName" translate="no">hostName</a>(), etc., are copied across. Does nothing if <i translate="no">other</i> is an invalid database. Returns the newly created database connection.</p>
+<div class="admonition note">
+<p><b>Note: </b>The new connection has not been opened. Before using the new connection, you must call <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+</div>
+<p>This overload is useful when cloning the database in another thread to the one that is used by the database represented by <i translate="no">other</i>.</p>
+<!-- @@@cloneDatabase -->
+<!-- $$$close[overload1]$$$close -->
+<h3 class="fn" translate="no" id="close"><span class="type">void</span> QSqlDatabase::<span class="name">close</span>()</h3>
+<p>Closes the database connection, freeing any resources acquired, and invalidating any existing <a href="qsqlquery.html" translate="no">QSqlQuery</a> objects that are used with the database.</p>
+<p>This will also affect copies of this <a href="qsqldatabase.html" translate="no">QSqlDatabase</a> object.</p>
+<p><b>See also </b><a href="qsqldatabase.html#removeDatabase" translate="no">removeDatabase</a>().</p>
+<!-- @@@close -->
+<!-- $$$commit[overload1]$$$commit -->
+<h3 class="fn" translate="no" id="commit"><span class="type">bool</span> QSqlDatabase::<span class="name">commit</span>()</h3>
+<p>Commits a transaction to the database if the driver supports transactions and a <a href="qsqldatabase.html#transaction" translate="no">transaction</a>() has been started. Returns <code translate="no">true</code> if the operation succeeded. Otherwise it returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>For some databases, the commit will fail and return <code translate="no">false</code> if there is an <a href="qsqlquery.html#isActive" translate="no">active query</a> using the database for a <code translate="no">SELECT</code>. Make the query <a href="qsqlquery.html#isActive" translate="no">inactive</a> before doing the commit.</p>
+</div>
+<p>Call <a href="qsqldatabase.html#lastError" translate="no">lastError</a>() to get information about errors.</p>
+<p><b>See also </b><a href="qsqlquery.html#isActive" translate="no">QSqlQuery::isActive</a>(), <a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>(), and <a href="qsqldatabase.html#rollback" translate="no">rollback</a>().</p>
+<!-- @@@commit -->
+<!-- $$$connectOptions[overload1]$$$connectOptions -->
+<h3 class="fn" translate="no" id="connectOptions"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">connectOptions</span>() const</h3>
+<p>Returns the connection options string used for this connection. The string may be empty.</p>
+<p><b>See also </b><a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>().</p>
+<!-- @@@connectOptions -->
+<!-- $$$connectionName[overload1]$$$connectionName -->
+<h3 class="fn" translate="no" id="connectionName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">connectionName</span>() const</h3>
+<p>Returns the connection name, which may be empty.</p>
+<div class="admonition note">
+<p><b>Note: </b>The connection name is not the <a href="qsqldatabase.html#databaseName" translate="no">database name</a>.</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>().</p>
+<!-- @@@connectionName -->
+<!-- $$$connectionNames[overload1]$$$connectionNames -->
+<h3 class="fn" translate="no" id="connectionNames"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QSqlDatabase::<span class="name">connectionNames</span>()</h3>
+<p>Returns a list containing the names of all connections.</p>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p><b>See also </b><a href="qsqldatabase.html#contains" translate="no">contains</a>(), <a href="qsqldatabase.html#database" translate="no">database</a>(), and Threads and the SQL Module.</p>
+<!-- @@@connectionNames -->
+<!-- $$$contains[overload1]$$$containsconstQString& -->
+<h3 class="fn" translate="no" id="contains"><code class="details extra" translate="no">[static]</code> <span class="type">bool</span> QSqlDatabase::<span class="name">contains</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection))</h3>
+<p>Returns <code translate="no">true</code> if the list of database connections contains <i translate="no">connectionName</i>; otherwise returns <code translate="no">false</code>.</p>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p><b>See also </b><a href="qsqldatabase.html#connectionNames" translate="no">connectionNames</a>(), <a href="qsqldatabase.html#database" translate="no">database</a>(), and Threads and the SQL Module.</p>
+<!-- @@@contains -->
+<!-- $$$database[overload1]$$$databaseconstQString&bool -->
+<h3 class="fn" translate="no" id="database"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> QSqlDatabase::<span class="name">database</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i> = QLatin1StringView(defaultConnection), <span class="type">bool</span> <i>open</i> = true)</h3>
+<p>Returns the database connection called <i translate="no">connectionName</i>. The database connection must have been previously added with <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>(). If <i translate="no">open</i> is true (the default) and the database connection is not already open it is opened now. If no <i translate="no">connectionName</i> is specified the default connection is used. If <i translate="no">connectionName</i> does not exist in the list of databases, an invalid connection is returned.</p>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p><b>See also </b><a href="qsqldatabase.html#isOpen" translate="no">isOpen</a>() and Threads and the SQL Module.</p>
+<!-- @@@database -->
+<!-- $$$databaseName[overload1]$$$databaseName -->
+<h3 class="fn" translate="no" id="databaseName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">databaseName</span>() const</h3>
+<p>Returns the connection's database name, which may be empty.</p>
+<div class="admonition note">
+<p><b>Note: </b>The database name is not the connection name.</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>().</p>
+<!-- @@@databaseName -->
+<!-- $$$driver[overload1]$$$driver -->
+<h3 class="fn" translate="no" id="driver"><span class="type"><a href="qsqldriver.html" translate="no">QSqlDriver</a></span> *QSqlDatabase::<span class="name">driver</span>() const</h3>
+<p>Returns the database driver used to access the database connection.</p>
+<p><b>See also </b><a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>() and <a href="qsqldatabase.html#drivers" translate="no">drivers</a>().</p>
+<!-- @@@driver -->
+<!-- $$$driverName[overload1]$$$driverName -->
+<h3 class="fn" translate="no" id="driverName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">driverName</span>() const</h3>
+<p>Returns the connection's driver name.</p>
+<p><b>See also </b><a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>() and <a href="qsqldatabase.html#driver" translate="no">driver</a>().</p>
+<!-- @@@driverName -->
+<!-- $$$drivers[overload1]$$$drivers -->
+<h3 class="fn" translate="no" id="drivers"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QSqlDatabase::<span class="name">drivers</span>()</h3>
+<p>Returns a list of all the available database drivers.</p>
+<p><b>See also </b><a href="qsqldatabase.html#registerSqlDriver" translate="no">registerSqlDriver</a>().</p>
+<!-- @@@drivers -->
+<!-- $$$hostName[overload1]$$$hostName -->
+<h3 class="fn" translate="no" id="hostName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">hostName</span>() const</h3>
+<p>Returns the connection's host name; it may be empty.</p>
+<p><b>See also </b><a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>().</p>
+<!-- @@@hostName -->
+<!-- $$$isDriverAvailable[overload1]$$$isDriverAvailableconstQString& -->
+<h3 class="fn" translate="no" id="isDriverAvailable"><code class="details extra" translate="no">[static]</code> <span class="type">bool</span> QSqlDatabase::<span class="name">isDriverAvailable</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>Returns <code translate="no">true</code> if a driver called <i translate="no">name</i> is available; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qsqldatabase.html#drivers" translate="no">drivers</a>().</p>
+<!-- @@@isDriverAvailable -->
+<!-- $$$isOpen[overload1]$$$isOpen -->
+<h3 class="fn" translate="no" id="isOpen"><span class="type">bool</span> QSqlDatabase::<span class="name">isOpen</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the database connection is currently open; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isOpen -->
+<!-- $$$isOpenError[overload1]$$$isOpenError -->
+<h3 class="fn" translate="no" id="isOpenError"><span class="type">bool</span> QSqlDatabase::<span class="name">isOpenError</span>() const</h3>
+<p>Returns <code translate="no">true</code> if there was an error opening the database connection; otherwise returns <code translate="no">false</code>. Error information can be retrieved using the <a href="qsqldatabase.html#lastError" translate="no">lastError</a>() function.</p>
+<!-- @@@isOpenError -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><span class="type">bool</span> QSqlDatabase::<span class="name">isValid</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the <a href="qsqldatabase.html" translate="no">QSqlDatabase</a> has a valid driver.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db;
+ <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> db<span class="operator">.</span>isValid();    <span class="comment">// Returns false</span>
+
+ db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database(<span class="string">&quot;sales&quot;</span>);
+ <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> db<span class="operator">.</span>isValid();    <span class="comment">// Returns \c true if &quot;sales&quot; connection exists</span>
+
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>removeDatabase(<span class="string">&quot;sales&quot;</span>);
+ <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> db<span class="operator">.</span>isValid();    <span class="comment">// Returns false</span>
+</pre>
+<!-- @@@isValid -->
+<!-- $$$lastError[overload1]$$$lastError -->
+<h3 class="fn" translate="no" id="lastError"><span class="type"><a href="qsqlerror.html" translate="no">QSqlError</a></span> QSqlDatabase::<span class="name">lastError</span>() const</h3>
+<p>Returns information about the last error that occurred on the database.</p>
+<p>Failures that occur in conjunction with an individual query are reported by <a href="qsqlquery.html#lastError" translate="no">QSqlQuery::lastError</a>().</p>
+<p><b>See also </b><a href="qsqlerror.html" translate="no">QSqlError</a> and <a href="qsqlquery.html#lastError" translate="no">QSqlQuery::lastError</a>().</p>
+<!-- @@@lastError -->
+<!-- $$$moveToThread[overload1]$$$moveToThreadQThread* -->
+<h3 class="fn" translate="no" id="moveToThread"><code class="details extra" translate="no">[since 6.8]</code> <span class="type">bool</span> QSqlDatabase::<span class="name">moveToThread</span>(<span class="type"><a href="../qtcore/qthread.html" translate="no">QThread</a></span> *<i>targetThread</i>)</h3>
+<p>Changes the thread affinity for <a href="qsqldatabase.html" translate="no">QSqlDatabase</a> and its associated driver. This function returns <code translate="no">true</code> when the function succeeds. Event processing will continue in the <i translate="no">targetThread</i>.</p>
+<p>During this operation you have to make sure that there is no <a href="qsqlquery.html" translate="no">QSqlQuery</a> bound to this instance otherwise the <a href="qsqldatabase.html" translate="no">QSqlDatabase</a> will not be moved to the given thread and the function returns <code translate="no">false</code>.</p>
+<p>Since the associated driver is derived from <a href="../qtcore/qobject.html" translate="no">QObject</a>, all constraints for moving a <a href="../qtcore/qobject.html" translate="no">QObject</a> to another thread also apply to this function.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="../qtcore/qobject.html#moveToThread" translate="no">QObject::moveToThread</a>() and Threads and the SQL Module.</p>
+<!-- @@@moveToThread -->
+<!-- $$$numericalPrecisionPolicy -->
+<h3 class="fn" translate="no" id="numericalPrecisionPolicy"><span class="type"><a href="qsql.html#NumericalPrecisionPolicy-enum" translate="no">QSql::NumericalPrecisionPolicy</a></span> QSqlDatabase::<span class="name">numericalPrecisionPolicy</span>() const</h3>
+<p>Returns the numericalPrecisionPolicy.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property numericalPrecisionPolicy. </p>
+</div><p><b>See also </b><a href="qsqldatabase.html#setNumericalPrecisionPolicy" translate="no">setNumericalPrecisionPolicy</a>().</p>
+<!-- @@@numericalPrecisionPolicy -->
+<!-- $$$open[overload1]$$$open -->
+<h3 class="fn" translate="no" id="open"><span class="type">bool</span> QSqlDatabase::<span class="name">open</span>()</h3>
+<p>Opens the database connection using the current connection values. Returns <code translate="no">true</code> on success; otherwise returns <code translate="no">false</code>. Error information can be retrieved using <a href="qsqldatabase.html#lastError" translate="no">lastError</a>().</p>
+<p><b>See also </b><a href="qsqldatabase.html#lastError" translate="no">lastError</a>(), <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), and <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>().</p>
+<!-- @@@open -->
+<!-- $$$open$$$openconstQString&constQString& -->
+<h3 class="fn" translate="no" id="open-1"><span class="type">bool</span> QSqlDatabase::<span class="name">open</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>user</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>password</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Opens the database connection using the given <i translate="no">user</i> name and <i translate="no">password</i>. Returns <code translate="no">true</code> on success; otherwise returns <code translate="no">false</code>. Error information can be retrieved using the <a href="qsqldatabase.html#lastError" translate="no">lastError</a>() function.</p>
+<p>This function does not store the password it is given. Instead, the password is passed directly to the driver for opening the connection and it is then discarded.</p>
+<p><b>See also </b><a href="qsqldatabase.html#lastError" translate="no">lastError</a>().</p>
+<!-- @@@open -->
+<!-- $$$password[overload1]$$$password -->
+<h3 class="fn" translate="no" id="password"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">password</span>() const</h3>
+<p>Returns the connection's password. An empty string will be returned if the password was not set with <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), and if the password was given in the <a href="qsqldatabase.html#open" translate="no">open</a>() call, or if no password was used.</p>
+<p><b>See also </b><a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>().</p>
+<!-- @@@password -->
+<!-- $$$port[overload1]$$$port -->
+<h3 class="fn" translate="no" id="port"><span class="type">int</span> QSqlDatabase::<span class="name">port</span>() const</h3>
+<p>Returns the connection's port number. The value is undefined if the port number has not been set.</p>
+<p><b>See also </b><a href="qsqldatabase.html#setPort" translate="no">setPort</a>().</p>
+<!-- @@@port -->
+<!-- $$$primaryIndex[overload1]$$$primaryIndexconstQString& -->
+<h3 class="fn" translate="no" id="primaryIndex"><span class="type"><a href="qsqlindex.html" translate="no">QSqlIndex</a></span> QSqlDatabase::<span class="name">primaryIndex</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>tablename</i>) const</h3>
+<p>Returns the primary index for table <i translate="no">tablename</i>. If no primary index exists, an empty <a href="qsqlindex.html" translate="no">QSqlIndex</a> is returned.</p>
+<div class="admonition note">
+<p><b>Note: </b>Some drivers, such as the <a href="sql-driver.html#qpsql-case-sensitivity">QPSQL</a> driver, may may require you to pass <i translate="no">tablename</i> in lower case if the table was not quoted when created. See the <a href="sql-driver.html">Qt SQL driver</a> documentation for more information.</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#tables" translate="no">tables</a>() and <a href="qsqldatabase.html#record" translate="no">record</a>().</p>
+<!-- @@@primaryIndex -->
+<!-- $$$record[overload1]$$$recordconstQString& -->
+<h3 class="fn" translate="no" id="record"><span class="type"><a href="qsqlrecord.html" translate="no">QSqlRecord</a></span> QSqlDatabase::<span class="name">record</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>tablename</i>) const</h3>
+<p>Returns a <a href="qsqlrecord.html" translate="no">QSqlRecord</a> populated with the names of all the fields in the table (or view) called <i translate="no">tablename</i>. The order in which the fields appear in the record is undefined. If no such table (or view) exists, an empty record is returned.</p>
+<div class="admonition note">
+<p><b>Note: </b>Some drivers, such as the <a href="sql-driver.html#qpsql-case-sensitivity">QPSQL</a> driver, may may require you to pass <i translate="no">tablename</i> in lower case if the table was not quoted when created. See the <a href="sql-driver.html">Qt SQL driver</a> documentation for more information.</p>
+</div>
+<!-- @@@record -->
+<!-- $$$registerSqlDriver[overload1]$$$registerSqlDriverconstQString&QSqlDriverCreatorBase* -->
+<h3 class="fn" translate="no" id="registerSqlDriver"><code class="details extra" translate="no">[static]</code> <span class="type">void</span> QSqlDatabase::<span class="name">registerSqlDriver</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, <span class="type"><a href="qsqldrivercreatorbase.html" translate="no">QSqlDriverCreatorBase</a></span> *<i>creator</i>)</h3>
+<p>This function registers a new SQL driver called <i translate="no">name</i>, within the SQL framework. This is useful if you have a custom SQL driver and don't want to compile it as a plugin.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>registerSqlDriver(<span class="string">&quot;MYDRIVER&quot;</span><span class="operator">,</span> <span class="keyword">new</span> <span class="type"><a href="qsqldrivercreator.html" translate="no">QSqlDriverCreator</a></span><span class="operator">&lt;</span><span class="type"><a href="qsqldriver.html" translate="no">QSqlDriver</a></span><span class="operator">&gt;</span>);
+ QVERIFY(<span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>drivers()<span class="operator">.</span>contains(<span class="string">&quot;MYDRIVER&quot;</span>));
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>addDatabase(<span class="string">&quot;MYDRIVER&quot;</span>);
+ QVERIFY(db<span class="operator">.</span>isValid());
+</pre>
+<p><a href="qsqldatabase.html" translate="no">QSqlDatabase</a> takes ownership of the <i translate="no">creator</i> pointer, so you mustn't delete it yourself.</p>
+<p><b>See also </b><a href="qsqldatabase.html#drivers" translate="no">drivers</a>().</p>
+<!-- @@@registerSqlDriver -->
+<!-- $$$removeDatabase[overload1]$$$removeDatabaseconstQString& -->
+<h3 class="fn" translate="no" id="removeDatabase"><code class="details extra" translate="no">[static]</code> <span class="type">void</span> QSqlDatabase::<span class="name">removeDatabase</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>connectionName</i>)</h3>
+<p>Removes the database connection <i translate="no">connectionName</i> from the list of database connections.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>There should be no open queries on the database connection when this function is called, otherwise a resource leak will occur.</p>
+</div>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// WRONG</span>
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database(<span class="string">&quot;sales&quot;</span>);
+ <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query(<span class="string">&quot;SELECT NAME, DOB FROM EMPLOYEES&quot;</span><span class="operator">,</span> db);
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>removeDatabase(<span class="string">&quot;sales&quot;</span>); <span class="comment">// will output a warning</span>
+ <span class="comment">// &quot;db&quot; is now a dangling invalid database connection,</span>
+ <span class="comment">// &quot;query&quot; contains an invalid result set</span>
+</pre>
+<p>The correct way to do it:</p>
+<pre class="cpp" translate="no">
+ {
+     <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database(<span class="string">&quot;sales&quot;</span>);
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query(<span class="string">&quot;SELECT NAME, DOB FROM EMPLOYEES&quot;</span><span class="operator">,</span> db);
+ }
+ <span class="comment">// Both &quot;db&quot; and &quot;query&quot; are destroyed because they are out of scope</span>
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>removeDatabase(<span class="string">&quot;sales&quot;</span>); <span class="comment">// correct</span>
+</pre>
+<p>To remove the default connection, which may have been created with a call to <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>() not specifying a connection name, you can retrieve the default connection name by calling <a href="qsqldatabase.html#connectionName" translate="no">connectionName</a>() on the database returned by <a href="qsqldatabase.html#database" translate="no">database</a>(). Note that if a default database hasn't been created an invalid database will be returned.</p>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p><b>See also </b><a href="qsqldatabase.html#database" translate="no">database</a>(), <a href="qsqldatabase.html#connectionName" translate="no">connectionName</a>(), and Threads and the SQL Module.</p>
+<!-- @@@removeDatabase -->
+<!-- $$$rollback[overload1]$$$rollback -->
+<h3 class="fn" translate="no" id="rollback"><span class="type">bool</span> QSqlDatabase::<span class="name">rollback</span>()</h3>
+<p>Rolls back a transaction on the database, if the driver supports transactions and a <a href="qsqldatabase.html#transaction" translate="no">transaction</a>() has been started. Returns <code translate="no">true</code> if the operation succeeded. Otherwise it returns <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>For some databases, the rollback will fail and return <code translate="no">false</code> if there is an <a href="qsqlquery.html#isActive" translate="no">active query</a> using the database for a <code translate="no">SELECT</code>. Make the query <a href="qsqlquery.html#isActive" translate="no">inactive</a> before doing the rollback.</p>
+</div>
+<p>Call <a href="qsqldatabase.html#lastError" translate="no">lastError</a>() to get information about errors.</p>
+<p><b>See also </b><a href="qsqlquery.html#isActive" translate="no">QSqlQuery::isActive</a>(), <a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>(), and <a href="qsqldatabase.html#commit" translate="no">commit</a>().</p>
+<!-- @@@rollback -->
+<!-- $$$setConnectOptions[overload1]$$$setConnectOptionsconstQString& -->
+<h3 class="fn" translate="no" id="setConnectOptions"><span class="type">void</span> QSqlDatabase::<span class="name">setConnectOptions</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>options</i> = QString())</h3>
+<p>Sets database-specific <i translate="no">options</i>. This must be done before the connection is opened, otherwise it has no effect. Another possibility is to close the connection, call QSqlDatabase::setConnectOptions(), and <a href="qsqldatabase.html#open" translate="no">open</a>() the connection again.</p>
+<p>The format of the <i translate="no">options</i> string is a semicolon separated list of option names or option=value pairs. The options depend on the database client used and are described for each plugin in the <a href="sql-driver.html">SQL Database Drivers</a> page.</p>
+<p>Examples:</p>
+<pre class="cpp" translate="no">
+ db<span class="operator">.</span>setConnectOptions(<span class="string">&quot;SSL_KEY=client-key.pem;SSL_CERT=client-cert.pem;SSL_CA=ca-cert.pem;CLIENT_IGNORE_SPACE=1&quot;</span>); <span class="comment">// use an SSL connection to the server</span>
+ <span class="keyword">if</span> (<span class="operator">!</span>db<span class="operator">.</span>open()) {
+     db<span class="operator">.</span>setConnectOptions(); <span class="comment">// clears the connect option string</span>
+     <span class="comment">// ...</span>
+ }
+ <span class="comment">// ...</span>
+ <span class="comment">// PostgreSQL connection</span>
+ db<span class="operator">.</span>setConnectOptions(<span class="string">&quot;requiressl=1&quot;</span>); <span class="comment">// enable PostgreSQL SSL connections</span>
+ <span class="keyword">if</span> (<span class="operator">!</span>db<span class="operator">.</span>open()) {
+     db<span class="operator">.</span>setConnectOptions(); <span class="comment">// clear options</span>
+     <span class="comment">// ...</span>
+ }
+ <span class="comment">// ...</span>
+ <span class="comment">// ODBC connection</span>
+ db<span class="operator">.</span>setConnectOptions(<span class="string">&quot;SQL_ATTR_ACCESS_MODE=SQL_MODE_READ_ONLY;SQL_ATTR_TRACE=SQL_OPT_TRACE_ON&quot;</span>); <span class="comment">// set ODBC options</span>
+ <span class="keyword">if</span> (<span class="operator">!</span>db<span class="operator">.</span>open()) {
+     db<span class="operator">.</span>setConnectOptions(); <span class="comment">// don't try to set this option</span>
+     <span class="comment">// ...</span>
+ }
+ }
+</pre>
+<p>Refer to the client library documentation for more information about the different options.</p>
+<p><b>See also </b><a href="qsqldatabase.html#connectOptions" translate="no">connectOptions</a>().</p>
+<!-- @@@setConnectOptions -->
+<!-- $$$setDatabaseName[overload1]$$$setDatabaseNameconstQString& -->
+<h3 class="fn" translate="no" id="setDatabaseName"><span class="type">void</span> QSqlDatabase::<span class="name">setDatabaseName</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>Sets the connection's database name to <i translate="no">name</i>. To have effect, the database name must be set <i>before</i> the connection is <a href="qsqldatabase.html#open" translate="no">opened</a>. Alternatively, you can <a href="qsqldatabase.html#close" translate="no">close</a>() the connection, set the database name, and call <a href="qsqldatabase.html#open" translate="no">open</a>() again.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <i>database name</i> is not the <i>connection name</i>. The connection name must be passed to <a href="qsqldatabase.html#addDatabase" translate="no">addDatabase</a>() at connection object create time.</p>
+</div>
+<p>For the QSQLITE driver, if the database name specified does not exist, then it will create the file for you unless the QSQLITE_OPEN_READONLY option is set.</p>
+<p>Additionally, <i translate="no">name</i> can be set to <code translate="no">&quot;:memory:&quot;</code> which will create a temporary database which is only available for the lifetime of the application.</p>
+<p>For the QOCI (Oracle) driver, the database name is the TNS Service Name.</p>
+<p>For the QODBC driver, the <i translate="no">name</i> can either be a DSN, a DSN filename (in which case the file must have a <code translate="no">.dsn</code> extension), or a connection string.</p>
+<p>For example, Microsoft Access users can use the following connection string to open an <code translate="no">.mdb</code> file directly, instead of having to create a DSN entry in the ODBC manager:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// ...</span>
+ <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> db <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span><span class="operator">::</span>addDatabase(<span class="string">&quot;QODBC&quot;</span>);
+ db<span class="operator">.</span>setDatabaseName(<span class="string">&quot;DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MS Access};DBQ=myaccessfile.mdb&quot;</span>);
+ <span class="keyword">if</span> (db<span class="operator">.</span>open()) {
+     <span class="comment">// success!</span>
+ }
+ <span class="comment">// ...</span>
+</pre>
+<p>There is no default value.</p>
+<p><b>See also </b><a href="qsqldatabase.html#databaseName" translate="no">databaseName</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<!-- @@@setDatabaseName -->
+<!-- $$$setHostName[overload1]$$$setHostNameconstQString& -->
+<h3 class="fn" translate="no" id="setHostName"><span class="type">void</span> QSqlDatabase::<span class="name">setHostName</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>host</i>)</h3>
+<p>Sets the connection's host name to <i translate="no">host</i>. To have effect, the host name must be set <i>before</i> the connection is <a href="qsqldatabase.html#open" translate="no">opened</a>. Alternatively, you can <a href="qsqldatabase.html#close" translate="no">close</a>() the connection, set the host name, and call <a href="qsqldatabase.html#open" translate="no">open</a>() again.</p>
+<p>There is no default value.</p>
+<p><b>See also </b><a href="qsqldatabase.html#hostName" translate="no">hostName</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<!-- @@@setHostName -->
+<!-- $$$setNumericalPrecisionPolicy -->
+<h3 class="fn" translate="no" id="setNumericalPrecisionPolicy"><span class="type">void</span> QSqlDatabase::<span class="name">setNumericalPrecisionPolicy</span>(<span class="type"><a href="qsql.html#NumericalPrecisionPolicy-enum" translate="no">QSql::NumericalPrecisionPolicy</a></span> <i>precisionPolicy</i>)</h3>
+<p>Sets <a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">numericalPrecisionPolicy</a> to <i translate="no">precisionPolicy</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">numericalPrecisionPolicy</a>. </p>
+</div><p><b>See also </b><a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">numericalPrecisionPolicy</a>().</p>
+<!-- @@@setNumericalPrecisionPolicy -->
+<!-- $$$setPassword[overload1]$$$setPasswordconstQString& -->
+<h3 class="fn" translate="no" id="setPassword"><span class="type">void</span> QSqlDatabase::<span class="name">setPassword</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>password</i>)</h3>
+<p>Sets the connection's password to <i translate="no">password</i>. To have effect, the password must be set <i>before</i> the connection is <a href="qsqldatabase.html#open" translate="no">opened</a>. Alternatively, you can <a href="qsqldatabase.html#close" translate="no">close</a>() the connection, set the password, and call <a href="qsqldatabase.html#open" translate="no">open</a>() again.</p>
+<p>There is no default value.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This function stores the password in plain text within Qt. Use the <a href="qsqldatabase.html#open" translate="no">open</a>() call that takes a password as parameter to avoid this behavior.</p>
+</div>
+<p><b>See also </b><a href="qsqldatabase.html#password" translate="no">password</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<!-- @@@setPassword -->
+<!-- $$$setPort[overload1]$$$setPortint -->
+<h3 class="fn" translate="no" id="setPort"><span class="type">void</span> QSqlDatabase::<span class="name">setPort</span>(<span class="type">int</span> <i>port</i>)</h3>
+<p>Sets the connection's port number to <i translate="no">port</i>. To have effect, the port number must be set <i>before</i> the connection is <a href="qsqldatabase.html#open" translate="no">opened</a>. Alternatively, you can <a href="qsqldatabase.html#close" translate="no">close</a>() the connection, set the port number, and call <a href="qsqldatabase.html#open" translate="no">open</a>() again..</p>
+<p>There is no default value.</p>
+<p><b>See also </b><a href="qsqldatabase.html#port" translate="no">port</a>(), <a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<!-- @@@setPort -->
+<!-- $$$setUserName[overload1]$$$setUserNameconstQString& -->
+<h3 class="fn" translate="no" id="setUserName"><span class="type">void</span> QSqlDatabase::<span class="name">setUserName</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>Sets the connection's user name to <i translate="no">name</i>. To have effect, the user name must be set <i>before</i> the connection is <a href="qsqldatabase.html#open" translate="no">opened</a>. Alternatively, you can <a href="qsqldatabase.html#close" translate="no">close</a>() the connection, set the user name, and call <a href="qsqldatabase.html#open" translate="no">open</a>() again.</p>
+<p>There is no default value.</p>
+<p><b>See also </b><a href="qsqldatabase.html#userName" translate="no">userName</a>(), <a href="qsqldatabase.html#setDatabaseName" translate="no">setDatabaseName</a>(), <a href="qsqldatabase.html#setPassword" translate="no">setPassword</a>(), <a href="qsqldatabase.html#setHostName" translate="no">setHostName</a>(), <a href="qsqldatabase.html#setPort" translate="no">setPort</a>(), <a href="qsqldatabase.html#setConnectOptions" translate="no">setConnectOptions</a>(), and <a href="qsqldatabase.html#open" translate="no">open</a>().</p>
+<!-- @@@setUserName -->
+<!-- $$$tables[overload1]$$$tablesQSql::TableType -->
+<h3 class="fn" translate="no" id="tables"><span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QSqlDatabase::<span class="name">tables</span>(<span class="type"><a href="qsql.html#TableType-enum" translate="no">QSql::TableType</a></span> <i>type</i> = QSql::Tables) const</h3>
+<p>Returns a list of the database's tables, system tables and views, as specified by the parameter <i translate="no">type</i>.</p>
+<p><b>See also </b><a href="qsqldatabase.html#primaryIndex" translate="no">primaryIndex</a>() and <a href="qsqldatabase.html#record" translate="no">record</a>().</p>
+<!-- @@@tables -->
+<!-- $$$thread[overload1]$$$thread -->
+<h3 class="fn" translate="no" id="thread"><code class="details extra" translate="no">[since 6.8]</code> <span class="type"><a href="../qtcore/qthread.html" translate="no">QThread</a></span> *QSqlDatabase::<span class="name">thread</span>() const</h3>
+<p>Returns a pointer to the associated <a href="../qtcore/qthread.html" translate="no">QThread</a> instance.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<!-- @@@thread -->
+<!-- $$$transaction[overload1]$$$transaction -->
+<h3 class="fn" translate="no" id="transaction"><span class="type">bool</span> QSqlDatabase::<span class="name">transaction</span>()</h3>
+<p>Begins a transaction on the database if the driver supports transactions. Returns <code translate="no">true</code> if the operation succeeded. Otherwise it returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>(), <a href="qsqldatabase.html#commit" translate="no">commit</a>(), and <a href="qsqldatabase.html#rollback" translate="no">rollback</a>().</p>
+<!-- @@@transaction -->
+<!-- $$$userName[overload1]$$$userName -->
+<h3 class="fn" translate="no" id="userName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlDatabase::<span class="name">userName</span>() const</h3>
+<p>Returns the connection's user name; it may be empty.</p>
+<p><b>See also </b><a href="qsqldatabase.html#setUserName" translate="no">setUserName</a>().</p>
+<!-- @@@userName -->
+<!-- $$$operator=[overload1]$$$operator=constQSqlDatabase& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> &amp;QSqlDatabase::<span class="name">operator=</span>(const <span class="type"><a href="qsqldatabase.html#QSqlDatabase" translate="no">QSqlDatabase</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns <i translate="no">other</i> to this object.</p>
+<!-- @@@operator= -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- android-manifest-file-configuration.qdoc -->
+  <meta name="description" content="Provides details on the AndroidManifest.xml configuration.">
+  <title>Qt for Android Manifest File Configuration | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Qt for Android Manifest File Configuration</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="android-openssl-support.html" />
+  <link rel="next" href="android-services.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="android-openssl-support.html">android-openssl-support.html</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="android-services.html">android-services.html</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#qt-project-to-manifest-configuration">Qt Project to Manifest Configuration</a></li>
+<li class="level1"><a href="#qt-default-configuration">Qt Default Configuration</a></li>
+<li class="level1"><a href="#qt-specific-meta-data">Qt Specific Meta-data</a></li>
+<li class="level2"><a href="#application-specific-meta-data">Application Specific Meta-data</a></li>
+<li class="level2"><a href="#meta-data-in-services">Meta-data in Services</a></li>
+<li class="level2"><a href="#qt-permissions-and-features">Qt Permissions and Features</a></li>
+<li class="level2"><a href="#style-extraction">Style Extraction</a></li>
+<li class="level1"><a href="#qt-manifest-before-6-2-release">Qt Manifest before 6.2 Release</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt for Android Manifest File Configuration</h1>
+<!-- $$$android-manifest-file-configuration.html-description -->
+<div class="descr" id="details">
+<p>The Android Manifest is an XML file necessary for any Android app. It contains app configuration for different settings and features that the app uses, as well as details on the app itself, such as, package name, app name, version, etc. Permissions and hardware features can also be set from the manifest.</p>
+<p>Qt for Android maintains a version of <code translate="no">AndroidManifest.xml</code> with default configuration that include features, permissions and other configuration used by the build system which are needed for building and running Qt apps on Android.</p>
+<h2 id="qt-project-to-manifest-configuration">Qt Project to Manifest Configuration</h2>
+<p>Qt defines some meta-data that is passed from the build systems and to androiddeployqt which populates the manifest with the correct values without explicitly setting these in the manifest file. Such meta-data is assigned a value in the form <code translate="no">&quot;-- %%INSERT_VALUE%% --&quot;</code>, for example:</p>
+<pre class="cpp plain" translate="no">
+ &lt;manifest ...
+     android:versionCode=&quot;-- %%INSERT_VERSION_CODE%% --&quot;
+     ...
+ &lt;/manifest&gt;
+</pre>
+<p>This would be populated with the version code that is set in, for example, <code translate="no">CMake</code>.</p>
+<h2 id="qt-default-configuration">Qt Default Configuration</h2>
+<p>Qt sets the following manifest configuration by default:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Section</th><th >Option</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td  rowspan=" 5">&lt;manifest&gt;</td><td >package</td><td >Sets the package name. The default value is <code translate="no">org.qtproject.example.app_name</code>.<div class="admonition warning">
+<p><b>Warning: </b>This field is deprecated and moved to <code translate="no">build.gradle</code>. It will be removed in an upcoming release.</p>
+</div>
+</td></tr>
+<tr valign="top" class="even"><td >android:installLocation</td><td >Sets the app's installation location, whether internal or external storage. The default value is <code translate="no">auto</code>.</td></tr>
+<tr valign="top" class="odd"><td >android:versionCode</td><td >Sets the internal version code. Populated from <code translate="no">ANDROID_VERSION_CODE</code> (qmake) and <code translate="no">QT_ANDROID_VERSION_CODE</code> (CMake). The default value is <code translate="no">1</code>.</td></tr>
+<tr valign="top" class="even"><td >android:versionName</td><td >Sets the public version name. Populated from <code translate="no">ANDROID_VERSION_NAME</code> (qmake) and <code translate="no">QT_ANDROID_VERSION_NAME</code> (CMake). The default value is <code translate="no">1.0</code>.</td></tr>
+<tr valign="top" class="odd"><td >&lt;supports-screens&gt;</td><td >Sets the screen sizes that the app supports, default values are <code translate="no">anyDensity</code>, <code translate="no">largeScreens</code>, <code translate="no">normalScreens</code>, and <code translate="no">smallScreens</code>.</td></tr>
+<tr valign="top" class="even"><td  rowspan=" 7">&lt;application&gt;</td><td >android:name</td><td >The application class name. Default value is <code translate="no">org.qtproject.qt.android.bindings.QtApplication</code>.</td></tr>
+<tr valign="top" class="odd"><td >android:label</td><td >The application name label. Default value is the Qt project's target name. This can be set using <a href="cmake-target-property-qt-android-app-name.html">QT_ANDROID_APP_NAME</a>.</td></tr>
+<tr valign="top" class="even"><td >android:icon</td><td >The application icon as a reference to a drawable or mipmap resource. This tag is not used unless set using <a href="cmake-target-property-qt-android-app-icon.html">QT_ANDROID_APP_ICON</a> or set manually in the <code translate="no">AndroidManifest.xml</code>.</td></tr>
+<tr valign="top" class="odd"><td >android:hardwareAccelerated</td><td >Sets hardware acceleration preference. The default value is <code translate="no">true</code>.</td></tr>
+<tr valign="top" class="even"><td >android:requestLegacyExternalStorage</td><td >Whether to use Android scoped storage. The default value is <code translate="no">true</code>.</td></tr>
+<tr valign="top" class="odd"><td >android:allowBackup</td><td >Whether to allow the application to participate in the backup and restore infrastructure. If this is set to <code translate="no">false</code>, no backup or restore of the application will ever be performed. The default value is <code translate="no">true</code>.</td></tr>
+<tr valign="top" class="even"><td >android:fullBackupOnly</td><td >Whether or not to use Auto Backup on devices where it is available. The default value is <code translate="no">false</code>.</td></tr>
+<tr valign="top" class="odd"><td  rowspan=" 6">&lt;activity&gt;</td><td >android:name</td><td >The activity class name. The default value is <code translate="no">org.qtproject.qt.android.bindings.QtActivity</code>.</td></tr>
+<tr valign="top" class="even"><td >android:configChanges</td><td >Lists configuration changes that the activity handles. Default value is <code translate="no">orientation</code>, <code translate="no">uiMode</code>, <code translate="no">screenLayout</code>, <code translate="no">screenSize</code>, <code translate="no">smallestScreenSize</code>, <code translate="no">layoutDirection</code>, <code translate="no">locale</code>, <code translate="no">fontScale</code>, <code translate="no">keyboard</code>, <code translate="no">keyboardHidden</code>, <code translate="no">navigation</code>, <code translate="no">mcc</code>, <code translate="no">mnc</code>, <code translate="no">density</code>.</td></tr>
+<tr valign="top" class="odd"><td >android:launchMode</td><td >The method used to launch the activity. The default value is <code translate="no">singleTop</code>.</td></tr>
+<tr valign="top" class="even"><td >android:screenOrientation</td><td >The orientation of the activity's display on the device. The default value is <code translate="no">unspecified</code>.</td></tr>
+<tr valign="top" class="odd"><td >&lt;intent-filter&gt;</td><td >Specifies the types of intents that the activity can respond to. Default value is<pre class="cpp plain" translate="no">
+ &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;
+ &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;
+</pre>
+</td></tr>
+<tr valign="top" class="even"><td >android:exported</td><td >Sets whether the activity can be launched by components of other applications. The default value is <code translate="no">true</code>.</td></tr>
+</table></div>
+<h2 id="qt-specific-meta-data">Qt Specific Meta-data</h2>
+<p>In addition to the default manifest configuration that Qt sets, Qt defines some meta-data that is valid for Qt apps only. Such meta-data is usually under the <code translate="no">&lt;activity&gt;</code> section in the form:</p>
+<pre class="cpp plain" translate="no">
+ &lt;meta-data
+     android:name=&quot;meta-data-name&quot;
+     android:value=&quot;meta-data-value&quot; /&gt;
+</pre>
+<p>The following is a list of such meta-data defined by Qt:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Meta-data Name</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >android.app.lib_name <span id="android-app-lib-name"></span></td><td >The filename of the native C++ library that is used by the activity.<div class="admonition note">
+<p><b>Note: </b>This attribute is mandatory and shouldn't be removed. Default value is the Qt project's target name.</p>
+</div>
+</td></tr>
+<tr valign="top" class="even"><td >android.app.extract_android_style</td><td >The method used to extract the native Android Style information. For more information, see <a href="android-manifest-file-configuration.html#style-extraction">Style Extraction</a>. The default value is <code translate="no">minimal</code>.</td></tr>
+<tr valign="top" class="odd"><td >android.app.background_running <span id="android-app-background-running"></span></td><td >Sets whether the app keeps running tasks in the background. Setting this to <code translate="no">true</code> is the equivalent of setting the environment variable <code translate="no">QT_BLOCK_EVENT_LOOPS_WHEN_SUSPENDED</code> to <code translate="no">0</code>. The default value is <code translate="no">false</code>.<div class="admonition warning">
+<p><b>Warning: </b>Setting this to <code translate="no">true</code> may cause unexpected crash if the application tries to draw after <a href="../qtgui/qguiapplication.html#applicationStateChanged" translate="no">QGuiApplication::applicationStateChanged</a>() signal is sent with a <a href="qt.html#ApplicationState-enum" translate="no">Qt::ApplicationSuspended</a> state.</p>
+</div>
+</td></tr>
+<tr valign="top" class="even"><td >android.app.arguments <span id="android-app-arguments"></span></td><td >Sets a list of arguments to pass to the app <code translate="no">&quot;arg1 arg2&quot;</code>. Populated from <code translate="no">ANDROID_APPLICATION_ARGUMENTS</code> (qmake) and <code translate="no">QT_ANDROID_APPLICATION_ARGUMENTS</code> (CMake). Default value is not set.</td></tr>
+<tr valign="top" class="odd"><td >android.app.splash_screen_drawable_portrait</td><td >Sets a drawable for a splash screen specific to portrait mode. For example: <code translate="no">android:resource=&quot;@drawable/splash_portrait&quot;</code>. Default value is not set.</td></tr>
+<tr valign="top" class="even"><td >android.app.splash_screen_drawable_landscape</td><td >Sets a drawable for a splash screen specific to landscape mode. For example: <code translate="no">android:resource=&quot;@drawable/splash_landscape&quot;</code>. Default value is not set.</td></tr>
+<tr valign="top" class="odd"><td >android.app.splash_screen_drawable</td><td >Sets a drawable for a splash screen at the start of the app.<div class="admonition note">
+<p><b>Note: </b>Orientation specific splash screens are checked first, if not set, this is used instead. For example: <code translate="no">android:resource=&quot;@drawable/splash&quot;</code>. Default value is not set.</p>
+</div>
+</td></tr>
+<tr valign="top" class="even"><td >android.app.splash_screen_sticky</td><td >Sets whether the splash screen stays visible until explicitly hidden by the app. For more information, see <a href="qnativeinterface-qandroidapplication.html#hideSplashScreen" translate="no">QAndroidApplication::hideSplashScreen</a>().</td></tr>
+<tr valign="top" class="odd"><td >android.app.trace_location</td><td >Specifies a location on device where the application can save tracing files. For example: /storage/emulated/0/Android/data/&lt;app_package_name&gt;/files/. This is needed when using Common Trace Format (CTF) tracing backend.<div class="admonition note">
+<p><b>Note: </b>The application needs storage permission for the location. Default: not set.</p>
+</div>
+</td></tr>
+</table></div>
+<h3 id="application-specific-meta-data">Application Specific Meta-data</h3>
+<p>Some meta-data attributes are application-wide, and should be placed under the <code translate="no">&lt;application&gt;</code> section:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Meta-data Name</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >android.app.system_libs_prefix <span id="android-app-system-libs-prefix"></span></td><td >Specifies a custom system library path to use for library loading lookup. This is necessary when using Qt libraries installed outside an app's default native (JNI) library directory. The default value is <code translate="no">/system/lib/</code>.</td></tr>
+</table></div>
+<h3 id="meta-data-in-services">Meta-data in Services</h3>
+<p>Some meta-data attributes can also be used in Services. The main ones are:</p>
+<ul>
+<li><a href="android-manifest-file-configuration.html#android-app-lib-name">android.app.lib_name</a></li>
+<li><a href="android-manifest-file-configuration.html#android-app-background-running">android.app.background_running</a></li>
+<li><a href="android-manifest-file-configuration.html#android-app-arguments">android.app.arguments</a></li>
+</ul>
+<h3 id="qt-permissions-and-features">Qt Permissions and Features</h3>
+<p>Different Qt modules might require some Android permissions or features to function properly, for example, Camera permission in <a href="../qtmultimedia/qtmultimedia-module.html" translate="no">QtMultimedia</a>. <a href="android-deploy-qt-tool.html">The androiddeployqt Tool</a> takes care of including such requirements into the Android manifest during the build. Qt defines the following lines into the manifest, which they get replaced by the actual values:</p>
+<pre class="cpp plain" translate="no">
+ &lt;manifest ...
+     &lt;!-- %%INSERT_PERMISSIONS --&gt;
+     &lt;!-- %%INSERT_FEATURES --&gt;
+     ...
+ &lt;/manifest&gt;
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If those lines are removed from the project manifest, Qt won't be able to include the correct permissions. So some functionalities might not work properly.</p>
+</div>
+<h4 id="customizing-permissions">Customizing Permissions</h4>
+<p>Since Qt 6.8.1, it is possible to override the default permissions set by Qt modules. This is useful if you need to define the same permissions as used by a Qt module, but with additional or different attributes.</p>
+<p>There are two ways to achieve this. First way is to use <a href="qt-add-android-permission.html">qt_add_android_permission</a> CMake function in the application's <code translate="no">CMakeLists.txt</code>. Permissions defined this way take precedence over the same permissions defined by Qt modules, avoiding duplication.</p>
+<p>Second way is to manually define these permissions in the Android manifest file. Permissions defined this way take precedence over permissions set by Qt modules, or set with <a href="qt-add-android-permission.html">qt_add_android_permission</a>.</p>
+<h3 id="style-extraction">Style Extraction</h3>
+<p>Qt uses different methods to determine how Qt Widgets and Qt Quick Controls should be styled:</p>
+<ul>
+<li><code translate="no">default</code> or <code translate="no">full</code>: when using Qt Widgets or Qt Quick Controls 1.<div class="admonition note">
+<p><b>Note: </b>This method uses some Android non-SDK interfaces, that are being restricted and removed by Google starting from Android 9.0 (API 28). For that reason, this is not recommended for Android 9.0 or greater.</p>
+</div>
+</li>
+<li><code translate="no">minimal</code>: when using Qt Quick Controls 2 and no Qt Widgets or Qt Quick Controls 1. This is faster than using the default or full options.</li>
+<li><code translate="no">none</code>: no style extraction.</li>
+</ul>
+<h2 id="qt-manifest-before-6-2-release">Qt Manifest before 6.2 Release</h2>
+<p>Versions of Qt earlier than 6.2 used to have an additional set of meta-data defined by Qt. These attributes used to manage dependencies and some were used by the discontinued <code translate="no">Ministro</code> service. With Qt 6.2, they should be removed. Here is a list of these attributes:</p>
+<ul>
+<li>android.app.qt_sources_resource_id</li>
+<li>android.app.repository</li>
+<li>android.app.bundled_libs_resource_id</li>
+<li>android.app.bundle_local_qt_libs</li>
+<li>android.app.use_local_qt_libs</li>
+<li>android.app.libs_prefix</li>
+<li>android.app.load_local_libs_resource_id</li>
+<li>android.app.load_local_jars</li>
+<li>android.app.static_init_classes</li>
+<li>android.app.qt_libs_resource_id</li>
+<li>android.app.ministro_not_found_msg</li>
+<li>android.app.ministro_needed_msg</li>
+<li>android.app.fatal_error_msg</li>
+</ul>
+<p>For more information on the Android Manifest, see Android App Manifest.</p>
+</div>
+<!-- @@@android-manifest-file-configuration.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="android-openssl-support.html">android-openssl-support.html</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="android-services.html">android-services.html</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

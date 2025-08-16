@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- index.qdoc -->
+  <meta name="description" content="Bridges the gap between Qt applications and HTML/JavaScript.">
+  <title>Qt WebChannel | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li>Qt WebChannel</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#using-the-module">Using the Module</a></li>
+<li class="level2"><a href="#qml-api">QML API</a></li>
+<li class="level2"><a href="#c-api">C++ API</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level1"><a href="#reference">Reference</a></li>
+<li class="level1"><a href="#licenses">Licenses</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt WebChannel</h1>
+<!-- $$$qtwebchannel-index.html-description -->
+<div class="descr" id="details">
+<p>Qt WebChannel enables peer-to-peer communication between a server (QML/C++ application) and a client (HTML/JavaScript or QML application). It is supported out of the box by Qt WebEngine. In addition, it can work on all browsers that support <a href="../qtwebsockets/qtwebsockets-index.html">WebSockets</a>, enabling Qt WebChannel clients to run in any JavaScript environment (including QML). This requires implementing a custom transport based on Qt WebSockets.</p>
+<p>The module provides a JavaScript library for seamless integration of C++ and QML applications with HTML/JavaScript and QML clients. The clients must use the JavaScript library to access the serialized QObjects published by the host applications.</p>
+<h2 id="using-the-module">Using the Module</h2>
+<h3 id="qml-api">QML API</h3>
+<p>The QML types of the module are available through the <code translate="no">QtWebChannel</code> import. To use the types, add the following import statement to your .qml file:</p>
+<pre class="qml" translate="no">
+ import QtWebChannel
+</pre>
+<h3 id="c-api">C++ API</h3>
+<p>Using a Qt module's C++ API requires linking against the module library, either directly or through other dependencies. Several build tools have dedicated support for this, including CMake and <a href="../qmake/qmake-manual.html">qmake</a>.</p>
+<h4 id="building-with-cmake">Building with CMake</h4>
+<p>Use the <code translate="no">find_package()</code> command to locate the needed module component in the <code translate="no">Qt6</code> package:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS WebChannel)
+ target_link_libraries(mytarget PRIVATE Qt6<span class="operator">::</span>WebChannel)
+</pre>
+<p>For more details, see the Build with CMake overview.</p>
+<h4 id="building-with-qmake">Building with qmake</h4>
+<p>To configure the module for building with qmake, add the module as a value of the <code translate="no">QT</code> variable in the project's .pro file:</p>
+<pre class="cpp" translate="no">
+ QT <span class="operator">+</span><span class="operator">=</span> webchannel
+</pre>
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="qtwebchannel-examples.html">Examples</a></li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="qtwebchannel-javascript.html">JavaScript API</a></li>
+<li><a href="qtwebchannel-module.html" translate="no">C++ API</a></li>
+<li><a href="qtwebchannel-qmlmodule.html" translate="no">QML API</a></li>
+</ul>
+<h2 id="licenses">Licenses</h2>
+<p>Qt WebChannel is available under commercial licenses from The Qt Company. In addition, it is available under free software licenses. These free software licenses are GNU Lesser General Public License, version 3, or the GNU General Public License, version 2. See Qt Licensing for further details.</p>
+</div>
+<!-- @@@qtwebchannel-index.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- recorder.qdoc -->
+  <meta name="description" content="Recording audio and video using Qt Quick.">
+  <title>QML Video Recorder | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="multimedia-examples.html">Qt Multimedia Examples</a></li>
+<li>QML Video Recorder</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#recording">Recording</a></li>
+<li class="level2"><a href="#capturesession">captureSession</a></li>
+<li class="level2"><a href="#recorder">recorder</a></li>
+<li class="level2"><a href="#controls">controls</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML Video Recorder</h1>
+<!-- $$$video/recorder-brief -->
+<p>Recording audio and video using Qt Quick.</p>
+<!-- @@@video/recorder -->
+<!-- $$$video/recorder-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/qmlrecorder.jpg" alt="" /></p><p><i>QML Recorder</i> demonstrates a simple application that can record audio and video separate or together, using a microphone, a camera, or with screen capturing.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="overview">Overview</h4>
+<p>At its core, this is a QML application, see Getting Started Programming with Qt Quick. This documentation is focused on how this example uses the <a href="qtmultimedia-qmlmodule.html" translate="no">Qt Multimedia QML Types</a>.</p>
+<p class="centerAlign"><img src="images/qml-recorder-overview.gif" alt="&quot;Animation cycling through qml objects declared in main.qml&quot;" /></p><p>The example uses the QML <a href="qml-qtmultimedia-camera.html" translate="no">Camera</a> and <a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a> types connected to a <a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>. A <a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a> object is then used to record the captured audio and video.</p>
+<p>In addition to <a href="qtmultimedia-qmlmodule.html" translate="no">QtMultimedia</a>, features of Qt Quick Windows, Controls, and Layouts are used to implement the graphic user interface and functionality. Playback won't be covered here, for that see the <a href="qtmultimedia-video-mediaplayer-example.html">QML Media Player Example</a>.</p>
+<p>The example demonstrates the following:</p>
+<ul>
+<li>Input devices can be selected.</li>
+<li>An input type switched off.</li>
+<li>Settings for capturing such as quality, codec choice, file format, and assigning metadata.</li>
+<li>Captured files are stored and can be played back.</li>
+</ul>
+<h4 id="recording">Recording</h4>
+<p>The application implements recording.</p>
+<h5 id="capturesession">captureSession</h5>
+<p>In <code translate="no">main.qml</code>, <code translate="no">captureSession</code> is declared like so:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a></span> {
+         <span class="name">id</span>: <span class="name">captureSession</span>
+         <span class="name">recorder</span>: <span class="name">recorder</span>
+         <span class="name">audioInput</span>: <span class="name">controls</span>.<span class="name">audioInput</span>
+         <span class="name">camera</span>: <span class="name">controls</span>.<span class="name">camera</span>
+         <span class="name">screenCapture</span>: <span class="name">controls</span>.<span class="name">screenCapture</span>
+         <span class="name">windowCapture</span>: <span class="name">controls</span>.<span class="name">windowCapture</span>
+         <span class="name">videoOutput</span>: <span class="name">videoOutput</span>
+     }
+</pre>
+<h5 id="recorder">recorder</h5>
+<p>In <code translate="no">main.qml</code>, the <a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a> <code translate="no">recorder</code> handles recording media as well as capturing a thumbnail for the file and appending it to a ListModel, <code translate="no">mediaList</code>.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a></span> {
+         <span class="name">id</span>: <span class="name">recorder</span>
+         <span class="name">onRecorderStateChanged</span>:
+             (<span class="keyword"></span>state) =&gt; {
+                 <span class="keyword">if</span> (<span class="name">state</span> <span class="operator">===</span> <span class="name">MediaRecorder</span>.<span class="name">StoppedState</span>) {
+                     <span class="name">root</span>.<span class="name">contentOrientation</span> <span class="operator">=</span> <span class="name">Qt</span>.<span class="name">PrimaryOrientation</span>
+                     <span class="name">mediaList</span>.<span class="name">append</span>()
+                 } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">state</span> <span class="operator">===</span> <span class="name">MediaRecorder</span>.<span class="name">RecordingState</span> <span class="operator">&amp;&amp;</span> <span class="name">captureSession</span>.<span class="name">camera</span>) {
+                     <span class="comment">// lock orientation while recording and create a preview image</span>
+                     <span class="name">root</span>.<span class="name">contentOrientation</span> <span class="operator">=</span> <span class="name">root</span>.<span class="name">screen</span>.<span class="name">orientation</span>;
+                     <span class="name">videoOutput</span>.<span class="name">grabToImage</span>(<span class="keyword">function</span>(res) { <span class="name">mediaList</span>.<span class="name">mediaThumbnail</span> <span class="operator">=</span> <span class="name">res</span>.<span class="name">url</span> })
+                 }
+             }
+         <span class="name">onActualLocationChanged</span>: (<span class="keyword"></span>url) =&gt; { <span class="name">mediaList</span>.<span class="name">mediaUrl</span> <span class="operator">=</span> <span class="name">url</span> }
+         <span class="name">onErrorOccurred</span>: { <span class="name">recorderErrorText</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">recorder</span>.<span class="name">errorString</span>; <span class="name">recorderError</span>.<span class="name">open</span>(); }
+     }
+</pre>
+<p><code translate="no">mediaList</code> is declared in the <a href="../qtquickcontrols/qml-qtquick-controls-frame.html" translate="no">Frame</a> <code translate="no">mediaListFrame</code></p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-frame.html" translate="no">Frame</a></span> {
+         <span class="name">id</span>: <span class="name">mediaListFrame</span>
+         <span class="name">height</span>: <span class="number">150</span>
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">anchors</span>.bottom: <span class="name">controlsFrame</span>.<span class="name">top</span>
+         <span class="name">x</span>: <span class="name">controls</span>.<span class="name">capturesVisible</span> ? <span class="number">0</span> : <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">color</span>: <span class="name">palette</span>.<span class="name">base</span>
+             <span class="name">opacity</span>: <span class="number">0.8</span>
+         }
+
+         Behavior on <span class="name">x</span> { <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">duration</span>: <span class="number">200</span> } }
+
+         <span class="type">MediaList</span> {
+             <span class="name">id</span>: <span class="name">mediaList</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">playback</span>: <span class="name">playback</span>
+</pre>
+<h5 id="controls">controls</h5>
+<p class="centerAlign"><img src="images/qml-recorder-control-bar-overview.gif" alt="" /></p><p>These are defined in <code translate="no">Controls.qml</code> and declared in main.qml.</p>
+<p>Its root is a <a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a> that contains the <a href="../qtquick/qml-qtquick-column.html" translate="no">Columns</a> <code translate="no">inputControls</code>, <code translate="no">recordButton</code>, <code translate="no">optionButtons</code>, each defined in their own .qml files.</p>
+<h6 id="selecting-a-video-source">Selecting a video source</h6>
+<p>Defined in <code translate="no">VideoSourceSelect.qml</code>, <code translate="no">VideoSourceSlect</code> is comprised of a <a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a> and a <a href="../qtquickcontrols/qml-qtquick-controls-combobox.html" translate="no">ComboBox</a> and enables the user to select from available cameras.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+     <span class="name">id</span>: <span class="name">root</span>
+     <span class="name">height</span>: <span class="name">Style</span>.<span class="name">height</span>
+     property <span class="type"><a href="qml-qtmultimedia-camera.html" translate="no">Camera</a></span> <span class="name">selectedCamera</span>: <span class="name">cameraAvailable</span> ? <span class="name">camera</span> : <span class="number">null</span>
+     property <span class="type"><a href="qml-qtmultimedia-screencapture.html" translate="no">ScreenCapture</a></span> <span class="name">selectedScreenCapture</span>: <span class="name">screenAvailable</span> ? <span class="name">screenCapture</span> : <span class="number">null</span>
+     property <span class="type"><a href="qml-qtmultimedia-windowcapture.html" translate="no">WindowCapture</a></span> <span class="name">selectedWindowCapture</span>: <span class="name">windowAvailable</span> ? <span class="name">windowCapture</span> : <span class="number">null</span>
+
+     property <span class="type">bool</span> <span class="name">sourceAvailable</span>: typeof <span class="name">comboBox</span>.<span class="name">currentValue</span> <span class="operator">!==</span> <span class="string">'undefined'</span> <span class="operator">&amp;&amp;</span>
+                                    <span class="name">comboBox</span>.<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">!==</span> <span class="string">'toggler'</span> <span class="operator">&amp;&amp;</span>
+                                    <span class="name">videoSourceSwitch</span>.<span class="name">checked</span>
+
+     property <span class="type">bool</span> <span class="name">cameraAvailable</span>: <span class="name">sourceAvailable</span> <span class="operator">&amp;&amp;</span> <span class="name">comboBox</span>.<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'camera'</span>
+     property <span class="type">bool</span> <span class="name">screenAvailable</span>: <span class="name">sourceAvailable</span> <span class="operator">&amp;&amp;</span> <span class="name">comboBox</span>.<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'screen'</span>
+     property <span class="type">bool</span> <span class="name">windowAvailable</span>: <span class="name">sourceAvailable</span> <span class="operator">&amp;&amp;</span> <span class="name">comboBox</span>.<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'window'</span>
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">videoSourceModel</span>.<span class="name">populate</span>()
+
+         <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">videoSourceModel</span>.<span class="name">count</span>; i++) {
+             <span class="keyword">if</span> (<span class="name">videoSourceModel</span>.<span class="name">get</span>(<span class="name">i</span>).<span class="name">value</span>.<span class="name">type</span> <span class="operator">!==</span> <span class="string">'toggler'</span>) {
+                 <span class="name">comboBox</span>.<span class="name">currentIndex</span> <span class="operator">=</span> <span class="name">i</span>
+                 <span class="keyword">break</span>
+             }
+         }
+     }
+
+     <span class="type"><a href="qml-qtmultimedia-camera.html" translate="no">Camera</a></span> {
+         <span class="name">id</span>: <span class="name">camera</span>
+         <span class="name">active</span>: <span class="name">cameraAvailable</span>
+     }
+
+     <span class="type"><a href="qml-qtmultimedia-screencapture.html" translate="no">ScreenCapture</a></span> {
+         <span class="name">id</span>: <span class="name">screenCapture</span>
+         <span class="name">active</span>: <span class="name">screenAvailable</span>
+     }
+
+     <span class="type"><a href="qml-qtmultimedia-windowcapture.html" translate="no">WindowCapture</a></span> {
+         <span class="name">id</span>: <span class="name">windowCapture</span>
+         <span class="name">active</span>: <span class="name">windowAvailable</span>
+     }
+
+     <span class="type"><a href="qml-qtmultimedia-mediadevices.html" translate="no">MediaDevices</a></span> { <span class="name">id</span>: <span class="name">mediaDevices</span>
+         <span class="name">onVideoInputsChanged</span>: {
+
+             <span class="name">videoSourceModel</span>.<span class="name">populate</span>()
+
+             <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">videoSourceModel</span>.<span class="name">count</span>; i++) {
+                 <span class="keyword">if</span> (<span class="name">videoSourceModel</span>.<span class="name">get</span>(<span class="name">i</span>).<span class="name">value</span>.<span class="name">type</span> <span class="operator">!==</span> <span class="string">'toggler'</span>) {
+                     <span class="name">comboBox</span>.<span class="name">currentIndex</span> <span class="operator">=</span> <span class="name">i</span>
+                     <span class="keyword">break</span>
+                 }
+             }
+         }
+     }
+
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+         <span class="name">id</span>: <span class="name">videoSourceSwitch</span>
+         <span class="name">anchors</span>.verticalCenter: <span class="name">parent</span>.<span class="name">verticalCenter</span>
+         <span class="name">checked</span>: <span class="number">true</span>
+     }
+
+     <span class="type">ListModel</span> {
+         <span class="name">id</span>: <span class="name">videoSourceModel</span>
+         property <span class="type">var</span> <span class="name">enabledSources</span>: {
+             'camera': <span class="number">true</span>,
+             'screen': <span class="number">true</span>,
+             'window': <span class="number">false</span>
+         }
+
+         <span class="keyword">function</span> <span class="name">toggleEnabledSource</span>(type) {
+             <span class="name">enabledSources</span>[<span class="name">type</span>] <span class="operator">=</span> !<span class="name">enabledSources</span>[<span class="name">type</span>]
+             <span class="name">populate</span>()
+         }
+
+         <span class="keyword">function</span> <span class="name">appendItem</span>(text, value) {
+             <span class="name">append</span>({ text: <span class="name">text</span>, value: <span class="name">value</span>})
+         }
+
+         <span class="keyword">function</span> <span class="name">appendToggler</span>(name, sourceType) {
+             <span class="name">appendItem</span>((<span class="name">enabledSources</span>[<span class="name">sourceType</span>] ? <span class="string">&quot;- Hide &quot;</span> : <span class="string">&quot;+ Show &quot;</span>) <span class="operator">+</span> <span class="name">name</span>,
+                        { type: <span class="string">'toggler'</span>, 'sourceType': <span class="name">sourceType</span> })
+         }
+
+         <span class="keyword">function</span> <span class="name">populate</span>() {
+             <span class="name">clear</span>()
+
+             <span class="name">appendToggler</span>(<span class="string">'Cameras'</span>, <span class="string">'camera'</span>)
+             <span class="keyword">if</span> (<span class="name">enabledSources</span>[<span class="string">'camera'</span>])
+                 <span class="keyword">for</span> (var camera of <span class="name">mediaDevices</span>.<span class="name">videoInputs</span>)
+                     <span class="name">appendItem</span>(<span class="name">camera</span>.<span class="name">description</span>, { type: <span class="string">'camera'</span>, camera: <span class="name">camera</span> })
+
+             <span class="name">appendToggler</span>(<span class="string">'Screens'</span>, <span class="string">'screen'</span>)
+             <span class="keyword">if</span> (<span class="name">enabledSources</span>[<span class="string">'screen'</span>])
+                 <span class="keyword">for</span> (var screen of <span class="name">Application</span>.<span class="name">screens</span>)
+                     <span class="name">appendItem</span>(<span class="name">screen</span>.<span class="name">name</span>, { type: <span class="string">'screen'</span>, screen: <span class="name">screen</span> })
+
+             <span class="name">appendToggler</span>(<span class="string">'Windows'</span>, <span class="string">'window'</span>)
+             <span class="keyword">if</span> (<span class="name">enabledSources</span>[<span class="string">'window'</span>])
+                 <span class="keyword">for</span> (var window of <span class="name">windowCapture</span>.<span class="name">capturableWindows</span>())
+                     <span class="name">appendItem</span>(<span class="name">window</span>.<span class="name">description</span>, { type: <span class="string">'window'</span>, window: <span class="name">window</span> })
+         }
+     }
+</pre>
+<p><code translate="no">comboBox</code>, declared in the above snippet, assigns the current video source.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-combobox.html" translate="no">ComboBox</a></span> {
+         <span class="name">id</span>: <span class="name">comboBox</span>
+         <span class="name">width</span>: <span class="name">Style</span>.<span class="name">widthLong</span>
+         <span class="name">height</span>: <span class="name">Style</span>.<span class="name">height</span>
+         <span class="name">background</span>: <span class="name">StyleRectangle</span> { <span class="name">anchors</span>.fill: <span class="name">parent</span> }
+         <span class="name">model</span>: <span class="name">videoSourceModel</span>
+         <span class="name">displayText</span>: typeof <span class="name">currentValue</span> <span class="operator">===</span> <span class="string">'undefined'</span> <span class="operator">||</span>
+                      <span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'toggler'</span> ? <span class="string">&quot;Unavailable&quot;</span> : <span class="name">currentText</span>
+         <span class="name">font</span>.pointSize: <span class="name">Style</span>.<span class="name">fontSize</span>
+         <span class="name">textRole</span>: <span class="string">&quot;text&quot;</span>
+         <span class="name">valueRole</span>: <span class="string">&quot;value&quot;</span>
+         <span class="name">onCurrentValueChanged</span>: {
+             <span class="keyword">if</span> (typeof <span class="name">currentValue</span> <span class="operator">===</span> <span class="string">'undefined'</span>)
+                 <span class="keyword">return</span>
+             <span class="keyword">if</span> (<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'screen'</span>)
+                 <span class="name">screenCapture</span>.<span class="name">screen</span> <span class="operator">=</span> <span class="name">currentValue</span>.<span class="name">screen</span>
+             <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">currentValue</span>.<span class="name">type</span> <span class="operator">===</span> <span class="string">'camera'</span>)
+                 <span class="name">camera</span>.<span class="name">cameraDevice</span> <span class="operator">=</span> <span class="name">currentValue</span>.<span class="name">camera</span>
+</pre>
+<h6 id="selecting-an-audio-input">Selecting an audio input</h6>
+<p>Implemented in the same way as <a href="qtmultimedia-video-recorder-example.html#selecting-a-video-source">Selecting a video source</a> and defined in <code translate="no">AudioInputSelect.qml</code> like so:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+     <span class="name">id</span>: <span class="name">root</span>
+     <span class="name">height</span>: <span class="name">Style</span>.<span class="name">height</span>
+     property <span class="type"><a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a></span> <span class="name">selected</span>: <span class="name">available</span> ? <span class="name">audioInput</span> : <span class="number">null</span>
+     property <span class="type">bool</span> <span class="name">available</span>: (typeof <span class="name">comboBox</span>.<span class="name">currentValue</span> <span class="operator">!==</span> <span class="string">'undefined'</span>) <span class="operator">&amp;&amp;</span> <span class="name">audioSwitch</span>.<span class="name">checked</span>
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">audioInputModel</span>.<span class="name">populate</span>()
+         <span class="name">comboBox</span>.<span class="name">currentIndex</span> <span class="operator">=</span> <span class="number">0</span>
+     }
+
+     <span class="type"><a href="qml-qtmultimedia-mediadevices.html" translate="no">MediaDevices</a></span> { <span class="name">id</span>: <span class="name">mediaDevices</span> }
+
+     <span class="type"><a href="qml-qtmultimedia-audioinput.html" translate="no">AudioInput</a></span> { <span class="name">id</span>: <span class="name">audioInput</span>; <span class="name">muted</span>: !<span class="name">audioSwitch</span>.<span class="name">checked</span> }
+
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+         <span class="name">id</span>: <span class="name">audioSwitch</span>;
+         <span class="name">height</span>: <span class="name">Style</span>.<span class="name">height</span>;
+         <span class="name">checked</span>: <span class="number">true</span>
+     }
+
+     <span class="type">ListModel</span> {
+         <span class="name">id</span>: <span class="name">audioInputModel</span>
+         property <span class="type">var</span> <span class="name">audioInputs</span>: <span class="name">mediaDevices</span>.<span class="name">audioInputs</span>
+
+         <span class="keyword">function</span> <span class="name">populate</span>() {
+             <span class="name">audioInputModel</span>.<span class="name">clear</span>()
+
+             <span class="keyword">for</span> (var audioDevice of <span class="name">audioInputs</span>)
+                 <span class="name">audioInputModel</span>.<span class="name">append</span>({ text: <span class="name">audioDevice</span>.<span class="name">description</span>, value:
+                                         { type: <span class="string">'audioDevice'</span>, audioDevice: <span class="name">audioDevice</span> } })
+         }
+     }
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-combobox.html" translate="no">ComboBox</a></span> {
+         <span class="name">id</span>: <span class="name">comboBox</span>
+         <span class="name">width</span>: <span class="name">Style</span>.<span class="name">widthLong</span>
+         <span class="name">height</span>: <span class="name">Style</span>.<span class="name">height</span>
+         <span class="name">background</span>: <span class="name">StyleRectangle</span> { <span class="name">anchors</span>.fill: <span class="name">parent</span> }
+         <span class="name">model</span>: <span class="name">audioInputModel</span>
+         <span class="name">textRole</span>: <span class="string">&quot;text&quot;</span>
+         <span class="name">font</span>.pointSize: <span class="name">Style</span>.<span class="name">fontSize</span>
+         <span class="name">displayText</span>: typeof <span class="name">currentValue</span> <span class="operator">===</span> <span class="string">'undefined'</span> ? <span class="string">&quot;unavailable&quot;</span> : <span class="name">currentText</span>
+         <span class="name">valueRole</span>: <span class="string">&quot;value&quot;</span>
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimedia/video/recorder?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@video/recorder -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

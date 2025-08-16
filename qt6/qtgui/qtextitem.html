@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qpaintengine.cpp -->
+  <meta name="description" content="The QTextItem class provides all the information required to draw text in a custom paint engine.">
+  <title>QTextItem Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QTextItem</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QTextItem Class</h1>
+<!-- $$$QTextItem-brief -->
+<p>The QTextItem class provides all the information required to draw text in a custom paint engine. <a href="#details">More...</a></p>
+<!-- @@@QTextItem -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QTextItem&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qtextitem-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#RenderFlag-enum" translate="no">RenderFlag</a></b> { RightToLeft, Overline, Underline, StrikeOut }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#RenderFlag-enum" translate="no">RenderFlags</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#ascent" translate="no">ascent</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#descent" translate="no">descent</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QFont </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#font" translate="no">font</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QTextItem::RenderFlags </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#renderFlags" translate="no">renderFlags</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#text" translate="no">text</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qtextitem.html#width" translate="no">width</a></b>() const</td></tr>
+</table></div>
+<!-- $$$QTextItem-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>When you reimplement your own paint engine, you must reimplement <a href="qpaintengine.html#drawTextItem" translate="no">QPaintEngine::drawTextItem</a>(), a function that takes a QTextItem as one of its arguments.</p>
+</div>
+<!-- @@@QTextItem -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$RenderFlag$$$RightToLeft$$$Overline$$$Underline$$$StrikeOut$$$Dummy -->
+<h3 class="flags" id="RenderFlag-enum">enum QTextItem::<span class="name">RenderFlag</span><br/>flags QTextItem::<span class="name">RenderFlags</span></h3>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QTextItem::RightToLeft</code></td><td class="topAlign tblval"><code translate="no">0x1</code></td><td class="topAlign">Render the text from right to left.</td></tr>
+<tr><td class="topAlign"><code translate="no">QTextItem::Overline</code></td><td class="topAlign tblval"><code translate="no">0x10</code></td><td class="topAlign">Paint a line above the text.</td></tr>
+<tr><td class="topAlign"><code translate="no">QTextItem::Underline</code></td><td class="topAlign tblval"><code translate="no">0x20</code></td><td class="topAlign">Paint a line under the text.</td></tr>
+<tr><td class="topAlign"><code translate="no">QTextItem::StrikeOut</code></td><td class="topAlign tblval"><code translate="no">0x40</code></td><td class="topAlign">Paint a line through the text.</td></tr>
+</table></div>
+<p>The RenderFlags type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;RenderFlag&gt;. It stores an OR combination of RenderFlag values.</p>
+<!-- @@@RenderFlag -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$ascent[overload1]$$$ascent -->
+<h3 class="fn" translate="no" id="ascent"><span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> QTextItem::<span class="name">ascent</span>() const</h3>
+<p>Corresponds to the <a href="qfontmetrics.html#ascent" translate="no">ascent</a> of the piece of text that is drawn.</p>
+<!-- @@@ascent -->
+<!-- $$$descent[overload1]$$$descent -->
+<h3 class="fn" translate="no" id="descent"><span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> QTextItem::<span class="name">descent</span>() const</h3>
+<p>Corresponds to the <a href="qfontmetrics.html#descent" translate="no">descent</a> of the piece of text that is drawn.</p>
+<!-- @@@descent -->
+<!-- $$$font[overload1]$$$font -->
+<h3 class="fn" translate="no" id="font"><span class="type"><a href="qfont.html" translate="no">QFont</a></span> QTextItem::<span class="name">font</span>() const</h3>
+<p>Returns the font that should be used to draw the text.</p>
+<!-- @@@font -->
+<!-- $$$renderFlags[overload1]$$$renderFlags -->
+<h3 class="fn" translate="no" id="renderFlags"><span class="type"><a href="qtextitem.html#RenderFlag-enum" translate="no">QTextItem::RenderFlags</a></span> QTextItem::<span class="name">renderFlags</span>() const</h3>
+<p>Returns the render flags used.</p>
+<!-- @@@renderFlags -->
+<!-- $$$text[overload1]$$$text -->
+<h3 class="fn" translate="no" id="text"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QTextItem::<span class="name">text</span>() const</h3>
+<p>Returns the text that should be drawn.</p>
+<!-- @@@text -->
+<!-- $$$width[overload1]$$$width -->
+<h3 class="fn" translate="no" id="width"><span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> QTextItem::<span class="name">width</span>() const</h3>
+<p>Specifies the total width of the text to be drawn.</p>
+<!-- @@@width -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

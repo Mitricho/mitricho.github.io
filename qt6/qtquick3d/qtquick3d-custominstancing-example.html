@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- custominstancing.qdoc -->
+  <meta name="description" content="Demonstrates instancing with custom materials and a C++ instance table.">
+  <title>Qt Quick 3D - Custom Instanced Rendering | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Custom Instanced Rendering</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#custom-instancing-table">Custom instancing table</a></li>
+<li class="level1"><a href="#custom-material">Custom material</a></li>
+<li class="level1"><a href="#using-the-custom-table-and-material-in-qml">Using the custom table and material in QML</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Custom Instanced Rendering</h1>
+<!-- $$$custominstancing-brief -->
+<p>Demonstrates instancing with custom materials and a C++ instance table.</p>
+<!-- @@@custominstancing -->
+<!-- $$$custominstancing-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/custominstancing.jpg" alt="" /></p><p>This example shows how to create instance data programmatically in C++, and how to use custom materials with instanced rendering.</p>
+<h4 id="custom-instancing-table">Custom instancing table</h4>
+<p>We define our table as a subclass of <a href="qquick3dinstancing.html" translate="no">QQuick3DInstancing</a> and add some properties so we can control it from QML:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CppInstanceTable : <span class="keyword">public</span> QQuick3DInstancing
+ {
+     Q_OBJECT
+     QML_ELEMENT
+
+     Q_PROPERTY(<span class="type">int</span> gridSize READ gridSize WRITE setGridSize NOTIFY gridSizeChanged)
+     Q_PROPERTY(<span class="type">float</span> gridSpacing READ gridSpacing WRITE setGridSpacing NOTIFY gridSpacingChanged)
+     Q_PROPERTY(<span class="type">int</span> randomSeed READ randomSeed WRITE setRandomSeed NOTIFY randomSeedChanged)
+</pre>
+<p>The virtual function <a href="qquick3dinstancing.html#getInstanceBuffer" translate="no">getInstanceBuffer</a> is reimplemented to return the instancing data:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> CppInstanceTable<span class="operator">::</span>getInstanceBuffer(<span class="type">int</span> <span class="operator">*</span>instanceCount)
+ {
+     <span class="keyword">if</span> (m_dirty) {
+         BlockTable blocks(m_gridSize<span class="operator">,</span> m_randomSeed);
+         m_instanceData<span class="operator">.</span>resize(<span class="number">0</span>);
+
+         <span class="keyword">auto</span> idxToPos <span class="operator">=</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>(<span class="type">int</span> i) <span class="operator">-</span><span class="operator">&gt;</span> <span class="type">float</span> { <span class="keyword">return</span> m_gridSpacing <span class="operator">*</span> (i <span class="operator">-</span> m_gridSize <span class="operator">/</span> <span class="number">2</span>); };
+
+         <span class="type">int</span> instanceNumber <span class="operator">=</span> <span class="number">0</span>;
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> m_gridSize; <span class="operator">+</span><span class="operator">+</span>i) {
+             <span class="type">float</span> xPos <span class="operator">=</span> idxToPos(i);
+             <span class="keyword">for</span> (<span class="type">int</span> j <span class="operator">=</span> <span class="number">0</span>; j <span class="operator">&lt;</span> m_gridSize; <span class="operator">+</span><span class="operator">+</span>j) {
+                 <span class="type">float</span> zPos <span class="operator">=</span> idxToPos(j);
+                 <span class="type">int</span> lowest <span class="operator">=</span> blocks<span class="operator">.</span>lowestVisible(i<span class="operator">,</span> j);
+                 <span class="type">int</span> highest <span class="operator">=</span> blocks<span class="operator">.</span>highestBlock(i<span class="operator">,</span> j);
+                 <span class="keyword">for</span> (<span class="type">int</span> k <span class="operator">=</span> lowest; k <span class="operator">&lt;</span><span class="operator">=</span> highest; <span class="operator">+</span><span class="operator">+</span>k) {
+                     <span class="type">float</span> yPos <span class="operator">=</span> idxToPos(k);
+                     <span class="type"><a href="../qtgui/qcolor.html" translate="no">QColor</a></span> color <span class="operator">=</span> blocks<span class="operator">.</span>getBlockColor(i<span class="operator">,</span> j<span class="operator">,</span> k);
+                     <span class="type">float</span> waterAnimation <span class="operator">=</span> blocks<span class="operator">.</span>isWaterSurface(i<span class="operator">,</span> j<span class="operator">,</span> k) <span class="operator">?</span> <span class="number">1.0</span> : <span class="number">0.0</span>;
+                     <span class="keyword">auto</span> entry <span class="operator">=</span> calculateTableEntry({ xPos<span class="operator">,</span> yPos<span class="operator">,</span> zPos }<span class="operator">,</span> { <span class="number">1.0</span><span class="operator">,</span> <span class="number">1.0</span><span class="operator">,</span> <span class="number">1.0</span> }<span class="operator">,</span> {}<span class="operator">,</span> color<span class="operator">,</span> { waterAnimation<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span> });
+                     m_instanceData<span class="operator">.</span>append(<span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">&gt;</span>(<span class="operator">&amp;</span>entry)<span class="operator">,</span> <span class="keyword">sizeof</span>(entry));
+                     instanceNumber<span class="operator">+</span><span class="operator">+</span>;
+                 }
+             }
+         }
+         m_instanceCount <span class="operator">=</span> instanceNumber;
+         m_dirty <span class="operator">=</span> <span class="keyword">false</span>;
+     }
+     <span class="keyword">if</span> (instanceCount)
+         <span class="operator">*</span>instanceCount <span class="operator">=</span> m_instanceCount;
+
+     <span class="keyword">return</span> m_instanceData;
+ }
+</pre>
+<h4 id="custom-material">Custom material</h4>
+<p>We use a shaded custom material, meaning that Qt gives us the basic implementation, and we just specify additional logic.</p>
+<p>The only customization we need for the vertex shader is for passing information to the fragment shader. By default, Qt only provides the instance data to the vertex shader, so we pass it on as <code translate="no">vCustomData</code>. We also calculate the global position of the vertex and make it available as <code translate="no">vGlobalPosition</code>.</p>
+<pre class="cpp" translate="no">
+ // Copyright (C) 2023 The Qt Company Ltd.
+ // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
+
+ VARYING vec4 vCustomData;
+ VARYING vec3 vGlobalPosition;
+ void MAIN()
+ {
+     vCustomData = INSTANCE_DATA;
+
+     // MODEL_MATRIX does not exist when instancing
+     vec4 pos = INSTANCE_MODEL_MATRIX * vec4(VERTEX, 1.0);
+     vGlobalPosition = pos.xyz;
+ }
+</pre>
+<p>The fragment shader performs a simple wave animation for water surfaces. Everything else gets a subtle radial gradient. The difference is determined by the first element of the custom data.</p>
+<pre class="cpp" translate="no">
+ VARYING vec4 vCustomData;
+ VARYING vec3 vGlobalPosition;
+
+ void MAIN()
+ {
+     METALNESS = 0.0;
+     ROUGHNESS = 1.0;
+     FRESNEL_POWER = 5.0;
+
+     float c;
+
+     if (vCustomData.x &gt; 0)
+         c = 1.0 - (1.0 + sin(sqrt(vGlobalPosition.x*vGlobalPosition.x + vGlobalPosition.z*vGlobalPosition.z) - uTime/200.0)) * 0.2;
+     else
+         c = 1.0 - 0.25 * (UV0.x*UV0.x + UV0.y*UV0.y);
+
+     BASE_COLOR = vec4(c, c, c, 1.0);
+ }
+</pre>
+<h4 id="using-the-custom-table-and-material-in-qml">Using the custom table and material in QML</h4>
+<p>We create a custom material using the shaders we made earlier, and add a new property <code translate="no">uTime</code>. This property is automatically mapped to the corresponding uniform in the fragment shader.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a></span> {
+     <span class="name">id</span>: <span class="name">cubeMaterial</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">uTime</span>: <span class="name">frametimer</span>.<span class="name">elapsedTime</span>
+     <span class="type"><a href="../qtquick/qml-qtquick-frameanimation.html" translate="no">FrameAnimation</a></span> {
+         <span class="name">id</span>: <span class="name">frametimer</span>
+         <span class="name">running</span>: <span class="number">true</span>
+     }
+
+     <span class="name">vertexShader</span>: <span class="string">&quot;cubeMaterial.vert&quot;</span>
+     <span class="name">fragmentShader</span>: <span class="string">&quot;cubeMaterial.frag&quot;</span>
+ }
+</pre>
+<p>Finally, we create our model and apply the custom material and instance table:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">id</span>: <span class="name">instancedCube</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">cubeSize</span>: <span class="number">15</span>
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">cubeSize</span><span class="operator">/</span><span class="number">100</span>, <span class="name">cubeSize</span><span class="operator">/</span><span class="number">100</span>, <span class="name">cubeSize</span><span class="operator">/</span><span class="number">100</span>)
+     <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+     <span class="name">instancing</span>: <span class="name">CppInstanceTable</span> {
+         <span class="name">gridSize</span>: <span class="number">65</span>
+         <span class="name">gridSpacing</span>: <span class="name">instancedCube</span>.<span class="name">cubeSize</span>
+         <span class="name">randomSeed</span>: <span class="number">1522562186</span>
+     }
+     <span class="name">materials</span>: [ <span class="name">cubeMaterial</span> ]
+ }
+</pre>
+<p>Note that we only create a single cube: All the heavy lifting is done by the GPU.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/custominstancing?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@custominstancing -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qstringlist.cpp -->
+  <meta name="description" content="The QStringList class provides a list of strings.">
+  <title>QStringList Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QStringList</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#initializing">Initializing</a></li>
+<li class="level2"><a href="#adding-strings">Adding Strings</a></li>
+<li class="level2"><a href="#iterating-over-the-strings">Iterating Over the Strings</a></li>
+<li class="level2"><a href="#manipulating-the-strings">Manipulating the Strings</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QStringList Class</h1>
+<!-- $$$QStringList-brief -->
+<p>The QStringList class provides a list of strings. <a href="#details">More...</a></p>
+<!-- @@@QStringList -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QStringList&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qlist.html" translate="no">QList</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qstringlist-members.html">List of all members, including inherited members</a></li>
+<li>QStringList is part of <a href="shared.html">Implicitly Shared Classes</a> and <a href="string-processing.html">Classes for string data</a>.</li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#QStringList" translate="no">QStringList</a></b>(const QList&lt;QString&gt; &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#QStringList-1" translate="no">QStringList</a></b>(const QString &amp;<i>str</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#QStringList-2" translate="no">QStringList</a></b>(QList&lt;QString&gt; &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#contains" translate="no">contains</a></b>(const QString &amp;<i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#contains-1" translate="no">contains</a></b>(QLatin1StringView <i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#contains-2" translate="no">contains</a></b>(QStringView <i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter" translate="no">filter</a></b>(const QLatin1StringMatcher &amp;<i>matcher</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter-1" translate="no">filter</a></b>(const QString &amp;<i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter-2" translate="no">filter</a></b>(const QRegularExpression &amp;<i>re</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter-3" translate="no">filter</a></b>(const QStringMatcher &amp;<i>matcher</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter-4" translate="no">filter</a></b>(QLatin1StringView <i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#filter-5" translate="no">filter</a></b>(QStringView <i>str</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#indexOf" translate="no">indexOf</a></b>(QLatin1StringView <i>str</i>, qsizetype <i>from</i> = 0, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#indexOf-1" translate="no">indexOf</a></b>(QStringView <i>str</i>, qsizetype <i>from</i> = 0, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#indexOf-2" translate="no">indexOf</a></b>(const QString &amp;<i>str</i>, qsizetype <i>from</i> = 0, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#indexOf-3" translate="no">indexOf</a></b>(const QRegularExpression &amp;<i>re</i>, qsizetype <i>from</i> = 0) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#join" translate="no">join</a></b>(const QString &amp;<i>separator</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#join-1" translate="no">join</a></b>(QChar <i>separator</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#join-2" translate="no">join</a></b>(QLatin1StringView <i>separator</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#join-3" translate="no">join</a></b>(QStringView <i>separator</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a></b>(QLatin1StringView <i>str</i>, qsizetype <i>from</i> = -1, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#lastIndexOf-1" translate="no">lastIndexOf</a></b>(QStringView <i>str</i>, qsizetype <i>from</i> = -1, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#lastIndexOf-2" translate="no">lastIndexOf</a></b>(const QString &amp;<i>str</i>, qsizetype <i>from</i> = -1, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#lastIndexOf-3" translate="no">lastIndexOf</a></b>(const QRegularExpression &amp;<i>re</i>, qsizetype <i>from</i> = -1) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#removeDuplicates" translate="no">removeDuplicates</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#replaceInStrings" translate="no">replaceInStrings</a></b>(const QString &amp;<i>before</i>, const QString &amp;<i>after</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#replaceInStrings-1" translate="no">replaceInStrings</a></b>(const QRegularExpression &amp;<i>re</i>, const QString &amp;<i>after</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#replaceInStrings-2" translate="no">replaceInStrings</a></b>(QStringView <i>before</i>, QStringView <i>after</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#replaceInStrings-3" translate="no">replaceInStrings</a></b>(QStringView <i>before</i>, const QString &amp;<i>after</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#replaceInStrings-4" translate="no">replaceInStrings</a></b>(const QString &amp;<i>before</i>, QStringView <i>after</i>, Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#sort" translate="no">sort</a></b>(Qt::CaseSensitivity <i>cs</i> = Qt::CaseSensitive)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-2b" translate="no">operator+</a></b>(const QStringList &amp;<i>other</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-lt-lt" translate="no">operator&lt;&lt;</a></b>(const QString &amp;<i>str</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-lt-lt-1" translate="no">operator&lt;&lt;</a></b>(const QList&lt;QString&gt; &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-lt-lt-2" translate="no">operator&lt;&lt;</a></b>(const QStringList &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-eq" translate="no">operator=</a></b>(const QList&lt;QString&gt; &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList &amp;</td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#operator-eq-1" translate="no">operator=</a></b>(QList&lt;QString&gt; &amp;&amp;<i>other</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#QMutableStringListIterator-typedef" translate="no">QMutableStringListIterator</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qstringlist.html#QStringListIterator-typedef" translate="no">QStringListIterator</a></b></td></tr>
+</table></div>
+<!-- $$$QStringList-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QStringList inherits from <a href="qlist.html" translate="no">QList</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;. Like <a href="qlist.html" translate="no">QList</a>, QStringList is <a href="implicit-sharing.html">implicitly shared</a>. It provides fast index-based access as well as fast insertions and removals. Passing string lists as value parameters is both fast and safe.</p>
+<p>All of <a href="qlist.html" translate="no">QList</a>'s functionality also applies to QStringList. For example, you can use <a href="qlist.html#isEmpty" translate="no">isEmpty</a>() to test whether the list is empty, and you can call functions like <a href="qlist.html#append" translate="no">append</a>(), <a href="qlist.html#prepend" translate="no">prepend</a>(), <a href="qlist.html#insert" translate="no">insert</a>(), <a href="qlist.html#replace" translate="no">replace</a>(), <a href="qlist.html#removeAll" translate="no">removeAll</a>(), <a href="qlist.html#removeAt" translate="no">removeAt</a>(), <a href="qlist.html#removeFirst" translate="no">removeFirst</a>(), <a href="qlist.html#removeLast" translate="no">removeLast</a>(), and <a href="qlist.html#removeOne" translate="no">removeOne</a>() to modify a QStringList. In addition, QStringList provides a few convenience functions that make handling lists of strings easier.</p>
+<h3 id="initializing">Initializing</h3>
+<p>The default constructor creates an empty list. You can use the initializer-list constructor to create a list with elements:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> fonts <span class="operator">=</span> { <span class="string">&quot;Arial&quot;</span><span class="operator">,</span> <span class="string">&quot;Helvetica&quot;</span><span class="operator">,</span> <span class="string">&quot;Times&quot;</span> };
+</pre>
+<h3 id="adding-strings">Adding Strings</h3>
+<p>Strings can be added to a list using the <a href="qlist.html#insert" translate="no">insert</a>(), <a href="qlist.html#append" translate="no">append</a>(), <a href="qlist.html#operator-2b-eq" translate="no">operator+=</a>() and <a href="qstringlist.html#operator-lt-lt" translate="no">operator&lt;&lt;</a>() functions.</p>
+<p><a href="qstringlist.html#operator-lt-lt" translate="no">operator&lt;&lt;</a>() can be used to conveniently add multiple elements to a list:</p>
+<pre class="cpp" translate="no">
+     fonts <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Courier&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Verdana&quot;</span>;
+</pre>
+<h3 id="iterating-over-the-strings">Iterating Over the Strings</h3>
+<p>See <a href="containers.html#iterating-over-containers">Iterating over Containers</a>.</p>
+<h3 id="manipulating-the-strings">Manipulating the Strings</h3>
+<p>QStringList provides several functions allowing you to manipulate the contents of a list. You can concatenate all the strings in a string list into a single string (with an optional separator) using the <a href="qstringlist.html#join" translate="no">join</a>() function. For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> str <span class="operator">=</span> fonts<span class="operator">.</span>join(<span class="string">&quot;, &quot;</span>);
+      <span class="comment">// str == &quot;Arial, Helvetica, Times, Courier&quot;</span>
+</pre>
+<p>The argument to join can be a single character or a string.</p>
+<p>To break up a string into a string list, use the <a href="qstring.html#split" translate="no">QString::split</a>() function:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> list;
+     list <span class="operator">=</span> str<span class="operator">.</span>split(<span class="char">','</span>);
+      <span class="comment">// list: [&quot;Arial&quot;, &quot;Helvetica&quot;, &quot;Times&quot;, &quot;Courier&quot;]</span>
+</pre>
+<p>The argument to split can be a single character, a string or a <a href="qregularexpression.html" translate="no">QRegularExpression</a>.</p>
+<p>In addition, the <a href="qstringlist.html#operator-2b" translate="no">operator+</a>() function allows you to concatenate two string lists into one. To sort a string list, use the <a href="qstringlist.html#sort" translate="no">sort</a>() function.</p>
+<p><a href="qstring.html" translate="no">QString</a> list also provides the <a href="qstringlist.html#filter" translate="no">filter</a>() function which lets you to extract a new list which contains only those strings which contain a particular substring (or match a particular regular expression):</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> monospacedFonts <span class="operator">=</span> fonts<span class="operator">.</span>filter(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span>(<span class="string">&quot;Courier|Fixed&quot;</span>));
+</pre>
+<p>The <a href="qstringlist.html#contains" translate="no">contains</a>() function tells you whether the list contains a given string, while the <a href="qstringlist.html#indexOf" translate="no">indexOf</a>() function returns the index of the first occurrence of the given string. The <a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a>() function on the other hand, returns the index of the last occurrence of the string.</p>
+<p>Finally, the <a href="qstringlist.html#replaceInStrings" translate="no">replaceInStrings</a>() function calls <a href="qstring.html#replace" translate="no">QString::replace</a>() on each string in the string list in turn. For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> files;
+     files <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;$QTDIR/src/moc/moc.y&quot;</span>
+           <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;$QTDIR/src/moc/moc.l&quot;</span>
+           <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;$QTDIR/include/qconfig.h&quot;</span>;
+
+     files<span class="operator">.</span>replaceInStrings(<span class="string">&quot;$QTDIR&quot;</span><span class="operator">,</span> <span class="string">&quot;/usr/lib/qt&quot;</span>);
+     <span class="comment">// files: [ &quot;/usr/lib/qt/src/moc/moc.y&quot;, ...]</span>
+</pre>
+</div>
+<p><b>See also </b><a href="qstring.html" translate="no">QString</a>.</p>
+<!-- @@@QStringList -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="indexOf"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">indexOf</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>str</i>, <span class="type">qsizetype</span> <i>from</i> = 0, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3><h3 class="fn fngroupitem" translate="no" id="indexOf-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">indexOf</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>str</i>, <span class="type">qsizetype</span> <i>from</i> = 0, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3><h3 class="fn fngroupitem" translate="no" id="indexOf-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">indexOf</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>, <span class="type">qsizetype</span> <i>from</i> = 0, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3></div>
+<p>Returns the index position of the first match of <i translate="no">str</i> in the list, searching forward from index position <i translate="no">from</i>. Returns -1 if no item matched.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <i translate="no">cs</i> parameter was added in Qt 6.7, i.e. these methods now overload the methods inherited from the base class. Prior to that these methods only had two parameters. This change is source compatible and existing code should continue to work.</p>
+</div>
+<p><b>See also </b><a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a>().</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="lastIndexOf"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">lastIndexOf</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>str</i>, <span class="type">qsizetype</span> <i>from</i> = -1, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3><h3 class="fn fngroupitem" translate="no" id="lastIndexOf-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">lastIndexOf</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>str</i>, <span class="type">qsizetype</span> <i>from</i> = -1, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3><h3 class="fn fngroupitem" translate="no" id="lastIndexOf-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">qsizetype</span> QStringList::<span class="name">lastIndexOf</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>, <span class="type">qsizetype</span> <i>from</i> = -1, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3></div>
+<p>Returns the index position of the last match of <i translate="no">str</i> in the list, searching backward from index position <i translate="no">from</i>. If <i translate="no">from</i> is -1 (the default), the search starts at the last item. Returns -1 if no item matched.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <i translate="no">cs</i> parameter was added in Qt 6.7, i.e. these methods now overload the methods inherited from the base class. Prior to that these methods only had two parameters. This change is source compatible and existing code should continue to work.</p>
+</div>
+<p><b>See also </b><a href="qstringlist.html#indexOf" translate="no">indexOf</a>().</p>
+<!-- @@@ -->
+<!-- $$$QStringList[overload1]$$$QStringListconstQList<QString>& -->
+<h3 class="fn" translate="no" id="QStringList">QStringList::<span class="name">QStringList</span>(const <span class="type"><a href="qlist.html#QList" translate="no">QList</a></span>&lt;<span class="type"><a href="qstring.html" translate="no">QString</a></span>&gt; &amp;<i>other</i>)</h3>
+<p>Constructs a copy of <i translate="no">other</i>.</p>
+<p>This operation takes <a href="containers.html#constant-time">constant time</a>, because QStringList is <a href="implicit-sharing.html">implicitly shared</a>. This makes returning a QStringList from a function very fast. If a shared instance is modified, it will be copied (copy-on-write), and that takes <a href="containers.html#linear-time">linear time</a>.</p>
+<p><b>See also </b><a href="qstringlist.html#operator-eq" translate="no">operator=</a>().</p>
+<!-- @@@QStringList -->
+<!-- $$$QStringList$$$QStringListconstQString& -->
+<h3 class="fn" translate="no" id="QStringList-1">QStringList::<span class="name">QStringList</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>)</h3>
+<p>Constructs a string list that contains the given string, <i translate="no">str</i>. Longer lists are easily created like this:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> longerList <span class="operator">=</span> (<span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> str1 <span class="operator">&lt;</span><span class="operator">&lt;</span> str2 <span class="operator">&lt;</span><span class="operator">&lt;</span> str3);
+</pre>
+<p><b>See also </b><a href="qlist.html#append" translate="no">append</a>().</p>
+<!-- @@@QStringList -->
+<!-- $$$QStringList$$$QStringListQList<QString>&& -->
+<h3 class="fn" translate="no" id="QStringList-2">QStringList::<span class="name">QStringList</span>(<span class="type"><a href="qlist.html#QList" translate="no">QList</a></span>&lt;<span class="type"><a href="qstring.html" translate="no">QString</a></span>&gt; &amp;&amp;<i>other</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Move-constructs from <a href="qlist.html" translate="no">QList</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;.</p>
+<p>After a successful construction, <i translate="no">other</i> will be empty.</p>
+<!-- @@@QStringList -->
+<!-- $$$contains[overload1]$$$containsconstQString&Qt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="contains"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QStringList::<span class="name">contains</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>Returns <code translate="no">true</code> if the list contains the string <i translate="no">str</i>; otherwise returns <code translate="no">false</code>.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<p><b>See also </b><a href="qstringlist.html#indexOf" translate="no">indexOf</a>(), <a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a>(), and <a href="qstring.html#contains" translate="no">QString::contains</a>().</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsQLatin1StringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="contains-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QStringList::<span class="name">contains</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the list contains the Latin-1 string viewed by <i translate="no">str</i>; otherwise returns <code translate="no">false</code>.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<p><b>See also </b><a href="qstringlist.html#indexOf" translate="no">indexOf</a>(), <a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a>(), and <a href="qstring.html#contains" translate="no">QString::contains</a>().</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsQStringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="contains-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QStringList::<span class="name">contains</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the list contains the string <i translate="no">str</i>; otherwise returns <code translate="no">false</code>.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<!-- @@@contains -->
+<!-- $$$filter[overload1]$$$filterconstQLatin1StringMatcher& -->
+<h3 class="fn" translate="no" id="filter"><code class="details extra" translate="no">[since 6.9]</code> <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(const <span class="type"><a href="qlatin1stringmatcher.html" translate="no">QLatin1StringMatcher</a></span> &amp;<i>matcher</i>) const</h3>
+<p>Returns a list of all the strings matched by <i translate="no">matcher</i> (i.e. for which <code translate="no">matcher.indexIn()</code> returns an index &gt;= 0).</p>
+<p>Using <a href="qlatin1stringmatcher.html" translate="no">QLatin1StringMatcher</a> may be faster when searching in large lists and/or in lists with long strings (the best way to find out is benchmarking).</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> veryLargeList;
+     QLatin1StringMatcher matcher(<span class="string">&quot;Street&quot;</span>_L1<span class="operator">,</span> <span class="type">Qt</span><span class="operator">::</span>CaseInsensitive);
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> filtered <span class="operator">=</span> veryLargeList<span class="operator">.</span>filter(matcher);
+</pre>
+<p>This function was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qstringlist.html#contains" translate="no">contains</a>() and <a href="qstringlist.html#filter-3" translate="no">filter</a>(const QStringMatcher &amp;).</p>
+<!-- @@@filter -->
+<!-- $$$filter$$$filterconstQString&Qt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="filter-1"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>Returns a list of all the strings containing the substring <i translate="no">str</i>.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> list;
+     list <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Bill Murray&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;John Doe&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Bill Clinton&quot;</span>;
+
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> result;
+     result <span class="operator">=</span> list<span class="operator">.</span>filter(<span class="string">&quot;Bill&quot;</span>);
+     <span class="comment">// result: [&quot;Bill Murray&quot;, &quot;Bill Clinton&quot;]</span>
+</pre>
+<p>This is equivalent to</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> result;
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>str : std<span class="operator">::</span>as_const(list)) {
+         <span class="keyword">if</span> (str<span class="operator">.</span>contains(<span class="string">&quot;Bill&quot;</span>))
+             result <span class="operator">+</span><span class="operator">=</span> str;
+     }
+</pre>
+<p><b>See also </b><a href="qstringlist.html#contains" translate="no">contains</a>().</p>
+<!-- @@@filter -->
+<!-- $$$filter$$$filterconstQRegularExpression& -->
+<h3 class="fn" translate="no" id="filter-2"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(const <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> &amp;<i>re</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a list of all the strings that match the regular expression <i translate="no">re</i>.</p>
+<!-- @@@filter -->
+<!-- $$$filter$$$filterconstQStringMatcher& -->
+<h3 class="fn" translate="no" id="filter-3"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(const <span class="type"><a href="qstringmatcher.html" translate="no">QStringMatcher</a></span> &amp;<i>matcher</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a list of all the strings matched by <i translate="no">matcher</i> (i.e. for which <code translate="no">matcher.indexIn()</code> returns an index &gt;= 0).</p>
+<p>Using a <a href="qstringmatcher.html" translate="no">QStringMatcher</a> may be faster when searching in large lists and/or in lists with long strings (the best way to find out is benchmarking).</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> veryLongList;
+     <span class="type"><a href="qstringmatcher.html" translate="no">QStringMatcher</a></span> matcher(u<span class="string">&quot;Straße&quot;</span><span class="operator">,</span> <span class="type">Qt</span><span class="operator">::</span>CaseInsensitive);
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> filtered <span class="operator">=</span> veryLongList<span class="operator">.</span>filter(matcher);
+</pre>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qstringlist.html#contains" translate="no">contains</a>() and <a href="qstringlist.html#filter" translate="no">filter</a>(const QLatin1StringMatcher &amp;).</p>
+<!-- @@@filter -->
+<!-- $$$filter$$$filterQLatin1StringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="filter-4"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>This is an overloaded function.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@filter -->
+<!-- $$$filter$$$filterQStringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="filter-5"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">filter</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>str</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@filter -->
+<!-- $$$indexOf$$$indexOfconstQRegularExpression&qsizetype -->
+<h3 class="fn" translate="no" id="indexOf-3"><span class="type">qsizetype</span> QStringList::<span class="name">indexOf</span>(const <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> &amp;<i>re</i>, <span class="type">qsizetype</span> <i>from</i> = 0) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the index position of the first exact match of <i translate="no">re</i> in the list, searching forward from index position <i translate="no">from</i>. Returns -1 if no item matched.</p>
+<p><b>See also </b><a href="qstringlist.html#lastIndexOf" translate="no">lastIndexOf</a>().</p>
+<!-- @@@indexOf -->
+<!-- $$$join[overload1]$$$joinconstQString& -->
+<h3 class="fn" translate="no" id="join"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QStringList::<span class="name">join</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>separator</i>) const</h3>
+<p>Joins all the string list's strings into a single string with each element separated by the given <i translate="no">separator</i> (which can be an empty string).</p>
+<p><b>See also </b><a href="qstring.html#split" translate="no">QString::split</a>().</p>
+<!-- @@@join -->
+<!-- $$$join$$$joinQChar -->
+<h3 class="fn" translate="no" id="join-1"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QStringList::<span class="name">join</span>(<span class="type"><a href="qchar.html" translate="no">QChar</a></span> <i>separator</i>) const</h3>
+<p>This function overloads join().</p>
+<!-- @@@join -->
+<!-- $$$join$$$joinQLatin1StringView -->
+<h3 class="fn" translate="no" id="join-2"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QStringList::<span class="name">join</span>(<span class="type"><a href="qlatin1stringview.html" translate="no">QLatin1StringView</a></span> <i>separator</i>) const</h3>
+<p>This function overloads join().</p>
+<!-- @@@join -->
+<!-- $$$join$$$joinQStringView -->
+<h3 class="fn" translate="no" id="join-3"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QStringList::<span class="name">join</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>separator</i>) const</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@join -->
+<!-- $$$lastIndexOf$$$lastIndexOfconstQRegularExpression&qsizetype -->
+<h3 class="fn" translate="no" id="lastIndexOf-3"><span class="type">qsizetype</span> QStringList::<span class="name">lastIndexOf</span>(const <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> &amp;<i>re</i>, <span class="type">qsizetype</span> <i>from</i> = -1) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the index position of the last exact match of <i translate="no">re</i> in the list, searching backward from index position <i translate="no">from</i>. If <i translate="no">from</i> is -1 (the default), the search starts at the last item. Returns -1 if no item matched.</p>
+<p><b>See also </b><a href="qstringlist.html#indexOf" translate="no">indexOf</a>().</p>
+<!-- @@@lastIndexOf -->
+<!-- $$$removeDuplicates[overload1]$$$removeDuplicates -->
+<h3 class="fn" translate="no" id="removeDuplicates"><span class="type">qsizetype</span> QStringList::<span class="name">removeDuplicates</span>()</h3>
+<p>This function removes duplicate entries from a list. The entries do not have to be sorted. They will retain their original order.</p>
+<p>Returns the number of removed entries.</p>
+<!-- @@@removeDuplicates -->
+<!-- $$$replaceInStrings[overload1]$$$replaceInStringsconstQString&constQString&Qt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="replaceInStrings"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">replaceInStrings</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>before</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>after</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>Returns a string list where every string has had the <i translate="no">before</i> text replaced with the <i translate="no">after</i> text wherever the <i translate="no">before</i> text is found.</p>
+<div class="admonition note">
+<p><b>Note: </b>If you use an empty <i translate="no">before</i> argument, the <i translate="no">after</i> argument will be inserted <i>before and after</i> each character of the string.</p>
+</div>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> list;
+     list <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;alpha&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;beta&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;gamma&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;epsilon&quot;</span>;
+     list<span class="operator">.</span>replaceInStrings(<span class="string">&quot;a&quot;</span><span class="operator">,</span> <span class="string">&quot;o&quot;</span>);
+     <span class="comment">// list == [&quot;olpho&quot;, &quot;beto&quot;, &quot;gommo&quot;, &quot;epsilon&quot;]</span>
+</pre>
+<p><b>See also </b><a href="qstring.html#replace" translate="no">QString::replace</a>().</p>
+<!-- @@@replaceInStrings -->
+<!-- $$$replaceInStrings$$$replaceInStringsconstQRegularExpression&constQString& -->
+<h3 class="fn" translate="no" id="replaceInStrings-1"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">replaceInStrings</span>(const <span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span> &amp;<i>re</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>after</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Replaces every occurrence of the regular expression <i translate="no">re</i>, in each of the string lists's strings, with <i translate="no">after</i>. Returns a reference to the string list.</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> list;
+     list <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;alpha&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;beta&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;gamma&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;epsilon&quot;</span>;
+     list<span class="operator">.</span>replaceInStrings(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span>(<span class="string">&quot;^a&quot;</span>)<span class="operator">,</span> <span class="string">&quot;o&quot;</span>);
+     <span class="comment">// list == [&quot;olpha&quot;, &quot;beta&quot;, &quot;gamma&quot;, &quot;epsilon&quot;]</span>
+</pre>
+<p>For regular expressions that contain capturing groups, occurrences of <b>\1</b>, <b>\2</b>, ..., in <i translate="no">after</i> are replaced with the string captured by the corresponding capturing group.</p>
+<p>For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> list;
+     list <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Bill Clinton&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Murray, Bill&quot;</span>;
+     list<span class="operator">.</span>replaceInStrings(<span class="type"><a href="qregularexpression.html" translate="no">QRegularExpression</a></span>(<span class="string">&quot;^(.*), (.*)$&quot;</span>)<span class="operator">,</span> <span class="string">&quot;\\2 \\1&quot;</span>);
+     <span class="comment">// list == [&quot;Bill Clinton&quot;, &quot;Bill Murray&quot;]</span>
+</pre>
+<!-- @@@replaceInStrings -->
+<!-- $$$replaceInStrings$$$replaceInStringsQStringViewQStringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="replaceInStrings-2"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">replaceInStrings</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>before</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>after</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@replaceInStrings -->
+<!-- $$$replaceInStrings$$$replaceInStringsQStringViewconstQString&Qt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="replaceInStrings-3"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">replaceInStrings</span>(<span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>before</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>after</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@replaceInStrings -->
+<!-- $$$replaceInStrings$$$replaceInStringsconstQString&QStringViewQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="replaceInStrings-4"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">replaceInStrings</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>before</i>, <span class="type"><a href="qstringview.html" translate="no">QStringView</a></span> <i>after</i>, <span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>This is an overloaded function.</p>
+<!-- @@@replaceInStrings -->
+<!-- $$$sort[overload1]$$$sortQt::CaseSensitivity -->
+<h3 class="fn" translate="no" id="sort"><span class="type">void</span> QStringList::<span class="name">sort</span>(<span class="type"><a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitivity</a></span> <i>cs</i> = Qt::CaseSensitive)</h3>
+<p>Sorts the list of strings in ascending order.</p>
+<p>If <i translate="no">cs</i> is <a href="qt.html#CaseSensitivity-enum" translate="no">Qt::CaseSensitive</a> (the default), the string comparison is case sensitive; otherwise the comparison is case insensitive.</p>
+<p>Sorting is performed using the STL's std::sort() algorithm, which averages <a href="containers.html#linear-logarithmic-time">linear-logarithmic time</a>, i.e. O(<i>n</i> log <i>n</i>).</p>
+<p>If you want to sort your strings in an arbitrary order, consider using the <a href="qmap.html" translate="no">QMap</a> class. For example, you could use a <a href="qmap.html" translate="no">QMap</a>&lt;<a href="qstring.html" translate="no">QString</a>, <a href="qstring.html" translate="no">QString</a>&gt; to create a case-insensitive ordering (e.g. with the keys being lower-case versions of the strings, and the values being the strings), or a <a href="qmap.html" translate="no">QMap</a>&lt;int, <a href="qstring.html" translate="no">QString</a>&gt; to sort the strings by some integer index.</p>
+<!-- @@@sort -->
+<!-- $$$operator+[overload1]$$$operator+constQStringList& -->
+<h3 class="fn" translate="no" id="operator-2b"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> QStringList::<span class="name">operator+</span>(const <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns a string list that is the concatenation of this string list with the <i translate="no">other</i> string list.</p>
+<p><b>See also </b><a href="qlist.html#append" translate="no">append</a>().</p>
+<!-- @@@operator+ -->
+<!-- $$$operator<<[overload1]$$$operator<<constQString& -->
+<h3 class="fn" translate="no" id="operator-lt-lt"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">operator&lt;&lt;</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>str</i>)</h3>
+<p>Appends the given string, <i translate="no">str</i>, to this string list and returns a reference to the string list.</p>
+<p><b>See also </b><a href="qlist.html#append" translate="no">append</a>().</p>
+<!-- @@@operator<< -->
+<!-- $$$operator<<$$$operator<<constQList<QString>& -->
+<h3 class="fn" translate="no" id="operator-lt-lt-1"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">operator&lt;&lt;</span>(const <span class="type"><a href="qlist.html#QList" translate="no">QList</a></span>&lt;<span class="type"><a href="qstring.html" translate="no">QString</a></span>&gt; &amp;<i>other</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Appends the <i translate="no">other</i> string list to the string list and returns a reference to the latter string list.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator<<$$$operator<<constQStringList& -->
+<h3 class="fn" translate="no" id="operator-lt-lt-2"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">operator&lt;&lt;</span>(const <span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;<i>other</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Appends the <i translate="no">other</i> string list to the string list and returns a reference to the latter string list.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator=[overload1]$$$operator=constQList<QString>& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">operator=</span>(const <span class="type"><a href="qlist.html#QList" translate="no">QList</a></span>&lt;<span class="type"><a href="qstring.html" translate="no">QString</a></span>&gt; &amp;<i>other</i>)</h3>
+<p>Copy assignment operator from <a href="qlist.html" translate="no">QList</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;. Assigns the <i translate="no">other</i> list of strings to this string list.</p>
+<p>After the operation, <i translate="no">other</i> and <code translate="no">*this</code> will be equal.</p>
+<!-- @@@operator= -->
+<!-- $$$operator=$$$operator=QList<QString>&& -->
+<h3 class="fn" translate="no" id="operator-eq-1"><span class="type"><a href="qstringlist.html#QStringList" translate="no">QStringList</a></span> &amp;QStringList::<span class="name">operator=</span>(<span class="type"><a href="qlist.html#QList" translate="no">QList</a></span>&lt;<span class="type"><a href="qstring.html" translate="no">QString</a></span>&gt; &amp;&amp;<i>other</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Move assignment operator from <a href="qlist.html" translate="no">QList</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;. Moves the <i translate="no">other</i> list of strings to this string list.</p>
+<p>After the operation, <i translate="no">other</i> will be empty.</p>
+<!-- @@@operator= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$QMutableStringListIterator -->
+<h3 class="fn" translate="no" id="QMutableStringListIterator-typedef"><code class="details extra" translate="no">[alias]</code> <span class="name">QMutableStringListIterator</span></h3>
+<p>The <a href="qstringlist.html#QStringListIterator-typedef" translate="no">QStringListIterator</a> type definition provides a Java-style non-const iterator for <a href="qstringlist.html" translate="no">QStringList</a>.</p>
+<p><a href="qstringlist.html" translate="no">QStringList</a> provides both <a href="java-style-iterators.html#java-style-iterators">Java-style iterators</a> and <a href="containers.html#stl-style-iterators">STL-style iterators</a>. The Java-style non-const iterator is simply a type definition for <a href="qmutablelistiterator.html" translate="no">QMutableListIterator</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;.</p>
+<p><b>See also </b><a href="qstringlist.html#QStringListIterator-typedef" translate="no">QStringListIterator</a> and <a href="qlist-iterator.html" translate="no">QStringList::iterator</a>.</p>
+<!-- @@@QMutableStringListIterator -->
+<!-- $$$QStringListIterator -->
+<h3 class="fn" translate="no" id="QStringListIterator-typedef"><code class="details extra" translate="no">[alias]</code> <span class="name">QStringListIterator</span></h3>
+<p>The QStringListIterator type definition provides a Java-style const iterator for <a href="qstringlist.html" translate="no">QStringList</a>.</p>
+<p><a href="qstringlist.html" translate="no">QStringList</a> provides both <a href="java-style-iterators.html#java-style-iterators">Java-style iterators</a> and <a href="containers.html#stl-style-iterators">STL-style iterators</a>. The Java-style const iterator is simply a type definition for <a href="qlistiterator.html" translate="no">QListIterator</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;.</p>
+<p><b>See also </b><a href="qstringlist.html#QMutableStringListIterator-typedef" translate="no">QMutableStringListIterator</a> and <a href="qlist-const-iterator.html" translate="no">QStringList::const_iterator</a>.</p>
+<!-- @@@QStringListIterator -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- sql-programming.qdoc -->
+  <title>Executing SQL Statements | Qt SQL | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtsql-index.html">Qt SQL</a></li>
+<li><a href="sql-programming.html">SQL Programming</a></li>
+<li>Executing SQL Statements</li>
+<li id="buildversion"><a href="qtsql-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="sql-connecting.html" />
+  <link rel="next" href="sql-model.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="sql-connecting.html">Connecting to Databases</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="sql-model.html">Using the SQL Model Classes</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level2"><a href="#executing-a-query">Executing a Query</a></li>
+<li class="level2"><a href="#navigating-the-result-set">Navigating the Result Set</a></li>
+<li class="level2"><a href="#inserting-updating-and-deleting-records">Inserting, Updating, and Deleting Records</a></li>
+<li class="level2"><a href="#transactions">Transactions</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Executing SQL Statements</h1>
+<!-- $$$sql-sqlstatements.html-description -->
+<div class="descr" id="details">
+<p>The <a href="qsqlquery.html" translate="no">QSqlQuery</a> class provides an interface for executing SQL statements and navigating through the result set of a query.</p>
+<p>The <a href="qsqlquerymodel.html" translate="no">QSqlQueryModel</a> and <a href="qsqltablemodel.html" translate="no">QSqlTableModel</a> classes described in the next section provide a higher-level interface for accessing databases. If you are unfamiliar with SQL, you might want to skip directly to the next section (<a href="sql-model.html">Using the SQL Model Classes</a>).</p>
+<h3 id="executing-a-query">Executing a Query</h3>
+<p>To execute an SQL statement, simply create a <a href="qsqlquery.html" translate="no">QSqlQuery</a> object and call <a href="qsqlquery.html#exec" translate="no">QSqlQuery::exec</a>() like this:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>exec(<span class="string">&quot;SELECT name, salary FROM employee WHERE salary &gt; 50000&quot;</span>);
+</pre>
+<p>The <a href="qsqlquery.html" translate="no">QSqlQuery</a> constructor accepts an optional <a href="qsqldatabase.html" translate="no">QSqlDatabase</a> object that specifies which database connection to use. In the example above, we don't specify any connection, so the default connection is used.</p>
+<p>If an error occurs, <a href="qsqlquery.html#exec" translate="no">exec</a>() returns <code translate="no">false</code>. The error is then available as <a href="qsqlquery.html#lastError" translate="no">QSqlQuery::lastError</a>().</p>
+<h3 id="navigating-the-result-set">Navigating the Result Set</h3>
+<p><a href="qsqlquery.html" translate="no">QSqlQuery</a> provides access to the result set one record at a time. After the call to <a href="qsqlquery.html#exec" translate="no">exec</a>(), <a href="qsqlquery.html" translate="no">QSqlQuery</a>'s internal pointer is located one position <i>before</i> the first record. We must call <a href="qsqlquery.html#next" translate="no">QSqlQuery::next</a>() once to advance to the first record, then <a href="qsqlquery.html#next" translate="no">next</a>() again repeatedly to access the other records, until it returns <code translate="no">false</code>. Here's a typical loop that iterates over all the records in order:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">while</span> (query<span class="operator">.</span>next()) {
+         <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> name <span class="operator">=</span> query<span class="operator">.</span>value(<span class="number">0</span>)<span class="operator">.</span>toString();
+         <span class="type">int</span> salary <span class="operator">=</span> query<span class="operator">.</span>value(<span class="number">1</span>)<span class="operator">.</span>toInt();
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> name <span class="operator">&lt;</span><span class="operator">&lt;</span> salary;
+     }
+</pre>
+<p>The <a href="qsqlquery.html#value" translate="no">QSqlQuery::value</a>() function returns the value of a field in the current record. Fields are specified as zero-based indexes. <a href="qsqlquery.html#value" translate="no">QSqlQuery::value</a>() returns a <a href="../qtcore/qvariant.html" translate="no">QVariant</a>, a type that can hold various C++ and core Qt data types such as <code translate="no">int</code>, <a href="../qtcore/qstring.html" translate="no">QString</a>, and <a href="../qtcore/qbytearray.html" translate="no">QByteArray</a>. The different database types are automatically mapped into the closest Qt equivalent. In the code snippet, we call <a href="../qtcore/qvariant.html#toString" translate="no">QVariant::toString</a>() and <a href="../qtcore/qvariant.html#toInt" translate="no">QVariant::toInt</a>() to convert variants to <a href="../qtcore/qstring.html" translate="no">QString</a> and <code translate="no">int</code>.</p>
+<p>For an overview of the recommended types for use with Qt-supported Databases, please refer to <a href="sql-types.html">this table</a>.</p>
+<p>You can navigate within the dataset using <a href="qsqlquery.html#next" translate="no">QSqlQuery::next</a>(), <a href="qsqlquery.html#previous" translate="no">QSqlQuery::previous</a>(), <a href="qsqlquery.html#first" translate="no">QSqlQuery::first</a>(), <a href="qsqlquery.html#last" translate="no">QSqlQuery::last</a>(), and <a href="qsqlquery.html#seek" translate="no">QSqlQuery::seek</a>(). The current row index is returned by <a href="qsqlquery.html#at" translate="no">QSqlQuery::at</a>(), and the total number of rows in the result set is available as <a href="qsqlquery.html#size" translate="no">QSqlQuery::size</a>() for databases that support it.</p>
+<p>To determine whether a database driver supports a given feature, use <a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>(). In the following example, we call <a href="qsqlquery.html#size" translate="no">QSqlQuery::size</a>() to determine the size of a result set of the underlying database supports that feature; otherwise, we navigate to the last record and use the query's position to tell us how many records there are.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     <span class="type">int</span> numRows;
+     query<span class="operator">.</span>exec(<span class="string">&quot;SELECT name, salary FROM employee WHERE salary &gt; 50000&quot;</span>);
+
+     <span class="type"><a href="qsqldatabase.html" translate="no">QSqlDatabase</a></span> defaultDB <span class="operator">=</span> <span class="type"><a href="qsqldatabase.html" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database();
+     <span class="keyword">if</span> (defaultDB<span class="operator">.</span>driver()<span class="operator">-</span><span class="operator">&gt;</span>hasFeature(<span class="type"><a href="qsqldriver.html" translate="no">QSqlDriver</a></span><span class="operator">::</span>QuerySize)) {
+         numRows <span class="operator">=</span> query<span class="operator">.</span>size();
+     } <span class="keyword">else</span> {
+         <span class="comment">// this can be very slow</span>
+         query<span class="operator">.</span>last();
+         numRows <span class="operator">=</span> query<span class="operator">.</span>at() <span class="operator">+</span> <span class="number">1</span>;
+     }
+</pre>
+<p>If you navigate within a result set, and use next() and seek() only for browsing forward, you can call <a href="qsqlquery.html#setForwardOnly" translate="no">QSqlQuery::setForwardOnly</a>(true) before calling exec(). This is an easy optimization that will speed up the query significantly when operating on large result sets.</p>
+<h3 id="inserting-updating-and-deleting-records">Inserting, Updating, and Deleting Records</h3>
+<p><a href="qsqlquery.html" translate="no">QSqlQuery</a> can execute arbitrary SQL statements, not just <code translate="no">SELECT</code>s. The following example inserts a record into a table using <code translate="no">INSERT</code>:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>exec(<span class="string">&quot;INSERT INTO employee (id, name, salary) &quot;</span>
+                <span class="string">&quot;VALUES (1001, 'Thad Beaumont', 65000)&quot;</span>);
+</pre>
+<p>If you want to insert many records at the same time, it is often more efficient to separate the query from the actual values being inserted. This can be done using placeholders. Qt supports two placeholder syntaxes: named binding and positional binding. Here's an example of named binding:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>prepare(<span class="string">&quot;INSERT INTO employee (id, name, salary) &quot;</span>
+                   <span class="string">&quot;VALUES (:id, :name, :salary)&quot;</span>);
+     query<span class="operator">.</span>bindValue(<span class="string">&quot;:id&quot;</span><span class="operator">,</span> <span class="number">1001</span>);
+     query<span class="operator">.</span>bindValue(<span class="string">&quot;:name&quot;</span><span class="operator">,</span> <span class="string">&quot;Thad Beaumont&quot;</span>);
+     query<span class="operator">.</span>bindValue(<span class="string">&quot;:salary&quot;</span><span class="operator">,</span> <span class="number">65000</span>);
+     query<span class="operator">.</span>exec();
+</pre>
+<p>Here's an example of positional binding:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>prepare(<span class="string">&quot;INSERT INTO employee (id, name, salary) &quot;</span>
+                   <span class="string">&quot;VALUES (?, ?, ?)&quot;</span>);
+     query<span class="operator">.</span>addBindValue(<span class="number">1001</span>);
+     query<span class="operator">.</span>addBindValue(<span class="string">&quot;Thad Beaumont&quot;</span>);
+     query<span class="operator">.</span>addBindValue(<span class="number">65000</span>);
+     query<span class="operator">.</span>exec();
+</pre>
+<p>Both syntaxes work with all database drivers provided by Qt. If the database supports the syntax natively, Qt simply forwards the query to the DBMS; otherwise, Qt simulates the placeholder syntax by preprocessing the query. The actual query that ends up being executed by the DBMS is available as <a href="qsqlquery.html#executedQuery" translate="no">QSqlQuery::executedQuery</a>().</p>
+<p>When inserting multiple records, you only need to call <a href="qsqlquery.html#prepare" translate="no">QSqlQuery::prepare</a>() once. Then you call <a href="qsqlquery.html#bindValue" translate="no">bindValue</a>() or <a href="qsqlquery.html#addBindValue" translate="no">addBindValue</a>() followed by <a href="qsqlquery.html#exec" translate="no">exec</a>() as many times as necessary.</p>
+<p>Besides performance, one advantage of placeholders is that you can easily specify arbitrary values without having to worry about escaping special characters.</p>
+<p>Updating a record is similar to inserting it into a table:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>exec(<span class="string">&quot;UPDATE employee SET salary = 70000 WHERE id = 1003&quot;</span>);
+</pre>
+<p>You can also use named or positional binding to associate parameters to actual values.</p>
+<p>Finally, here's an example of a <code translate="no">DELETE</code> statement:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>exec(<span class="string">&quot;DELETE FROM employee WHERE id = 1007&quot;</span>);
+</pre>
+<h3 id="transactions">Transactions</h3>
+<p>If the underlying database engine supports transactions, <a href="qsqldriver.html#hasFeature" translate="no">QSqlDriver::hasFeature</a>(<a href="qsqldriver.html#DriverFeature-enum" translate="no">QSqlDriver::Transactions</a>) will return true. You can use <a href="qsqldatabase.html#transaction" translate="no">QSqlDatabase::transaction</a>() to initiate a transaction, followed by the SQL commands you want to execute within the context of the transaction, and then either <a href="qsqldatabase.html#commit" translate="no">QSqlDatabase::commit</a>() or <a href="qsqldatabase.html#rollback" translate="no">QSqlDatabase::rollback</a>(). When using transactions you must start the transaction before you create your query.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqldatabase.html" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database()<span class="operator">.</span>transaction();
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     query<span class="operator">.</span>exec(<span class="string">&quot;SELECT id FROM employee WHERE name = 'Torild Halvorsen'&quot;</span>);
+     <span class="keyword">if</span> (query<span class="operator">.</span>next()) {
+         <span class="type">int</span> employeeId <span class="operator">=</span> query<span class="operator">.</span>value(<span class="number">0</span>)<span class="operator">.</span>toInt();
+         query<span class="operator">.</span>exec(<span class="string">&quot;INSERT INTO project (id, name, ownerid) &quot;</span>
+                    <span class="string">&quot;VALUES (201, 'Manhattan Project', &quot;</span>
+                    <span class="operator">+</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(employeeId) <span class="operator">+</span> <span class="char">')'</span>);
+     }
+     <span class="type"><a href="qsqldatabase.html" translate="no">QSqlDatabase</a></span><span class="operator">::</span>database()<span class="operator">.</span>commit();
+</pre>
+<p>Transactions can be used to ensure that a complex operation is atomic (for example, looking up a foreign key and creating a record), or to provide a means of canceling a complex change in the middle.</p>
+</div>
+<!-- @@@sql-sqlstatements.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="sql-connecting.html">Connecting to Databases</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="sql-model.html">Using the SQL Model Classes</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

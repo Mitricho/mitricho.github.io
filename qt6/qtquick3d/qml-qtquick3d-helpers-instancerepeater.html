@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- instancerepeater.cpp -->
+  <meta name="description" content="Instantiates components based on an instance table.">
+  <title>InstanceRepeater QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-helpers-qmlmodule.html" translate="no">QtQuick3D.Helpers</a></li>
+<li>InstanceRepeater</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">InstanceRepeater QML Type</h1>
+<!-- $$$InstanceRepeater-brief -->
+<p>Instantiates components based on an instance table. <a href="#details">More...</a></p>
+<!-- @@@InstanceRepeater -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Helpers</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.4</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-helpers-instancerepeater-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-helpers-instancerepeater.html#instancingTable-prop" translate="no">instancingTable</a></b> : Instancing</li>
+</ul>
+<!-- $$$InstanceRepeater-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The InstanceRepeater type is used to create a number of objects based on an <a href="qml-qtquick3d-instancing.html" translate="no">Instancing</a> table. It is a <a href="qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a> subtype that takes an Instancing table instead of a data model, and automatically applies <code translate="no">position</code>, <code translate="no">scale</code>, and <code translate="no">rotation</code>.</p>
+<p>One use case is to implement <a href="qml-qtquick3d-view3d.html#pick-method" translate="no">picking</a> by creating invisible dummy objects that match the rendered instances. To improve performance, the dummy objects can be created with a simpler geometry than the instanced models.</p>
+<p>For example:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-helpers-instancerepeater.html" translate="no">InstanceRepeater</a></span> {
+     <span class="name">instancingTable</span>: <span class="name">myInstanceTable</span>
+     <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">pickable</span>: <span class="number">true</span>
+         property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">instanceIndex</span>: <span class="name">index</span> <span class="comment">// expose the index, so we can identify the instance</span>
+         <span class="name">opacity</span>: <span class="number">0</span>
+     }
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtquick3d-helpers-instancemodel.html" translate="no">InstanceModel</a>.</p>
+<!-- @@@InstanceRepeater -->
+<h2>Property Documentation</h2>
+<!-- $$$instancingTable -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="instancingTable-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">instancingTable</span> : <span class="type"><a href="qml-qtquick3d-instancing.html" translate="no">Instancing</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property specifies the instance table used by the repeater.</p>
+</div></div><!-- @@@instancingTable -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

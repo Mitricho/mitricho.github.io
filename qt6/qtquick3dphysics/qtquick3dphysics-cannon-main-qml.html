@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-cannon.qdoc -->
+  <meta name="description" content="Demonstrates how to spawn physical objects.">
+  <title>Qt Quick 3D Physics - Cannon Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - Cannon Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt Quick 3D Physics - Cannon Example</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2022 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Physics
+ import QtQuick3D.Helpers
+ import QtQuick.Controls
+ import QtQuick.Layouts
+
+ <span class="type"><a href="../qtquick/qml-qtquick-window.html" translate="no">Window</a></span> {
+     <span class="name">id</span>: <span class="name">appWindow</span>
+     <span class="name">width</span>: <span class="number">800</span>
+     <span class="name">height</span>: <span class="number">600</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+     <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Qt Quick 3D Physics - Cannon&quot;</span>)
+
+     <span class="type"><a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a></span> {
+         <span class="name">scene</span>: <span class="name">viewport</span>.<span class="name">scene</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">id</span>: <span class="name">viewport</span>
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+         <span class="name">focus</span>: <span class="number">true</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">MSAA</span>
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;#f0f0f0&quot;</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">4000</span>, <span class="number">5000</span>, <span class="number">10000</span>)
+             <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">20</span>, -<span class="number">20</span>, <span class="number">0</span>)
+             <span class="name">clipFar</span>: <span class="number">200000</span>
+             <span class="name">clipNear</span>: <span class="number">100</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+             <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">45</span>, <span class="number">45</span>, <span class="number">0</span>)
+             <span class="name">castsShadow</span>: <span class="number">true</span>
+             <span class="name">brightness</span>: <span class="number">1</span>
+             <span class="name">shadowMapQuality</span>: <span class="name">Light</span>.<span class="name">ShadowMapQualityVeryHigh</span>
+             <span class="name">shadowMapFar</span>: <span class="name">camera</span>.<span class="name">clipFar</span>
+             <span class="name">shadowFactor</span>: <span class="number">50</span>
+             <span class="name">csmNumSplits</span>: <span class="number">2</span>
+             <span class="name">csmSplit1</span>: <span class="number">0.1</span>
+             <span class="name">csmSplit2</span>: <span class="number">0.3</span>
+             <span class="name">softShadowQuality</span>: <span class="name">Light</span>.<span class="name">PCF4</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+             <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">90</span>, <span class="number">0</span>, <span class="number">0</span>)
+             <span class="name">collisionShapes</span>: <span class="name">PlaneShape</span> {}
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+                 <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2000</span>, <span class="number">2000</span>, <span class="number">1</span>)
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+                 }
+                 <span class="name">castsShadows</span>: <span class="number">false</span>
+                 <span class="name">receivesShadows</span>: <span class="number">true</span>
+             }
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-node.html" translate="no">Node</a></span> {
+             <span class="name">id</span>: <span class="name">shapeSpawner</span>
+             property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">instancesBoxes</span>: []
+             property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">instancesSpheres</span>: []
+             property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">stackCount</span>: <span class="number">0</span>
+             property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">boxComponent</span>: <span class="name">Qt</span>.<span class="name">createComponent</span>(<span class="string">&quot;Box.qml&quot;</span>)
+             property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">sphereComponent</span>: <span class="name">Qt</span>.<span class="name">createComponent</span>(<span class="string">&quot;Sphere.qml&quot;</span>)
+
+             <span class="keyword">function</span> <span class="name">createStack</span>(stackZ, numStacks) {
+                 let size = <span class="number">10</span>
+                 let extents = <span class="number">400</span>
+
+                 <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">size</span>; i++) {
+                     <span class="keyword">for</span> (var j = 0; <span class="name">j</span> <span class="operator">&lt;</span> <span class="name">size</span> <span class="operator">-</span> <span class="name">i</span>; j++) {
+                         let x = <span class="name">j</span> <span class="operator">*</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">size</span> <span class="operator">+</span> <span class="name">i</span>
+                         let y = <span class="name">i</span> <span class="operator">*</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span>
+                         let z = <span class="number">5</span> <span class="operator">*</span> (<span class="name">stackZ</span> <span class="operator">-</span> <span class="name">numStacks</span>)
+                         let center = <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">x</span>, <span class="name">y</span>, <span class="name">z</span>).<span class="name">times</span>(<span class="number">0.5</span> <span class="operator">*</span> <span class="name">extents</span>)
+                         let box = <span class="name">boxComponent</span>.<span class="name">incubateObject</span>(<span class="name">shapeSpawner</span>, {
+                                                                   &quot;position&quot;: <span class="name">center</span>,
+                                                                   &quot;xyzExtents&quot;: <span class="name">extents</span>
+                                                               })
+                         <span class="name">instancesBoxes</span>.<span class="name">push</span>(<span class="name">box</span>)
+                     }
+                 }
+             }
+
+             <span class="keyword">function</span> <span class="name">createBall</span>(position, forward) {
+                 var diameter = <span class="number">600</span>
+                 var speed = <span class="number">20000</span>
+                 let settings = {
+                     &quot;position&quot;: <span class="name">position</span>,
+                     &quot;sphereDiameter&quot;: <span class="name">diameter</span>
+                 }
+                 let sphere = <span class="name">sphereComponent</span>.<span class="name">createObject</span>(<span class="name">shapeSpawner</span>, <span class="name">settings</span>)
+                 <span class="name">sphere</span>.<span class="name">setLinearVelocity</span>(<span class="name">forward</span>.<span class="name">times</span>(<span class="name">speed</span>))
+                 <span class="name">instancesSpheres</span>.<span class="name">push</span>(<span class="name">sphere</span>)
+
+                 <span class="keyword">if</span> (<span class="name">sphere</span> <span class="operator">===</span> <span class="number">null</span>) {
+                     <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Error creating object&quot;</span>)
+                 }
+             }
+
+             <span class="keyword">function</span> <span class="name">reset</span>() {
+                 <span class="comment">// Only run method if previous stack has been created fully</span>
+                 <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">instancesBoxes</span>.<span class="name">length</span>; i++)
+                     <span class="keyword">if</span> (!<span class="name">instancesBoxes</span>[<span class="name">i</span>].<span class="name">object</span>)
+                         <span class="keyword">return</span>
+
+                 <span class="name">instancesSpheres</span>.<span class="name">forEach</span>(<span class="keyword"></span>sphere =&gt; {
+                                              <span class="name">sphere</span>.<span class="name">collisionShapes</span> <span class="operator">=</span> []
+                                              <span class="name">sphere</span>.<span class="name">destroy</span>()
+                                          })
+                 <span class="name">instancesBoxes</span>.<span class="name">forEach</span>(<span class="keyword"></span>box =&gt; {
+                                            <span class="name">box</span>.<span class="name">object</span>.<span class="name">collisionShapes</span> <span class="operator">=</span> []
+                                            <span class="name">box</span>.<span class="name">object</span>.<span class="name">destroy</span>()
+                                        })
+                 <span class="name">instancesSpheres</span> <span class="operator">=</span> []
+                 <span class="name">instancesBoxes</span> <span class="operator">=</span> []
+
+                 <span class="keyword">for</span> (var stackI = 0; <span class="name">stackI</span> <span class="operator">&lt;</span> <span class="name">stackSlider</span>.<span class="name">value</span>; stackI++) {
+                     <span class="name">shapeSpawner</span>.<span class="name">createStack</span>(<span class="name">stackI</span>, <span class="name">stackSlider</span>.<span class="name">value</span>)
+                 }
+             }
+         }
+         <span class="type">Crosshair</span> {
+             <span class="name">id</span>: <span class="name">crossHair</span>
+             <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         }
+     }
+
+     <span class="name">Component</span>.onCompleted: {
+         <span class="name">shapeSpawner</span>.<span class="name">reset</span>()
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+         <span class="name">speed</span>: <span class="number">100</span>
+         <span class="name">controlledObject</span>: <span class="name">camera</span>
+         <span class="name">Keys</span>.onPressed: <span class="keyword"></span>event =&gt; {
+                             <span class="name">handleKeyPress</span>(<span class="name">event</span>)
+                             <span class="keyword">if</span> (<span class="name">event</span>.<span class="name">key</span> <span class="operator">===</span> <span class="name">Qt</span>.<span class="name">Key_Space</span>) {
+                                 <span class="name">shapeSpawner</span>.<span class="name">createBall</span>(<span class="name">camera</span>.<span class="name">position</span>,
+                                                         <span class="name">camera</span>.<span class="name">forward</span>)
+                             }
+                         }
+         <span class="name">Keys</span>.onReleased: <span class="keyword"></span>event =&gt; {
+                              <span class="name">handleKeyRelease</span>(<span class="name">event</span>)
+                          }
+     }
+
+     <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-frame.html" translate="no">Frame</a></span> {
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">color</span>: <span class="string">&quot;#c0c0c0&quot;</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#202020&quot;</span>
+         }
+         <span class="name">anchors</span>.top: <span class="name">parent</span>.<span class="name">top</span>
+         <span class="name">anchors</span>.left: <span class="name">parent</span>.<span class="name">left</span>
+         <span class="name">anchors</span>.margins: <span class="number">10</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+                 <span class="name">text</span>: <span class="string">&quot;No. Stacks: &quot;</span> <span class="operator">+</span> <span class="name">stackSlider</span>.<span class="name">value</span>.<span class="name">toFixed</span>(<span class="number">0</span>)
+             }
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-slider.html" translate="no">Slider</a></span> {
+                 <span class="name">id</span>: <span class="name">stackSlider</span>
+                 <span class="name">focusPolicy</span>: <span class="name">Qt</span>.<span class="name">NoFocus</span>
+                 <span class="name">from</span>: <span class="number">1</span>
+                 <span class="name">to</span>: <span class="number">9</span>
+                 <span class="name">value</span>: <span class="number">4</span>
+                 <span class="name">stepSize</span>: <span class="number">1</span>
+                 <span class="name">snapMode</span>: <span class="name">Slider</span>.<span class="name">SnapOnRelease</span>
+             }
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+                 <span class="name">id</span>: <span class="name">resetButton</span>
+                 <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignHCenter</span>
+                 <span class="name">text</span>: <span class="string">&quot;Reset scene&quot;</span>
+                 <span class="name">onClicked</span>: <span class="name">shapeSpawner</span>.<span class="name">reset</span>()
+             }
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+                 <span class="name">id</span>: <span class="name">fireButton</span>
+                 <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignHCenter</span>
+                 <span class="name">text</span>: <span class="string">&quot;Fire!&quot;</span>
+                 <span class="name">onClicked</span>: <span class="name">shapeSpawner</span>.<span class="name">createBall</span>(<span class="name">camera</span>.<span class="name">position</span>,
+                                                    <span class="name">camera</span>.<span class="name">forward</span>)
+             }
+         }
+     }
+ }
+</pre>

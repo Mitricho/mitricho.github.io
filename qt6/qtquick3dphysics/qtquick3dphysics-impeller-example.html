@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-impeller.qdoc -->
+  <meta name="description" content="Demonstrates using trigger bodies and collision info.">
+  <title>Qt Quick 3D Physics - Impeller Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - Impeller Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#setup">Setup</a></li>
+<li class="level1"><a href="#physical-objects">Physical objects</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D Physics - Impeller Example</h1>
+<!-- $$$impeller-brief -->
+<p>Demonstrates using trigger bodies and collision info.</p>
+<!-- @@@impeller -->
+<!-- $$$impeller-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/impeller-example.jpg" alt="" /></p><p>This example demonstrates how to use trigger bodies and collision info. The scene consists of a green static plane, a red dynamic sphere, a pink box trigger and a blue static sphere. When the red sphere overlaps the trigger body it will turn yellow and when it collides with the blue sphere it will be repelled away.</p>
+<h4 id="setup">Setup</h4>
+<p>As usual we need to add our <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a>:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a></span> {
+     <span class="name">gravity</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, -<span class="number">490</span>, <span class="number">0</span>)
+     <span class="name">scene</span>: <span class="name">viewport</span>.<span class="name">scene</span>
+ }
+</pre>
+<p>We also add a <a href="../qtquick3d/qml-qtquick3d-view3d.html" translate="no">View3D</a> where we put our scene objects. In this we have some settings for the visual environment:</p>
+<pre class="qml" translate="no">
+ <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+     <span class="name">clearColor</span>: <span class="string">&quot;#d6dbdf&quot;</span>
+     <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">200</span>, <span class="number">1000</span>)
+     <span class="name">clipFar</span>: <span class="number">2000</span>
+     <span class="name">clipNear</span>: <span class="number">1</span>
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+     <span class="name">eulerRotation</span>.x: -<span class="number">45</span>
+     <span class="name">eulerRotation</span>.y: <span class="number">45</span>
+     <span class="name">castsShadow</span>: <span class="number">true</span>
+     <span class="name">brightness</span>: <span class="number">1</span>
+     <span class="name">shadowFactor</span>: <span class="number">50</span>
+ }
+</pre>
+<h4 id="physical-objects">Physical objects</h4>
+<p>We have our regular static plane:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, -<span class="number">100</span>, <span class="number">0</span>)
+     <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">90</span>, <span class="number">0</span>, <span class="number">0</span>)
+     <span class="name">collisionShapes</span>: <span class="name">PlaneShape</span> {}
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">500</span>, <span class="number">500</span>, <span class="number">1</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+         }
+         <span class="name">castsShadows</span>: <span class="number">false</span>
+         <span class="name">receivesShadows</span>: <span class="number">true</span>
+     }
+ }
+</pre>
+<p>This is how our dynamic sphere is defined:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+     <span class="name">id</span>: <span class="name">sphere</span>
+     <span class="name">massMode</span>: <span class="name">DynamicRigidBody</span>.<span class="name">CustomDensity</span>
+     <span class="name">density</span>: <span class="number">0.00001</span>
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">600</span>, <span class="number">0</span>)
+     property <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <span class="name">inArea</span>: <span class="number">false</span>
+     <span class="name">sendContactReports</span>: <span class="number">true</span>
+     <span class="name">receiveTriggerReports</span>: <span class="number">true</span>
+
+     <span class="name">onEnteredTriggerBody</span>: {
+         <span class="name">inArea</span> <span class="operator">=</span> <span class="number">true</span>
+     }
+     <span class="name">onExitedTriggerBody</span>: {
+         <span class="name">inArea</span> <span class="operator">=</span> <span class="number">false</span>
+     }
+
+     <span class="name">collisionShapes</span>: <span class="name">SphereShape</span> {}
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="name">sphere</span>.<span class="name">inArea</span> ? <span class="string">&quot;yellow&quot;</span> : <span class="string">&quot;red&quot;</span>
+         }
+     }
+ }
+</pre>
+<p>The property <code translate="no">inArea</code> is a custom property we use to keep track of when the sphere is overlapping the box trigger body. This is then used for the <code translate="no">baseColor</code> property to make the sphere yellow when it is overlapping the box and red otherwise. Since we want the sphere to partake in contact reporting the property <a href="qml-qtquick3d-physics-physicsnode.html#sendContactReports-prop" translate="no">sendContactReports</a> needs to be set to <code translate="no">true</code>. Since we also want the sphere to get callbacks when entering and leaving a <a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a>, the property <a href="qml-qtquick3d-physics-physicsnode.html#receiveContactReports-prop" translate="no">receiveContactReports</a> is also set to <code translate="no">true</code>. We implement the <a href="qml-qtquick3d-physics-physicsnode.html#enteredTriggerBody-signal" translate="no">enteredTriggerBody</a> and <a href="qml-qtquick3d-physics-physicsnode.html#exitedTriggerBody-signal" translate="no">exitedTriggerBody</a> signal methods on the sphere where we set the <code translate="no">inArea</code> property to <code translate="no">true</code> or <code translate="no">false</code> when entering or leaving the trigger body.</p>
+<p>Now let's look at the trigger body:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">350</span>, <span class="number">0</span>)
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)
+
+     <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {
+         <span class="name">id</span>: <span class="name">boxShape</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0.2</span>)
+             <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Blend</span>
+         }
+     }
+ }
+</pre>
+<p>The qml type is a <a href="qml-qtquick3d-physics-triggerbody.html" translate="no">TriggerBody</a> which acts like a static body except its collisions are inactive. Instead it will trigger <a href="qml-qtquick3d-physics-physicsnode.html#enteredTriggerBody-signal" translate="no">enteredTriggerBody</a> and <a href="qml-qtquick3d-physics-physicsnode.html#exitedTriggerBody-signal" translate="no">exitedTriggerBody</a> method calls on the sphere.</p>
+<p>Finally, lets look at the impeller:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+     <span class="name">receiveContactReports</span>: <span class="number">true</span>
+
+     <span class="name">collisionShapes</span>: <span class="name">SphereShape</span> {}
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;blue&quot;</span>
+         }
+     }
+
+     <span class="name">onBodyContact</span>: (<span class="keyword"></span>body, positions, impulses, normals) =&gt; {
+         <span class="keyword">for</span> (var normal of <span class="name">normals</span>) {
+             let velocity = <span class="name">normal</span>.<span class="name">times</span>(-<span class="number">700</span>)
+             <span class="name">body</span>.<span class="name">setLinearVelocity</span>(<span class="name">velocity</span>)
+         }
+     }
+ }
+</pre>
+<p>This is a static body and we set <a href="qml-qtquick3d-physics-physicsnode.html#receiveContactReports-prop" translate="no">receiveContactReports</a> to <code translate="no">true</code> to enable the collision callbacks. The callback <a href="qml-qtquick3d-physics-physicsnode.html#bodyContact-signal" translate="no">bodyContact</a> gets called whenever a collision is reported. In the method we call <a href="qml-qtquick3d-physics-dynamicrigidbody.html#setLinearVelocity-method" translate="no">setLinearVelocity</a> to set the linear velocity in the opposite direction of the collision normal vector to simulate an impeller.</p>
+<p>Files:</p>
+<ul>
+<li><a href="qtquick3dphysics-impeller-cmakelists-txt.html" translate="no">impeller/CMakeLists.txt</a></li>
+<li><a href="qtquick3dphysics-impeller-impeller-pro.html" translate="no">impeller/impeller.pro</a></li>
+<li><a href="qtquick3dphysics-impeller-main-cpp.html" translate="no">impeller/main.cpp</a></li>
+<li><a href="qtquick3dphysics-impeller-main-qml.html" translate="no">impeller/main.qml</a></li>
+<li><a href="qtquick3dphysics-impeller-qml-qrc.html" translate="no">impeller/qml.qrc</a></li>
+</ul>
+</div>
+<!-- @@@impeller -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- custommaterial.qdoc -->
+  <meta name="description" content="Shows how to implement a custom material in the Qt Quick Scene Graph.">
+  <title>Scene Graph - Custom Material | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Scene Graph - Custom Material</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#shader-and-material">Shader and material</a></li>
+<li class="level1"><a href="#item-and-node">Item and node</a></li>
+<li class="level1"><a href="#the-rest-of-the-example">The rest of the example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Scene Graph - Custom Material</h1>
+<!-- $$$scenegraph/custommaterial-brief -->
+<p>Shows how to implement a custom material in the Qt Quick Scene Graph.</p>
+<!-- @@@scenegraph/custommaterial -->
+<!-- $$$scenegraph/custommaterial-description -->
+<div class="descr" id="details">
+<p>The custom material example shows how to implement an item that is rendered using a material with a custom vertex and fragment shader.</p>
+<p class="centerAlign"><img src="images/custom-material-example.jpg" alt="" /></p><h4 id="shader-and-material">Shader and material</h4>
+<p>The main functionality is in the fragment shader</p>
+<pre class="cpp" translate="no">
+ // Copyright (C) 2023 The Qt Company Ltd.
+ // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
+
+ #version 440
+
+ layout(location = 0) in vec2 vTexCoord;
+
+ layout(location = 0) out vec4 fragColor;
+
+ // uniform block: 84 bytes
+ layout(std140, binding = 0) uniform buf {
+     mat4 qt_Matrix; // offset 0
+     float qt_Opacity; // offset 64
+     float zoom; // offset 68
+     vec2 center; // offset 72
+     int limit; // offset 80
+ } ubuf;
+
+ void main()
+ {
+     vec4 color1 = vec4(1.0, 0.85, 0.55, 1);
+     vec4 color2 = vec4(0.226, 0.0, 0.615, 1);
+
+     float aspect_ratio = -ubuf.qt_Matrix[0][0]/ubuf.qt_Matrix[1][1];
+     vec2 z, c;
+
+     c.x = (vTexCoord.x - 0.5) / ubuf.zoom + ubuf.center.x;
+     c.y = aspect_ratio * (vTexCoord.y - 0.5) / ubuf.zoom + ubuf.center.y;
+
+     int iLast;
+     z = c;
+     for (int i = 0; i &lt; 1000000; i++) {
+         if (i &gt;= ubuf.limit)
+         {
+             iLast = i;
+             break;
+         }
+         float x = (z.x * z.x - z.y * z.y) + c.x;
+         float y = (z.y * z.x + z.x * z.y) + c.y;
+
+         if ((x * x + y * y) &gt; 4.0)
+         {
+             iLast = i;
+             break;
+         }
+         z.x = x;
+         z.y = y;
+     }
+
+     if (iLast == ubuf.limit) {
+         fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+     } else {
+         float f = (iLast * 1.0) / ubuf.limit;
+         fragColor = mix(color1, color2, sqrt(f));
+     }
+ }
+</pre>
+<p>The fragment and vertex shaders are combined into a <a href="qsgmaterialshader.html" translate="no">QSGMaterialShader</a> subclass.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CustomShader : <span class="keyword">public</span> <span class="type"><a href="qsgmaterialshader.html" translate="no">QSGMaterialShader</a></span>
+ {
+ <span class="keyword">public</span>:
+     CustomShader()
+     {
+         setShaderFileName(VertexStage<span class="operator">,</span> QLatin1String(<span class="string">&quot;:/scenegraph/custommaterial/shaders/mandelbrot.vert.qsb&quot;</span>));
+         setShaderFileName(FragmentStage<span class="operator">,</span> QLatin1String(<span class="string">&quot;:/scenegraph/custommaterial/shaders/mandelbrot.frag.qsb&quot;</span>));
+     }
+     <span class="type">bool</span> updateUniformData(RenderState <span class="operator">&amp;</span>state<span class="operator">,</span>
+                            <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span> <span class="operator">*</span>newMaterial<span class="operator">,</span> <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span> <span class="operator">*</span>oldMaterial) override;
+ };
+</pre>
+<p>A <a href="qsgmaterial.html" translate="no">QSGMaterial</a> subclass encapsulates the shader together with the render state. In this example, we add state information corresponding to the shader uniforms. The material is responsible for creating the shader by reimplementing <a href="qsgmaterial.html#createShader" translate="no">QSGMaterial::createShader</a>().</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CustomMaterial : <span class="keyword">public</span> <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span>
+ {
+ <span class="keyword">public</span>:
+     CustomMaterial();
+     <span class="type"><a href="qsgmaterialtype.html" translate="no">QSGMaterialType</a></span> <span class="operator">*</span>type() <span class="keyword">const</span> override;
+     <span class="type">int</span> compare(<span class="keyword">const</span> <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span> <span class="operator">*</span>other) <span class="keyword">const</span> override;
+
+     <span class="type"><a href="qsgmaterialshader.html" translate="no">QSGMaterialShader</a></span> <span class="operator">*</span>createShader(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>RenderMode) <span class="keyword">const</span> override
+     {
+         <span class="keyword">return</span> <span class="keyword">new</span> CustomShader;
+     }
+
+     <span class="keyword">struct</span> {
+         <span class="type">float</span> center<span class="operator">[</span><span class="number">2</span><span class="operator">]</span>;
+         <span class="type">float</span> zoom;
+         <span class="type">int</span> limit;
+         <span class="type">bool</span> dirty;
+     } uniforms;
+ };
+</pre>
+<p>To update the uniform data, we reimplement <a href="qsgmaterialshader.html#updateUniformData" translate="no">QSGMaterialShader::updateUniformData</a>().</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> CustomShader<span class="operator">::</span>updateUniformData(RenderState <span class="operator">&amp;</span>state<span class="operator">,</span> <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span> <span class="operator">*</span>newMaterial<span class="operator">,</span> <span class="type"><a href="qsgmaterial.html" translate="no">QSGMaterial</a></span> <span class="operator">*</span>oldMaterial)
+ {
+     <span class="type">bool</span> changed <span class="operator">=</span> <span class="keyword">false</span>;
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> <span class="operator">*</span>buf <span class="operator">=</span> state<span class="operator">.</span>uniformData();
+     Q_ASSERT(buf<span class="operator">-</span><span class="operator">&gt;</span>size() <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">84</span>);
+
+     <span class="keyword">if</span> (state<span class="operator">.</span>isMatrixDirty()) {
+         <span class="keyword">const</span> QMatrix4x4 m <span class="operator">=</span> state<span class="operator">.</span>combinedMatrix();
+         memcpy(buf<span class="operator">-</span><span class="operator">&gt;</span>data()<span class="operator">,</span> m<span class="operator">.</span>constData()<span class="operator">,</span> <span class="number">64</span>);
+         changed <span class="operator">=</span> <span class="keyword">true</span>;
+     }
+
+     <span class="keyword">if</span> (state<span class="operator">.</span>isOpacityDirty()) {
+         <span class="keyword">const</span> <span class="type">float</span> opacity <span class="operator">=</span> state<span class="operator">.</span>opacity();
+         memcpy(buf<span class="operator">-</span><span class="operator">&gt;</span>data() <span class="operator">+</span> <span class="number">64</span><span class="operator">,</span> <span class="operator">&amp;</span>opacity<span class="operator">,</span> <span class="number">4</span>);
+         changed <span class="operator">=</span> <span class="keyword">true</span>;
+     }
+
+     <span class="keyword">auto</span> <span class="operator">*</span>customMaterial <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>CustomMaterial <span class="operator">*</span><span class="operator">&gt;</span>(newMaterial);
+     <span class="keyword">if</span> (oldMaterial <span class="operator">!</span><span class="operator">=</span> newMaterial <span class="operator">|</span><span class="operator">|</span> customMaterial<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>dirty) {
+         memcpy(buf<span class="operator">-</span><span class="operator">&gt;</span>data() <span class="operator">+</span> <span class="number">68</span><span class="operator">,</span> <span class="operator">&amp;</span>customMaterial<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>zoom<span class="operator">,</span> <span class="number">4</span>);
+         memcpy(buf<span class="operator">-</span><span class="operator">&gt;</span>data() <span class="operator">+</span> <span class="number">72</span><span class="operator">,</span> <span class="operator">&amp;</span>customMaterial<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>center<span class="operator">,</span> <span class="number">8</span>);
+         memcpy(buf<span class="operator">-</span><span class="operator">&gt;</span>data() <span class="operator">+</span> <span class="number">80</span><span class="operator">,</span> <span class="operator">&amp;</span>customMaterial<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>limit<span class="operator">,</span> <span class="number">4</span>);
+         customMaterial<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>dirty <span class="operator">=</span> <span class="keyword">false</span>;
+         changed <span class="operator">=</span> <span class="keyword">true</span>;
+     }
+     <span class="keyword">return</span> changed;
+ }
+</pre>
+<h4 id="item-and-node">Item and node</h4>
+<p>We create a custom item to show off our new material:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QQuickItem&gt;</span>
+
+ <span class="keyword">class</span> CustomItem : <span class="keyword">public</span> <span class="type"><a href="qquickitem.html" translate="no">QQuickItem</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
+     Q_PROPERTY(<span class="type">int</span> iterationLimit READ iterationLimit WRITE setIterationLimit NOTIFY iterationLimitChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center READ center WRITE setCenter NOTIFY centerChanged)
+     QML_ELEMENT
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> CustomItem(<span class="type"><a href="qquickitem.html" translate="no">QQuickItem</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     <span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom() <span class="keyword">const</span>
+     {
+         <span class="keyword">return</span> m_zoom;
+     }
+
+     <span class="type">int</span> iterationLimit() <span class="keyword">const</span>
+     {
+         <span class="keyword">return</span> m_limit;
+     }
+
+     <span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center() <span class="keyword">const</span>
+     {
+         <span class="keyword">return</span> m_center;
+     }
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> setZoom(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom);
+
+     <span class="type">void</span> setIterationLimit(<span class="type">int</span> iterationLimit);
+
+     <span class="type">void</span> setCenter(<span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> zoomChanged(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom);
+
+     <span class="type">void</span> iterationLimitChanged(<span class="type">int</span> iterationLimit);
+
+     <span class="type">void</span> centerChanged(<span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center);
+
+ <span class="keyword">protected</span>:
+     <span class="type"><a href="qsgnode.html" translate="no">QSGNode</a></span> <span class="operator">*</span>updatePaintNode(<span class="type"><a href="qsgnode.html" translate="no">QSGNode</a></span> <span class="operator">*</span><span class="operator">,</span> UpdatePaintNodeData <span class="operator">*</span>) override;
+     <span class="type">void</span> geometryChange(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qrectf.html" translate="no">QRectF</a></span> <span class="operator">&amp;</span>newGeometry<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qrectf.html" translate="no">QRectF</a></span> <span class="operator">&amp;</span>oldGeometry) override;
+
+ <span class="keyword">private</span>:
+     <span class="type">bool</span> m_geometryChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> m_zoom;
+     <span class="type">bool</span> m_zoomChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="type">int</span> m_limit;
+     <span class="type">bool</span> m_limitChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> m_center;
+     <span class="type">bool</span> m_centerChanged <span class="operator">=</span> <span class="keyword">true</span>;
+ };
+</pre>
+<p>The CustomItem declaration adds three properties corresponding to the uniforms that we want to expose to QML.</p>
+<pre class="cpp" translate="no">
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
+     Q_PROPERTY(<span class="type">int</span> iterationLimit READ iterationLimit WRITE setIterationLimit NOTIFY iterationLimitChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center READ center WRITE setCenter NOTIFY centerChanged)
+</pre>
+<p>As with every custom Qt Quick item, the implementation is split in two: in addition to <code translate="no">CustomItem</code>, which lives in the GUI thread, we create a <a href="qsgnode.html" translate="no">QSGNode</a> subclass that lives in the render thread.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CustomNode : <span class="keyword">public</span> <span class="type"><a href="qsggeometrynode.html" translate="no">QSGGeometryNode</a></span>
+ {
+ <span class="keyword">public</span>:
+     CustomNode()
+     {
+         <span class="keyword">auto</span> <span class="operator">*</span>m <span class="operator">=</span> <span class="keyword">new</span> CustomMaterial;
+         setMaterial(m);
+         setFlag(OwnsMaterial<span class="operator">,</span> <span class="keyword">true</span>);
+
+         <span class="type"><a href="qsggeometry.html" translate="no">QSGGeometry</a></span> <span class="operator">*</span>g <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qsggeometry.html" translate="no">QSGGeometry</a></span>(<span class="type"><a href="qsggeometry.html" translate="no">QSGGeometry</a></span><span class="operator">::</span>defaultAttributes_TexturedPoint2D()<span class="operator">,</span> <span class="number">4</span>);
+         <span class="type"><a href="qsggeometry.html" translate="no">QSGGeometry</a></span><span class="operator">::</span>updateTexturedRectGeometry(g<span class="operator">,</span> <span class="type"><a href="../qtcore/qrect.html" translate="no">QRect</a></span>()<span class="operator">,</span> <span class="type"><a href="../qtcore/qrect.html" translate="no">QRect</a></span>());
+         setGeometry(g);
+         setFlag(OwnsGeometry<span class="operator">,</span> <span class="keyword">true</span>);
+     }
+
+     <span class="type">void</span> setRect(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qrectf.html" translate="no">QRectF</a></span> <span class="operator">&amp;</span>bounds)
+     {
+         <span class="type"><a href="qsggeometry.html" translate="no">QSGGeometry</a></span><span class="operator">::</span>updateTexturedRectGeometry(geometry()<span class="operator">,</span> bounds<span class="operator">,</span> <span class="type"><a href="../qtcore/qrectf.html" translate="no">QRectF</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">1</span>));
+         markDirty(<span class="type"><a href="qsgnode.html" translate="no">QSGNode</a></span><span class="operator">::</span>DirtyGeometry);
+     }
+
+     <span class="type">void</span> setZoom(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom)
+     {
+         <span class="keyword">auto</span> <span class="operator">*</span>m <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>CustomMaterial <span class="operator">*</span><span class="operator">&gt;</span>(material());
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>zoom <span class="operator">=</span> zoom;
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>dirty <span class="operator">=</span> <span class="keyword">true</span>;
+         markDirty(DirtyMaterial);
+     }
+
+     <span class="type">void</span> setLimit(<span class="type">int</span> limit)
+     {
+         <span class="keyword">auto</span> <span class="operator">*</span>m <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>CustomMaterial <span class="operator">*</span><span class="operator">&gt;</span>(material());
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>limit <span class="operator">=</span> limit;
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>dirty <span class="operator">=</span> <span class="keyword">true</span>;
+         markDirty(DirtyMaterial);
+     }
+
+     <span class="type">void</span> setCenter(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> <span class="operator">&amp;</span>center)
+     {
+         <span class="keyword">auto</span> <span class="operator">*</span>m <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>CustomMaterial <span class="operator">*</span><span class="operator">&gt;</span>(material());
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>center<span class="operator">[</span><span class="number">0</span><span class="operator">]</span> <span class="operator">=</span> center<span class="operator">.</span>x();
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>center<span class="operator">[</span><span class="number">1</span><span class="operator">]</span> <span class="operator">=</span> center<span class="operator">.</span>y();
+         m<span class="operator">-</span><span class="operator">&gt;</span>uniforms<span class="operator">.</span>dirty <span class="operator">=</span> <span class="keyword">true</span>;
+         markDirty(DirtyMaterial);
+     }
+ };
+</pre>
+<p>The node owns an instance of the material, and has logic to update the material's state. The item maintains the corresponding QML properties. It needs to duplicate the information from the material since the item and material live on different threads.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> CustomItem<span class="operator">::</span>setZoom(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> zoom)
+ {
+     <span class="keyword">if</span> (<a href="../qtcore/qtnumeric.html#qFuzzyCompare" translate="no">qFuzzyCompare</a>(m_zoom<span class="operator">,</span> zoom))
+         <span class="keyword">return</span>;
+
+     m_zoom <span class="operator">=</span> zoom;
+     m_zoomChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="keyword">emit</span> zoomChanged(m_zoom);
+     update();
+ }
+
+ <span class="type">void</span> CustomItem<span class="operator">::</span>setIterationLimit(<span class="type">int</span> limit)
+ {
+     <span class="keyword">if</span> (m_limit <span class="operator">=</span><span class="operator">=</span> limit)
+         <span class="keyword">return</span>;
+
+     m_limit <span class="operator">=</span> limit;
+     m_limitChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="keyword">emit</span> iterationLimitChanged(m_limit);
+     update();
+ }
+
+ <span class="type">void</span> CustomItem<span class="operator">::</span>setCenter(<span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span> center)
+ {
+     <span class="keyword">if</span> (m_center <span class="operator">=</span><span class="operator">=</span> center)
+         <span class="keyword">return</span>;
+
+     m_center <span class="operator">=</span> center;
+     m_centerChanged <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="keyword">emit</span> centerChanged(m_center);
+     update();
+ }
+</pre>
+<p>The information is copied from the item to the scene graph in a reimplementation of <a href="qquickitem.html#updatePaintNode" translate="no">QQuickItem::updatePaintNode</a>(). The two threads are at a synchronization point when the function is called, so it is safe to access both classes.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qsgnode.html" translate="no">QSGNode</a></span> <span class="operator">*</span>CustomItem<span class="operator">::</span>updatePaintNode(<span class="type"><a href="qsgnode.html" translate="no">QSGNode</a></span> <span class="operator">*</span>old<span class="operator">,</span> UpdatePaintNodeData <span class="operator">*</span>)
+ {
+     <span class="keyword">auto</span> <span class="operator">*</span>node <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>CustomNode <span class="operator">*</span><span class="operator">&gt;</span>(old);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>node)
+         node <span class="operator">=</span> <span class="keyword">new</span> CustomNode;
+
+     <span class="keyword">if</span> (m_geometryChanged)
+         node<span class="operator">-</span><span class="operator">&gt;</span>setRect(boundingRect());
+     m_geometryChanged <span class="operator">=</span> <span class="keyword">false</span>;
+
+     <span class="keyword">if</span> (m_zoomChanged)
+         node<span class="operator">-</span><span class="operator">&gt;</span>setZoom(m_zoom);
+     m_zoomChanged <span class="operator">=</span> <span class="keyword">false</span>;
+
+     <span class="keyword">if</span> (m_limitChanged)
+         node<span class="operator">-</span><span class="operator">&gt;</span>setLimit(m_limit);
+     m_limitChanged <span class="operator">=</span> <span class="keyword">false</span>;
+
+     <span class="keyword">if</span> (m_centerChanged)
+         node<span class="operator">-</span><span class="operator">&gt;</span>setCenter(m_center);
+     m_centerChanged <span class="operator">=</span> <span class="keyword">false</span>;
+
+     <span class="keyword">return</span> node;
+ }
+</pre>
+<h4 id="the-rest-of-the-example">The rest of the example</h4>
+<p>The application is a straightforward QML application, with a <a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a> and a <a href="qquickview.html" translate="no">QQuickView</a> that we pass a .qml file.</p>
+<p>In the QML file, we create the customitem which we anchor to fill the root.</p>
+<pre class="qml" translate="no">
+     <span class="type">CustomItem</span> {
+         property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">t</span>: <span class="number">1</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">center</span>: <span class="name">Qt</span>.<span class="name">point</span>(-<span class="number">0.748</span>, <span class="number">0.1</span>);
+         <span class="name">iterationLimit</span>: <span class="number">3</span> <span class="operator">*</span> (<span class="name">zoom</span> <span class="operator">+</span> <span class="number">30</span>)
+         <span class="name">zoom</span>: <span class="name">t</span> <span class="operator">*</span> <span class="name">t</span> <span class="operator">/</span> <span class="number">10</span>
+         NumberAnimation on <span class="name">t</span> {
+             <span class="name">from</span>: <span class="number">1</span>
+             <span class="name">to</span>: <span class="number">60</span>
+             <span class="name">duration</span>: <span class="number">30</span><span class="operator">*</span><span class="number">1000</span>;
+             <span class="name">running</span>: <span class="number">true</span>
+             <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+         }
+     }
+</pre>
+<p>To make the example a bit more interesting we add an animation to change the zoom level and iteration limit. The center stays constant.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quick/scenegraph/custommaterial?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@scenegraph/custommaterial -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

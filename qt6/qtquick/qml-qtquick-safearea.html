@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquicksafearea.cpp -->
+  <meta name="description" content="Provides access to the safe area properties of the item or window.">
+  <title>SafeArea QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li>SafeArea</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#additional-margins">Additional margins</a></li>
+<li class="level2"><a href="#controls">Controls</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">SafeArea QML Type</h1>
+<!-- $$$SafeArea-brief -->
+<p>Provides access to the safe area properties of the item or window. <a href="#details">More...</a></p>
+<!-- @@@SafeArea -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.9</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-safearea-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#additionalMargins-prop" translate="no">additionalMargins</a></b><ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#additionalMargins.bottom-prop" translate="no">additionalMargins.bottom</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#additionalMargins.left-prop" translate="no">additionalMargins.left</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#additionalMargins.right-prop" translate="no">additionalMargins.right</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#additionalMargins.top-prop" translate="no">additionalMargins.top</a></b> : real</li>
+</ul>
+</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#margins-prop" translate="no">margins</a></b><ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#margins.bottom-prop" translate="no">margins.bottom</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#margins.left-prop" translate="no">margins.left</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#margins.right-prop" translate="no">margins.right</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-safearea.html#margins.top-prop" translate="no">margins.top</a></b> : real</li>
+</ul>
+</li>
+</ul>
+<!-- $$$SafeArea-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The SafeArea attached type provides information about the areas of an Item or Window where content may risk being overlapped by other UI elements, such as system title bars or status bars.</p>
+<p>This information can be used to lay out children of an item within the safe area of the item, while still allowing a background color or effect to span the entire item.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">parentItem</span>
+     <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">SunnyMorning</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">id</span>: <span class="name">childItem</span>
+         <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">DustyGrass</span>
+
+         <span class="type">anchors</span> {
+             <span class="name">fill</span>: <span class="name">parent</span>
+
+             <span class="name">topMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">top</span>
+             <span class="name">leftMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">left</span>
+             <span class="name">rightMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">right</span>
+             <span class="name">bottomMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">bottom</span>
+         }
+     }
+ }
+</pre>
+</td><td ><img src="images/safearea-ios.webp" alt="" /></td></tr>
+</table></div>
+<p>The SafeArea margins are relative to the item they attach to. If an ancestor item has laid out its children within the safe area margins, any descendant item with its own SafeArea attached will report zero margins, unless <a href="qml-qtquick-safearea.html#additional-margins" translate="no">additional margins</a> have been added.</p>
+<div class="admonition note">
+<p><b>Note: </b>An item should not be positioned based on <i>its own</i> safe area, as that would result in a binding loop.</p>
+</div>
+<h3 id="additional-margins">Additional margins</h3>
+<p>Sometimes an item's layout involves child items that overlap each other, for example in a window with a semi transparent header, where the rest of the window content flows underneath the header.</p>
+<p>In this scenario, the item may reflect the header's position and size to the child items via the <a href="qml-qtquick-safearea.html#additionalMargins-prop" translate="no">additionalMargins</a> property.</p>
+<p>The additional margins will be added to any margins that the item already picks up from its parent hierarchy (including system margins, such as title bars or status bars), and child items will reflect the combined margins accordingly.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">parentItem</span>
+     <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">SunnyMorning</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">id</span>: <span class="name">headerItem</span>
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="number">80</span>
+         <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">WinterNeva</span>
+         <span class="name">z</span>: <span class="number">1</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-item.html" translate="no">Item</a></span> {
+         <span class="name">id</span>: <span class="name">contentItem</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">z</span>: <span class="number">0</span>
+
+         <span class="name">SafeArea</span>.additionalMargins.top: <span class="name">headerItem</span>.<span class="name">height</span>
+                                       <span class="operator">-</span> <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">top</span>
+
+         <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">id</span>: <span class="name">childItem</span>
+             <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">DustyGrass</span>
+             <span class="type">anchors</span> {
+                 <span class="name">fill</span>: <span class="name">parent</span>
+
+                 <span class="name">topMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">top</span>
+                 <span class="name">leftMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">left</span>
+                 <span class="name">rightMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">right</span>
+                 <span class="name">bottomMargin</span>: <span class="name">parent</span>.<span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">bottom</span>
+             }
+         }
+     }
+ }
+</pre>
+</td><td ><br />
+<img src="images/safearea-ios-header.webp" alt="" /></td></tr>
+</table></div>
+<p>In the example above, the header item is positioned at the top of the window, which may potentially overlap with existing safe area margins coming from the window. To account for this we only add additional margins for the part of the header that extends beyond the window's safe area margins.</p>
+<div class="admonition note">
+<p><b>Note: </b>In this example the header item does not overlap the child item, as the goal is to show how the items are positioned and resized in response to safe area margin changes.</p>
+</div>
+<h3 id="controls">Controls</h3>
+<p>Applying safe area margins to a Control is straightforward, as Control already offers properties to add padding to the control's content item.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">SunnyMorning</span>
+     }
+
+     <span class="name">topPadding</span>: <span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">top</span>
+     <span class="name">leftPadding</span>: <span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">left</span>
+     <span class="name">rightPadding</span>: <span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">right</span>
+     <span class="name">bottomPadding</span>: <span class="name">SafeArea</span>.<span class="name">margins</span>.<span class="name">bottom</span>
+
+     <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+         <span class="name">gradient</span>: <span class="name">Gradient</span>.<span class="name">DustyGrass</span>
+     }
+ }
+</pre>
+<!-- @@@SafeArea -->
+<h2>Property Documentation</h2>
+<!-- $$$additionalMargins -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="even" id="additionalMargins-prop"><th class="centerAlign"><p><b>additionalMargins group</b></p></th></tr>
+<tr valign="top" class="odd" id="additionalMargins.bottom-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">additionalMargins.bottom</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="additionalMargins.left-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">additionalMargins.left</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="additionalMargins.right-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">additionalMargins.right</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="additionalMargins.top-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">additionalMargins.top</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the additional safe area margins for the item.</p>
+<p>The additional safe area margins can not be negative, and will be automatically clamped to 0.</p>
+<p>The resulting safe area margins of the item are the sum of the inherited margins (for example from title bars or status bar) and the additional margins applied to the item.</p>
+<p><b>See also </b><a href="qml-qtquick-safearea.html#margins-prop" translate="no">margins</a>.</p>
+</div></div><!-- @@@additionalMargins -->
+<br/>
+<!-- $$$margins -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="even" id="margins-prop"><th class="centerAlign"><p><b>margins group</b></p></th></tr>
+<tr valign="top" class="odd" id="margins.bottom-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">margins.bottom</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+<tr valign="top" class="odd" id="margins.left-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">margins.left</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+<tr valign="top" class="odd" id="margins.right-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">margins.right</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+<tr valign="top" class="odd" id="margins.top-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">margins.top</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the safe area margins, relative to the attached item.</p>
+<p><b>See also </b><a href="qml-qtquick-safearea.html#additionalMargins-prop" translate="no">additionalMargins</a>.</p>
+</div></div><!-- @@@margins -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- websocketsubscription.qdoc -->
+  <meta name="description" content="Combining an MQTT client with a web socket connection.">
+  <title>WebSockets MQTT Subscription | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-examples.html">Qt MQTT Examples</a></li>
+<li>WebSockets MQTT Subscription</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">WebSockets MQTT Subscription</h1>
+<pre class="cpp" translate="no">
+ # Copyright (C) 2022 The Qt Company Ltd.
+ # SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
+
+ cmake_minimum_required(VERSION 3.16)
+ project(websocketsubscription LANGUAGES CXX)
+
+ set(CMAKE_AUTOMOC ON)
+
+ if(NOT DEFINED INSTALL_EXAMPLESDIR)
+     set(INSTALL_EXAMPLESDIR &quot;examples&quot;)
+ endif()
+
+ set(INSTALL_EXAMPLEDIR &quot;${INSTALL_EXAMPLESDIR}/mqtt/websocketsubscription&quot;)
+
+ find_package(Qt6 REQUIRED COMPONENTS Core Mqtt WebSockets)
+
+ qt_add_executable(websocketsubscription
+     clientsubscription.cpp clientsubscription.h
+     main.cpp
+     websocketiodevice.cpp websocketiodevice.h
+ )
+
+ set_target_properties(websocketsubscription PROPERTIES
+     WIN32_EXECUTABLE FALSE
+     MACOSX_BUNDLE FALSE
+ )
+
+ target_compile_definitions(websocketsubscription PUBLIC
+     QT_DEPRECATED_WARNINGS
+ )
+
+ target_link_libraries(websocketsubscription PUBLIC
+     Qt::Core
+     Qt::Mqtt
+     Qt::WebSockets
+ )
+
+ install(TARGETS websocketsubscription
+     RUNTIME DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+     BUNDLE DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+     LIBRARY DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+ )
+</pre>

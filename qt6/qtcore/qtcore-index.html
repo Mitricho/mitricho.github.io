@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtcore-index.qdoc -->
+  <meta name="description" content="The Qt Core module is part of Qt's essential modules.">
+  <title>Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li>Qt Core</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#using-the-module">Using the Module</a></li>
+<li class="level2"><a href="#building-with-cmake">Building with CMake</a></li>
+<li class="level2"><a href="#building-with-qmake">Building with qmake</a></li>
+<li class="level1"><a href="#threading-and-concurrent-programming">Threading and Concurrent Programming</a></li>
+<li class="level1"><a href="#input-output-resources-and-containers">Input/Output, Resources, and Containers</a></li>
+<li class="level1"><a href="#additional-frameworks">Additional Frameworks</a></li>
+<li class="level1"><a href="#reference">Reference</a></li>
+<li class="level1"><a href="#module-evolution">Module Evolution</a></li>
+<li class="level1"><a href="#licenses-and-attributions">Licenses and Attributions</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Core</h1>
+<!-- $$$qtcore-index.html-description -->
+<div class="descr" id="details">
+<p>The Qt Core module adds these features to C++:</p>
+<ul>
+<li>a very powerful mechanism for seamless object communication called signals and slots</li>
+<li>queryable and designable object properties</li>
+<li>hierarchical and queryable object trees that organize object ownership in a natural way with guarded pointers (<a href="qpointer.html" translate="no">QPointer</a>)</li>
+<li>a dynamic cast that works across library boundaries</li>
+</ul>
+<p>The following pages provide more information about Qt's core features:</p>
+<ul>
+<li><a href="metaobjects.html">The Meta-Object System</a></li>
+<li><a href="properties.html">The Property System</a></li>
+<li><a href="object.html">Object Model</a></li>
+<li><a href="objecttrees.html">Object Trees &amp; Ownership</a></li>
+<li><a href="signalsandslots.html">Signals &amp; Slots</a></li>
+</ul>
+<h2 id="using-the-module">Using the Module</h2>
+<p>Using a Qt module's C++ API requires linking against the module library, either directly or through other dependencies. Several build tools have dedicated support for this, including <a href="https://cmake.org/cmake/help/latest/">CMake</a> and <a href="../qmake/qmake-manual.html">qmake</a>.</p>
+<h3 id="building-with-cmake">Building with CMake</h3>
+<p>Use the <code translate="no">find_package()</code> command to locate the needed module component in the <code translate="no">Qt6</code> package:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS Core)
+ target_link_libraries(mytarget PRIVATE Qt6<span class="operator">::</span>Core)
+</pre>
+<p>For more details, see the Build with CMake overview.</p>
+<h3 id="building-with-qmake">Building with qmake</h3>
+<p>If you use <a href="../qmake/qmake-manual.html">qmake</a> to build your projects, Qt Core is linked by default.</p>
+<h2 id="threading-and-concurrent-programming">Threading and Concurrent Programming</h2>
+<p>Qt provides thread support in the form of platform-independent threading classes, a thread-safe way of posting events, and signal-slot connections across threads. Multithreaded programming is also a useful paradigm for performing time-consuming operations without freezing the user interface of an application.</p>
+<p>The Thread Support in Qt page contains information on implementing threads in applications. Additional concurrent classes are provided by the <a href="../qtconcurrent/qtconcurrent-index.html">Qt Concurrent</a> module.</p>
+<h2 id="input-output-resources-and-containers">Input/Output, Resources, and Containers</h2>
+<p>Qt provides a resource system for organizing application files and assets, a set of containers, and classes for receiving input and printing output.</p>
+<ul>
+<li><a href="containers.html">Container Classes</a></li>
+<li><a href="datastreamformat.html">Serializing Qt Data Types</a></li>
+<li><a href="implicit-sharing.html">Implicit Sharing</a></li>
+</ul>
+<p>In addition, Qt Core provides a platform-independent mechanism for storing binary files in the application's executable.</p>
+<ul>
+<li><a href="resources.html">The Qt Resource System</a></li>
+</ul>
+<h2 id="additional-frameworks">Additional Frameworks</h2>
+<p>Qt Core also provides some of Qt's key frameworks.</p>
+<ul>
+<li><a href="animation-overview.html">The Animation Framework</a></li>
+<li><a href="json.html">JSON Support in Qt</a></li>
+<li><a href="cbor.html">CBOR Support in Qt</a></li>
+<li><a href="ipc.html">Inter-Process Communication</a></li>
+<li>How to Create Qt Plugins</li>
+<li><a href="eventsandfilters.html">The Event System</a></li>
+<li><a href="permissions.html">Application Permissions</a></li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a><ul>
+<li><a href="animation.html">Animation Classes</a></li>
+<li>Threading Classes</li>
+<li><a href="containers.html">Container Classes</a></li>
+<li><a href="plugins.html">Plugin Classes</a></li>
+<li><a href="shared.html">Implicitly Shared Classes</a></li>
+<li><a href="io.html">Input/Output Classes</a></li>
+<li><a href="events.html">Event Classes</a></li>
+</ul>
+</li>
+<li>CMake API<ul>
+<li><a href="cmake-commands-qtcore.html">CMake Commands</a></li>
+<li><a href="cmake-variables-qtcore.html">CMake Variables</a></li>
+<li><a href="cmake-target-properties-qtcore.html">CMake Target Properties</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="module-evolution">Module Evolution</h2>
+<p><a href="qtcore-changes-qt6.html">Changes to Qt Core</a> lists important changes in the module API and functionality that were made for the Qt 6 series of Qt.</p>
+<h2 id="licenses-and-attributions">Licenses and Attributions</h2>
+<p>Qt Core is available under commercial licenses from <a href="http://www.qt.io/about-us/">The Qt Company</a>. In addition, it is available under free software licenses: The GNU Lesser General Public License, version 3, or the GNU General Public License, version 2. See Qt Licensing for further details.</p>
+<p>Executables on Windows potentially link against The QtEntryPoint Library. This library is available under commercial licenses and also under the BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License.</p>
+<p>Furthermore, Qt Core in Qt 6.9.0 may contain third party modules under the following permissive licenses:</p>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-tika-mimetypes.html">Apache Tika MimeType Definitions, version 5101bc7fb090ed7deffe56837d7633c9485a1e5d</a></p></td><td class="tblDescr"><p>Apache License 2.0</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-blake2.html">BLAKE2 (reference implementation), version ed1974ea83433eba7b2d95c5dcd9ac33cb847913</a></p></td><td class="tblDescr"><p>Creative Commons Zero v1.0 Universal or Apache License 2.0</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-zlib.html">Data Compression Library (zlib), version 1.3.1</a></p></td><td class="tblDescr"><p>zlib License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-easing.html">Easing Equations by Robert Penner</a></p></td><td class="tblDescr"><p>BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-doubleconversion.html">Efficient Binary-Decimal and Decimal-Binary Conversion Routines for IEEE Doubles, version 3.3.0</a></p></td><td class="tblDescr"><p>BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-kwin.html">KWin, version 5.13.4</a></p></td><td class="tblDescr"><p>BSD-3-Clause</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-md4.html">MD4</a></p></td><td class="tblDescr"><p>Public Domain</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-md5.html">MD5</a></p></td><td class="tblDescr"><p>Public Domain</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-pcre2-sljit.html">PCRE2 - Stack-less Just-In-Time Compiler, version 10.45</a></p></td><td class="tblDescr"><p>BSD 2-clause &quot;Simplified&quot; License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-pcre2.html">PCRE2, version 10.45</a></p></td><td class="tblDescr"><p>BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License with PCRE2 binary-like Packages Exception</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-qeventdispatcher-cf.html">QEventDispatcher on macOS</a></p></td><td class="tblDescr"><p>BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-sha1.html">Secure Hash Algorithm SHA-1</a></p></td><td class="tblDescr"><p>Public Domain</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-sha3-keccak.html">Secure Hash Algorithm SHA-3 - Keccak, version 3.2</a></p></td><td class="tblDescr"><p>Creative Commons Zero v1.0 Universal</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-sha3-endian.html">Secure Hash Algorithm SHA-3 - brg_endian, version 4b9e13ead2c5b5e41ca27c65de4dd69ae0bac228</a></p></td><td class="tblDescr"><p>BSD 2-clause &quot;Simplified&quot; License</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-rfc6234.html">Secure Hash Algorithms SHA-384 and SHA-512</a></p></td><td class="tblDescr"><p>BSD 3-clause &quot;New&quot; or &quot;Revised&quot; License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-siphash.html">SipHash Algorithm</a></p></td><td class="tblDescr"><p>Creative Commons Zero v1.0 Universal</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-tinycbor.html">TinyCBOR, version 0.6.1</a></p></td><td class="tblDescr"><p>MIT License</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-unicode-character-database.html">Unicode Character Database (UCD), version 34</a></p></td><td class="tblDescr"><p>Unicode License Agreement - Data Files and Software (2016)</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-unicode-cldr.html">Unicode Common Locale Data Repository (CLDR), version v46.1</a></p></td><td class="tblDescr"><p>Unicode License v3</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-extra-cmake-modules.html">extra-cmake-modules, version 5.84.0</a></p></td><td class="tblDescr"><p>BSD-3-Clause</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtcore-attribution-forkfd.html">forkfd</a></p></td><td class="tblDescr"><p>MIT License</p></td></tr>
+</table></div>
+</div>
+<!-- @@@qtcore-index.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

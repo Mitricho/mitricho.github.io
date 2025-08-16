@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qcoapclient.cpp -->
+  <meta name="description" content="The QCoapClient class allows the application to send CoAP requests and receive replies.">
+  <title>QCoapClient Class | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-module.html" translate="no">C++ Classes</a></li>
+<li>QCoapClient</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QCoapClient Class</h1>
+<!-- $$$QCoapClient-brief -->
+<p>The QCoapClient class allows the application to send CoAP requests and receive replies. <a href="#details">More...</a></p>
+<!-- @@@QCoapClient -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QCoapClient&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Coap)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Coap)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += coap</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qcoapclient-members.html">List of all members, including inherited members</a></li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#QCoapClient" translate="no">QCoapClient</a></b>(QtCoap::SecurityMode <i>securityMode</i> = QtCoap::SecurityMode::NoSecurity, QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#dtor.QCoapClient" translate="no">~QCoapClient</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#cancelObserve" translate="no">cancelObserve</a></b>(QCoapReply *<i>notifiedReply</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#cancelObserve-1" translate="no">cancelObserve</a></b>(const QUrl &amp;<i>url</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a></b>(const QCoapRequest &amp;<i>request</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#deleteResource-1" translate="no">deleteResource</a></b>(const QUrl &amp;<i>url</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#disconnect" translate="no">disconnect</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapResourceDiscoveryReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#discover" translate="no">discover</a></b>(const QUrl &amp;<i>url</i>, const QString &amp;<i>discoveryPath</i> = QLatin1String(&quot;/.well-known/core&quot;))</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapResourceDiscoveryReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#discover-1" translate="no">discover</a></b>(QtCoap::MulticastGroup <i>group</i> = QtCoap::MulticastGroup::AllCoapNodesIPv4, int <i>port</i> = QtCoap::DefaultPort, const QString &amp;<i>discoveryPath</i> = QLatin1String(&quot;/.well-known/core&quot;))</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#get" translate="no">get</a></b>(const QCoapRequest &amp;<i>request</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#get-1" translate="no">get</a></b>(const QUrl &amp;<i>url</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#observe" translate="no">observe</a></b>(const QCoapRequest &amp;<i>request</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#observe-1" translate="no">observe</a></b>(const QUrl &amp;<i>url</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#post" translate="no">post</a></b>(const QCoapRequest &amp;<i>request</i>, const QByteArray &amp;<i>data</i> = QByteArray())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#post-1" translate="no">post</a></b>(const QCoapRequest &amp;<i>request</i>, QIODevice *<i>device</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#post-2" translate="no">post</a></b>(const QUrl &amp;<i>url</i>, const QByteArray &amp;<i>data</i> = QByteArray())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#put" translate="no">put</a></b>(const QCoapRequest &amp;<i>request</i>, const QByteArray &amp;<i>data</i> = QByteArray())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#put-1" translate="no">put</a></b>(const QCoapRequest &amp;<i>request</i>, QIODevice *<i>device</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCoapReply *</td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#put-2" translate="no">put</a></b>(const QUrl &amp;<i>url</i>, const QByteArray &amp;<i>data</i> = QByteArray())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setAckRandomFactor" translate="no">setAckRandomFactor</a></b>(double <i>ackRandomFactor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setAckTimeout" translate="no">setAckTimeout</a></b>(uint <i>ackTimeout</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setBlockSize" translate="no">setBlockSize</a></b>(quint16 <i>blockSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setMaximumRetransmitCount" translate="no">setMaximumRetransmitCount</a></b>(uint <i>maximumRetransmitCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setMaximumServerResponseDelay" translate="no">setMaximumServerResponseDelay</a></b>(uint <i>responseDelay</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setMinimumTokenSize" translate="no">setMinimumTokenSize</a></b>(int <i>tokenSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setSecurityConfiguration" translate="no">setSecurityConfiguration</a></b>(const QCoapSecurityConfiguration &amp;<i>configuration</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#setSocketOption" translate="no">setSocketOption</a></b>(QAbstractSocket::SocketOption <i>option</i>, const QVariant &amp;<i>value</i>)</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#error" translate="no">error</a></b>(QCoapReply *<i>reply</i>, QtCoap::Error <i>error</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#finished" translate="no">finished</a></b>(QCoapReply *<i>reply</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapclient.html#responseToMulticastReceived" translate="no">responseToMulticastReceived</a></b>(QCoapReply *<i>reply</i>, const QCoapMessage &amp;<i>message</i>, const QHostAddress &amp;<i>sender</i>)</td></tr>
+</table></div>
+<!-- $$$QCoapClient-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The QCoapClient class contains signals that get triggered when the reply of a sent request has arrived.</p>
+<p>The application can use a QCoapClient to send requests over a CoAP network. It provides functions for standard requests: each returns a <a href="qcoapreply.html" translate="no">QCoapReply</a> object, to which the response data shall be delivered; this can be read when the <a href="qcoapclient.html#finished" translate="no">finished</a>() signal arrives.</p>
+<p>A simple request can be sent with:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcoapclient.html#QCoapClient" translate="no">QCoapClient</a></span> <span class="operator">*</span>client <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qcoapclient.html#QCoapClient" translate="no">QCoapClient</a></span>(<span class="keyword">this</span>);
+ connect(client<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapclient.html#QCoapClient" translate="no">QCoapClient</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TestClass<span class="operator">::</span>slotFinished);
+ client<span class="operator">-</span><span class="operator">&gt;</span>get(<span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span>(Qurl(<span class="string">&quot;coap://coap.me/test&quot;</span>)));
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>After processing of the request has finished, it is the responsibility of the user to delete the <a href="qcoapreply.html" translate="no">QCoapReply</a> object at an appropriate time. Do not directly delete it inside the slot connected to <a href="qcoapclient.html#finished" translate="no">finished</a>(). You can use the <a href="../qtcore/qobject.html#deleteLater" translate="no">deleteLater</a>() function.</p>
+</div>
+<p>You can also use an <i>observe</i> request. This can be used as above, or more conveniently with the <a href="qcoapreply.html#notified" translate="no">QCoapReply::notified</a>() signal:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> request <span class="operator">=</span> <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span>(Qurl(<span class="string">&quot;coap://coap.me/obs&quot;</span>));
+ <span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> <span class="operator">*</span>reply <span class="operator">=</span> client<span class="operator">-</span><span class="operator">&gt;</span>observe(request);
+ connect(reply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span><span class="operator">::</span>notified<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TestClass<span class="operator">::</span>slotNotified);
+</pre>
+<p>And the observation can be cancelled with:</p>
+<pre class="cpp" translate="no">
+ client<span class="operator">-</span><span class="operator">&gt;</span>cancelObserve(reply);
+</pre>
+<p>When a reply arrives, the QCoapClient emits a <a href="qcoapclient.html#finished" translate="no">finished</a>() signal.</p>
+<div class="admonition note">
+<p><b>Note: </b>For a discovery request, the returned object is a <a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a>. It can be used the same way as a <a href="qcoapreply.html" translate="no">QCoapReply</a> but contains also a list of resources.</p>
+</div>
+</div>
+<p><b>See also </b><a href="qcoaprequest.html" translate="no">QCoapRequest</a>, <a href="qcoapreply.html" translate="no">QCoapReply</a>, and <a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a>.</p>
+<!-- @@@QCoapClient -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QCoapClient[overload1]$$$QCoapClientQtCoap::SecurityModeQObject* -->
+<h3 class="fn" translate="no" id="QCoapClient"><code class="details extra" translate="no">[explicit]</code> QCoapClient::<span class="name">QCoapClient</span>(<span class="type"><a href="qtcoap.html#SecurityMode-enum" translate="no">QtCoap::SecurityMode</a></span> <i>securityMode</i> = QtCoap::SecurityMode::NoSecurity, <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a QCoapClient object for the given <i translate="no">securityMode</i> and sets <i translate="no">parent</i> as the parent object.</p>
+<p>The default for <i translate="no">securityMode</i> is <a href="qtcoap.html#SecurityMode-enum" translate="no">QtCoap::NoSecurity</a>, which disables security.</p>
+<p>This connects using a QCoapQUdpConnection; to use a custom transport, sub-class QCoapConnection and pass an instance to one of the other constructors.</p>
+<!-- @@@QCoapClient -->
+<!-- $$$~QCoapClient[overload1]$$$~QCoapClient -->
+<h3 class="fn" translate="no" id="dtor.QCoapClient"><code class="details extra" translate="no">[virtual noexcept]</code> QCoapClient::<span class="name">~QCoapClient</span>()</h3>
+<p>Destroys the <a href="qcoapclient.html" translate="no">QCoapClient</a> object and frees up any resources. Note that <a href="qcoapreply.html" translate="no">QCoapReply</a> objects that are returned from this class have the <a href="qcoapclient.html" translate="no">QCoapClient</a> set as their parents, which means that they will be deleted along with it.</p>
+<!-- @@@~QCoapClient -->
+<!-- $$$cancelObserve[overload1]$$$cancelObserveQCoapReply* -->
+<h3 class="fn" translate="no" id="cancelObserve"><span class="type">void</span> QCoapClient::<span class="name">cancelObserve</span>(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *<i>notifiedReply</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Cancels the observation of a resource using the reply <i translate="no">notifiedReply</i> returned by the <a href="qcoapclient.html#observe" translate="no">observe</a>() method.</p>
+<p><b>See also </b><a href="qcoapclient.html#observe" translate="no">observe</a>().</p>
+<!-- @@@cancelObserve -->
+<!-- $$$cancelObserve$$$cancelObserveconstQUrl& -->
+<h3 class="fn" translate="no" id="cancelObserve-1"><span class="type">void</span> QCoapClient::<span class="name">cancelObserve</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Cancels the observation of a resource identified by the <i translate="no">url</i>.</p>
+<p><b>See also </b><a href="qcoapclient.html#observe" translate="no">observe</a>().</p>
+<!-- @@@cancelObserve -->
+<!-- $$$deleteResource[overload1]$$$deleteResourceconstQCoapRequest& -->
+<h3 class="fn" translate="no" id="deleteResource"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">deleteResource</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>)</h3>
+<p>Sends the <i translate="no">request</i> using the DELETE method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@deleteResource -->
+<!-- $$$deleteResource$$$deleteResourceconstQUrl& -->
+<h3 class="fn" translate="no" id="deleteResource-1"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">deleteResource</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Sends a DELETE request to the target <i translate="no">url</i>.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@deleteResource -->
+<!-- $$$disconnect[overload1]$$$disconnect -->
+<h3 class="fn" translate="no" id="disconnect"><span class="type">void</span> QCoapClient::<span class="name">disconnect</span>()</h3>
+<p>Closes the open sockets and connections to free the transport.</p>
+<div class="admonition note">
+<p><b>Note: </b>In the secure mode this needs to be called before changing the security configuration or connecting to another server.</p>
+</div>
+<p><b>See also </b><a href="qcoapclient.html#setSecurityConfiguration" translate="no">setSecurityConfiguration</a>().</p>
+<!-- @@@disconnect -->
+<!-- $$$discover[overload1]$$$discoverconstQUrl&constQString& -->
+<h3 class="fn" translate="no" id="discover"><span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> *QCoapClient::<span class="name">discover</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>discoveryPath</i> = QLatin1String(&quot;/.well-known/core&quot;))</h3>
+<p>Discovers the resources available at the given <i translate="no">url</i> and returns a new <a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a> object which emits the <a href="qcoapresourcediscoveryreply.html#discovered" translate="no">QCoapResourceDiscoveryReply::discovered</a>() signal whenever the response arrives.</p>
+<p>Discovery path defaults to &quot;/.well-known/core&quot;, but can be changed by passing a different path to <i translate="no">discoveryPath</i>. Discovery is described in <a href="https://tools.ietf.org/html/rfc6690#section-1.2.1">RFC 6690</a>.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), and <a href="qcoapclient.html#observe" translate="no">observe</a>().</p>
+<!-- @@@discover -->
+<!-- $$$discover$$$discoverQtCoap::MulticastGroupintconstQString& -->
+<h3 class="fn" translate="no" id="discover-1"><span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> *QCoapClient::<span class="name">discover</span>(<span class="type"><a href="qtcoap.html#MulticastGroup-enum" translate="no">QtCoap::MulticastGroup</a></span> <i>group</i> = QtCoap::MulticastGroup::AllCoapNodesIPv4, <span class="type">int</span> <i>port</i> = QtCoap::DefaultPort, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>discoveryPath</i> = QLatin1String(&quot;/.well-known/core&quot;))</h3>
+<p>This is an overloaded function.</p>
+<p>Discovers the resources available at the endpoints which have joined the <i translate="no">group</i> at the given <i translate="no">port</i>. Returns a new <a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a> object which emits the <a href="qcoapresourcediscoveryreply.html#discovered" translate="no">QCoapResourceDiscoveryReply::discovered</a>() signal whenever a response arrives. The <i translate="no">group</i> is one of the CoAP multicast group addresses and defaults to <a href="qtcoap.html#MulticastGroup-enum" translate="no">QtCoap::AllCoapNodesIPv4</a>.</p>
+<p>Discovery path defaults to &quot;/.well-known/core&quot;, but can be changed by passing a different path to <i translate="no">discoveryPath</i>. Discovery is described in <a href="https://tools.ietf.org/html/rfc6690#section-1.2.1">RFC 6690</a>.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), and <a href="qcoapclient.html#observe" translate="no">observe</a>().</p>
+<!-- @@@discover -->
+<!-- $$$error[overload1]$$$errorQCoapReply*QtCoap::Error -->
+<h3 class="fn" translate="no" id="error"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QCoapClient::<span class="name">error</span>(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *<i>reply</i>, <span class="type"><a href="qtcoap.html#Error-enum" translate="no">QtCoap::Error</a></span> <i>error</i>)</h3>
+<p>This signal is emitted whenever an error occurs. The <i translate="no">reply</i> parameter can be <code translate="no">nullptr</code> if the error is not related to a specific <a href="qcoapreply.html" translate="no">QCoapReply</a>. The <i translate="no">error</i> parameter contains the error code.</p>
+<p><b>See also </b><a href="qcoapclient.html#finished" translate="no">finished</a>(), <a href="qcoapreply.html#error" translate="no">QCoapReply::error</a>(), and <a href="qcoapreply.html#finished" translate="no">QCoapReply::finished</a>().</p>
+<!-- @@@error -->
+<!-- $$$finished[overload1]$$$finishedQCoapReply* -->
+<h3 class="fn" translate="no" id="finished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QCoapClient::<span class="name">finished</span>(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *<i>reply</i>)</h3>
+<p>This signal is emitted along with the <a href="qcoapreply.html#finished" translate="no">QCoapReply::finished</a>() signal whenever a CoAP reply is received, after either a success or an error. The <i translate="no">reply</i> parameter will contain a pointer to the reply that has just been received.</p>
+<p><b>See also </b><a href="qcoapclient.html#error" translate="no">error</a>(), <a href="qcoapreply.html#finished" translate="no">QCoapReply::finished</a>(), and <a href="qcoapreply.html#error" translate="no">QCoapReply::error</a>().</p>
+<!-- @@@finished -->
+<!-- $$$get[overload1]$$$getconstQCoapRequest& -->
+<h3 class="fn" translate="no" id="get"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">get</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>)</h3>
+<p>Sends the <i translate="no">request</i> using the GET method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object.</p>
+<p><b>See also </b><a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@get -->
+<!-- $$$get$$$getconstQUrl& -->
+<h3 class="fn" translate="no" id="get-1"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">get</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Sends a GET request to <i translate="no">url</i> and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object.</p>
+<p><b>See also </b><a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@get -->
+<!-- $$$observe[overload1]$$$observeconstQCoapRequest& -->
+<h3 class="fn" translate="no" id="observe"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">observe</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>)</h3>
+<p>Sends a request to observe the target <i translate="no">request</i> and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object which emits the <a href="qcoapreply.html#notified" translate="no">QCoapReply::notified</a>() signal whenever a new notification arrives.</p>
+<p><b>See also </b><a href="qcoapclient.html#cancelObserve" translate="no">cancelObserve</a>(), <a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@observe -->
+<!-- $$$observe$$$observeconstQUrl& -->
+<h3 class="fn" translate="no" id="observe-1"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">observe</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Sends a request to observe the target <i translate="no">url</i> and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object which emits the <a href="qcoapreply.html#notified" translate="no">QCoapReply::notified</a>() signal whenever a new notification arrives.</p>
+<p><b>See also </b><a href="qcoapclient.html#cancelObserve" translate="no">cancelObserve</a>(), <a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@observe -->
+<!-- $$$post[overload1]$$$postconstQCoapRequest&constQByteArray& -->
+<h3 class="fn" translate="no" id="post"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">post</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>data</i> = QByteArray())</h3>
+<p>Sends the <i translate="no">request</i> using the POST method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">data</i> as the payload for this request. If <i translate="no">data</i> is empty, the payload of the <i translate="no">request</i> will be used.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@post -->
+<!-- $$$post$$$postconstQCoapRequest&QIODevice* -->
+<h3 class="fn" translate="no" id="post-1"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">post</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>, <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span> *<i>device</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Sends the <i translate="no">request</i> using the POST method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">device</i> content as the payload for this request. A null device is treated as empty content.</p>
+<div class="admonition note">
+<p><b>Note: </b>The device has to be open and readable before calling this function.</p>
+</div>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@post -->
+<!-- $$$post$$$postconstQUrl&constQByteArray& -->
+<h3 class="fn" translate="no" id="post-2"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">post</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>data</i> = QByteArray())</h3>
+<p>This is an overloaded function.</p>
+<p>Sends a POST request to <i translate="no">url</i> and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">data</i> as the payload for this request.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#put" translate="no">put</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@post -->
+<!-- $$$put[overload1]$$$putconstQCoapRequest&constQByteArray& -->
+<h3 class="fn" translate="no" id="put"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">put</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>data</i> = QByteArray())</h3>
+<p>Sends the <i translate="no">request</i> using the PUT method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">data</i> as the payload for this request. If <i translate="no">data</i> is empty, the payload of the <i translate="no">request</i> will be used.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@put -->
+<!-- $$$put$$$putconstQCoapRequest&QIODevice* -->
+<h3 class="fn" translate="no" id="put-1"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">put</span>(const <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> &amp;<i>request</i>, <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span> *<i>device</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Sends the <i translate="no">request</i> using the PUT method and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">device</i> content as the payload for this request. A null device is treated as empty content.</p>
+<div class="admonition note">
+<p><b>Note: </b>The device has to be open and readable before calling this function.</p>
+</div>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@put -->
+<!-- $$$put$$$putconstQUrl&constQByteArray& -->
+<h3 class="fn" translate="no" id="put-2"><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *QCoapClient::<span class="name">put</span>(const <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> &amp;<i>url</i>, const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>data</i> = QByteArray())</h3>
+<p>This is an overloaded function.</p>
+<p>Sends a PUT request to <i translate="no">url</i> and returns a new <a href="qcoapreply.html" translate="no">QCoapReply</a> object. Uses <i translate="no">data</i> as the payload for this request.</p>
+<p><b>See also </b><a href="qcoapclient.html#get" translate="no">get</a>(), <a href="qcoapclient.html#post" translate="no">post</a>(), <a href="qcoapclient.html#deleteResource" translate="no">deleteResource</a>(), <a href="qcoapclient.html#observe" translate="no">observe</a>(), and <a href="qcoapclient.html#discover" translate="no">discover</a>().</p>
+<!-- @@@put -->
+<!-- $$$responseToMulticastReceived[overload1]$$$responseToMulticastReceivedQCoapReply*constQCoapMessage&constQHostAddress& -->
+<h3 class="fn" translate="no" id="responseToMulticastReceived"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QCoapClient::<span class="name">responseToMulticastReceived</span>(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> *<i>reply</i>, const <span class="type"><a href="qcoapmessage.html" translate="no">QCoapMessage</a></span> &amp;<i>message</i>, const <span class="type"><a href="../qtnetwork/qhostaddress.html" translate="no">QHostAddress</a></span> &amp;<i>sender</i>)</h3>
+<p>This signal is emitted when a unicast response to a multicast request arrives. The <i translate="no">reply</i> parameter contains a pointer to the reply that has just been received, <i translate="no">message</i> contains the payload and the message details, and <i translate="no">sender</i> contains the sender address.</p>
+<p><b>See also </b><a href="qcoapclient.html#error" translate="no">error</a>(), <a href="qcoapreply.html#finished" translate="no">QCoapReply::finished</a>(), and <a href="qcoapreply.html#error" translate="no">QCoapReply::error</a>().</p>
+<!-- @@@responseToMulticastReceived -->
+<!-- $$$setAckRandomFactor[overload1]$$$setAckRandomFactordouble -->
+<h3 class="fn" translate="no" id="setAckRandomFactor"><span class="type">void</span> QCoapClient::<span class="name">setAckRandomFactor</span>(<span class="type">double</span> <i>ackRandomFactor</i>)</h3>
+<p>Sets the <code translate="no">ACK_RANDOM_FACTOR</code> value defined in <a href="https://datatracker.ietf.org/doc/html/rfc7252#section-4.2">RFC 7252 - Section 4.2</a>, to <i translate="no">ackRandomFactor</i>. This value should be greater than or equal to 1. The default is 1.5.</p>
+<p><b>See also </b><a href="qcoapclient.html#setAckTimeout" translate="no">setAckTimeout</a>().</p>
+<!-- @@@setAckRandomFactor -->
+<!-- $$$setAckTimeout[overload1]$$$setAckTimeoutuint -->
+<h3 class="fn" translate="no" id="setAckTimeout"><span class="type">void</span> QCoapClient::<span class="name">setAckTimeout</span>(<span class="type"><a href="../qtcore/qttypes.html#uint-typedef" translate="no">uint</a></span> <i>ackTimeout</i>)</h3>
+<p>Sets the <code translate="no">ACK_TIMEOUT</code> value defined in <a href="https://datatracker.ietf.org/doc/html/rfc7252#section-4.2">RFC 7252 - Section 4.2</a> to <i translate="no">ackTimeout</i> in milliseconds. The default is 2000 ms.</p>
+<p>This timeout only applies to confirmable messages. The actual timeout for reliable transmissions is a random value between <code translate="no">ACK_TIMEOUT</code> and <code translate="no">ACK_TIMEOUT * ACK_RANDOM_FACTOR</code>.</p>
+<p><b>See also </b><a href="qcoapclient.html#setAckRandomFactor" translate="no">setAckRandomFactor</a>().</p>
+<!-- @@@setAckTimeout -->
+<!-- $$$setBlockSize[overload1]$$$setBlockSizequint16 -->
+<h3 class="fn" translate="no" id="setBlockSize"><span class="type">void</span> QCoapClient::<span class="name">setBlockSize</span>(<span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> <i>blockSize</i>)</h3>
+<p>Sets the maximum block size used by the protocol to <i translate="no">blockSize</i> when sending requests and receiving replies. The block size must be a power of two.</p>
+<!-- @@@setBlockSize -->
+<!-- $$$setMaximumRetransmitCount[overload1]$$$setMaximumRetransmitCountuint -->
+<h3 class="fn" translate="no" id="setMaximumRetransmitCount"><span class="type">void</span> QCoapClient::<span class="name">setMaximumRetransmitCount</span>(<span class="type"><a href="../qtcore/qttypes.html#uint-typedef" translate="no">uint</a></span> <i>maximumRetransmitCount</i>)</h3>
+<p>Sets the <code translate="no">MAX_RETRANSMIT</code> value defined in <a href="https://datatracker.ietf.org/doc/html/rfc7252#section-4.2">RFC 7252 - Section 4.2</a> to <i translate="no">maximumRetransmitCount</i>. This value should be less than or equal to 25. The default is 4.</p>
+<!-- @@@setMaximumRetransmitCount -->
+<!-- $$$setMaximumServerResponseDelay[overload1]$$$setMaximumServerResponseDelayuint -->
+<h3 class="fn" translate="no" id="setMaximumServerResponseDelay"><span class="type">void</span> QCoapClient::<span class="name">setMaximumServerResponseDelay</span>(<span class="type"><a href="../qtcore/qttypes.html#uint-typedef" translate="no">uint</a></span> <i>responseDelay</i>)</h3>
+<p>Sets the <code translate="no">MAX_SERVER_RESPONSE_DELAY</code> value to <i translate="no">responseDelay</i> in milliseconds. The default is 250 seconds.</p>
+<p>As defined in <a href="https://datatracker.ietf.org/doc/html/rfc7390#section-2.5">RFC 7390 - Section 2.5</a>, <code translate="no">MAX_SERVER_RESPONSE_DELAY</code> is the expected maximum response delay over all servers that the client can send a multicast request to.</p>
+<!-- @@@setMaximumServerResponseDelay -->
+<!-- $$$setMinimumTokenSize[overload1]$$$setMinimumTokenSizeint -->
+<h3 class="fn" translate="no" id="setMinimumTokenSize"><span class="type">void</span> QCoapClient::<span class="name">setMinimumTokenSize</span>(<span class="type">int</span> <i>tokenSize</i>)</h3>
+<p>Sets the minimum token size to <i translate="no">tokenSize</i> in bytes. For security reasons it is recommended to use tokens with a length of at least 4 bytes. The default value for this parameter is 4 bytes.</p>
+<!-- @@@setMinimumTokenSize -->
+<!-- $$$setSecurityConfiguration[overload1]$$$setSecurityConfigurationconstQCoapSecurityConfiguration& -->
+<h3 class="fn" translate="no" id="setSecurityConfiguration"><span class="type">void</span> QCoapClient::<span class="name">setSecurityConfiguration</span>(const <span class="type"><a href="qcoapsecurityconfiguration.html" translate="no">QCoapSecurityConfiguration</a></span> &amp;<i>configuration</i>)</h3>
+<p>Sets the security configuration parameters from <i translate="no">configuration</i>. Configuration will be ignored if the <a href="qtcoap.html#SecurityMode-enum" translate="no">QtCoap::NoSecurity</a> mode is used.</p>
+<div class="admonition note">
+<p><b>Note: </b>This method must be called before the handshake starts. If you need to change the security configuration after establishing a secure connection with the server, the client needs to be disconnected first.</p>
+</div>
+<p><b>See also </b><a href="qcoapclient.html#disconnect" translate="no">disconnect</a>().</p>
+<!-- @@@setSecurityConfiguration -->
+<!-- $$$setSocketOption[overload1]$$$setSocketOptionQAbstractSocket::SocketOptionconstQVariant& -->
+<h3 class="fn" translate="no" id="setSocketOption"><span class="type">void</span> QCoapClient::<span class="name">setSocketOption</span>(<span class="type"><a href="../qtnetwork/qabstractsocket.html#SocketOption-enum" translate="no">QAbstractSocket::SocketOption</a></span> <i>option</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>)</h3>
+<p>Sets the <a href="../qtnetwork/qudpsocket.html" translate="no">QUdpSocket</a> socket <i translate="no">option</i> to <i translate="no">value</i>.</p>
+<!-- @@@setSocketOption -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

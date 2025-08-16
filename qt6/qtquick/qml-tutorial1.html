@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- tutorial.qdoc -->
+  <title>QML Tutorial 1 - Value Types | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-codesamples.html">Qt Quick Examples and Tutorials</a></li>
+<li><a href="qml-tutorial.html">QML Tutorial</a></li>
+<li>QML Tutorial 1 - Value Types</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qml-tutorial.html" />
+  <link rel="next" href="qml-tutorial2.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qml-tutorial.html">QML Tutorial</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qml-tutorial2.html">QML Components</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#walkthrough">Walkthrough</a></li>
+<li class="level2"><a href="#import">Import</a></li>
+<li class="level2"><a href="#rectangle-type">Rectangle Type</a></li>
+<li class="level2"><a href="#text-type">Text Type</a></li>
+<li class="level2"><a href="#viewing-the-example">Viewing the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML Tutorial 1 - Value Types</h1>
+<!-- $$$qml-tutorial1.html-description -->
+<div class="descr" id="details">
+<p>This first program is a very simple &quot;Hello world&quot; example that introduces some basic QML concepts. The picture below is a screenshot of this program.</p>
+<p class="centerAlign"><img src="images/declarative-tutorial1.png" alt="" /></p><p>Here is the QML code for the application:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">page</span>
+     <span class="name">width</span>: <span class="number">320</span>; <span class="name">height</span>: <span class="number">480</span>
+     <span class="name">color</span>: <span class="string">&quot;lightgray&quot;</span>
+
+     <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+         <span class="name">id</span>: <span class="name">helloText</span>
+         <span class="name">text</span>: <span class="string">&quot;Hello world!&quot;</span>
+         <span class="name">y</span>: <span class="number">30</span>
+         <span class="name">anchors</span>.horizontalCenter: <span class="name">page</span>.<span class="name">horizontalCenter</span>
+         <span class="name">font</span>.pointSize: <span class="number">24</span>; <span class="name">font</span>.bold: <span class="number">true</span>
+     }
+ }
+</pre>
+<h2 id="walkthrough">Walkthrough</h2>
+<h3 id="import">Import</h3>
+<p>First, we need to import the types that we need for this example. Most QML files will import the built-in QML types (like <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a>, <a href="qml-qtquick-image.html" translate="no">Image</a>, ...) that come with Qt, using:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+</pre>
+<h3 id="rectangle-type">Rectangle Type</h3>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">id</span>: <span class="name">page</span>
+     <span class="name">width</span>: <span class="number">320</span>; <span class="name">height</span>: <span class="number">480</span>
+     <span class="name">color</span>: <span class="string">&quot;lightgray&quot;</span>
+</pre>
+<p>We declare a root object of type <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a>. It is one of the basic building blocks you can use to create an application in QML. We give it an <code translate="no">id</code> to be able to refer to it later. In this case, we call it &quot;page&quot;. We also set the <code translate="no">width</code>, <code translate="no">height</code> and <code translate="no">color</code> properties. The <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a> type contains many other properties (such as <code translate="no">x</code> and <code translate="no">y</code>), but these are left at their default values.</p>
+<h3 id="text-type">Text Type</h3>
+<pre class="qml" translate="no">
+     <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+         <span class="name">id</span>: <span class="name">helloText</span>
+         <span class="name">text</span>: <span class="string">&quot;Hello world!&quot;</span>
+         <span class="name">y</span>: <span class="number">30</span>
+         <span class="name">anchors</span>.horizontalCenter: <span class="name">page</span>.<span class="name">horizontalCenter</span>
+         <span class="name">font</span>.pointSize: <span class="number">24</span>; <span class="name">font</span>.bold: <span class="number">true</span>
+     }
+</pre>
+<p>We add a <a href="qml-qtquick-text.html" translate="no">Text</a> type as a child of the root Rectangle type that displays the text 'Hello world!'.</p>
+<p>The <code translate="no">y</code> property is used to position the text vertically at 30 pixels from the top of its parent.</p>
+<p>The <code translate="no">anchors.horizontalCenter</code> property refers to the horizontal center of an type. In this case, we specify that our text type should be horizontally centered in the <i>page</i> element (see <a href="qtquick-positioning-anchors.html">Anchor-Based Layout</a>).</p>
+<p>The <code translate="no">font.pointSize</code> and <code translate="no">font.bold</code> properties are related to fonts and use the dot notation.</p>
+<h3 id="viewing-the-example">Viewing the Example</h3>
+<p>To view what you have created, run the qml tool (located in the <code translate="no">bin</code> directory) with your filename as the first argument. For example, to run the provided completed Tutorial 1 example from the install location, you would type:</p>
+<pre class="cpp" translate="no">
+ qml tutorials<span class="operator">/</span>helloworld<span class="operator">/</span>tutorial1<span class="operator">.</span>qml
+</pre>
+</div>
+<!-- @@@qml-tutorial1.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qml-tutorial.html">QML Tutorial</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qml-tutorial2.html">QML Components</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

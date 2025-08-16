@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>&lt;QtTranslation&gt; Proxy Page | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>&lt;QtTranslation&gt; Proxy Page</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">&lt;QtTranslation&gt; Proxy Page</h1>
+<h2 id="functions">Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#qtTrId" translate="no">qtTrId</a></b>(const char *<i>id</i>, int <i>n</i> = -1)</td></tr>
+</table></div>
+<h2 id="macros">Macros</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP3" translate="no">QT_TRANSLATE_NOOP3</a></b>(<i>context</i>, <i>sourceText</i>, <i>disambiguation</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP" translate="no">QT_TRANSLATE_NOOP</a></b>(<i>context</i>, <i>sourceText</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_N_NOOP3" translate="no">QT_TRANSLATE_N_NOOP3</a></b>(<i>context</i>, <i>sourceText</i>, <i>comment</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_N_NOOP" translate="no">QT_TRANSLATE_N_NOOP</a></b>(<i>context</i>, <i>sourceText</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRID_NOOP" translate="no">QT_TRID_NOOP</a></b>(<i>id</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.3)</code> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TRID_N_NOOP" translate="no">QT_TRID_N_NOOP</a></b>(<i>id</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TR_NOOP" translate="no">QT_TR_NOOP</a></b>(<i>sourceText</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qttranslation-qtcore-proxy.html#QT_TR_N_NOOP" translate="no">QT_TR_N_NOOP</a></b>(<i>sourceText</i>)</td></tr>
+</table></div>
+<div class="func">
+<h2>Function Documentation</h2>
+<!-- $$$qtTrId[overload1]$$$qtTrIdconstchar*int -->
+<h3 class="fn" translate="no" id="qtTrId"><span class="type"><a href="qstring.html" translate="no">QString</a></span> <span class="name">qtTrId</span>(const <span class="type">char</span> *<i>id</i>, <span class="type">int</span> <i>n</i> = -1)</h3>
+<p>The qtTrId function finds and returns a translated string.</p>
+<p>Returns a translated string identified by <i translate="no">id</i>. If no matching string is found, the id itself is returned. This should not happen under normal conditions.</p>
+<p>If <i translate="no">n</i> &gt;= 0, all occurrences of <code translate="no">%n</code> in the resulting string are replaced with a decimal representation of <i translate="no">n</i>. In addition, depending on <i translate="no">n</i>'s value, the translation text may vary.</p>
+<p>Meta data and comments can be passed as documented for <a href="qobject.html#tr" translate="no">QObject::tr</a>(). In addition, it is possible to supply a source string template like that:</p>
+<p><code translate="no">//% &lt;C string&gt;</code></p>
+<p>or</p>
+<p><code translate="no">\begincomment% &lt;C string&gt; \endcomment</code></p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+     <span class="comment">//% &quot;%n fooish bar(s) found.\n&quot;</span>
+     <span class="comment">//% &quot;Do you want to continue?&quot;</span>
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> text <span class="operator">=</span> qtTrId(<span class="string">&quot;qtn_foo_bar&quot;</span><span class="operator">,</span> n);
+</pre>
+<p>Creating QM files suitable for use with this function requires passing the <code translate="no">-idbased</code> option to the <code translate="no">lrelease</code> tool.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This method is reentrant only if all translators are installed <i>before</i> calling this method. Installing or removing translators while performing translations is not supported. Doing so will probably result in crashes or other undesirable behavior.</p>
+</div>
+<p><b>Note:</b> This function is reentrant.</p>
+<p><b>See also </b><a href="qobject.html#tr" translate="no">QObject::tr</a>(), <a href="qcoreapplication.html#translate" translate="no">QCoreApplication::translate</a>(), and Internationalization with Qt.</p>
+<!-- @@@qtTrId -->
+</div>
+<div class="macros">
+<h2>Macro Documentation</h2>
+<!-- $$$QT_TRANSLATE_NOOP3[overload1]$$$QT_TRANSLATE_NOOP3 -->
+<h3 class="fn" translate="no" id="QT_TRANSLATE_NOOP3"><span class="name">QT_TRANSLATE_NOOP3</span>(<i>context</i>, <i>sourceText</i>, <i>disambiguation</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for delayed translation in the given <i translate="no">context</i> with the given <i translate="no">disambiguation</i>. The <i translate="no">context</i> is typically a class and also needs to be specified as a string literal. The string literal <i translate="no">disambiguation</i> should be a short semantic tag to tell apart otherwise identical strings.</p>
+<p>The macro tells lupdate to collect the string, and expands to an anonymous struct of the two string literals passed as <i translate="no">sourceText</i> and <i translate="no">disambiguation</i>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> { <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>source; <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>comment; } greeting_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span>
+ {
+     QT_TRANSLATE_NOOP3(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span> <span class="string">&quot;Hello&quot;</span><span class="operator">,</span>
+                        <span class="string">&quot;A really friendly hello&quot;</span>)<span class="operator">,</span>
+     QT_TRANSLATE_NOOP3(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span> <span class="string">&quot;Goodbye&quot;</span><span class="operator">,</span>
+                        <span class="string">&quot;A really friendly goodbye&quot;</span>)
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> FriendlyConversation<span class="operator">::</span>greeting(<span class="type">int</span> type)
+ {
+     <span class="keyword">return</span> tr(greeting_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>source<span class="operator">,</span>
+               greeting_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>comment);
+ }
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> global_greeting(<span class="type">int</span> type)
+ {
+     <span class="keyword">return</span> <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span>
+                            greeting_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>source<span class="operator">,</span>
+                            greeting_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>comment);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TR_NOOP" translate="no">QT_TR_NOOP</a>(), <a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP" translate="no">QT_TRANSLATE_NOOP</a>(), and Internationalization with Qt.</p>
+<!-- @@@QT_TRANSLATE_NOOP3 -->
+<!-- $$$QT_TRANSLATE_NOOP[overload1]$$$QT_TRANSLATE_NOOP -->
+<h3 class="fn" translate="no" id="QT_TRANSLATE_NOOP"><span class="name">QT_TRANSLATE_NOOP</span>(<i>context</i>, <i>sourceText</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for delayed translation in the given <i translate="no">context</i>. The <i translate="no">context</i> is typically a class name and also needs to be specified as a string literal.</p>
+<p>The macro tells lupdate to collect the string, and expands to <i translate="no">sourceText</i> itself.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>greeting_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     QT_TRANSLATE_NOOP(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span> <span class="string">&quot;Hello&quot;</span>)<span class="operator">,</span>
+     QT_TRANSLATE_NOOP(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span> <span class="string">&quot;Goodbye&quot;</span>)
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> FriendlyConversation<span class="operator">::</span>greeting(<span class="type">int</span> type)
+ {
+     <span class="keyword">return</span> tr(greeting_strings<span class="operator">[</span>type<span class="operator">]</span>);
+ }
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> global_greeting(<span class="type">int</span> type)
+ {
+     <span class="keyword">return</span> <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;FriendlyConversation&quot;</span><span class="operator">,</span>
+                            greeting_strings<span class="operator">[</span>type<span class="operator">]</span>);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TR_NOOP" translate="no">QT_TR_NOOP</a>(), <a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP3" translate="no">QT_TRANSLATE_NOOP3</a>(), and Internationalization with Qt.</p>
+<!-- @@@QT_TRANSLATE_NOOP -->
+<!-- $$$QT_TRANSLATE_N_NOOP3[overload1]$$$QT_TRANSLATE_N_NOOP3 -->
+<h3 class="fn" translate="no" id="QT_TRANSLATE_N_NOOP3"><span class="name">QT_TRANSLATE_N_NOOP3</span>(<i>context</i>, <i>sourceText</i>, <i>comment</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for numerator dependent delayed translation in the given <i translate="no">context</i> with the given <i translate="no">comment</i>. The <i translate="no">context</i> is typically a class and also needs to be specified as a string literal. The string literal <i translate="no">comment</i> should be a short semantic tag to tell apart otherwise identical strings.</p>
+<p>The macro tells lupdate to collect the string, and expands to an anonymous struct of the two string literals passed as <i translate="no">sourceText</i> and <i translate="no">comment</i>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> { <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> source; <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> comment; } status_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     QT_TRANSLATE_N_NOOP3(<span class="string">&quot;Message Status&quot;</span><span class="operator">,</span> <span class="string">&quot;Hello, you have %n message(s)&quot;</span><span class="operator">,</span>
+                          <span class="string">&quot;A login message status&quot;</span>)<span class="operator">,</span>
+     QT_TRANSLATE_N_NOOP3(<span class="string">&quot;Message status&quot;</span><span class="operator">,</span> <span class="string">&quot;You have %n new message(s)&quot;</span><span class="operator">,</span>
+                          <span class="string">&quot;A new message query status&quot;</span>)
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> FriendlyConversation<span class="operator">::</span>greeting(<span class="type">int</span> type<span class="operator">,</span> <span class="type">int</span> count)
+ {
+     <span class="keyword">return</span> tr(status_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>source<span class="operator">,</span>
+               status_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>comment<span class="operator">,</span> count);
+ }
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> global_greeting(<span class="type">int</span> type<span class="operator">,</span> <span class="type">int</span> count)
+ {
+     <span class="keyword">return</span> <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>translate(<span class="string">&quot;Message Status&quot;</span><span class="operator">,</span>
+                            status_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>source<span class="operator">,</span>
+                            status_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">.</span>comment<span class="operator">,</span>
+                            count);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TR_NOOP" translate="no">QT_TR_NOOP</a>(), <a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP" translate="no">QT_TRANSLATE_NOOP</a>(), <a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP3" translate="no">QT_TRANSLATE_NOOP3</a>(), and Internationalization with Qt.</p>
+<!-- @@@QT_TRANSLATE_N_NOOP3 -->
+<!-- $$$QT_TRANSLATE_N_NOOP[overload1]$$$QT_TRANSLATE_N_NOOP -->
+<h3 class="fn" translate="no" id="QT_TRANSLATE_N_NOOP"><span class="name">QT_TRANSLATE_N_NOOP</span>(<i>context</i>, <i>sourceText</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for numerator dependent delayed translation in the given <i translate="no">context</i>. The <i translate="no">context</i> is typically a class name and also needs to be specified as a string literal.</p>
+<p>The macro tells lupdate to collect the string, and expands to <i translate="no">sourceText</i> itself.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> greeting_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     QT_TRANSLATE_N_NOOP(<span class="string">&quot;Welcome Msg&quot;</span><span class="operator">,</span> <span class="string">&quot;Hello, you have %n message(s)&quot;</span>)<span class="operator">,</span>
+     QT_TRANSLATE_N_NOOP(<span class="string">&quot;Welcome Msg&quot;</span><span class="operator">,</span> <span class="string">&quot;Hi, you have %n message(s)&quot;</span>)
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> global_greeting(<span class="type">int</span> type<span class="operator">,</span> <span class="type">int</span> msgcnt)
+ {
+     <span class="keyword">return</span> translate(<span class="string">&quot;Welcome Msg&quot;</span><span class="operator">,</span> greeting_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">,</span> nullptr<span class="operator">,</span> msgcnt);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP" translate="no">QT_TRANSLATE_NOOP</a>(), <a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_N_NOOP3" translate="no">QT_TRANSLATE_N_NOOP3</a>(), and Internationalization with Qt.</p>
+<!-- @@@QT_TRANSLATE_N_NOOP -->
+<!-- $$$QT_TRID_NOOP[overload1]$$$QT_TRID_NOOP -->
+<h3 class="fn" translate="no" id="QT_TRID_NOOP"><span class="name">QT_TRID_NOOP</span>(<i>id</i>)</h3>
+<p>The QT_TRID_NOOP macro marks an id for dynamic translation.</p>
+<p>The only purpose of this macro is to provide an anchor for attaching meta data like to <a href="qttranslation-qtcore-proxy.html#qtTrId" translate="no">qtTrId</a>().</p>
+<p>The macro expands to <i translate="no">id</i>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> ids<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     <span class="comment">//% &quot;This is the first text.&quot;</span>
+     QT_TRID_NOOP(<span class="string">&quot;qtn_1st_text&quot;</span>)<span class="operator">,</span>
+     <span class="comment">//% &quot;This is the second text.&quot;</span>
+     QT_TRID_NOOP(<span class="string">&quot;qtn_2nd_text&quot;</span>)<span class="operator">,</span>
+     <span class="number">0</span>
+ };
+
+ <span class="type">void</span> TheClass<span class="operator">::</span>addLabels()
+ {
+     <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; ids<span class="operator">[</span>i<span class="operator">]</span>; <span class="operator">+</span><span class="operator">+</span>i)
+         <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlabel.html" translate="no">QLabel</a></span>(qtTrId(ids<span class="operator">[</span>i<span class="operator">]</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#qtTrId" translate="no">qtTrId</a>() and Internationalization with Qt.</p>
+<!-- @@@QT_TRID_NOOP -->
+<!-- $$$QT_TRID_N_NOOP[overload1]$$$QT_TRID_N_NOOP -->
+<h3 class="fn" translate="no" id="QT_TRID_N_NOOP"><code class="details extra" translate="no">[since 6.3]</code> <span class="name">QT_TRID_N_NOOP</span>(<i>id</i>)</h3>
+<p>The QT_TRID_N_NOOP macro marks an id for numerator dependent dynamic translation.</p>
+<p>The only purpose of this macro is to provide an anchor for attaching meta data like to <a href="qttranslation-qtcore-proxy.html#qtTrId" translate="no">qtTrId</a>().</p>
+<p>The macro expands to <i translate="no">id</i>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> ids<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     <span class="comment">//% &quot;%n foo(s) found.&quot;</span>
+     QT_TRID_N_NOOP(<span class="string">&quot;qtn_foo&quot;</span>)<span class="operator">,</span>
+     <span class="comment">//% &quot;%n bar(s) found.&quot;</span>
+     QT_TRID_N_NOOP(<span class="string">&quot;qtn_bar&quot;</span>)<span class="operator">,</span>
+     <span class="number">0</span>
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> result(<span class="type">int</span> type<span class="operator">,</span> <span class="type">int</span> n)
+ {
+     <span class="keyword">return</span> qtTrId(ids<span class="operator">[</span>type<span class="operator">]</span><span class="operator">,</span> n);
+ }
+</pre>
+<p>This macro was introduced in Qt 6.3.</p>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#qtTrId" translate="no">qtTrId</a>() and Internationalization with Qt.</p>
+<!-- @@@QT_TRID_N_NOOP -->
+<!-- $$$QT_TR_NOOP[overload1]$$$QT_TR_NOOP -->
+<h3 class="fn" translate="no" id="QT_TR_NOOP"><span class="name">QT_TR_NOOP</span>(<i>sourceText</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for delayed translation in the current context (class).</p>
+<p>The macro tells lupdate to collect the string, and expands to <i translate="no">sourceText</i> itself.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> FriendlyConversation<span class="operator">::</span>greeting(<span class="type">int</span> type)
+ {
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>greeting_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+         QT_TR_NOOP(<span class="string">&quot;Hello&quot;</span>)<span class="operator">,</span>
+         QT_TR_NOOP(<span class="string">&quot;Goodbye&quot;</span>)
+     };
+     <span class="keyword">return</span> tr(greeting_strings<span class="operator">[</span>type<span class="operator">]</span>);
+ }
+</pre>
+<p>The macro QT_TR_NOOP_UTF8() is identical and obsolete; this applies to all other _UTF8 macros as well.</p>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TRANSLATE_NOOP" translate="no">QT_TRANSLATE_NOOP</a>() and Internationalization with Qt.</p>
+<!-- @@@QT_TR_NOOP -->
+<!-- $$$QT_TR_N_NOOP[overload1]$$$QT_TR_N_NOOP -->
+<h3 class="fn" translate="no" id="QT_TR_N_NOOP"><span class="name">QT_TR_N_NOOP</span>(<i>sourceText</i>)</h3>
+<p>Marks the UTF-8 encoded string literal <i translate="no">sourceText</i> for numerator dependent delayed translation in the current context (class).</p>
+<p>The macro tells lupdate to collect the string, and expands to <i translate="no">sourceText</i> itself.</p>
+<p>The macro expands to <i translate="no">sourceText</i>.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span> <span class="keyword">const</span> StatusClass<span class="operator">::</span>status_strings<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {
+     QT_TR_N_NOOP(<span class="string">&quot;There are %n new message(s)&quot;</span>)<span class="operator">,</span>
+     QT_TR_N_NOOP(<span class="string">&quot;There are %n total message(s)&quot;</span>)
+ };
+
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> StatusClass<span class="operator">::</span>status(<span class="type">int</span> type<span class="operator">,</span> <span class="type">int</span> count)
+ {
+     <span class="keyword">return</span> tr(status_strings<span class="operator">[</span>type<span class="operator">]</span><span class="operator">,</span> nullptr<span class="operator">,</span> count);
+ }
+</pre>
+<p><b>See also </b><a href="qttranslation-qtcore-proxy.html#QT_TR_NOOP" translate="no">QT_TR_NOOP</a> and Internationalization with Qt.</p>
+<!-- @@@QT_TR_N_NOOP -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

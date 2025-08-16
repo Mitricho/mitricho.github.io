@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopenglversionfunctionsfactory.cpp -->
+  <meta name="description" content="Provides access to OpenGL functions for a specified version and profile.">
+  <title>QOpenGLVersionFunctionsFactory Class | Qt OpenGL</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopengl-index.html">Qt OpenGL</a></li>
+<li><a href="qtopengl-module.html" translate="no">C++ Classes</a></li>
+<li>QOpenGLVersionFunctionsFactory</li>
+<li id="buildversion"><a href="qtopengl-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpenGLVersionFunctionsFactory Class</h1>
+<!-- $$$QOpenGLVersionFunctionsFactory-brief -->
+<p>Provides access to OpenGL functions for a specified version and profile. <a href="#details">More...</a></p>
+<!-- @@@QOpenGLVersionFunctionsFactory -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpenGLVersionFunctionsFactory&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpenGL)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpenGL)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opengl</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.0</td></tr>
+</table></div>
+<ul>
+<li><a href="qopenglversionfunctionsfactory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QAbstractOpenGLFunctions *</td><td class="memItemRight bottomAlign"><b><a href="qopenglversionfunctionsfactory.html#get" translate="no">get</a></b>(const QOpenGLVersionProfile &amp;<i>versionProfile</i> = QOpenGLVersionProfile(), QOpenGLContext *<i>context</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> TYPE *</td><td class="memItemRight bottomAlign"><b><a href="qopenglversionfunctionsfactory.html#get-1" translate="no">get</a></b>(QOpenGLContext *<i>context</i> = nullptr)</td></tr>
+</table></div>
+<!-- $$$QOpenGLVersionFunctionsFactory-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<!-- @@@QOpenGLVersionFunctionsFactory -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$get[overload1]$$$getconstQOpenGLVersionProfile&QOpenGLContext* -->
+<h3 class="fn" translate="no" id="get"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qabstractopenglfunctions.html" translate="no">QAbstractOpenGLFunctions</a></span> *QOpenGLVersionFunctionsFactory::<span class="name">get</span>(const <span class="type"><a href="qopenglversionprofile.html" translate="no">QOpenGLVersionProfile</a></span> &amp;<i>versionProfile</i> = QOpenGLVersionProfile(), <span class="type"><a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a></span> *<i>context</i> = nullptr)</h3>
+<p>Returns a pointer to an object that provides access to all functions for the <i translate="no">versionProfile</i> of the <i translate="no">context</i>. There is no need to call QAbstractOpenGLFunctions::initializeOpenGLFunctions() as long as the <i translate="no">context</i> is current. It is also possible to call this function when the <i translate="no">context</i> is not current, but in that case it is the caller's responsibility to ensure proper initialization by calling QAbstractOpenGLFunctions::initializeOpenGLFunctions() afterwards.</p>
+<p>Usually one would use the template version of this function to automatically have the result cast to the correct type.</p>
+<!-- @@@get -->
+<!-- $$$get$$$getQOpenGLContext* -->
+<h3 class="fn" translate="no" id="get-1"><code class="details extra" translate="no">[static]</code> template &lt;typename TYPE&gt; <span class="type">TYPE</span> *QOpenGLVersionFunctionsFactory::<span class="name">get</span>(<span class="type"><a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a></span> *<i>context</i> = nullptr)</h3>
+<p>This function overloads get().</p>
+<p>Returns a pointer to an object that provides access to all functions for the version and profile of this context. There is no need to call QAbstractOpenGLFunctions::initializeOpenGLFunctions() as long as the <i translate="no">context</i> is current. It is also possible to call this function when the <i translate="no">context</i> is not current, but in that case it is the caller's responsibility to ensure proper initialization by calling QAbstractOpenGLFunctions::initializeOpenGLFunctions() afterwards.</p>
+<p>Usually one would use the template version of this function to automatically have the result cast to the correct type.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">auto</span> funcs <span class="operator">=</span> <span class="type"><a href="qopenglversionfunctionsfactory.html" translate="no">QOpenGLVersionFunctionsFactory</a></span><span class="operator">::</span>get<span class="operator">&lt;</span>QOpenGLFunctions_3_3_Core<span class="operator">&gt;</span>(context);
+ <span class="keyword">if</span> (<span class="operator">!</span>funcs) {
+     <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Could not obtain required OpenGL context version&quot;</span>);
+ }
+</pre>
+<p>It is possible to request a functions object for a different version and profile than that for which the context was created. To do this either use the template version of this function specifying the desired functions object type as the template parameter or by passing in a <a href="qopenglversionprofile.html" translate="no">QOpenGLVersionProfile</a> object as an argument to the non-template function.</p>
+<p>Note that requests for function objects of other versions or profiles can fail and in doing so will return <code translate="no">nullptr</code>. Situations in which creation of the functions object can fail are if the request cannot be satisfied due to asking for functions that are not in the version or profile of this context. For example:</p>
+<ul>
+<li>Requesting a 3.3 core profile functions object would succeed.</li>
+<li>Requesting a 3.3 compatibility profile functions object would fail. We would fail to resolve the deprecated functions.</li>
+<li>Requesting a 4.3 core profile functions object would fail. We would fail to resolve the new core functions introduced in versions 4.0-4.3.</li>
+<li>Requesting a 3.1 functions object would succeed. There is nothing in 3.1 that is not also in 3.3 core.</li>
+</ul>
+<p>Note that if creating a functions object via this method that the <a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a> retains ownership of the object. This is to allow the object to be cached and shared.</p>
+<!-- @@@get -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

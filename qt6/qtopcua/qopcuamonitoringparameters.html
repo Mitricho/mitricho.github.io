@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuamonitoringparameters.cpp -->
+  <meta name="description" content="QOpcUaMonitoringParameters provides a way to set and retrieve parameters for subscriptions and monitored items.">
+  <title>QOpcUaMonitoringParameters Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaMonitoringParameters</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#usage">Usage</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaMonitoringParameters Class</h1>
+<!-- $$$QOpcUaMonitoringParameters-brief -->
+<p>QOpcUaMonitoringParameters provides a way to set and retrieve parameters for subscriptions and monitored items. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaMonitoringParameters -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaMonitoringParameters&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuamonitoringparameters-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> class </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters-datachangefilter.html" translate="no">DataChangeFilter</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> class </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters-eventfilter.html" translate="no">EventFilter</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#MonitoringMode-enum" translate="no">MonitoringMode</a></b> { Disabled, Sampling, Reporting }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#Parameter-enum" translate="no">Parameter</a></b> { PublishingEnabled, PublishingInterval, LifetimeCount, MaxKeepAliveCount, MaxNotificationsPerPublish, &hellip;, TriggeredItemIds }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#Parameter-enum" translate="no">Parameters</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#SubscriptionType-enum" translate="no">SubscriptionType</a></b> { Shared, Exclusive }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters-2" translate="no">QOpcUaMonitoringParameters</a></b>(double <i>publishingInterval</i>, QOpcUaMonitoringParameters::SubscriptionType <i>shared</i> = SubscriptionType::Shared, quint32 <i>subscriptionId</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters-1" translate="no">QOpcUaMonitoringParameters</a></b>(const QOpcUaMonitoringParameters &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#dtor.QOpcUaMonitoringParameters" translate="no">~QOpcUaMonitoringParameters</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#clearFilter" translate="no">clearFilter</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#clearFilterResult" translate="no">clearFilterResult</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#discardOldest" translate="no">discardOldest</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QHash&lt;quint32, QOpcUa::UaStatusCode&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#failedTriggeredItemsStatus" translate="no">failedTriggeredItemsStatus</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#filter" translate="no">filter</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#filterResult" translate="no">filterResult</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#indexRange" translate="no">indexRange</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#isPublishingEnabled" translate="no">isPublishingEnabled</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#lifetimeCount" translate="no">lifetimeCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#maxKeepAliveCount" translate="no">maxKeepAliveCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#maxNotificationsPerPublish" translate="no">maxNotificationsPerPublish</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#monitoredItemId" translate="no">monitoredItemId</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaMonitoringParameters::MonitoringMode </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#monitoringMode" translate="no">monitoringMode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint8 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#priority" translate="no">priority</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> double </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#publishingInterval" translate="no">publishingInterval</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#queueSize" translate="no">queueSize</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> double </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#samplingInterval" translate="no">samplingInterval</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setDiscardOldest" translate="no">setDiscardOldest</a></b>(bool <i>discardOldest</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setFailedTriggeredItemsStatus" translate="no">setFailedTriggeredItemsStatus</a></b>(const QHash&lt;quint32, QOpcUa::UaStatusCode&gt; &amp;<i>status</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setFilter" translate="no">setFilter</a></b>(const QOpcUaMonitoringParameters::DataChangeFilter &amp;<i>filter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setFilter-1" translate="no">setFilter</a></b>(const QOpcUaMonitoringParameters::EventFilter &amp;<i>eventFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setFilterResult" translate="no">setFilterResult</a></b>(const QOpcUaEventFilterResult &amp;<i>eventFilterResult</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setIndexRange" translate="no">setIndexRange</a></b>(const QString &amp;<i>indexRange</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setLifetimeCount" translate="no">setLifetimeCount</a></b>(quint32 <i>lifetimeCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setMaxKeepAliveCount" translate="no">setMaxKeepAliveCount</a></b>(quint32 <i>maxKeepAliveCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setMaxNotificationsPerPublish" translate="no">setMaxNotificationsPerPublish</a></b>(quint32 <i>maxNotificationsPerPublish</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setMonitoredItemId" translate="no">setMonitoredItemId</a></b>(quint32 <i>monitoredItemId</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setMonitoringMode" translate="no">setMonitoringMode</a></b>(QOpcUaMonitoringParameters::MonitoringMode <i>monitoringMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setPriority" translate="no">setPriority</a></b>(quint8 <i>priority</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setPublishingEnabled" translate="no">setPublishingEnabled</a></b>(bool <i>publishingEnabled</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setPublishingInterval" translate="no">setPublishingInterval</a></b>(double <i>publishingInterval</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setQueueSize" translate="no">setQueueSize</a></b>(quint32 <i>queueSize</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setSamplingInterval" translate="no">setSamplingInterval</a></b>(double <i>samplingInterval</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setStatusCode" translate="no">setStatusCode</a></b>(QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setSubscriptionId" translate="no">setSubscriptionId</a></b>(quint32 <i>subscriptionId</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setSubscriptionType" translate="no">setSubscriptionType</a></b>(QOpcUaMonitoringParameters::SubscriptionType <i>shared</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#setTriggeredItemIds" translate="no">setTriggeredItemIds</a></b>(const QSet&lt;quint32&gt; &amp;<i>ids</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::UaStatusCode </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#statusCode" translate="no">statusCode</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#subscriptionId" translate="no">subscriptionId</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaMonitoringParameters::SubscriptionType </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#subscriptionType" translate="no">subscriptionType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QSet&lt;quint32&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#triggeredItemIds" translate="no">triggeredItemIds</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaMonitoringParameters &amp;</td><td class="memItemRight bottomAlign"><b><a href="qopcuamonitoringparameters.html#operator-eq" translate="no">operator=</a></b>(const QOpcUaMonitoringParameters &amp;<i>other</i>)</td></tr>
+</table></div>
+<!-- $$$QOpcUaMonitoringParameters-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>This class is used in <a href="qopcuanode.html#enableMonitoring" translate="no">QOpcUaNode::enableMonitoring</a>() requests and as return value for <a href="qopcuanode.html#monitoringStatus" translate="no">QOpcUaNode::monitoringStatus</a>() in which case it contains the revised values from the server.</p>
+<h3 id="usage">Usage</h3>
+<p>For most use cases, only the publishing interval is required.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> p(<span class="number">100</span>); <span class="comment">// Set a publishing interval of 100ms and share the subscription.</span>
+ node<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> p);
+</pre>
+<p>If an <a href="qopcuamonitoringparameters.html#SubscriptionType-enum" translate="no">exclusive</a> subscription is required, use the second parameter.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> p(<span class="number">100</span><span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span><span class="operator">::</span>SubscriptionType<span class="operator">::</span>Exclusive); <span class="comment">// Create a new subscription</span>
+</pre>
+<p>To add additional items to an existing subscription, use the third parameter for the next calls to <a href="qopcuanode.html#enableMonitoring" translate="no">QOpcUaNode::enableMonitoring</a>().</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> subscriptionId <span class="operator">=</span> node<span class="operator">-</span><span class="operator">&gt;</span>monitoringStatus(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value)<span class="operator">.</span>subscriptionId();
+ <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> p(<span class="number">100</span><span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span><span class="operator">::</span>SubscriptionType<span class="operator">::</span>Shared<span class="operator">,</span> subscriptionId); <span class="comment">// Add the monitored item to this subscription</span>
+</pre>
+<p>If other parameters are required, they must be set using the setter methods.</p>
+</div>
+<!-- @@@QOpcUaMonitoringParameters -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$MonitoringMode$$$Disabled$$$Sampling$$$Reporting -->
+<h3 class="fn" translate="no" id="MonitoringMode-enum">enum class QOpcUaMonitoringParameters::<span class="name">MonitoringMode</span></h3>
+<p>This enum is used to set the monitoring mode for a monitored item.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::MonitoringMode::Disabled</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Sampling is disabled and no notifications are being generated.</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::MonitoringMode::Sampling</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Sampling is enabled and notifications are generated and queued, but reporting is disabled.</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::MonitoringMode::Reporting</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">Sampling is enabled, notifications are generated and queued, reporting is enabled.</td></tr>
+</table></div>
+<!-- @@@MonitoringMode -->
+<!-- $$$Parameter$$$PublishingEnabled$$$PublishingInterval$$$LifetimeCount$$$MaxKeepAliveCount$$$MaxNotificationsPerPublish$$$Priority$$$SamplingInterval$$$Filter$$$QueueSize$$$DiscardOldest$$$MonitoringMode$$$TriggeredItemIds -->
+<h3 class="flags" id="Parameter-enum">enum class QOpcUaMonitoringParameters::<span class="name">Parameter</span><br/>flags QOpcUaMonitoringParameters::<span class="name">Parameters</span></h3>
+<p>Enumerates parameters that can be modified at runtime using <a href="qopcuanode.html#modifyMonitoring" translate="no">QOpcUaNode::modifyMonitoring</a>(). Not all values are guaranteed to be supported by all plugins. Lack of support will be reported in the <a href="qopcuanode.html#monitoringStatusChanged" translate="no">QOpcUaNode::monitoringStatusChanged</a> signal.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::PublishingEnabled</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 0)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::PublishingInterval</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 1)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::LifetimeCount</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 2)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::MaxKeepAliveCount</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 3)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::MaxNotificationsPerPublish</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 4)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::Priority</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 5)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::SamplingInterval</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 6)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::Filter</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 7)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::QueueSize</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 8)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::DiscardOldest</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 9)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::MonitoringMode</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 10)</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::Parameter::TriggeredItemIds (since Qt 6.7)</code></td><td class="topAlign tblval"><code translate="no">(1 &lt;&lt; 11)</code></td></tr>
+</table></div>
+<p>The Parameters type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;Parameter&gt;. It stores an OR combination of Parameter values.</p>
+<!-- @@@Parameter -->
+<!-- $$$SubscriptionType$$$Shared$$$Exclusive -->
+<h3 class="fn" translate="no" id="SubscriptionType-enum">enum class QOpcUaMonitoringParameters::<span class="name">SubscriptionType</span></h3>
+<p>This enum is used to determine if the monitored item can be added to a shared subscription or if a new subscription must be created.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::SubscriptionType::Shared</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Share subscription with other monitored items with the same interval</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaMonitoringParameters::SubscriptionType::Exclusive</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Request a new subscription for this attribute</td></tr>
+</table></div>
+<!-- @@@SubscriptionType -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QOpcUaMonitoringParameters[overload1]$$$QOpcUaMonitoringParameters -->
+<h3 class="fn" translate="no" id="QOpcUaMonitoringParameters">QOpcUaMonitoringParameters::<span class="name">QOpcUaMonitoringParameters</span>()</h3>
+<p>The default constructor for QOpcUaMonitoringParameters.</p>
+<!-- @@@QOpcUaMonitoringParameters -->
+<!-- $$$QOpcUaMonitoringParameters$$$QOpcUaMonitoringParametersdoubleQOpcUaMonitoringParameters::SubscriptionTypequint32 -->
+<h3 class="fn" translate="no" id="QOpcUaMonitoringParameters-2">QOpcUaMonitoringParameters::<span class="name">QOpcUaMonitoringParameters</span>(<span class="type">double</span> <i>publishingInterval</i>, <span class="type"><a href="qopcuamonitoringparameters.html#SubscriptionType-enum" translate="no">QOpcUaMonitoringParameters::SubscriptionType</a></span> <i>shared</i> = SubscriptionType::Shared, <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>subscriptionId</i> = 0)</h3>
+<p>This is the constructor which covers most use cases for the Qt OPC UA user. <i translate="no">publishingInterval</i> must be supplied, <i translate="no">shared</i> and <i translate="no">subscriptionId</i> are optional.</p>
+<!-- @@@QOpcUaMonitoringParameters -->
+<!-- $$$QOpcUaMonitoringParameters$$$QOpcUaMonitoringParametersconstQOpcUaMonitoringParameters& -->
+<h3 class="fn" translate="no" id="QOpcUaMonitoringParameters-1">QOpcUaMonitoringParameters::<span class="name">QOpcUaMonitoringParameters</span>(const <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> &amp;<i>other</i>)</h3>
+<p>Constructs a QOpcuaMonitoringParameters object from the value of <i translate="no">other</i>.</p>
+<!-- @@@QOpcUaMonitoringParameters -->
+<!-- $$$~QOpcUaMonitoringParameters[overload1]$$$~QOpcUaMonitoringParameters -->
+<h3 class="fn" translate="no" id="dtor.QOpcUaMonitoringParameters"><code class="details extra" translate="no">[noexcept]</code> QOpcUaMonitoringParameters::<span class="name">~QOpcUaMonitoringParameters</span>()</h3>
+<p>The destructor for <a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a>.</p>
+<!-- @@@~QOpcUaMonitoringParameters -->
+<!-- $$$clearFilter[overload1]$$$clearFilter -->
+<h3 class="fn" translate="no" id="clearFilter"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">clearFilter</span>()</h3>
+<p>Removes the current filter from the monitoring parameters.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#filter" translate="no">filter</a>() and <a href="qopcuamonitoringparameters.html#setFilter" translate="no">setFilter</a>().</p>
+<!-- @@@clearFilter -->
+<!-- $$$clearFilterResult[overload1]$$$clearFilterResult -->
+<h3 class="fn" translate="no" id="clearFilterResult"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">clearFilterResult</span>()</h3>
+<p>Removes the current filter result from the monitoring parameters.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#filterResult" translate="no">filterResult</a>() and <a href="qopcuamonitoringparameters.html#setFilterResult" translate="no">setFilterResult</a>().</p>
+<!-- @@@clearFilterResult -->
+<!-- $$$discardOldest[overload1]$$$discardOldest -->
+<h3 class="fn" translate="no" id="discardOldest"><span class="type">bool</span> QOpcUaMonitoringParameters::<span class="name">discardOldest</span>() const</h3>
+<p>Returns the discardOldest setting of the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setDiscardOldest" translate="no">setDiscardOldest</a>().</p>
+<!-- @@@discardOldest -->
+<!-- $$$failedTriggeredItemsStatus[overload1]$$$failedTriggeredItemsStatus -->
+<h3 class="fn" translate="no" id="failedTriggeredItemsStatus"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="../qtcore/qhash.html" translate="no">QHash</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span>&gt; QOpcUaMonitoringParameters::<span class="name">failedTriggeredItemsStatus</span>() const</h3>
+<p>Returns the status codes for all triggered items from <a href="qopcuamonitoringparameters.html#setTriggeredItemIds" translate="no">setTriggeredItemIds</a>() that could not be successfully added.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setFailedTriggeredItemsStatus" translate="no">setFailedTriggeredItemsStatus</a>().</p>
+<!-- @@@failedTriggeredItemsStatus -->
+<!-- $$$filter[overload1]$$$filter -->
+<h3 class="fn" translate="no" id="filter"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QOpcUaMonitoringParameters::<span class="name">filter</span>() const</h3>
+<p>Returns the current filter.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setFilter" translate="no">setFilter</a>().</p>
+<!-- @@@filter -->
+<!-- $$$filterResult[overload1]$$$filterResult -->
+<h3 class="fn" translate="no" id="filterResult"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QOpcUaMonitoringParameters::<span class="name">filterResult</span>() const</h3>
+<p>Returns the filter result.</p>
+<p>This value is empty for an attribute monitoring. In case of an event monitoring, the filter result can be empty if the server did not detect any errors in the filter.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setFilterResult" translate="no">setFilterResult</a>().</p>
+<!-- @@@filterResult -->
+<!-- $$$indexRange[overload1]$$$indexRange -->
+<h3 class="fn" translate="no" id="indexRange"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QOpcUaMonitoringParameters::<span class="name">indexRange</span>() const</h3>
+<p>Returns the index range for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setIndexRange" translate="no">setIndexRange</a>().</p>
+<!-- @@@indexRange -->
+<!-- $$$isPublishingEnabled[overload1]$$$isPublishingEnabled -->
+<h3 class="fn" translate="no" id="isPublishingEnabled"><span class="type">bool</span> QOpcUaMonitoringParameters::<span class="name">isPublishingEnabled</span>() const</h3>
+<p>Returns the publishing mode for the subscription.</p>
+<!-- @@@isPublishingEnabled -->
+<!-- $$$lifetimeCount[overload1]$$$lifetimeCount -->
+<h3 class="fn" translate="no" id="lifetimeCount"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">lifetimeCount</span>() const</h3>
+<p>Returns the lifetime count of the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setLifetimeCount" translate="no">setLifetimeCount</a>().</p>
+<!-- @@@lifetimeCount -->
+<!-- $$$maxKeepAliveCount[overload1]$$$maxKeepAliveCount -->
+<h3 class="fn" translate="no" id="maxKeepAliveCount"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">maxKeepAliveCount</span>() const</h3>
+<p>Returns the maximum keepalive count of the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setMaxKeepAliveCount" translate="no">setMaxKeepAliveCount</a>().</p>
+<!-- @@@maxKeepAliveCount -->
+<!-- $$$maxNotificationsPerPublish[overload1]$$$maxNotificationsPerPublish -->
+<h3 class="fn" translate="no" id="maxNotificationsPerPublish"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">maxNotificationsPerPublish</span>() const</h3>
+<p>Returns the maximum notifications per publish value of the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setMaxNotificationsPerPublish" translate="no">setMaxNotificationsPerPublish</a>().</p>
+<!-- @@@maxNotificationsPerPublish -->
+<!-- $$$monitoredItemId[overload1]$$$monitoredItemId -->
+<h3 class="fn" translate="no" id="monitoredItemId"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">monitoredItemId</span>() const</h3>
+<p>Returns the monitored item id assigned by the server. If the monitored item id is 0, the monitored item could not be successfully created.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setMonitoredItemId" translate="no">setMonitoredItemId</a>().</p>
+<!-- @@@monitoredItemId -->
+<!-- $$$monitoringMode[overload1]$$$monitoringMode -->
+<h3 class="fn" translate="no" id="monitoringMode"><span class="type"><a href="qopcuamonitoringparameters.html#MonitoringMode-enum" translate="no">QOpcUaMonitoringParameters::MonitoringMode</a></span> QOpcUaMonitoringParameters::<span class="name">monitoringMode</span>() const</h3>
+<p>Returns the monitoring mode for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setMonitoringMode" translate="no">setMonitoringMode</a>().</p>
+<!-- @@@monitoringMode -->
+<!-- $$$priority[overload1]$$$priority -->
+<h3 class="fn" translate="no" id="priority"><span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> QOpcUaMonitoringParameters::<span class="name">priority</span>() const</h3>
+<p>Returns the priority of the subscription used for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setPriority" translate="no">setPriority</a>().</p>
+<!-- @@@priority -->
+<!-- $$$publishingInterval[overload1]$$$publishingInterval -->
+<h3 class="fn" translate="no" id="publishingInterval"><span class="type">double</span> QOpcUaMonitoringParameters::<span class="name">publishingInterval</span>() const</h3>
+<p>Returns the publishing interval of the subscription. The interval is expressed in milliseconds.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setPublishingInterval" translate="no">setPublishingInterval</a>().</p>
+<!-- @@@publishingInterval -->
+<!-- $$$queueSize[overload1]$$$queueSize -->
+<h3 class="fn" translate="no" id="queueSize"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">queueSize</span>() const</h3>
+<p>Returns the queue size of the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setQueueSize" translate="no">setQueueSize</a>().</p>
+<!-- @@@queueSize -->
+<!-- $$$samplingInterval[overload1]$$$samplingInterval -->
+<h3 class="fn" translate="no" id="samplingInterval"><span class="type">double</span> QOpcUaMonitoringParameters::<span class="name">samplingInterval</span>() const</h3>
+<p>Returns the revised sampling interval of the monitored item. The interval is expressed in milliseconds.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setSamplingInterval" translate="no">setSamplingInterval</a>().</p>
+<!-- @@@samplingInterval -->
+<!-- $$$setDiscardOldest[overload1]$$$setDiscardOldestbool -->
+<h3 class="fn" translate="no" id="setDiscardOldest"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setDiscardOldest</span>(<span class="type">bool</span> <i>discardOldest</i>)</h3>
+<p>Set <i translate="no">discardOldest</i> as <a href="qopcuamonitoringparameters.html#discardOldest" translate="no">discardOldest</a> setting for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#discardOldest" translate="no">discardOldest</a>().</p>
+<!-- @@@setDiscardOldest -->
+<!-- $$$setFailedTriggeredItemsStatus[overload1]$$$setFailedTriggeredItemsStatusconstQHash<quint32,QOpcUa::UaStatusCode>& -->
+<h3 class="fn" translate="no" id="setFailedTriggeredItemsStatus"><code class="details extra" translate="no">[since 6.7]</code> <span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setFailedTriggeredItemsStatus</span>(const <span class="type"><a href="../qtcore/qhash.html" translate="no">QHash</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span>&gt; &amp;<i>status</i>)</h3>
+<p>Sets the status codes for all triggered items that could not be successfully added to <i translate="no">status</i>. Setting this value as a client has no effect.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#failedTriggeredItemsStatus" translate="no">failedTriggeredItemsStatus</a>().</p>
+<!-- @@@setFailedTriggeredItemsStatus -->
+<!-- $$$setFilter[overload1]$$$setFilterconstQOpcUaMonitoringParameters::DataChangeFilter& -->
+<h3 class="fn" translate="no" id="setFilter"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setFilter</span>(const <span class="type"><a href="qopcuamonitoringparameters-datachangefilter.html" translate="no">QOpcUaMonitoringParameters::DataChangeFilter</a></span> &amp;<i>filter</i>)</h3>
+<p>Sets <a href="qopcuamonitoringparameters-datachangefilter.html" translate="no">DataChangeFilter</a> <i translate="no">filter</i> as filter for the monitored item. If another data change filter or an event filter is present, it will be replaced.</p>
+<p>If the server does not accept the filter, this will be indicated by the status code after the <a href="qopcuanode.html#enableMonitoring" translate="no">QOpcUaNode::enableMonitoring</a>() request has finished.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#filter" translate="no">filter</a>().</p>
+<!-- @@@setFilter -->
+<!-- $$$setFilter$$$setFilterconstQOpcUaMonitoringParameters::EventFilter& -->
+<h3 class="fn" translate="no" id="setFilter-1"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setFilter</span>(const <span class="type"><a href="qopcuamonitoringparameters-eventfilter.html" translate="no">QOpcUaMonitoringParameters::EventFilter</a></span> &amp;<i>eventFilter</i>)</h3>
+<p>Request <i translate="no">eventFilter</i> as filter for the monitored item. If another event filter or a data change filter is present, it will be replaced. If the server does not accept the filter, this will be indicated by the status code and the event filter result after the <a href="qopcuanode.html#enableMonitoring" translate="no">QOpcUaNode::enableMonitoring</a>() request has finished.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#filter" translate="no">filter</a>().</p>
+<!-- @@@setFilter -->
+<!-- $$$setFilterResult[overload1]$$$setFilterResultconstQOpcUaEventFilterResult& -->
+<h3 class="fn" translate="no" id="setFilterResult"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setFilterResult</span>(const <span class="type"><a href="qopcuaeventfilterresult.html" translate="no">QOpcUaEventFilterResult</a></span> &amp;<i>eventFilterResult</i>)</h3>
+<p>Sets the event filter result to <i translate="no">eventFilterResult</i>.</p>
+<p>This method must only be used by the backend, setting an event filter result as a user does not have any effect.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#filterResult" translate="no">filterResult</a>().</p>
+<!-- @@@setFilterResult -->
+<!-- $$$setIndexRange[overload1]$$$setIndexRangeconstQString& -->
+<h3 class="fn" translate="no" id="setIndexRange"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setIndexRange</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>indexRange</i>)</h3>
+<p>Requests <i translate="no">indexRange</i> as index range for the monitored item. For details on the index range string, see <a href="qopcuanode.html#readAttributeRange" translate="no">QOpcUaNode::readAttributeRange</a>().</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#indexRange" translate="no">indexRange</a>().</p>
+<!-- @@@setIndexRange -->
+<!-- $$$setLifetimeCount[overload1]$$$setLifetimeCountquint32 -->
+<h3 class="fn" translate="no" id="setLifetimeCount"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setLifetimeCount</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>lifetimeCount</i>)</h3>
+<p>Request <i translate="no">lifetimeCount</i> as lifetime count for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#lifetimeCount" translate="no">lifetimeCount</a>().</p>
+<!-- @@@setLifetimeCount -->
+<!-- $$$setMaxKeepAliveCount[overload1]$$$setMaxKeepAliveCountquint32 -->
+<h3 class="fn" translate="no" id="setMaxKeepAliveCount"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setMaxKeepAliveCount</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>maxKeepAliveCount</i>)</h3>
+<p>Request <i translate="no">maxKeepAliveCount</i> as maximum keepalive count for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#maxKeepAliveCount" translate="no">maxKeepAliveCount</a>().</p>
+<!-- @@@setMaxKeepAliveCount -->
+<!-- $$$setMaxNotificationsPerPublish[overload1]$$$setMaxNotificationsPerPublishquint32 -->
+<h3 class="fn" translate="no" id="setMaxNotificationsPerPublish"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setMaxNotificationsPerPublish</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>maxNotificationsPerPublish</i>)</h3>
+<p>Set <i translate="no">maxNotificationsPerPublish</i> as maximum notifications per publish value for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#maxNotificationsPerPublish" translate="no">maxNotificationsPerPublish</a>().</p>
+<!-- @@@setMaxNotificationsPerPublish -->
+<!-- $$$setMonitoredItemId[overload1]$$$setMonitoredItemIdquint32 -->
+<h3 class="fn" translate="no" id="setMonitoredItemId"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setMonitoredItemId</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>monitoredItemId</i>)</h3>
+<p>Sets the monitored item id to <i translate="no">monitoredItemId</i>.</p>
+<p>Setting this value as a client has no effect.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#monitoredItemId" translate="no">monitoredItemId</a>().</p>
+<!-- @@@setMonitoredItemId -->
+<!-- $$$setMonitoringMode[overload1]$$$setMonitoringModeQOpcUaMonitoringParameters::MonitoringMode -->
+<h3 class="fn" translate="no" id="setMonitoringMode"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setMonitoringMode</span>(<span class="type"><a href="qopcuamonitoringparameters.html#MonitoringMode-enum" translate="no">QOpcUaMonitoringParameters::MonitoringMode</a></span> <i>monitoringMode</i>)</h3>
+<p>Set <i translate="no">monitoringMode</i> as monitoring mode for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#monitoringMode" translate="no">monitoringMode</a>().</p>
+<!-- @@@setMonitoringMode -->
+<!-- $$$setPriority[overload1]$$$setPriorityquint8 -->
+<h3 class="fn" translate="no" id="setPriority"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setPriority</span>(<span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> <i>priority</i>)</h3>
+<p>Set <i translate="no">priority</i> as priority for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#priority" translate="no">priority</a>().</p>
+<!-- @@@setPriority -->
+<!-- $$$setPublishingEnabled[overload1]$$$setPublishingEnabledbool -->
+<h3 class="fn" translate="no" id="setPublishingEnabled"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setPublishingEnabled</span>(<span class="type">bool</span> <i>publishingEnabled</i>)</h3>
+<p>Set <i translate="no">publishingEnabled</i> as publishing mode for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#isPublishingEnabled" translate="no">isPublishingEnabled</a>().</p>
+<!-- @@@setPublishingEnabled -->
+<!-- $$$setPublishingInterval[overload1]$$$setPublishingIntervaldouble -->
+<h3 class="fn" translate="no" id="setPublishingInterval"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setPublishingInterval</span>(<span class="type">double</span> <i>publishingInterval</i>)</h3>
+<p>Request <i translate="no">publishingInterval</i> as publishing interval for the subscription. The interval is expressed in milliseconds.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#publishingInterval" translate="no">publishingInterval</a>().</p>
+<!-- @@@setPublishingInterval -->
+<!-- $$$setQueueSize[overload1]$$$setQueueSizequint32 -->
+<h3 class="fn" translate="no" id="setQueueSize"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setQueueSize</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>queueSize</i>)</h3>
+<p>Request <i translate="no">queueSize</i> as queue size for the monitored item.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#queueSize" translate="no">queueSize</a>().</p>
+<!-- @@@setQueueSize -->
+<!-- $$$setSamplingInterval[overload1]$$$setSamplingIntervaldouble -->
+<h3 class="fn" translate="no" id="setSamplingInterval"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setSamplingInterval</span>(<span class="type">double</span> <i>samplingInterval</i>)</h3>
+<p>Request <i translate="no">samplingInterval</i> as sampling interval for the monitored item. The interval is expressed in milliseconds.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#samplingInterval" translate="no">samplingInterval</a>().</p>
+<!-- @@@setSamplingInterval -->
+<!-- $$$setStatusCode[overload1]$$$setStatusCodeQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="setStatusCode"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setStatusCode</span>(<span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>Set the status code to <i translate="no">statusCode</i>.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#statusCode" translate="no">statusCode</a>().</p>
+<!-- @@@setStatusCode -->
+<!-- $$$setSubscriptionId[overload1]$$$setSubscriptionIdquint32 -->
+<h3 class="fn" translate="no" id="setSubscriptionId"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setSubscriptionId</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>subscriptionId</i>)</h3>
+<p>Request the monitored items to be created on a known subscription with <i translate="no">subscriptionId</i>.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#subscriptionId" translate="no">subscriptionId</a>().</p>
+<!-- @@@setSubscriptionId -->
+<!-- $$$setSubscriptionType[overload1]$$$setSubscriptionTypeQOpcUaMonitoringParameters::SubscriptionType -->
+<h3 class="fn" translate="no" id="setSubscriptionType"><span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setSubscriptionType</span>(<span class="type"><a href="qopcuamonitoringparameters.html#SubscriptionType-enum" translate="no">QOpcUaMonitoringParameters::SubscriptionType</a></span> <i>shared</i>)</h3>
+<p>Request <i translate="no">shared</i> as subscription type for the subscription.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#subscriptionType" translate="no">subscriptionType</a>().</p>
+<!-- @@@setSubscriptionType -->
+<!-- $$$setTriggeredItemIds[overload1]$$$setTriggeredItemIdsconstQSet<quint32>& -->
+<h3 class="fn" translate="no" id="setTriggeredItemIds"><code class="details extra" translate="no">[since 6.7]</code> <span class="type">void</span> QOpcUaMonitoringParameters::<span class="name">setTriggeredItemIds</span>(const <span class="type"><a href="../qtcore/qset.html" translate="no">QSet</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span>&gt; &amp;<i>ids</i>)</h3>
+<p>Adds triggering links to all monitored items in <i translate="no">ids</i> as described in OPC UA 1.05, 5.12.1.6.</p>
+<p>The values in <i translate="no">ids</i> must be the monitored item ids of other monitored item on the same subscription. If the monitoring mode of these items is set to Sampling, their data change notifications will be delivered to the client whenever this monitoring detects a data change.</p>
+<p>Any ids that could not be added will not be included in the monitoring status but will instead show up in <a href="qopcuamonitoringparameters.html#failedTriggeredItemsStatus" translate="no">failedTriggeredItemsStatus</a>().</p>
+<p>Modifying this setting to an empty set will remove all triggering links.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#triggeredItemIds" translate="no">triggeredItemIds</a>().</p>
+<!-- @@@setTriggeredItemIds -->
+<!-- $$$statusCode[overload1]$$$statusCode -->
+<h3 class="fn" translate="no" id="statusCode"><span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> QOpcUaMonitoringParameters::<span class="name">statusCode</span>() const</h3>
+<p>Returns the status code of the monitored item creation.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setStatusCode" translate="no">setStatusCode</a>().</p>
+<!-- @@@statusCode -->
+<!-- $$$subscriptionId[overload1]$$$subscriptionId -->
+<h3 class="fn" translate="no" id="subscriptionId"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaMonitoringParameters::<span class="name">subscriptionId</span>() const</h3>
+<p>Returns the assigned subscription id.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setSubscriptionId" translate="no">setSubscriptionId</a>().</p>
+<!-- @@@subscriptionId -->
+<!-- $$$subscriptionType[overload1]$$$subscriptionType -->
+<h3 class="fn" translate="no" id="subscriptionType"><span class="type"><a href="qopcuamonitoringparameters.html#SubscriptionType-enum" translate="no">QOpcUaMonitoringParameters::SubscriptionType</a></span> QOpcUaMonitoringParameters::<span class="name">subscriptionType</span>() const</h3>
+<p>Returns the subscription type.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setSubscriptionType" translate="no">setSubscriptionType</a>().</p>
+<!-- @@@subscriptionType -->
+<!-- $$$triggeredItemIds[overload1]$$$triggeredItemIds -->
+<h3 class="fn" translate="no" id="triggeredItemIds"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="../qtcore/qset.html" translate="no">QSet</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span>&gt; QOpcUaMonitoringParameters::<span class="name">triggeredItemIds</span>() const</h3>
+<p>Returns the ids of the monitored items triggerd by this monitored item.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuamonitoringparameters.html#setTriggeredItemIds" translate="no">setTriggeredItemIds</a>().</p>
+<!-- @@@triggeredItemIds -->
+<!-- $$$operator=[overload1]$$$operator=constQOpcUaMonitoringParameters& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> &amp;QOpcUaMonitoringParameters::<span class="name">operator=</span>(const <span class="type"><a href="qopcuamonitoringparameters.html#QOpcUaMonitoringParameters" translate="no">QOpcUaMonitoringParameters</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns the value of <i translate="no">other</i> to this object.</p>
+<!-- @@@operator= -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

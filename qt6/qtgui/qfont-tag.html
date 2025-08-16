@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qfont.cpp -->
+  <meta name="description" content="The QFont::Tag type provides access to advanced font features.">
+  <title>QFont::Tag Struct | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>Tag</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QFont::Tag Struct</h1>
+<span class="small-subtitle" translate="no">struct <a href="qfont.html" translate="no">QFont</a>::Tag</span>
+<!-- $$$Tag-brief -->
+<p>The <a href="qfont-tag.html" translate="no">QFont::Tag</a> type provides access to advanced font features. <a href="#details">More...</a></p>
+<!-- @@@Tag -->
+<p>This struct was introduced in Qt 6.7.</p>
+<ul>
+<li><a href="qfont-tag-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#Tag" translate="no">Tag</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#Tag-1" translate="no">Tag</a></b>(const char (&amp;)[N] <i>str</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QByteArray </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#toString" translate="no">toString</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#value" translate="no">value</a></b>() const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QFont::Tag&gt; </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#fromString" translate="no">fromString</a></b>(QAnyStringView <i>view</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QFont::Tag&gt; </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#fromValue" translate="no">fromValue</a></b>(quint32 <i>value</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Qt::strong_ordering </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#compareThreeWay" translate="no">compareThreeWay</a></b>(const QFont::Tag &amp;<i>lhs</i>, const QFont::Tag &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#comparesEqual" translate="no">comparesEqual</a></b>(const QFont::Tag &amp;<i>lhs</i>, const QFont::Tag &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> size_t </td><td class="memItemRight bottomAlign"><b><a href="qfont-tag.html#qHash" translate="no">qHash</a></b>(QFont::Tag <i>key</i>, size_t <i>seed</i> = 0)</td></tr>
+</table></div>
+<!-- $$$Tag-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="qfont.html" translate="no">QFont</a> provides access to advanced features when shaping text. A feature is defined by a tag, which can be represented as a four-character string, or as a 32bit integer value. This type represents such a tag in a type-safe way. It can be constructed from a four-character, 8bit string literal, or from a corresponding 32bit integer value. Using a shorter or longer string literal will result in a compile-time error.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qfont.html#QFont" translate="no">QFont</a></span> font;
+ <span class="comment">// Correct</span>
+ font<span class="operator">.</span>setFeature(<span class="string">&quot;frac&quot;</span>);
+
+ <span class="comment">// Wrong - won't compile</span>
+ font<span class="operator">.</span>setFeature(<span class="string">&quot;fraction&quot;</span>);
+
+ <span class="comment">// Wrong - will produce runtime warning and fail</span>
+ font<span class="operator">.</span>setFeature(u<span class="string">&quot;fraction&quot;</span>_s);
+</pre>
+<p>The named constructors allow to create a tag from an 32bit integer or string value, and will return a <code translate="no">std::nullopt</code> when the input is invalid.</p>
+</div>
+<p><b>See also </b><a href="qfont.html#setFeature" translate="no">QFont::setFeature</a>() and <a href="qfont.html#featureTags" translate="no">QFont::featureTags</a>().</p>
+<!-- @@@Tag -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$Tag[overload1]$$$Tag -->
+<h3 class="fn" translate="no" id="Tag"><code class="details extra" translate="no">[constexpr noexcept]</code> Tag::<span class="name">Tag</span>()</h3>
+<p>Default constructor, producing an invalid tag.</p>
+<!-- @@@Tag -->
+<!-- $$$Tag$$$Tagconstchar(&)[N] -->
+<h3 class="fn" translate="no" id="Tag-1"><code class="details extra" translate="no">[constexpr noexcept]</code> template &lt;size_t N&gt; Tag::<span class="name">Tag</span>(const <span class="type">char</span> (&amp;)[<span class="type">N</span>] <i>str</i>)</h3>
+<p>Constructs a tag from a string literal, <i translate="no">str</i>. The literal must be exactly four characters long.</p>
+<pre class="cpp" translate="no">
+ font<span class="operator">.</span>setFeature(<span class="string">&quot;frac&quot;</span><span class="operator">,</span> <span class="number">1</span>);
+</pre>
+<p><b>See also </b><a href="qfont-tag.html#fromString" translate="no">fromString</a>() and <a href="qfont-tag.html#fromValue" translate="no">fromValue</a>().</p>
+<!-- @@@Tag -->
+<!-- $$$fromString[overload1]$$$fromStringQAnyStringView -->
+<h3 class="fn" translate="no" id="fromString"><code class="details extra" translate="no">[static noexcept]</code> <span class="type">std::optional</span>&lt;<span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span>&gt; Tag::<span class="name">fromString</span>(<span class="type"><a href="../qtcore/qanystringview.html" translate="no">QAnyStringView</a></span> <i>view</i>)</h3>
+<p>Returns a tag constructed from the string in <i translate="no">view</i>. The string must be exactly four characters long.</p>
+<p>Returns <code translate="no">std::nullopt</code> if the input is not four characters long, or if the tag produced would be invalid.</p>
+<p><b>See also </b><a href="qfont-tag.html#isValid" translate="no">isValid</a>() and <a href="qfont-tag.html#fromValue" translate="no">fromValue</a>().</p>
+<!-- @@@fromString -->
+<!-- $$$fromValue[overload1]$$$fromValuequint32 -->
+<h3 class="fn" translate="no" id="fromValue"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">std::optional</span>&lt;<span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span>&gt; Tag::<span class="name">fromValue</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>value</i>)</h3>
+<p>Returns a tag constructed from <i translate="no">value</i>, or <code translate="no">std::nullopt</code> if the tag produced would be invalid.</p>
+<p><b>See also </b><a href="qfont-tag.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@fromValue -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> Tag::<span class="name">isValid</span>() const</h3>
+<p>Returns whether the tag is valid. A tag is valid if its value is not zero.</p>
+<p><b>See also </b><a href="qfont-tag.html#value" translate="no">value</a>(), <a href="qfont-tag.html#fromValue" translate="no">fromValue</a>(), and <a href="qfont-tag.html#fromString" translate="no">fromString</a>().</p>
+<!-- @@@isValid -->
+<!-- $$$toString[overload1]$$$toString -->
+<h3 class="fn" translate="no" id="toString"><span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> Tag::<span class="name">toString</span>() const</h3>
+<p>Returns the string representation of this tag as a byte array.</p>
+<p><b>See also </b><a href="qfont-tag.html#fromString" translate="no">fromString</a>().</p>
+<!-- @@@toString -->
+<!-- $$$value[overload1]$$$value -->
+<h3 class="fn" translate="no" id="value"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> Tag::<span class="name">value</span>() const</h3>
+<p>Returns the numerical value of this tag.</p>
+<p><b>See also </b><a href="qfont-tag.html#isValid" translate="no">isValid</a>() and <a href="qfont-tag.html#fromValue" translate="no">fromValue</a>().</p>
+<!-- @@@value -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="compareThreeWay"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="../qtcore/qt-strong-ordering.html" translate="no">Qt::strong_ordering</a></span> <span class="name">compareThreeWay</span>(const <span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span> &amp;<i>rhs</i>)</h3><h3 class="fn fngroupitem" translate="no" id="comparesEqual"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">comparesEqual</span>(const <span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span> &amp;<i>rhs</i>)</h3></div>
+<p>Compare <i translate="no">lhs</i> with <i translate="no">rhs</i> for equality and ordering.</p>
+<!-- @@@ -->
+<!-- $$$qHash[overload1]$$$qHashQFont::Tagsize_t -->
+<h3 class="fn" translate="no" id="qHash"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">size_t</span> <span class="name">qHash</span>(<span class="type"><a href="qfont-tag.html" translate="no">QFont::Tag</a></span> <i>key</i>, <span class="type">size_t</span> <i>seed</i> = 0)</h3>
+<p>Returns the hash value for <i translate="no">key</i>, using <i translate="no">seed</i> to seed the calculation.</p>
+<!-- @@@qHash -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

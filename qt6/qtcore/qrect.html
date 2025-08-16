@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qrect.cpp -->
+  <meta name="description" content="The QRect class defines a rectangle in the plane using integer precision.">
+  <title>QRect Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QRect</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#rendering">Rendering</a></li>
+<li class="level2"><a href="#coordinates">Coordinates</a></li>
+<li class="level2"><a href="#constraints">Constraints</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QRect Class</h1>
+<!-- $$$QRect-brief -->
+<p>The QRect class defines a rectangle in the plane using integer precision. <a href="#details">More...</a></p>
+<!-- @@@QRect -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QRect&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qrect-members.html">List of all members, including inherited members</a></li>
+<li>QRect is part of <a href="../qtgui/painting.html">Painting Classes</a>.</li>
+</ul>
+<p>This class is <i>equality-comparable</i>.</p>
+<p>This class is <b>equality-comparable</b> with <a href="qrectf.html" translate="no">QRectF</a>.</p>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#QRect" translate="no">QRect</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#QRect-1" translate="no">QRect</a></b>(const QPoint &amp;<i>topLeft</i>, const QPoint &amp;<i>bottomRight</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#QRect-2" translate="no">QRect</a></b>(const QPoint &amp;<i>topLeft</i>, const QSize &amp;<i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#QRect-3" translate="no">QRect</a></b>(int <i>x</i>, int <i>y</i>, int <i>width</i>, int <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#adjust" translate="no">adjust</a></b>(int <i>dx1</i>, int <i>dy1</i>, int <i>dx2</i>, int <i>dy2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#adjusted" translate="no">adjusted</a></b>(int <i>dx1</i>, int <i>dy1</i>, int <i>dx2</i>, int <i>dy2</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#bottom" translate="no">bottom</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPoint </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#bottomLeft" translate="no">bottomLeft</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPoint </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#bottomRight" translate="no">bottomRight</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPoint </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#center" translate="no">center</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#contains" translate="no">contains</a></b>(const QPoint &amp;<i>point</i>, bool <i>proper</i> = false) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#contains-1" translate="no">contains</a></b>(const QRect &amp;<i>rectangle</i>, bool <i>proper</i> = false) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#contains-2" translate="no">contains</a></b>(int <i>x</i>, int <i>y</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#contains-3" translate="no">contains</a></b>(int <i>x</i>, int <i>y</i>, bool <i>proper</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#getCoords" translate="no">getCoords</a></b>(int *<i>x1</i>, int *<i>y1</i>, int *<i>x2</i>, int *<i>y2</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#getRect" translate="no">getRect</a></b>(int *<i>x</i>, int *<i>y</i>, int *<i>width</i>, int *<i>height</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#height" translate="no">height</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#intersected" translate="no">intersected</a></b>(const QRect &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#intersects" translate="no">intersects</a></b>(const QRect &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#isEmpty" translate="no">isEmpty</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#left" translate="no">left</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#marginsAdded" translate="no">marginsAdded</a></b>(const QMargins &amp;<i>margins</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#marginsRemoved" translate="no">marginsRemoved</a></b>(const QMargins &amp;<i>margins</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveBottom" translate="no">moveBottom</a></b>(int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveBottomLeft" translate="no">moveBottomLeft</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveBottomRight" translate="no">moveBottomRight</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveCenter" translate="no">moveCenter</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveLeft" translate="no">moveLeft</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveRight" translate="no">moveRight</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveTo" translate="no">moveTo</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveTo-1" translate="no">moveTo</a></b>(int <i>x</i>, int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveTop" translate="no">moveTop</a></b>(int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveTopLeft" translate="no">moveTopLeft</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#moveTopRight" translate="no">moveTopRight</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#normalized" translate="no">normalized</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#right" translate="no">right</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setBottom" translate="no">setBottom</a></b>(int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setBottomLeft" translate="no">setBottomLeft</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setBottomRight" translate="no">setBottomRight</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setCoords" translate="no">setCoords</a></b>(int <i>x1</i>, int <i>y1</i>, int <i>x2</i>, int <i>y2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setHeight" translate="no">setHeight</a></b>(int <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setLeft" translate="no">setLeft</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setRect" translate="no">setRect</a></b>(int <i>x</i>, int <i>y</i>, int <i>width</i>, int <i>height</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setRight" translate="no">setRight</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setSize" translate="no">setSize</a></b>(const QSize &amp;<i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setTop" translate="no">setTop</a></b>(int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setTopLeft" translate="no">setTopLeft</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setTopRight" translate="no">setTopRight</a></b>(const QPoint &amp;<i>position</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setWidth" translate="no">setWidth</a></b>(int <i>width</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setX" translate="no">setX</a></b>(int <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#setY" translate="no">setY</a></b>(int <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSize </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#size" translate="no">size</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CGRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#toCGRect" translate="no">toCGRect</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#toRectF" translate="no">toRectF</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#top" translate="no">top</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPoint </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#topLeft" translate="no">topLeft</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPoint </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#topRight" translate="no">topRight</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#translate" translate="no">translate</a></b>(int <i>dx</i>, int <i>dy</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#translate-1" translate="no">translate</a></b>(const QPoint &amp;<i>offset</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#translated" translate="no">translated</a></b>(int <i>dx</i>, int <i>dy</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#translated-1" translate="no">translated</a></b>(const QPoint &amp;<i>offset</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#transposed" translate="no">transposed</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#united" translate="no">united</a></b>(const QRect &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#width" translate="no">width</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#x" translate="no">x</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#y" translate="no">y</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-and" translate="no">operator&amp;</a></b>(const QRect &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-and-eq" translate="no">operator&amp;=</a></b>(const QRect &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-2b-eq" translate="no">operator+=</a></b>(const QMargins &amp;<i>margins</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator--eq" translate="no">operator-=</a></b>(const QMargins &amp;<i>margins</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-7c" translate="no">operator|</a></b>(const QRect &amp;<i>rectangle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-7c-eq" translate="no">operator|=</a></b>(const QRect &amp;<i>rectangle</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#span" translate="no">span</a></b>(const QPoint &amp;<i>p1</i>, const QPoint &amp;<i>p2</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-not-eq" translate="no">operator!=</a></b>(const QRect &amp;<i>lhs</i>, const QRect &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-2b" translate="no">operator+</a></b>(const QMargins &amp;<i>margins</i>, const QRect &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-2b-1" translate="no">operator+</a></b>(const QRect &amp;<i>rectangle</i>, const QMargins &amp;<i>margins</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator--6" translate="no">operator-</a></b>(const QRect &amp;<i>lhs</i>, const QMargins &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-lt-lt-19" translate="no">operator&lt;&lt;</a></b>(QDataStream &amp;<i>stream</i>, const QRect &amp;<i>rectangle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-eq-eq" translate="no">operator==</a></b>(const QRect &amp;<i>lhs</i>, const QRect &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qrect.html#operator-gt-gt-18" translate="no">operator&gt;&gt;</a></b>(QDataStream &amp;<i>stream</i>, QRect &amp;<i>rectangle</i>)</td></tr>
+</table></div>
+<!-- $$$QRect-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A rectangle is normally expressed as a top-left corner and a size. The size (width and height) of a QRect is always equivalent to the mathematical rectangle that forms the basis for its rendering.</p>
+<p>A QRect can be constructed with a set of left, top, width and height integers, or from a <a href="qpoint.html" translate="no">QPoint</a> and a <a href="qsize.html" translate="no">QSize</a>. The following code creates two identical rectangles.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> r1(<span class="number">100</span><span class="operator">,</span> <span class="number">200</span><span class="operator">,</span> <span class="number">11</span><span class="operator">,</span> <span class="number">16</span>);
+ <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> r2(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">200</span>)<span class="operator">,</span> <span class="type"><a href="qsize.html" translate="no">QSize</a></span>(<span class="number">11</span><span class="operator">,</span> <span class="number">16</span>));
+</pre>
+<p>There is a third constructor that creates a QRect using the top-left and bottom-right coordinates, but we recommend that you avoid using it. The rationale is that for historical reasons the values returned by the <a href="qrect.html#bottom" translate="no">bottom</a>() and <a href="qrect.html#right" translate="no">right</a>() functions deviate from the true bottom-right corner of the rectangle.</p>
+<p>The QRect class provides a collection of functions that return the various rectangle coordinates, and enable manipulation of these. QRect also provides functions to move the rectangle relative to the various coordinates. In addition there is a <a href="qrect.html#moveTo" translate="no">moveTo</a>() function that moves the rectangle, leaving its top left corner at the given coordinates. Alternatively, the <a href="qrect.html#translate" translate="no">translate</a>() function moves the rectangle the given offset relative to the current position, and the <a href="qrect.html#translated" translate="no">translated</a>() function returns a translated copy of this rectangle.</p>
+<p>The <a href="qrect.html#size" translate="no">size</a>() function returns the rectangle's dimensions as a <a href="qsize.html" translate="no">QSize</a>. The dimensions can also be retrieved separately using the <a href="qrect.html#width" translate="no">width</a>() and <a href="qrect.html#height" translate="no">height</a>() functions. To manipulate the dimensions use the <a href="qrect.html#setSize" translate="no">setSize</a>(), <a href="qrect.html#setWidth" translate="no">setWidth</a>() or <a href="qrect.html#setHeight" translate="no">setHeight</a>() functions. Alternatively, the size can be changed by applying either of the functions setting the rectangle coordinates, for example, <a href="qrect.html#setBottom" translate="no">setBottom</a>() or <a href="qrect.html#setRight" translate="no">setRight</a>().</p>
+<p>The <a href="qrect.html#contains" translate="no">contains</a>() function tells whether a given point is inside the rectangle or not, and the <a href="qrect.html#intersects" translate="no">intersects</a>() function returns <code translate="no">true</code> if this rectangle intersects with a given rectangle. The QRect class also provides the <a href="qrect.html#intersected" translate="no">intersected</a>() function which returns the intersection rectangle, and the <a href="qrect.html#united" translate="no">united</a>() function which returns the rectangle that encloses the given rectangle and this:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><img src="images/qrect-intersect.png" alt="" /></td><td ><img src="images/qrect-unite.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td ><a href="qrect.html#intersected" translate="no">intersected</a>()</td><td ><a href="qrect.html#united" translate="no">united</a>()</td></tr>
+</table></div>
+<p>The <a href="qrect.html#isEmpty" translate="no">isEmpty</a>() function returns <code translate="no">true</code> if <a href="qrect.html#left" translate="no">left</a>() &gt; <a href="qrect.html#right" translate="no">right</a>() or <a href="qrect.html#top" translate="no">top</a>() &gt; <a href="qrect.html#bottom" translate="no">bottom</a>(). Note that an empty rectangle is not valid: The <a href="qrect.html#isValid" translate="no">isValid</a>() function returns <code translate="no">true</code> if <a href="qrect.html#left" translate="no">left</a>() &lt;= <a href="qrect.html#right" translate="no">right</a>() <i>and</i> <a href="qrect.html#top" translate="no">top</a>() &lt;= <a href="qrect.html#bottom" translate="no">bottom</a>(). A null rectangle (<a href="qrect.html#isNull" translate="no">isNull</a>() == true) on the other hand, has both width and height set to 0.</p>
+<p>Note that due to the way QRect and <a href="qrectf.html" translate="no">QRectF</a> are defined, an empty QRect is defined in essentially the same way as <a href="qrectf.html" translate="no">QRectF</a>.</p>
+<p>Finally, QRect objects can be streamed as well as compared.</p>
+<h3 id="rendering">Rendering</h3>
+<p>When using an <a href="../qtgui/qpainter.html#RenderHint-enum" translate="no">anti-aliased</a> painter, the boundary line of a QRect will be rendered symmetrically on both sides of the mathematical rectangle's boundary line. But when using an aliased painter (the default) other rules apply.</p>
+<p>Then, when rendering with a one pixel wide pen the QRect's boundary line will be rendered to the right and below the mathematical rectangle's boundary line.</p>
+<p>When rendering with a two pixels wide pen the boundary line will be split in the middle by the mathematical rectangle. This will be the case whenever the pen is set to an even number of pixels, while rendering with a pen with an odd number of pixels, the spare pixel will be rendered to the right and below the mathematical rectangle as in the one pixel case.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><img src="images/qrect-diagram-zero.png" alt="" /></td><td ><img src="images/qrect-diagram-one.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td >Logical representation</td><td >One pixel wide pen</td></tr>
+<tr valign="top" class="odd"><td ><img src="images/qrect-diagram-two.png" alt="" /></td><td ><img src="images/qrect-diagram-three.png" alt="" /></td></tr>
+<tr valign="top" class="even"><td >Two pixel wide pen</td><td >Three pixel wide pen</td></tr>
+</table></div>
+<h3 id="coordinates">Coordinates</h3>
+<p>The QRect class provides a collection of functions that return the various rectangle coordinates, and enable manipulation of these. QRect also provides functions to move the rectangle relative to the various coordinates.</p>
+<p>For example the <a href="qrect.html#left" translate="no">left</a>(), <a href="qrect.html#setLeft" translate="no">setLeft</a>() and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>() functions as an example: <a href="qrect.html#left" translate="no">left</a>() returns the x-coordinate of the rectangle's left edge, <a href="qrect.html#setLeft" translate="no">setLeft</a>() sets the left edge of the rectangle to the given x coordinate (it may change the width, but will never change the rectangle's right edge) and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>() moves the entire rectangle horizontally, leaving the rectangle's left edge at the given x coordinate and its size unchanged.</p>
+<p class="centerAlign"><img src="images/qrect-coordinates.png" alt="" /></p><p>Note that for historical reasons the values returned by the <a href="qrect.html#bottom" translate="no">bottom</a>() and <a href="qrect.html#right" translate="no">right</a>() functions deviate from the true bottom-right corner of the rectangle: The <a href="qrect.html#right" translate="no">right</a>() function returns <i> <a href="qrect.html#left" translate="no">left</a>() + <a href="qrect.html#width" translate="no">width</a>() - 1</i> and the <a href="qrect.html#bottom" translate="no">bottom</a>() function returns <i><a href="qrect.html#top" translate="no">top</a>() + <a href="qrect.html#height" translate="no">height</a>() - 1</i>. The same is the case for the point returned by the <a href="qrect.html#bottomRight" translate="no">bottomRight</a>() convenience function. In addition, the x and y coordinate of the <a href="qrect.html#topRight" translate="no">topRight</a>() and <a href="qrect.html#bottomLeft" translate="no">bottomLeft</a>() functions, respectively, contain the same deviation from the true right and bottom edges.</p>
+<p>We recommend that you use <a href="qrect.html#x" translate="no">x</a>() + <a href="qrect.html#width" translate="no">width</a>() and <a href="qrect.html#y" translate="no">y</a>() + <a href="qrect.html#height" translate="no">height</a>() to find the true bottom-right corner, and avoid <a href="qrect.html#right" translate="no">right</a>() and <a href="qrect.html#bottom" translate="no">bottom</a>(). Another solution is to use <a href="qrectf.html" translate="no">QRectF</a>: The <a href="qrectf.html" translate="no">QRectF</a> class defines a rectangle in the plane using floating point accuracy for coordinates, and the <a href="qrectf.html#right" translate="no">QRectF::right</a>() and <a href="qrectf.html#bottom" translate="no">QRectF::bottom</a>() functions <i>do</i> return the right and bottom coordinates.</p>
+<p>It is also possible to add offsets to this rectangle's coordinates using the <a href="qrect.html#adjust" translate="no">adjust</a>() function, as well as retrieve a new rectangle based on adjustments of the original one using the <a href="qrect.html#adjusted" translate="no">adjusted</a>() function. If either of the width and height is negative, use the <a href="qrect.html#normalized" translate="no">normalized</a>() function to retrieve a rectangle where the corners are swapped.</p>
+<p>In addition, QRect provides the <a href="qrect.html#getCoords" translate="no">getCoords</a>() function which extracts the position of the rectangle's top-left and bottom-right corner, and the <a href="qrect.html#getRect" translate="no">getRect</a>() function which extracts the rectangle's top-left corner, width and height. Use the <a href="qrect.html#setCoords" translate="no">setCoords</a>() and <a href="qrect.html#setRect" translate="no">setRect</a>() function to manipulate the rectangle's coordinates and dimensions in one go.</p>
+<h3 id="constraints">Constraints</h3>
+<p>QRect is limited to the minimum and maximum values for the <code translate="no">int</code> type. Operations on a QRect that could potentially result in values outside this range will result in undefined behavior.</p>
+</div>
+<p><b>See also </b><a href="qrectf.html" translate="no">QRectF</a> and <a href="../qtgui/qregion.html" translate="no">QRegion</a>.</p>
+<!-- @@@QRect -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QRect[overload1]$$$QRect -->
+<h3 class="fn" translate="no" id="QRect"><code class="details extra" translate="no">[constexpr noexcept]</code> QRect::<span class="name">QRect</span>()</h3>
+<p>Constructs a null rectangle.</p>
+<p><b>See also </b><a href="qrect.html#isNull" translate="no">isNull</a>().</p>
+<!-- @@@QRect -->
+<!-- $$$QRect$$$QRectconstQPoint&constQPoint& -->
+<h3 class="fn" translate="no" id="QRect-1"><code class="details extra" translate="no">[constexpr noexcept]</code> QRect::<span class="name">QRect</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>topLeft</i>, const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>bottomRight</i>)</h3>
+<p>Constructs a rectangle with the given <i translate="no">topLeft</i> and <i translate="no">bottomRight</i> corners, both included.</p>
+<p>If <i translate="no">bottomRight</i> is to higher and to the left of <i translate="no">topLeft</i>, the rectangle defined is instead non-inclusive of the corners.</p>
+<div class="admonition note">
+<p><b>Note: </b>To ensure both points are included regardless of relative order, use <a href="qrect.html#span" translate="no">span</a>().</p>
+</div>
+<p><b>See also </b><a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>(), <a href="qrect.html#setBottomRight" translate="no">setBottomRight</a>(), and <a href="qrect.html#span" translate="no">span</a>().</p>
+<!-- @@@QRect -->
+<!-- $$$QRect$$$QRectconstQPoint&constQSize& -->
+<h3 class="fn" translate="no" id="QRect-2"><code class="details extra" translate="no">[constexpr noexcept]</code> QRect::<span class="name">QRect</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>topLeft</i>, const <span class="type"><a href="qsize.html" translate="no">QSize</a></span> &amp;<i>size</i>)</h3>
+<p>Constructs a rectangle with the given <i translate="no">topLeft</i> corner and the given <i translate="no">size</i>.</p>
+<p><b>See also </b><a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>() and <a href="qrect.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@QRect -->
+<!-- $$$QRect$$$QRectintintintint -->
+<h3 class="fn" translate="no" id="QRect-3"><code class="details extra" translate="no">[constexpr noexcept]</code> QRect::<span class="name">QRect</span>(<span class="type">int</span> <i>x</i>, <span class="type">int</span> <i>y</i>, <span class="type">int</span> <i>width</i>, <span class="type">int</span> <i>height</i>)</h3>
+<p>Constructs a rectangle with (<i translate="no">x</i>, <i translate="no">y</i>) as its top-left corner and the given <i translate="no">width</i> and <i translate="no">height</i>.</p>
+<p><b>See also </b><a href="qrect.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@QRect -->
+<!-- $$$adjust[overload1]$$$adjustintintintint -->
+<h3 class="fn" translate="no" id="adjust"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">adjust</span>(<span class="type">int</span> <i>dx1</i>, <span class="type">int</span> <i>dy1</i>, <span class="type">int</span> <i>dx2</i>, <span class="type">int</span> <i>dy2</i>)</h3>
+<p>Adds <i translate="no">dx1</i>, <i translate="no">dy1</i>, <i translate="no">dx2</i> and <i translate="no">dy2</i> respectively to the existing coordinates of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#adjusted" translate="no">adjusted</a>() and <a href="qrect.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@adjust -->
+<!-- $$$adjusted[overload1]$$$adjustedintintintint -->
+<h3 class="fn" translate="no" id="adjusted"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">adjusted</span>(<span class="type">int</span> <i>dx1</i>, <span class="type">int</span> <i>dy1</i>, <span class="type">int</span> <i>dx2</i>, <span class="type">int</span> <i>dy2</i>) const</h3>
+<p>Returns a new rectangle with <i translate="no">dx1</i>, <i translate="no">dy1</i>, <i translate="no">dx2</i> and <i translate="no">dy2</i> added respectively to the existing coordinates of this rectangle.</p>
+<p><b>See also </b><a href="qrect.html#adjust" translate="no">adjust</a>().</p>
+<!-- @@@adjusted -->
+<!-- $$$bottom[overload1]$$$bottom -->
+<h3 class="fn" translate="no" id="bottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">bottom</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's bottom edge.</p>
+<p>Note that for historical reasons this function returns <a href="qrect.html#top" translate="no">top</a>() + <a href="qrect.html#height" translate="no">height</a>() - 1; use <a href="qrect.html#y" translate="no">y</a>() + <a href="qrect.html#height" translate="no">height</a>() to retrieve the true y-coordinate.</p>
+<p><b>See also </b><a href="qrect.html#setBottom" translate="no">setBottom</a>(), <a href="qrect.html#bottomLeft" translate="no">bottomLeft</a>(), and <a href="qrect.html#bottomRight" translate="no">bottomRight</a>().</p>
+<!-- @@@bottom -->
+<!-- $$$bottomLeft[overload1]$$$bottomLeft -->
+<h3 class="fn" translate="no" id="bottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> QRect::<span class="name">bottomLeft</span>() const</h3>
+<p>Returns the position of the rectangle's bottom-left corner. Note that for historical reasons this function returns <a href="qpoint.html" translate="no">QPoint</a>(<a href="qrect.html#left" translate="no">left</a>(), <a href="qrect.html#top" translate="no">top</a>() + <a href="qrect.html#height" translate="no">height</a>() - 1).</p>
+<p><b>See also </b><a href="qrect.html#setBottomLeft" translate="no">setBottomLeft</a>(), <a href="qrect.html#bottom" translate="no">bottom</a>(), and <a href="qrect.html#left" translate="no">left</a>().</p>
+<!-- @@@bottomLeft -->
+<!-- $$$bottomRight[overload1]$$$bottomRight -->
+<h3 class="fn" translate="no" id="bottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> QRect::<span class="name">bottomRight</span>() const</h3>
+<p>Returns the position of the rectangle's bottom-right corner.</p>
+<p>Note that for historical reasons this function returns <a href="qpoint.html" translate="no">QPoint</a>(<a href="qrect.html#left" translate="no">left</a>() + <a href="qrect.html#width" translate="no">width</a>() -1, <a href="qrect.html#top" translate="no">top</a>() + <a href="qrect.html#height" translate="no">height</a>() - 1).</p>
+<p><b>See also </b><a href="qrect.html#setBottomRight" translate="no">setBottomRight</a>(), <a href="qrect.html#bottom" translate="no">bottom</a>(), and <a href="qrect.html#right" translate="no">right</a>().</p>
+<!-- @@@bottomRight -->
+<!-- $$$center[overload1]$$$center -->
+<h3 class="fn" translate="no" id="center"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> QRect::<span class="name">center</span>() const</h3>
+<p>Returns the center point of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#moveCenter" translate="no">moveCenter</a>().</p>
+<!-- @@@center -->
+<!-- $$$contains[overload1]$$$containsconstQPoint&bool -->
+<h3 class="fn" translate="no" id="contains"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRect::<span class="name">contains</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>point</i>, <span class="type">bool</span> <i>proper</i> = false) const</h3>
+<p>Returns <code translate="no">true</code> if the given <i translate="no">point</i> is inside or on the edge of the rectangle, otherwise returns <code translate="no">false</code>. If <i translate="no">proper</i> is true, this function only returns <code translate="no">true</code> if the given <i translate="no">point</i> is <i>inside</i> the rectangle (i.e., not on the edge).</p>
+<p><b>See also </b><a href="qrect.html#intersects" translate="no">intersects</a>().</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsconstQRect&bool -->
+<h3 class="fn" translate="no" id="contains-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRect::<span class="name">contains</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>, <span class="type">bool</span> <i>proper</i> = false) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the given <i translate="no">rectangle</i> is inside this rectangle. otherwise returns <code translate="no">false</code>. If <i translate="no">proper</i> is true, this function only returns <code translate="no">true</code> if the <i translate="no">rectangle</i> is entirely inside this rectangle (not on the edge).</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsintint -->
+<h3 class="fn" translate="no" id="contains-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRect::<span class="name">contains</span>(<span class="type">int</span> <i>x</i>, <span class="type">int</span> <i>y</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the point (<i translate="no">x</i>, <i translate="no">y</i>) is inside this rectangle, otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@contains -->
+<!-- $$$contains$$$containsintintbool -->
+<h3 class="fn" translate="no" id="contains-3"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRect::<span class="name">contains</span>(<span class="type">int</span> <i>x</i>, <span class="type">int</span> <i>y</i>, <span class="type">bool</span> <i>proper</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns <code translate="no">true</code> if the point (<i translate="no">x</i>, <i translate="no">y</i>) is inside or on the edge of the rectangle, otherwise returns <code translate="no">false</code>. If <i translate="no">proper</i> is true, this function only returns <code translate="no">true</code> if the point is entirely inside the rectangle(not on the edge).</p>
+<!-- @@@contains -->
+<!-- $$$getCoords[overload1]$$$getCoordsint*int*int*int* -->
+<h3 class="fn" translate="no" id="getCoords"><code class="details extra" translate="no">[constexpr]</code> <span class="type">void</span> QRect::<span class="name">getCoords</span>(<span class="type">int</span> *<i>x1</i>, <span class="type">int</span> *<i>y1</i>, <span class="type">int</span> *<i>x2</i>, <span class="type">int</span> *<i>y2</i>) const</h3>
+<p>Extracts the position of the rectangle's top-left corner to *<i translate="no">x1</i> and *<i translate="no">y1</i>, and the position of the bottom-right corner to *<i translate="no">x2</i> and *<i translate="no">y2</i>.</p>
+<p><b>See also </b><a href="qrect.html#setCoords" translate="no">setCoords</a>() and <a href="qrect.html#getRect" translate="no">getRect</a>().</p>
+<!-- @@@getCoords -->
+<!-- $$$getRect[overload1]$$$getRectint*int*int*int* -->
+<h3 class="fn" translate="no" id="getRect"><code class="details extra" translate="no">[constexpr]</code> <span class="type">void</span> QRect::<span class="name">getRect</span>(<span class="type">int</span> *<i>x</i>, <span class="type">int</span> *<i>y</i>, <span class="type">int</span> *<i>width</i>, <span class="type">int</span> *<i>height</i>) const</h3>
+<p>Extracts the position of the rectangle's top-left corner to *<i translate="no">x</i> and *<i translate="no">y</i>, and its dimensions to *<i translate="no">width</i> and *<i translate="no">height</i>.</p>
+<p><b>See also </b><a href="qrect.html#setRect" translate="no">setRect</a>() and <a href="qrect.html#getCoords" translate="no">getCoords</a>().</p>
+<!-- @@@getRect -->
+<!-- $$$height[overload1]$$$height -->
+<h3 class="fn" translate="no" id="height"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">height</span>() const</h3>
+<p>Returns the height of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#setHeight" translate="no">setHeight</a>(), <a href="qrect.html#width" translate="no">width</a>(), and <a href="qrect.html#size" translate="no">size</a>().</p>
+<!-- @@@height -->
+<!-- $$$intersected[overload1]$$$intersectedconstQRect& -->
+<h3 class="fn" translate="no" id="intersected"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">intersected</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the intersection of this rectangle and the given <i translate="no">rectangle</i>. Note that <code translate="no">r.intersected(s)</code> is equivalent to <code translate="no">r &amp; s</code>.</p>
+<p class="centerAlign"><img src="images/qrect-intersect.png" alt="" /></p><p><b>See also </b><a href="qrect.html#intersects" translate="no">intersects</a>(), <a href="qrect.html#united" translate="no">united</a>(), and <a href="qrect.html#operator-and-eq" translate="no">operator&amp;=</a>().</p>
+<!-- @@@intersected -->
+<!-- $$$intersects[overload1]$$$intersectsconstQRect& -->
+<h3 class="fn" translate="no" id="intersects"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QRect::<span class="name">intersects</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns <code translate="no">true</code> if this rectangle intersects with the given <i translate="no">rectangle</i> (i.e., there is at least one pixel that is within both rectangles), otherwise returns <code translate="no">false</code>.</p>
+<p>The intersection rectangle can be retrieved using the <a href="qrect.html#intersected" translate="no">intersected</a>() function.</p>
+<p><b>See also </b><a href="qrect.html#contains" translate="no">contains</a>().</p>
+<!-- @@@intersects -->
+<!-- $$$isEmpty[overload1]$$$isEmpty -->
+<h3 class="fn" translate="no" id="isEmpty"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRect::<span class="name">isEmpty</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is empty, otherwise returns <code translate="no">false</code>.</p>
+<p>An empty rectangle has a <a href="qrect.html#left" translate="no">left</a>() &gt; <a href="qrect.html#right" translate="no">right</a>() or <a href="qrect.html#top" translate="no">top</a>() &gt; <a href="qrect.html#bottom" translate="no">bottom</a>(). An empty rectangle is not valid (i.e., isEmpty() == !<a href="qrect.html#isValid" translate="no">isValid</a>()).</p>
+<p>Use the <a href="qrect.html#normalized" translate="no">normalized</a>() function to retrieve a rectangle where the corners are swapped.</p>
+<p><b>See also </b><a href="qrect.html#isNull" translate="no">isNull</a>(), <a href="qrect.html#isValid" translate="no">isValid</a>(), and <a href="qrect.html#normalized" translate="no">normalized</a>().</p>
+<!-- @@@isEmpty -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRect::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is a null rectangle, otherwise returns <code translate="no">false</code>.</p>
+<p>A null rectangle has both the width and the height set to 0 (i.e., <a href="qrect.html#right" translate="no">right</a>() == <a href="qrect.html#left" translate="no">left</a>() - 1 and <a href="qrect.html#bottom" translate="no">bottom</a>() == <a href="qrect.html#top" translate="no">top</a>() - 1). A null rectangle is also empty, and hence is not valid.</p>
+<p><b>See also </b><a href="qrect.html#isEmpty" translate="no">isEmpty</a>() and <a href="qrect.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@isNull -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QRect::<span class="name">isValid</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the rectangle is valid, otherwise returns <code translate="no">false</code>.</p>
+<p>A valid rectangle has a <a href="qrect.html#left" translate="no">left</a>() &lt;= <a href="qrect.html#right" translate="no">right</a>() and <a href="qrect.html#top" translate="no">top</a>() &lt;= <a href="qrect.html#bottom" translate="no">bottom</a>(). Note that non-trivial operations like intersections are not defined for invalid rectangles. A valid rectangle is not empty (i.e., isValid() == !<a href="qrect.html#isEmpty" translate="no">isEmpty</a>()).</p>
+<p><b>See also </b><a href="qrect.html#isNull" translate="no">isNull</a>(), <a href="qrect.html#isEmpty" translate="no">isEmpty</a>(), and <a href="qrect.html#normalized" translate="no">normalized</a>().</p>
+<!-- @@@isValid -->
+<!-- $$$left[overload1]$$$left -->
+<h3 class="fn" translate="no" id="left"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">left</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's left edge. Equivalent to <a href="qrect.html#x" translate="no">x</a>().</p>
+<p><b>See also </b><a href="qrect.html#setLeft" translate="no">setLeft</a>(), <a href="qrect.html#topLeft" translate="no">topLeft</a>(), and <a href="qrect.html#bottomLeft" translate="no">bottomLeft</a>().</p>
+<!-- @@@left -->
+<!-- $$$marginsAdded[overload1]$$$marginsAddedconstQMargins& -->
+<h3 class="fn" translate="no" id="marginsAdded"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">marginsAdded</span>(const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>) const</h3>
+<p>Returns a rectangle grown by the <i translate="no">margins</i>.</p>
+<p><b>See also </b><a href="qrect.html#operator-2b-eq" translate="no">operator+=</a>(), <a href="qrect.html#marginsRemoved" translate="no">marginsRemoved</a>(), and <a href="qrect.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@marginsAdded -->
+<!-- $$$marginsRemoved[overload1]$$$marginsRemovedconstQMargins& -->
+<h3 class="fn" translate="no" id="marginsRemoved"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">marginsRemoved</span>(const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>) const</h3>
+<p>Removes the <i translate="no">margins</i> from the rectangle, shrinking it.</p>
+<p><b>See also </b><a href="qrect.html#marginsAdded" translate="no">marginsAdded</a>(), <a href="qrect.html#operator-2b-eq" translate="no">operator+=</a>(), and <a href="qrect.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@marginsRemoved -->
+<!-- $$$moveBottom[overload1]$$$moveBottomint -->
+<h3 class="fn" translate="no" id="moveBottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveBottom</span>(<span class="type">int</span> <i>y</i>)</h3>
+<p>Moves the rectangle vertically, leaving the rectangle's bottom edge at the given <i translate="no">y</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#bottom" translate="no">bottom</a>(), <a href="qrect.html#setBottom" translate="no">setBottom</a>(), and <a href="qrect.html#moveTop" translate="no">moveTop</a>().</p>
+<!-- @@@moveBottom -->
+<!-- $$$moveBottomLeft[overload1]$$$moveBottomLeftconstQPoint& -->
+<h3 class="fn" translate="no" id="moveBottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveBottomLeft</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the bottom-left corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#setBottomLeft" translate="no">setBottomLeft</a>(), <a href="qrect.html#moveBottom" translate="no">moveBottom</a>(), and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveBottomLeft -->
+<!-- $$$moveBottomRight[overload1]$$$moveBottomRightconstQPoint& -->
+<h3 class="fn" translate="no" id="moveBottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveBottomRight</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the bottom-right corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#setBottomRight" translate="no">setBottomRight</a>(), <a href="qrect.html#moveRight" translate="no">moveRight</a>(), and <a href="qrect.html#moveBottom" translate="no">moveBottom</a>().</p>
+<!-- @@@moveBottomRight -->
+<!-- $$$moveCenter[overload1]$$$moveCenterconstQPoint& -->
+<h3 class="fn" translate="no" id="moveCenter"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveCenter</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the center point at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#center" translate="no">center</a>().</p>
+<!-- @@@moveCenter -->
+<!-- $$$moveLeft[overload1]$$$moveLeftint -->
+<h3 class="fn" translate="no" id="moveLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveLeft</span>(<span class="type">int</span> <i>x</i>)</h3>
+<p>Moves the rectangle horizontally, leaving the rectangle's left edge at the given <i translate="no">x</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#left" translate="no">left</a>(), <a href="qrect.html#setLeft" translate="no">setLeft</a>(), and <a href="qrect.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@moveLeft -->
+<!-- $$$moveRight[overload1]$$$moveRightint -->
+<h3 class="fn" translate="no" id="moveRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveRight</span>(<span class="type">int</span> <i>x</i>)</h3>
+<p>Moves the rectangle horizontally, leaving the rectangle's right edge at the given <i translate="no">x</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#right" translate="no">right</a>(), <a href="qrect.html#setRight" translate="no">setRight</a>(), and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveRight -->
+<!-- $$$moveTo[overload1]$$$moveToconstQPoint& -->
+<h3 class="fn" translate="no" id="moveTo"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveTo</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the top-left corner at the given <i translate="no">position</i>.</p>
+<!-- @@@moveTo -->
+<!-- $$$moveTo$$$moveTointint -->
+<h3 class="fn" translate="no" id="moveTo-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveTo</span>(<span class="type">int</span> <i>x</i>, <span class="type">int</span> <i>y</i>)</h3>
+<p>Moves the rectangle, leaving the top-left corner at the given position (<i translate="no">x</i>, <i translate="no">y</i>). The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#translate" translate="no">translate</a>() and <a href="qrect.html#moveTopLeft" translate="no">moveTopLeft</a>().</p>
+<!-- @@@moveTo -->
+<!-- $$$moveTop[overload1]$$$moveTopint -->
+<h3 class="fn" translate="no" id="moveTop"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveTop</span>(<span class="type">int</span> <i>y</i>)</h3>
+<p>Moves the rectangle vertically, leaving the rectangle's top edge at the given <i translate="no">y</i> coordinate. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#top" translate="no">top</a>(), <a href="qrect.html#setTop" translate="no">setTop</a>(), and <a href="qrect.html#moveBottom" translate="no">moveBottom</a>().</p>
+<!-- @@@moveTop -->
+<!-- $$$moveTopLeft[overload1]$$$moveTopLeftconstQPoint& -->
+<h3 class="fn" translate="no" id="moveTopLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveTopLeft</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the top-left corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>(), <a href="qrect.html#moveTop" translate="no">moveTop</a>(), and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@moveTopLeft -->
+<!-- $$$moveTopRight[overload1]$$$moveTopRightconstQPoint& -->
+<h3 class="fn" translate="no" id="moveTopRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">moveTopRight</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Moves the rectangle, leaving the top-right corner at the given <i translate="no">position</i>. The rectangle's size is unchanged.</p>
+<p><b>See also </b><a href="qrect.html#setTopRight" translate="no">setTopRight</a>(), <a href="qrect.html#moveTop" translate="no">moveTop</a>(), and <a href="qrect.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@moveTopRight -->
+<!-- $$$normalized[overload1]$$$normalized -->
+<h3 class="fn" translate="no" id="normalized"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">normalized</span>() const</h3>
+<p>Returns a normalized rectangle; i.e., a rectangle that has a non-negative width and height.</p>
+<p>If <a href="qrect.html#width" translate="no">width</a>() &lt; 0 the function swaps the left and right corners, and it swaps the top and bottom corners if <a href="qrect.html#height" translate="no">height</a>() &lt; 0. The corners are at the same time changed from being non-inclusive to inclusive.</p>
+<p><b>See also </b><a href="qrect.html#isValid" translate="no">isValid</a>() and <a href="qrect.html#isEmpty" translate="no">isEmpty</a>().</p>
+<!-- @@@normalized -->
+<!-- $$$right[overload1]$$$right -->
+<h3 class="fn" translate="no" id="right"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">right</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's right edge.</p>
+<p>Note that for historical reasons this function returns <a href="qrect.html#left" translate="no">left</a>() + <a href="qrect.html#width" translate="no">width</a>() - 1; use <a href="qrect.html#x" translate="no">x</a>() + <a href="qrect.html#width" translate="no">width</a>() to retrieve the true x-coordinate.</p>
+<p><b>See also </b><a href="qrect.html#setRight" translate="no">setRight</a>(), <a href="qrect.html#topRight" translate="no">topRight</a>(), and <a href="qrect.html#bottomRight" translate="no">bottomRight</a>().</p>
+<!-- @@@right -->
+<!-- $$$setBottom[overload1]$$$setBottomint -->
+<h3 class="fn" translate="no" id="setBottom"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setBottom</span>(<span class="type">int</span> <i>y</i>)</h3>
+<p>Sets the bottom edge of the rectangle to the given <i translate="no">y</i> coordinate. May change the height, but will never change the top edge of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#bottom" translate="no">bottom</a>() and <a href="qrect.html#moveBottom" translate="no">moveBottom</a>().</p>
+<!-- @@@setBottom -->
+<!-- $$$setBottomLeft[overload1]$$$setBottomLeftconstQPoint& -->
+<h3 class="fn" translate="no" id="setBottomLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setBottomLeft</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Set the bottom-left corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the top-right corner of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#bottomLeft" translate="no">bottomLeft</a>() and <a href="qrect.html#moveBottomLeft" translate="no">moveBottomLeft</a>().</p>
+<!-- @@@setBottomLeft -->
+<!-- $$$setBottomRight[overload1]$$$setBottomRightconstQPoint& -->
+<h3 class="fn" translate="no" id="setBottomRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setBottomRight</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Set the bottom-right corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the top-left corner of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#bottomRight" translate="no">bottomRight</a>() and <a href="qrect.html#moveBottomRight" translate="no">moveBottomRight</a>().</p>
+<!-- @@@setBottomRight -->
+<!-- $$$setCoords[overload1]$$$setCoordsintintintint -->
+<h3 class="fn" translate="no" id="setCoords"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setCoords</span>(<span class="type">int</span> <i>x1</i>, <span class="type">int</span> <i>y1</i>, <span class="type">int</span> <i>x2</i>, <span class="type">int</span> <i>y2</i>)</h3>
+<p>Sets the coordinates of the rectangle's top-left corner to (<i translate="no">x1</i>, <i translate="no">y1</i>), and the coordinates of its bottom-right corner to (<i translate="no">x2</i>, <i translate="no">y2</i>).</p>
+<p><b>See also </b><a href="qrect.html#getCoords" translate="no">getCoords</a>() and <a href="qrect.html#setRect" translate="no">setRect</a>().</p>
+<!-- @@@setCoords -->
+<!-- $$$setHeight[overload1]$$$setHeightint -->
+<h3 class="fn" translate="no" id="setHeight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setHeight</span>(<span class="type">int</span> <i>height</i>)</h3>
+<p>Sets the height of the rectangle to the given <i translate="no">height</i>. The bottom edge is changed, but not the top one.</p>
+<p><b>See also </b><a href="qrect.html#height" translate="no">height</a>() and <a href="qrect.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@setHeight -->
+<!-- $$$setLeft[overload1]$$$setLeftint -->
+<h3 class="fn" translate="no" id="setLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setLeft</span>(<span class="type">int</span> <i>x</i>)</h3>
+<p>Sets the left edge of the rectangle to the given <i translate="no">x</i> coordinate. May change the width, but will never change the right edge of the rectangle.</p>
+<p>Equivalent to <a href="qrect.html#setX" translate="no">setX</a>().</p>
+<p><b>See also </b><a href="qrect.html#left" translate="no">left</a>() and <a href="qrect.html#moveLeft" translate="no">moveLeft</a>().</p>
+<!-- @@@setLeft -->
+<!-- $$$setRect[overload1]$$$setRectintintintint -->
+<h3 class="fn" translate="no" id="setRect"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setRect</span>(<span class="type">int</span> <i>x</i>, <span class="type">int</span> <i>y</i>, <span class="type">int</span> <i>width</i>, <span class="type">int</span> <i>height</i>)</h3>
+<p>Sets the coordinates of the rectangle's top-left corner to (<i translate="no">x</i>, <i translate="no">y</i>), and its size to the given <i translate="no">width</i> and <i translate="no">height</i>.</p>
+<p><b>See also </b><a href="qrect.html#getRect" translate="no">getRect</a>() and <a href="qrect.html#setCoords" translate="no">setCoords</a>().</p>
+<!-- @@@setRect -->
+<!-- $$$setRight[overload1]$$$setRightint -->
+<h3 class="fn" translate="no" id="setRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setRight</span>(<span class="type">int</span> <i>x</i>)</h3>
+<p>Sets the right edge of the rectangle to the given <i translate="no">x</i> coordinate. May change the width, but will never change the left edge of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#right" translate="no">right</a>() and <a href="qrect.html#moveRight" translate="no">moveRight</a>().</p>
+<!-- @@@setRight -->
+<!-- $$$setSize[overload1]$$$setSizeconstQSize& -->
+<h3 class="fn" translate="no" id="setSize"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setSize</span>(const <span class="type"><a href="qsize.html" translate="no">QSize</a></span> &amp;<i>size</i>)</h3>
+<p>Sets the size of the rectangle to the given <i translate="no">size</i>. The top-left corner is not moved.</p>
+<p><b>See also </b><a href="qrect.html#size" translate="no">size</a>(), <a href="qrect.html#setWidth" translate="no">setWidth</a>(), and <a href="qrect.html#setHeight" translate="no">setHeight</a>().</p>
+<!-- @@@setSize -->
+<!-- $$$setTop[overload1]$$$setTopint -->
+<h3 class="fn" translate="no" id="setTop"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setTop</span>(<span class="type">int</span> <i>y</i>)</h3>
+<p>Sets the top edge of the rectangle to the given <i translate="no">y</i> coordinate. May change the height, but will never change the bottom edge of the rectangle.</p>
+<p>Equivalent to <a href="qrect.html#setY" translate="no">setY</a>().</p>
+<p><b>See also </b><a href="qrect.html#top" translate="no">top</a>() and <a href="qrect.html#moveTop" translate="no">moveTop</a>().</p>
+<!-- @@@setTop -->
+<!-- $$$setTopLeft[overload1]$$$setTopLeftconstQPoint& -->
+<h3 class="fn" translate="no" id="setTopLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setTopLeft</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Set the top-left corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the bottom-right corner of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#topLeft" translate="no">topLeft</a>() and <a href="qrect.html#moveTopLeft" translate="no">moveTopLeft</a>().</p>
+<!-- @@@setTopLeft -->
+<!-- $$$setTopRight[overload1]$$$setTopRightconstQPoint& -->
+<h3 class="fn" translate="no" id="setTopRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setTopRight</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>position</i>)</h3>
+<p>Set the top-right corner of the rectangle to the given <i translate="no">position</i>. May change the size, but will never change the bottom-left corner of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#topRight" translate="no">topRight</a>() and <a href="qrect.html#moveTopRight" translate="no">moveTopRight</a>().</p>
+<!-- @@@setTopRight -->
+<!-- $$$setWidth[overload1]$$$setWidthint -->
+<h3 class="fn" translate="no" id="setWidth"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setWidth</span>(<span class="type">int</span> <i>width</i>)</h3>
+<p>Sets the width of the rectangle to the given <i translate="no">width</i>. The right edge is changed, but not the left one.</p>
+<p><b>See also </b><a href="qrect.html#width" translate="no">width</a>() and <a href="qrect.html#setSize" translate="no">setSize</a>().</p>
+<!-- @@@setWidth -->
+<!-- $$$setX[overload1]$$$setXint -->
+<h3 class="fn" translate="no" id="setX"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setX</span>(<span class="type">int</span> <i>x</i>)</h3>
+<p>Sets the left edge of the rectangle to the given <i translate="no">x</i> coordinate. May change the width, but will never change the right edge of the rectangle.</p>
+<p>Equivalent to <a href="qrect.html#setLeft" translate="no">setLeft</a>().</p>
+<p><b>See also </b><a href="qrect.html#x" translate="no">x</a>(), <a href="qrect.html#setY" translate="no">setY</a>(), and <a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>().</p>
+<!-- @@@setX -->
+<!-- $$$setY[overload1]$$$setYint -->
+<h3 class="fn" translate="no" id="setY"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">setY</span>(<span class="type">int</span> <i>y</i>)</h3>
+<p>Sets the top edge of the rectangle to the given <i translate="no">y</i> coordinate. May change the height, but will never change the bottom edge of the rectangle.</p>
+<p>Equivalent to <a href="qrect.html#setTop" translate="no">setTop</a>().</p>
+<p><b>See also </b><a href="qrect.html#y" translate="no">y</a>(), <a href="qrect.html#setX" translate="no">setX</a>(), and <a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>().</p>
+<!-- @@@setY -->
+<!-- $$$size[overload1]$$$size -->
+<h3 class="fn" translate="no" id="size"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qsize.html" translate="no">QSize</a></span> QRect::<span class="name">size</span>() const</h3>
+<p>Returns the size of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#setSize" translate="no">setSize</a>(), <a href="qrect.html#width" translate="no">width</a>(), and <a href="qrect.html#height" translate="no">height</a>().</p>
+<!-- @@@size -->
+<!-- $$$span[overload1]$$$spanconstQPoint&constQPoint& -->
+<h3 class="fn" translate="no" id="span"><code class="details extra" translate="no">[static constexpr noexcept, since 6.0]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">span</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>p1</i>, const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>p2</i>)</h3>
+<p>Returns a rectangle spanning the two points <i translate="no">p1</i> and <i translate="no">p2</i>, including both and everything in between.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@span -->
+<!-- $$$toCGRect[overload1]$$$toCGRect -->
+<h3 class="fn" translate="no" id="toCGRect"><code class="details extra" translate="no">[noexcept]</code> <span class="type">CGRect</span> QRect::<span class="name">toCGRect</span>() const</h3>
+<p>Creates a CGRect from a <a href="qrect.html" translate="no">QRect</a>.</p>
+<p><b>See also </b><a href="qrectf.html#fromCGRect" translate="no">QRectF::fromCGRect</a>().</p>
+<!-- @@@toCGRect -->
+<!-- $$$toRectF[overload1]$$$toRectF -->
+<h3 class="fn" translate="no" id="toRectF"><code class="details extra" translate="no">[constexpr noexcept, since 6.4]</code> <span class="type"><a href="qrectf.html" translate="no">QRectF</a></span> QRect::<span class="name">toRectF</span>() const</h3>
+<p>Returns this rectangle as a rectangle with floating point accuracy.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function, like the <a href="qrectf.html" translate="no">QRectF</a>(<a href="qrect.html" translate="no">QRect</a>) constructor, preserves the <a href="qrect.html#size" translate="no">size</a>() of the rectangle, not its <a href="qrect.html#bottomRight" translate="no">bottomRight</a>() corner.</p>
+</div>
+<p>This function was introduced in Qt 6.4.</p>
+<p><b>See also </b><a href="qrectf.html#toRect" translate="no">QRectF::toRect</a>().</p>
+<!-- @@@toRectF -->
+<!-- $$$top[overload1]$$$top -->
+<h3 class="fn" translate="no" id="top"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">top</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's top edge. Equivalent to <a href="qrect.html#y" translate="no">y</a>().</p>
+<p><b>See also </b><a href="qrect.html#setTop" translate="no">setTop</a>(), <a href="qrect.html#topLeft" translate="no">topLeft</a>(), and <a href="qrect.html#topRight" translate="no">topRight</a>().</p>
+<!-- @@@top -->
+<!-- $$$topLeft[overload1]$$$topLeft -->
+<h3 class="fn" translate="no" id="topLeft"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> QRect::<span class="name">topLeft</span>() const</h3>
+<p>Returns the position of the rectangle's top-left corner.</p>
+<p><b>See also </b><a href="qrect.html#setTopLeft" translate="no">setTopLeft</a>(), <a href="qrect.html#top" translate="no">top</a>(), and <a href="qrect.html#left" translate="no">left</a>().</p>
+<!-- @@@topLeft -->
+<!-- $$$topRight[overload1]$$$topRight -->
+<h3 class="fn" translate="no" id="topRight"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> QRect::<span class="name">topRight</span>() const</h3>
+<p>Returns the position of the rectangle's top-right corner.</p>
+<p>Note that for historical reasons this function returns <a href="qpoint.html" translate="no">QPoint</a>(<a href="qrect.html#left" translate="no">left</a>() + <a href="qrect.html#width" translate="no">width</a>() -1, <a href="qrect.html#top" translate="no">top</a>()).</p>
+<p><b>See also </b><a href="qrect.html#setTopRight" translate="no">setTopRight</a>(), <a href="qrect.html#top" translate="no">top</a>(), and <a href="qrect.html#right" translate="no">right</a>().</p>
+<!-- @@@topRight -->
+<!-- $$$translate[overload1]$$$translateintint -->
+<h3 class="fn" translate="no" id="translate"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">translate</span>(<span class="type">int</span> <i>dx</i>, <span class="type">int</span> <i>dy</i>)</h3>
+<p>Moves the rectangle <i translate="no">dx</i> along the x axis and <i translate="no">dy</i> along the y axis, relative to the current position. Positive values move the rectangle to the right and down.</p>
+<p><b>See also </b><a href="qrect.html#moveTopLeft" translate="no">moveTopLeft</a>(), <a href="qrect.html#moveTo" translate="no">moveTo</a>(), and <a href="qrect.html#translated" translate="no">translated</a>().</p>
+<!-- @@@translate -->
+<!-- $$$translate$$$translateconstQPoint& -->
+<h3 class="fn" translate="no" id="translate-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QRect::<span class="name">translate</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>offset</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Moves the rectangle <i translate="no">offset</i>.<a href="qpoint.html#x" translate="no">x</a>() along the x axis and <i translate="no">offset</i>.<a href="qpoint.html#y" translate="no">y</a>() along the y axis, relative to the current position.</p>
+<!-- @@@translate -->
+<!-- $$$translated[overload1]$$$translatedintint -->
+<h3 class="fn" translate="no" id="translated"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">translated</span>(<span class="type">int</span> <i>dx</i>, <span class="type">int</span> <i>dy</i>) const</h3>
+<p>Returns a copy of the rectangle that is translated <i translate="no">dx</i> along the x axis and <i translate="no">dy</i> along the y axis, relative to the current position. Positive values move the rectangle to the right and down.</p>
+<p><b>See also </b><a href="qrect.html#translate" translate="no">translate</a>().</p>
+<!-- @@@translated -->
+<!-- $$$translated$$$translatedconstQPoint& -->
+<h3 class="fn" translate="no" id="translated-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">translated</span>(const <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span> &amp;<i>offset</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a copy of the rectangle that is translated <i translate="no">offset</i>.<a href="qpoint.html#x" translate="no">x</a>() along the x axis and <i translate="no">offset</i>.<a href="qpoint.html#y" translate="no">y</a>() along the y axis, relative to the current position.</p>
+<!-- @@@translated -->
+<!-- $$$transposed[overload1]$$$transposed -->
+<h3 class="fn" translate="no" id="transposed"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">transposed</span>() const</h3>
+<p>Returns a copy of the rectangle that has its width and height exchanged:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> r <span class="operator">=</span> {<span class="number">15</span><span class="operator">,</span> <span class="number">51</span><span class="operator">,</span> <span class="number">42</span><span class="operator">,</span> <span class="number">24</span>};
+ r <span class="operator">=</span> r<span class="operator">.</span>transposed(); <span class="comment">// r == {15, 51, 24, 42}</span>
+</pre>
+<p><b>See also </b><a href="qsize.html#transposed" translate="no">QSize::transposed</a>().</p>
+<!-- @@@transposed -->
+<!-- $$$united[overload1]$$$unitedconstQRect& -->
+<h3 class="fn" translate="no" id="united"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">united</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the bounding rectangle of this rectangle and the given <i translate="no">rectangle</i>.</p>
+<p class="centerAlign"><img src="images/qrect-unite.png" alt="" /></p><p><b>See also </b><a href="qrect.html#intersected" translate="no">intersected</a>().</p>
+<!-- @@@united -->
+<!-- $$$width[overload1]$$$width -->
+<h3 class="fn" translate="no" id="width"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">width</span>() const</h3>
+<p>Returns the width of the rectangle.</p>
+<p><b>See also </b><a href="qrect.html#setWidth" translate="no">setWidth</a>(), <a href="qrect.html#height" translate="no">height</a>(), and <a href="qrect.html#size" translate="no">size</a>().</p>
+<!-- @@@width -->
+<!-- $$$x[overload1]$$$x -->
+<h3 class="fn" translate="no" id="x"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">x</span>() const</h3>
+<p>Returns the x-coordinate of the rectangle's left edge. Equivalent to <a href="qrect.html#left" translate="no">left</a>().</p>
+<p><b>See also </b><a href="qrect.html#setX" translate="no">setX</a>(), <a href="qrect.html#y" translate="no">y</a>(), and <a href="qrect.html#topLeft" translate="no">topLeft</a>().</p>
+<!-- @@@x -->
+<!-- $$$y[overload1]$$$y -->
+<h3 class="fn" translate="no" id="y"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">int</span> QRect::<span class="name">y</span>() const</h3>
+<p>Returns the y-coordinate of the rectangle's top edge. Equivalent to <a href="qrect.html#top" translate="no">top</a>().</p>
+<p><b>See also </b><a href="qrect.html#setY" translate="no">setY</a>(), <a href="qrect.html#x" translate="no">x</a>(), and <a href="qrect.html#topLeft" translate="no">topLeft</a>().</p>
+<!-- @@@y -->
+<!-- $$$operator&[overload1]$$$operator&constQRect& -->
+<h3 class="fn" translate="no" id="operator-and"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">operator&amp;</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the intersection of this rectangle and the given <i translate="no">rectangle</i>. Returns an empty rectangle if there is no intersection.</p>
+<p><b>See also </b><a href="qrect.html#operator-and-eq" translate="no">operator&amp;=</a>() and <a href="qrect.html#intersected" translate="no">intersected</a>().</p>
+<!-- @@@operator& -->
+<!-- $$$operator&=[overload1]$$$operator&=constQRect& -->
+<h3 class="fn" translate="no" id="operator-and-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;QRect::<span class="name">operator&amp;=</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Intersects this rectangle with the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrect.html#intersected" translate="no">intersected</a>() and <a href="qrect.html#operator-and" translate="no">operator&amp;</a>().</p>
+<!-- @@@operator&= -->
+<!-- $$$operator+=[overload1]$$$operator+=constQMargins& -->
+<h3 class="fn" translate="no" id="operator-2b-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;QRect::<span class="name">operator+=</span>(const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>)</h3>
+<p>Adds the <i translate="no">margins</i> to the rectangle, growing it.</p>
+<p><b>See also </b><a href="qrect.html#marginsAdded" translate="no">marginsAdded</a>(), <a href="qrect.html#marginsRemoved" translate="no">marginsRemoved</a>(), and <a href="qrect.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@operator+= -->
+<!-- $$$operator-=[overload1]$$$operator-=constQMargins& -->
+<h3 class="fn" translate="no" id="operator--eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;QRect::<span class="name">operator-=</span>(const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>)</h3>
+<p>Returns a rectangle shrunk by the <i translate="no">margins</i>.</p>
+<p><b>See also </b><a href="qrect.html#marginsRemoved" translate="no">marginsRemoved</a>(), <a href="qrect.html#operator-2b-eq" translate="no">operator+=</a>(), and <a href="qrect.html#marginsAdded" translate="no">marginsAdded</a>().</p>
+<!-- @@@operator-= -->
+<!-- $$$operator|[overload1]$$$operator|constQRect& -->
+<h3 class="fn" translate="no" id="operator-7c"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> QRect::<span class="name">operator|</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>) const</h3>
+<p>Returns the bounding rectangle of this rectangle and the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrect.html#operator-7c-eq" translate="no">operator|=</a>() and <a href="qrect.html#united" translate="no">united</a>().</p>
+<!-- @@@operator| -->
+<!-- $$$operator|=[overload1]$$$operator|=constQRect& -->
+<h3 class="fn" translate="no" id="operator-7c-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;QRect::<span class="name">operator|=</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Unites this rectangle with the given <i translate="no">rectangle</i>.</p>
+<p><b>See also </b><a href="qrect.html#united" translate="no">united</a>() and <a href="qrect.html#operator-7c" translate="no">operator|</a>().</p>
+<!-- @@@operator|= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$operator!=[overload1]$$$operator!=constQRect&constQRect& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if the rectangles <i translate="no">lhs</i> and <i translate="no">rhs</i> are different, otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator+[overload1]$$$operator+constQMargins&constQRect& -->
+<h3 class="fn" translate="no" id="operator-2b"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> <span class="name">operator+</span>(const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>, const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the <i translate="no">rectangle</i> grown by the <i translate="no">margins</i>.</p>
+<!-- @@@operator+ -->
+<!-- $$$operator+$$$operator+constQRect&constQMargins& -->
+<h3 class="fn" translate="no" id="operator-2b-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> <span class="name">operator+</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>, const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>margins</i>)</h3>
+<p>Returns the <i translate="no">rectangle</i> grown by the <i translate="no">margins</i>.</p>
+<!-- @@@operator+ -->
+<!-- $$$operator-$$$operator-constQRect&constQMargins& -->
+<h3 class="fn" translate="no" id="operator--6"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> <span class="name">operator-</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qmargins.html" translate="no">QMargins</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns the <i translate="no">lhs</i> rectangle shrunk by the <i translate="no">rhs</i> margins.</p>
+<!-- @@@operator- -->
+<!-- $$$operator<<$$$operator<<QDataStream&constQRect& -->
+<h3 class="fn" translate="no" id="operator-lt-lt-19"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&lt;&lt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Writes the given <i translate="no">rectangle</i> to the given <i translate="no">stream</i>, and returns a reference to the stream.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator==[overload1]$$$operator==constQRect&constQRect& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if the rectangles <i translate="no">lhs</i> and <i translate="no">rhs</i> are equal, otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator== -->
+<!-- $$$operator>>$$$operator>>QDataStream&QRect& -->
+<h3 class="fn" translate="no" id="operator-gt-gt-18"><span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&gt;&gt;</span>(<span class="type"><a href="qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, <span class="type"><a href="qrect.html#QRect" translate="no">QRect</a></span> &amp;<i>rectangle</i>)</h3>
+<p>Reads a rectangle from the given <i translate="no">stream</i> into the given <i translate="no">rectangle</i>, and returns a reference to the stream.</p>
+<p><b>See also </b><a href="datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator>> -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cpp-qml-positioning.qdoc -->
+  <meta name="description" content="Describes the methods used to exchange position data between C++ and QML code.">
+  <title>Interfaces between C++ and QML Code in Qt Positioning | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li>Interfaces between C++ and QML Code in Qt Positioning</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="location-positioning-cpp.html" />
+  <link rel="next" href="qtpositioning-android.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="location-positioning-cpp.html">Positioning (C++)</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtpositioning-android.html">Android support</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#direct-c-value-integration-in-qtpositioning">Direct C++ Value Integration in QtPositioning</a></li>
+<li class="level1"><a href="#qvariant-based-integration">QVariant Based integration</a></li>
+<li class="level2"><a href="#address-qgeoaddress">Address - QGeoAddress</a></li>
+<li class="level2"><a href="#location-qgeolocation">Location - QGeoLocation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Interfaces between C++ and QML Code in Qt Positioning</h1>
+<!-- $$$positioning-cpp-qml.html-description -->
+<div class="descr" id="details">
+<h2 id="overview">Overview</h2>
+<p>Qt Positioning utilizes two methods to simplify exchange of position data between C++ and QML code.</p>
+<span id="cpp-value-integration-positioning"></span><h2 id="direct-c-value-integration-in-qtpositioning">Direct C++ Value Integration in QtPositioning</h2>
+<p>Starting with Qt 5.5, it has become much easier to integrate non-<a href="../qtcore/qobject.html" translate="no">QObject</a> based data types into QML. This is achieved by adding <a href="../qtcore/qobject.html#Q_GADGET" translate="no">Q_GADGET</a> support to <a href="../qtqml/qtqml-qmlmodule.html" translate="no">QtQml</a>. The macro converts classes into a light-weight version of a <a href="../qtcore/qobject.html" translate="no">QObject</a> without the required <a href="../qtcore/qobject.html" translate="no">QObject</a> inheritance. At the same time, it retains the reflection capabilities of <a href="../qtcore/qmetaobject.html" translate="no">QMetaObject</a>. As a result, they can be directly exposed to QML.</p>
+<p>A significant number of Position related data types were converted to <a href="../qtcore/qobject.html#Q_GADGET" translate="no">Q_GADGET</a>s. They retain their API and value type character but have become introspectable via <a href="../qtcore/qmetaobject.html" translate="no">QMetaObject</a>.</p>
+<p>The <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ANONYMOUS" translate="no">QML_ANONYMOUS</a> macro is used to expose these types to the QML environment. See the <a href="../qtqml/qqmlengine.html" translate="no">QQmlEngine</a> documentation for more details and the full list of available macros.</p>
+<p>The classes, however, are not directly extended with this macro, because we do not want Qt Positioning to depend on <a href="../qtqml/qtqml-qmlmodule.html" translate="no">QtQml</a>. So a helper class is created for each of them, and the <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_FOREIGN" translate="no">QML_FOREIGN</a> macro is used:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">struct</span> <span class="type">QGeoCoordinateForeign</span>
+ {
+     Q_GADGET
+     QML_FOREIGN(<span class="type"><a href="qgeocoordinate.html" translate="no">QGeoCoordinate</a></span>)
+     QML_ANONYMOUS
+     QML_ADDED_IN_VERSION(<span class="number">5</span><span class="operator">,</span> <span class="number">0</span>)
+ };
+</pre>
+<p>The above registration of Positioning types is automatically done once by the <a href="qml-qtpositioning-qtpositioning.html" translate="no">QtPositioning</a> QML plugin.</p>
+<h2 id="qvariant-based-integration">QVariant Based integration</h2>
+<p>This section provides information on how to integrate <a href="qgeoaddress.html" translate="no">QGeoAddress</a> and <a href="qgeolocation.html" translate="no">QGeoLocation</a>.</p>
+<h3 id="address-qgeoaddress">Address - QGeoAddress</h3>
+<p>The <a href="qml-qtpositioning-address.html#address-prop" translate="no">Address.address</a> property is used to provide an interface between C++ and QML code. First a pointer to an <a href="qml-qtpositioning-address.html" translate="no">Address</a> object must be obtained from C++, then the <a href="../qtcore/qobject.html#property" translate="no">property</a>() and <a href="../qtcore/qobject.html#setProperty" translate="no">setProperty</a>() functions must be used to get and set the <code translate="no">address</code> property.</p>
+<p>The following piece of code gets the <a href="qgeoaddress.html" translate="no">QGeoAddress</a> object from C++:</p>
+<pre class="cpp" translate="no">
+  <span class="type"><a href="qgeoaddress.html" translate="no">QGeoAddress</a></span> geoAddress <span class="operator">=</span> qmlObject<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;address&quot;</span>)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qgeoaddress.html" translate="no">QGeoAddress</a></span><span class="operator">&gt;</span>();
+</pre>
+<p>The following piece of code sets the address property of the QML object based on a <a href="qgeoaddress.html" translate="no">QGeoAddress</a> object from C++:</p>
+<pre class="cpp" translate="no">
+ qmlObject<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;address&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span><span class="operator">::</span>fromValue(geoAddress));
+</pre>
+<h3 id="location-qgeolocation">Location - QGeoLocation</h3>
+<p>The <a href="qml-qtpositioning-location.html#location-prop" translate="no">Location.location</a> property is used to provide an interface between C++ and QML code. First a pointer to a <a href="qml-qtpositioning-location.html" translate="no">Location</a> object must be obtained from C++, then the <a href="../qtcore/qobject.html#property" translate="no">property</a>() and <a href="../qtcore/qobject.html#setProperty" translate="no">setProperty</a>() functions must be used to get and set the <code translate="no">location</code> property.</p>
+<p>The following piece of code gets the <a href="qgeolocation.html" translate="no">QGeoLocation</a> object from C++:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qgeolocation.html" translate="no">QGeoLocation</a></span> geoLocation <span class="operator">=</span> qmlObject<span class="operator">-</span><span class="operator">&gt;</span>property(<span class="string">&quot;location&quot;</span>)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qgeolocation.html" translate="no">QGeoLocation</a></span><span class="operator">&gt;</span>();
+</pre>
+<p>The following piece of code sets the location property of the QML object based on a <a href="qgeolocation.html" translate="no">QGeoLocation</a> object from C++:</p>
+<pre class="cpp" translate="no">
+ qmlObject<span class="operator">-</span><span class="operator">&gt;</span>setProperty(<span class="string">&quot;location&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span><span class="operator">::</span>fromValue(geoLocation));
+</pre>
+</div>
+<!-- @@@positioning-cpp-qml.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="location-positioning-cpp.html">Positioning (C++)</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtpositioning-android.html">Android support</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- animation.qdoc -->
+  <meta name="description" content="An overview of the Animation Framework">
+  <title>The Animation Framework | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>The Animation Framework</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="timers.html" />
+  <link rel="next" href="animation.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="timers.html">Timers</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="animation.html">Animation Framework API</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-animation-architecture">The Animation architecture</a></li>
+<li class="level1"><a href="#classes-offered-by-the-framework">Classes offered by the framework</a></li>
+<li class="level1"><a href="#animating-qt-properties">Animating Qt properties</a></li>
+<li class="level1"><a href="#animations-and-the-graphics-view-framework">Animations and the Graphics View Framework</a></li>
+<li class="level1"><a href="#easing-curves">Easing curves</a></li>
+<li class="level1"><a href="#grouping-animations">Grouping animations</a></li>
+<li class="level1"><a href="#object-ownership">Object ownership</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">The Animation Framework</h1>
+<!-- $$$animation-overview.html-description -->
+<div class="descr" id="details">
+<p>The animation framework provides an easy way to animate your GUI elements. It enables you to animate a Qt property value of a widget or <a href="qobject.html" translate="no">QObject</a>. Most of the features offered by the framework are also available in <a href="../qtquick/qtquick-index.html">Qt Quick</a>, where it's possible to define animations in a declarative way.</p>
+<p>This overview explains the framework's architecture, with examples that demonstrate the common techniques used for animating <a href="qobject.html" translate="no">QObject</a> and GUI elements.</p>
+<h2 id="the-animation-architecture">The Animation architecture</h2>
+<p>The following diagram shows the most important classes provided by the framework:</p>
+<p class="centerAlign"><img src="images/animations-architecture.png" alt="" /></p><p>It includes the <a href="qabstractanimation.html" translate="no">QAbstractAnimation</a> class, which provides the necessary foundation for animations. This class defines the generic properties for all animations supported by the framework. For example, the ability to start, stop, and pause an animation. The class also receives the time change notifications.</p>
+<p>The framework further provides the <a href="qvariantanimation.html" translate="no">QVariantAnimation</a> and <a href="qanimationgroup.html" translate="no">QAnimationGroup</a> classes, which build on their base case, <a href="qabstractanimation.html" translate="no">QAbstractAnimation</a>. Next in the hierarchy is <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a>, which is derived from <a href="qvariantanimation.html" translate="no">QVariantAnimation</a>, and it lets you animate a Qt property of a widget or <a href="qobject.html" translate="no">QObject</a>. The class performs interpolation on the property value using an easing curve. With these in place, you just need a <a href="qobject.html" translate="no">QObject</a> class with a Qt property value that you can animate.</p>
+<div class="admonition note">
+<p><b>Note: </b>It is required that the target object you are animating is a <a href="qobject.html" translate="no">QObject</a> or its subclass. This is necessary as the animation framework depends on the <a href="metaobjects.html">meta-object system</a> for all the information about the object it is animating.</p>
+</div>
+<p>Complex animations can be constructed by building a tree structure of <a href="qabstractanimation.html" translate="no">QAbstractAnimation</a>s, where the tree is a <a href="qanimationgroup.html" translate="no">QAnimationGroup</a> that contains other animations. These animation groups can also contain subgroups representing different groups or animations, such as <a href="qparallelanimationgroup.html" translate="no">QParallelAnimationGroup</a> and <a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a>.</p>
+<p>Behind the scenes, all animations are controlled by a global timer, which sends <a href="qabstractanimation.html#updateCurrentTime" translate="no">updates</a> about all animations that are running.</p>
+<p>For detailed information of these individual classes' and their roles in the framework, refer to their documentation.</p>
+<h2 id="classes-offered-by-the-framework">Classes offered by the framework</h2>
+<p>These classes provide the necessary infrastructure to create both simple and complex animations.</p>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qabstractanimation.html">QAbstractAnimation</a></p></td><td class="tblDescr"><p>The base of all animations</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qanimationgroup.html">QAnimationGroup</a></p></td><td class="tblDescr"><p>Abstract base class for groups of animations</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qeasingcurve.html">QEasingCurve</a></p></td><td class="tblDescr"><p>Easing curves for controlling animation</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qparallelanimationgroup.html">QParallelAnimationGroup</a></p></td><td class="tblDescr"><p>Parallel group of animations</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qpauseanimation.html">QPauseAnimation</a></p></td><td class="tblDescr"><p>Pause for QSequentialAnimationGroup</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qpropertyanimation.html">QPropertyAnimation</a></p></td><td class="tblDescr"><p>Animates Qt properties</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qsequentialanimationgroup.html">QSequentialAnimationGroup</a></p></td><td class="tblDescr"><p>Sequential group of animations</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtimeline.html">QTimeLine</a></p></td><td class="tblDescr"><p>Timeline for controlling animations</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qvariantanimation.html">QVariantAnimation</a></p></td><td class="tblDescr"><p>Base class for animations</p></td></tr>
+</table></div>
+<h2 id="animating-qt-properties">Animating Qt properties</h2>
+<p>As the <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> class can interpolate on Qt properties, it is used often. In fact, its superclass&mdash;<a href="qvariantanimation.html" translate="no">QVariantAnimation</a>&mdash;provides an abstract implementation of <a href="qvariantanimation.html#updateCurrentValue" translate="no">updateCurrentValue</a>(), which does not change any value unless you change it on the <a href="qvariantanimation.html#valueChanged" translate="no">valueChanged signal</a>.</p>
+<p>The framework lets you animate the Qt properties of the existing classes in Qt. For example, the <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> class&mdash;can be embedded in a <a href="../qtwidgets/qgraphicsview.html" translate="no">QGraphicsView</a>&mdash;has properties for its bounds, colors, and so on. The following example demonstrates how you can animate a <a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a> widget:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QPushButton&gt;</span>
+ <span class="preprocessor">#include &lt;QPropertyAnimation&gt;</span>
+
+ <span class="keyword">class</span> MyButtonWidget : <span class="keyword">public</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>
+ {
+ <span class="keyword">public</span>:
+     MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+ };
+
+ MyButtonWidget<span class="operator">::</span>MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent) : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>button <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Animated Button&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(button<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">10000</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>start();
+ }
+
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="../qtwidgets/qapplication.html" translate="no">QApplication</a></span> a(argc<span class="operator">,</span> argv);
+     MyButtonWidget buttonAnimWidget;
+     buttonAnimWidget<span class="operator">.</span>resize(<span class="type"><a href="qsize.html" translate="no">QSize</a></span>(<span class="number">800</span><span class="operator">,</span> <span class="number">600</span>));
+     buttonAnimWidget<span class="operator">.</span>show();
+     <span class="keyword">return</span> a<span class="operator">.</span>exec();
+ }
+</pre>
+<p>The example animates the <code translate="no">pos</code> Qt property of a <a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a>, to move it from the top&ndash;left corner of the screen to the end position (250, 250), in 10 seconds (10000 milliseconds).</p>
+<p>It uses the linear interpolation method to control the speed of animation between the start and end values. Try adding another value in&ndash;between the start and end value to see how they are interpolated. This time use the <a href="qvariantanimation.html#setKeyValueAt" translate="no">QPropertyAnimation::setKeyValueAt</a>() function to add these values:</p>
+<pre class="cpp" translate="no">
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ anim<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">10000</span>);
+ anim<span class="operator">-</span><span class="operator">&gt;</span>setKeyValueAt(<span class="number">0</span><span class="operator">,</span> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+ anim<span class="operator">-</span><span class="operator">&gt;</span>setKeyValueAt(<span class="number">0.8</span><span class="operator">,</span> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">250</span><span class="operator">,</span> <span class="number">250</span>));
+ anim<span class="operator">-</span><span class="operator">&gt;</span>setKeyValueAt(<span class="number">1</span><span class="operator">,</span> <span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+</pre>
+<p>In this example, the animation moves the button to (250, 250) in 8 seconds, and moves it back to its original position in the remaining 2 seconds. The button's movement is linear-interpolated between these points.</p>
+<p>You can also animate a <a href="qobject.html" translate="no">QObject</a>'s value that is not declared as a Qt property, if the value has a setter method. In such cases, derive a new class from the class that contains the value, and add a Qt property for that value with the setter.</p>
+<div class="admonition note">
+<p><b>Note: </b>Each Qt property requires a getter also, so you should provide a getter if that is not defined.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> MyGraphicsRectItem : <span class="keyword">public</span> <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">,</span> <span class="keyword">public</span> <span class="type"><a href="../qtwidgets/qgraphicsrectitem.html" translate="no">QGraphicsRectItem</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> pos READ pos WRITE setPos)
+ };
+</pre>
+<p>In this example, the <code translate="no">MyGraphicsRectItem</code> derives from <a href="../qtwidgets/qgraphicsrectitem.html" translate="no">QGraphicsRectItem</a> and <a href="qobject.html" translate="no">QObject</a>, and defines the <code translate="no">pos</code> property. You can animate the item's <code translate="no">pos</code> even if <a href="../qtwidgets/qgraphicsrectitem.html" translate="no">QGraphicsRectItem</a> does not provide the <code translate="no">pos</code> property.</p>
+<p>For a general introduction to the Qt property system, refer to <a href="properties.html">Qt's Property System</a>.</p>
+<h2 id="animations-and-the-graphics-view-framework">Animations and the Graphics View Framework</h2>
+<p><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> can also be used to animate a <a href="../qtwidgets/qgraphicsitem.html" translate="no">QGraphicsItem</a>, which does not inherit <a href="qobject.html" translate="no">QObject</a>. In such cases, you derive a class from the graphics item that you want to animate. This derived class should also inherit form <a href="qobject.html" translate="no">QObject</a> to enable using <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> on a <a href="../qtwidgets/qgraphicsitem.html" translate="no">QGraphicsItem</a>. The following example shows how this is done:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Pixmap : <span class="keyword">public</span> <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">,</span> <span class="keyword">public</span> <span class="type"><a href="../qtwidgets/qgraphicspixmapitem.html" translate="no">QGraphicsPixmapItem</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="qpointf.html" translate="no">QPointF</a></span> pos READ pos WRITE setPos)
+     <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>You can also derive from <a href="../qtwidgets/qgraphicswidget.html" translate="no">QGraphicsWidget</a>, which already is a <a href="qobject.html" translate="no">QObject</a>.</p>
+</div>
+<p>As described in the previous section, you need to define properties that you want to animate. The derived class must inherit from <a href="qobject.html" translate="no">QObject</a> first as the meta-object system requires it.</p>
+<h2 id="easing-curves">Easing curves</h2>
+<p>A <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> performs linear interpolation between the start and end property values. In addition to adding more key values to the animation, you can also choose an easing curve to control the speed of interpolation between 0 and 1, without changing the path.</p>
+<pre class="cpp" translate="no">
+ MyButtonWidget<span class="operator">::</span>MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent) : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>button <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Animated Button&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(button<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">10000</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setEasingCurve(<span class="type"><a href="qeasingcurve.html" translate="no">QEasingCurve</a></span><span class="operator">::</span>OutBounce);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>start();
+ }
+</pre>
+<p>In this example, the animation follows a curve that makes the <code translate="no">button</code> bounce like a ball. <a href="qeasingcurve.html" translate="no">QEasingCurve</a> offers a large collection of curves to choose from the <a href="qeasingcurve.html#Type-enum" translate="no">QEasingCurve::Type</a> enum. If you want to use another curve that is not available, implement one yourself and register it with <a href="qeasingcurve.html" translate="no">QEasingCurve</a>.</p>
+<h2 id="grouping-animations">Grouping animations</h2>
+<p>An application often contains more than one animation. For example, it wants to move more than one graphics item simultaneously or move them in sequence after each other.</p>
+<p>The subclasses of <a href="qanimationgroup.html" translate="no">QAnimationGroup</a>&mdash;<a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a> and <a href="qparallelanimationgroup.html" translate="no">QParallelAnimationGroup</a>&mdash;are containers for other animations so that these animations can be animated either in sequence or parallel. The <a href="qanimationgroup.html" translate="no">QAnimationGroup</a> does not animate properties, but it gets notified of time changes periodically. This enables it to forward those time changes to the animation groups, which control when their animations are played.</p>
+<p>The two following examples demonstrate the use of both <a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a> and <a href="qparallelanimationgroup.html" translate="no">QParallelAnimationGroup</a>:</p>
+<pre class="cpp" translate="no">
+ MyButtonWidget<span class="operator">::</span>MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent) : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>bonnie <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Bonnie&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>clyde <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Clyde&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim1 <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(bonnie<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">3000</span>);
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim2 <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(clyde<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">3000</span>);
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">500</span><span class="operator">,</span> <span class="number">500</span>));
+
+     <span class="type"><a href="qparallelanimationgroup.html" translate="no">QParallelAnimationGroup</a></span> <span class="operator">*</span>parallelAnim <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qparallelanimationgroup.html" translate="no">QParallelAnimationGroup</a></span>;
+     parallelAnim<span class="operator">-</span><span class="operator">&gt;</span>addAnimation(anim1);
+     parallelAnim<span class="operator">-</span><span class="operator">&gt;</span>addAnimation(anim2);
+     parallelAnim<span class="operator">-</span><span class="operator">&gt;</span>start();
+ }
+</pre>
+<p>A parallel group plays more than one animation at the same time. Its <a href="qabstractanimation.html#start" translate="no">start</a>() function starts all animations that are part of the group.</p>
+<pre class="cpp" translate="no">
+ MyButtonWidget<span class="operator">::</span>MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent) : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>bonnie <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Bonnie&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>clyde <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Clyde&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim1 <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(bonnie<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">3000</span>);
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim1<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim2 <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(clyde<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">3000</span>);
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim2<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">200</span><span class="operator">,</span> <span class="number">250</span>));
+
+     <span class="type"><a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a></span> <span class="operator">*</span>sequenceAnim <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a></span>;
+     sequenceAnim<span class="operator">-</span><span class="operator">&gt;</span>addAnimation(anim1);
+     sequenceAnim<span class="operator">-</span><span class="operator">&gt;</span>addAnimation(anim2);
+     sequenceAnim<span class="operator">-</span><span class="operator">&gt;</span>start();
+ }
+</pre>
+<p>As the name suggests, a <a href="qsequentialanimationgroup.html" translate="no">QSequentialAnimationGroup</a> plays its animations in sequence. It starts the next animation in the list after the previous finishes.</p>
+<p>A group is an animation itself, so you can add it to another group. This way, building an animation tree, which define when the animations are played in relation to each other.</p>
+<h2 id="object-ownership">Object ownership</h2>
+<p>A <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> should always have a parent that controls its lifespan. A typical application may include several animations that are grouped, where the animation group takes ownership of those animations. An independent <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> must be explicitly assigned a parent to control its lifespan. In the following example, you can see that an independent <a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a> has the <a href="../qtwidgets/qapplication.html" translate="no">QApplication</a> instance as its parent:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QPushButton&gt;</span>
+ <span class="preprocessor">#include &lt;QPropertyAnimation&gt;</span>
+
+ <span class="keyword">class</span> MyButtonWidget : <span class="keyword">public</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>
+ {
+ <span class="keyword">public</span>:
+     MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+ };
+
+ MyButtonWidget<span class="operator">::</span>MyButtonWidget(<span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent) : <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span> <span class="operator">*</span>button <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span>(tr(<span class="string">&quot;Animated Button&quot;</span>)<span class="operator">,</span> <span class="keyword">this</span>);
+     <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span> <span class="operator">*</span>anim <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qpropertyanimation.html" translate="no">QPropertyAnimation</a></span>(button<span class="operator">,</span> <span class="string">&quot;pos&quot;</span><span class="operator">,</span> <span class="keyword">this</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setDuration(<span class="number">10000</span>);
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setStartValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>setEndValue(<span class="type"><a href="qpoint.html" translate="no">QPoint</a></span>(<span class="number">100</span><span class="operator">,</span> <span class="number">250</span>));
+     anim<span class="operator">-</span><span class="operator">&gt;</span>start();
+ }
+
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="../qtwidgets/qapplication.html" translate="no">QApplication</a></span> a(argc<span class="operator">,</span> argv);
+     MyButtonWidget buttonAnimWidget;
+     buttonAnimWidget<span class="operator">.</span>resize(<span class="type"><a href="qsize.html" translate="no">QSize</a></span>(<span class="number">800</span><span class="operator">,</span> <span class="number">600</span>));
+     buttonAnimWidget<span class="operator">.</span>show();
+     <span class="keyword">return</span> a<span class="operator">.</span>exec();
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>You can also control the animation's lifespan by choosing a <a href="qabstractanimation.html#DeletionPolicy-enum" translate="no">delete policy</a> while starting it.</p>
+</div>
+</div>
+<!-- @@@animation-overview.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="timers.html">Timers</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="animation.html">Animation Framework API</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

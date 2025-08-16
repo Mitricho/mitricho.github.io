@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-aa.qdoc -->
+  <title>Anti-Aliasing Best Practices | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li>Anti-Aliasing Best Practices</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="quick3d-asset-conditioning-ibl.html" />
+  <link rel="next" href="quick3d-asset-intro.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="quick3d-asset-conditioning-ibl.html">Using Image-Based Lighting</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="quick3d-asset-intro.html">Qt Quick 3D Introduction with glTF Assets</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#aliasing-in-general">Aliasing in General</a></li>
+<li class="level2"><a href="#geometry-aliasing">Geometry Aliasing</a></li>
+<li class="level2"><a href="#texture-aliasing">Texture Aliasing</a></li>
+<li class="level2"><a href="#reflection-aliasing">Reflection Aliasing</a></li>
+<li class="level1"><a href="#anti-aliasing-techniques-in-qt-quick-3d">Anti-Aliasing Techniques in Qt Quick 3D</a></li>
+<li class="level2"><a href="#multisample-anti-aliasing">Multisample Anti-Aliasing</a></li>
+<li class="level2"><a href="#temporal-anti-aliasing">Temporal Anti-Aliasing</a></li>
+<li class="level2"><a href="#progressive-anti-aliasing">Progressive Anti-Aliasing</a></li>
+<li class="level2"><a href="#supersample-anti-aliasing">Supersample Anti-Aliasing</a></li>
+<li class="level2"><a href="#mipmaps">Mipmaps</a></li>
+<li class="level2"><a href="#specular-anti-aliasing">Specular Anti-Aliasing</a></li>
+<li class="level2"><a href="#fast-approximate-anti-aliasing">Fast Approximate Anti-Aliasing</a></li>
+<li class="level1"><a href="#artist-employed-cheats">Artist-Employed Cheats</a></li>
+<li class="level2"><a href="#silhouette-opacity-maps">Silhouette Opacity Maps</a></li>
+<li class="level2"><a href="#modifying-materials-or-geometry">Modifying Materials or Geometry</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Anti-Aliasing Best Practices</h1>
+<!-- $$$quick3d-asset-conditioning-anti-aliasing-description -->
+<div class="descr" id="details">
+<p>Qt Quick 3D has multiple ways to combat aliasing (the jagged edges) while rendering 3D models. Each technique offers its own benefits and limitations. Multiple techniques can be combined, but with additional performance cost.</p>
+<h2 id="aliasing-in-general">Aliasing in General</h2>
+<p>Aliasing occurs when there is more <i>information</i> present in the original than we can represent in the pixels on screen. Anti-aliasing techniques fall into three categories:</p>
+<ul>
+<li>Techniques that find additional information for a single pixel and represent them all at the same time.</li>
+<li>Image effects that attempt to find where things look bad and sweep the problems under the carpet.</li>
+<li>Techniques employed by artists that attempt to workaround the limitations.</li>
+</ul>
+<p>Although anti-aliasing is a useful tool in rendering graphics, it could affect performance of your application if not used wisely. The following sections describe a few different anti-aliasing techniques to choose from. Understanding which technique best targets your problems will help balance visual quality with sufficient rendering speed.</p>
+<h3 id="geometry-aliasing">Geometry Aliasing</h3>
+<p>By default, all geometry is rendered one on-screen pixel at a time. As you can see on the left in the image below, this leaves harsh edges that may be easily noticeable in high-contrast cases, most noticeably here with black-and-white.</p>
+<p class="centerAlign"><img src="images/AA-GeometryAliasing.png" alt="" /></p><p class="figCaption">Effective techniques for reducing aliasing for geometry</p>
+<p>The most correct fix for this is to use <a href="quick3d-asset-conditioning-anti-aliasing.html#multisample-anti-aliasing">Multisample Anti-Aliasing</a>, as it gathers more geometric detail only as needed. Using <a href="quick3d-asset-conditioning-anti-aliasing.html#temporal-anti-aliasing">Temporal Anti-Aliasing</a> or <a href="quick3d-asset-conditioning-anti-aliasing.html#progressive-anti-aliasing">Progressive Anti-Aliasing</a> can also mitigate the issue in a correct manner.</p>
+<p>Finally, in certain cases you can use a <a href="quick3d-asset-conditioning-anti-aliasing.html#silhouette-opacity-maps">silhouette opacity map</a> to smooth the edges of the geometry.</p>
+<span id="texture-aliasing"></span><h3 id="texture-aliasing">Texture Aliasing</h3>
+<p>When a texture is sub-sampled, fewer pixels than in the original are displayed, resulting in undesirable artifacts based on which pixels are chosen. This effect is worsened when the model is moving, as different pixels are chosen at different times. In the image below, notice how the line between E3 and F3 is missing, strongly present between G3 and H3, then gone for the next 5 columns, and so on.</p>
+<p class="centerAlign"><img src="images/AA-TextureAliasing.png" alt="" /></p><p class="figCaption">Effective techniques for reducing aliasing for textures</p>
+<p>The simplest (and arguably the best) fix for this problem is to use <a href="quick3d-asset-conditioning-anti-aliasing.html#mipmaps">mipmapping in the image texture</a> itself. Alternative fixes include using either <a href="quick3d-asset-conditioning-anti-aliasing.html#temporal-anti-aliasing">Temporal AA</a> or <a href="quick3d-asset-conditioning-anti-aliasing.html#progressive-anti-aliasing">Progressive AA</a> to gather more information from the texture.</p>
+<p>Using <a href="quick3d-asset-conditioning-anti-aliasing.html#multisample-anti-aliasing">Multisample Anti-Aliasing</a> will not fix this problem.</p>
+<span id="reflection-aliasing"></span><h3 id="reflection-aliasing">Reflection Aliasing</h3>
+<p>Similar to <a href="quick3d-asset-conditioning-anti-aliasing.html#texture-aliasing">Texture Aliasing</a>, a material reflecting the environment will sub-sample the image. In some cases, as seen on the left in the image below, it becomes obvious when fine details are being skipped.</p>
+<p class="centerAlign"><img src="images/AA-ReflectionAliasing.png" alt="" /></p><p class="figCaption">Effective techniques for reducing aliasing for reflections</p>
+<p>The most correct solution in this case is using <a href="quick3d-asset-conditioning-anti-aliasing.html#temporal-anti-aliasing">Temporal AA</a> or <a href="quick3d-asset-conditioning-anti-aliasing.html#progressive-anti-aliasing">Progressive AA</a> to find the extra information.</p>
+<p>A simple alternative solution that may be acceptable is to make the material less glossy, more rough. In this case lower-resolution mipmaps of the environment are automatically used, blending the sharp details together.</p>
+<h2 id="anti-aliasing-techniques-in-qt-quick-3d">Anti-Aliasing Techniques in Qt Quick 3D</h2>
+<div class="admonition note">
+<p><b>Note: </b>Check out the <a href="qtquick3d-antialiasing-example.html">Antialiasing Example</a> and the <a href="qtquick3d-sceneeffects-example.html">Scene Effects Example</a> to exercise some of these features live. Keep in mind however that modern windowing systems are often configured to perform High DPI scaling with a high resolution screen connected. This means that the content of any window shown on screen is rendered at a higher resolution and is then scaled down by the system compositor or some other component of the platform. That is in effect a form of <a href="quick3d-asset-conditioning-anti-aliasing.html#supersample-anti-aliasing">Supersample Anti-aliasing</a>. Enabling anti-aliasing techniques in Qt Quick 3D may then show smaller, or sometimes hard-to-see improvements, because aliasing is already eliminated to a degree by the windowing system's automatic scaling. However, when deploying the same application on another system, it could well be that that particular system uses a platform or a screen where there is no such scaling, and so aliasing and jagged edges are more visible out of the box. Developers are advised to consider the potential presence, or lack of high DPI scaling in their target environments, and experiment with and tune antialiasing settings with this in mind.</p>
+</div>
+<p>Below is an example rendering of the <a href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza">Sponza</a> scene with some anti-aliasing methods enabled. The screenshots were taken without any system scaling applied to the window (no high DPI scaling), so the effects of the various methods are more pronounced.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >AA used</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td >No AA</td><td ><p class="centerAlign"><img src="images/aa_disabled.jpg" alt="" /></p></td></tr>
+<tr valign="top" class="even"><td >Supersample AA, high (1.5x)</td><td ><p class="centerAlign"><img src="images/aa_ssaa_high.jpg" alt="" /></p></td></tr>
+<tr valign="top" class="odd"><td >Multisample AA, high (4x)</td><td ><p class="centerAlign"><img src="images/aa_msaa_high.jpg" alt="" /></p></td></tr>
+<tr valign="top" class="even"><td >FXAA</td><td ><p class="centerAlign"><img src="images/aa_fxaa.jpg" alt="" /></p></td></tr>
+<tr valign="top" class="odd"><td >Temporal AA, default strength (0.3)</td><td ><p class="centerAlign"><img src="images/aa_temporal_default.jpg" alt="" /></p></td></tr>
+</table></div>
+<span id="multisample-aa"></span><h3 id="multisample-anti-aliasing">Multisample Anti-Aliasing</h3>
+<p>Multisample AA (MSAA) operates either on the color buffer of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> item (this is the default), or, if a <a href="qml-qtquick3d-view3d.html#renderMode-prop" translate="no">renderMode</a> other than <code translate="no">Offscreen</code> is used, on the entire Qt Quick window (<a href="../qtquick/qquickwindow.html" translate="no">QQuickWindow</a>, <a href="../qtquick/qquickview.html" translate="no">QQuickView</a>, <a href="../qtquick/qml-qtquick-window.html" translate="no">Window</a>, <a href="../qtquickcontrols/qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a>).</p>
+<p>The edges of geometry are super-sampled, resulting in smoother silhouettes. This technique has no effect on the materials inside geometry, however.</p>
+<ul>
+<li><b>Pros</b>: Good results on geometry silhouettes, where aliasing is often most noticeable. Works with fast animation without an issue. Many recent GPUs support 2x or 4x MSAA without any performance issue.</li>
+<li><b>Cons</b>: Can be expensive to use, especially on older mobile and embedded hardware. Does not help with texture or reflection issues.</li>
+</ul>
+<p>When the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> is using the default <a href="qml-qtquick3d-view3d.html#renderMode-prop" translate="no">renderMode</a> of <code translate="no">Offscreen</code>, the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> itself is in full control of multisample antialiasing. Applications can configure this via the <a href="qml-qtquick3d-sceneenvironment.html#antialiasingMode-prop" translate="no">antialiasingMode</a> and <a href="qml-qtquick3d-sceneenvironment.html#antialiasingQuality-prop" translate="no">antialiasingQuality</a> properties of the environment (<a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> or <a href="qml-qtquick3d-helpers-extendedsceneenvironment.html" translate="no">ExtendedSceneEnvironment</a>) associated with the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</p>
+<p>The following example requests the commonly used 4x MSAA, because antialiasingQuality defaults to <code translate="no">SceneEnvironment.High</code>.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">MSAA</span>
+     }
+ }
+</pre>
+<p>MSAA is not implemented by Qt itself, but is rather performed by the underlying 3D API. Hence performance and quality may vary between different hardware and their 3D API implementations.</p>
+<span id="temporal-aa"></span><h3 id="temporal-anti-aliasing">Temporal Anti-Aliasing</h3>
+<p>Temporal AA operates on the color buffer of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. The camera is jiggled <i>very slightly</i> between frames, and the result of each new frame is blended with the previous frame.</p>
+<ul>
+<li><b>Pros</b>: Due to the jiggling camera it finds real details that were otherwise lost. Low impact on performance.</li>
+<li><b>Cons</b>: Fast-moving objects cause one-frame ghosting.</li>
+</ul>
+<p>Temporal AA has no effect when combined with Multisample AA. It can however be combined with Progressive AA.</p>
+<p>To control temporal anti-aliasing, use the environment's <a href="qml-qtquick3d-sceneenvironment.html#temporalAAEnabled-prop" translate="no">temporalAAEnabled</a> and <a href="qml-qtquick3d-sceneenvironment.html#temporalAAStrength-prop" translate="no">temporalAAStrength</a> properties.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">temporalAAEnabled</span>: <span class="number">true</span>
+     }
+ }
+</pre>
+<span id="progressive-aa"></span><h3 id="progressive-anti-aliasing">Progressive Anti-Aliasing</h3>
+<p>Progressive AA operates on the color buffer of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. When all the content in the scene rendered by the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> has stopped moving, the camera is jiggled <i>very slightly</i> between frames, and the result of each new frame is blended with the previous frames. The more frames you accumulate, better looking the result.</p>
+<ul>
+<li><b>Pros</b>: Provides detailed static images with no performance cost.</li>
+<li><b>Cons</b>: Does not take effect if any visual changes are occurring. 8x PAA takes one eighth of a second to finish rendering (at 60fps), which may be noticeable.</li>
+</ul>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">ProgressiveAA</span>
+     }
+ }
+</pre>
+<p>Use <a href="qml-qtquick3d-sceneenvironment.html#antialiasingQuality-prop" translate="no">antialiasingQuality</a> to control how many frames are blended together (2, 4, or 8).</p>
+<span id="supersample-aa"></span><h3 id="supersample-anti-aliasing">Supersample Anti-Aliasing</h3>
+<p>Supersample AA operates on the color buffer of a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. This involves creating a color buffer (texture) larger then its normal size, and then downsampling it. This means an increased resource usage and at large sizes the scaling operation can be costly.</p>
+<ul>
+<li><b>Pros</b>: Provides full-scene anti-aliasing with no limitations on animation.</li>
+<li><b>Cons</b>: Can severely degrade performance when your scene is already limited by the fill-rate of the graphics system, especially an older mobile and embedded hardware.</li>
+</ul>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">SSAA</span>
+     }
+ }
+</pre>
+<p>Use <a href="qml-qtquick3d-sceneenvironment.html#antialiasingQuality-prop" translate="no">antialiasingQuality</a> to control the size multiplier (1.2, 1.5 or 2.0).</p>
+<span id="mipmaps"></span><h3 id="mipmaps">Mipmaps</h3>
+<p>Mipmapping stores the texture along with its pre-calculated lower resolution versions. Whenever the texture is being displayed at a smaller size, the rendering system automatically uses these low-resolution images (which combine many details into fewer pixels).</p>
+<ul>
+<li><b>Pros</b>: Low performance impact. Greatly improves image quality for textures.</li>
+<li><b>Cons</b>: Requires potentially costly generation of the mipmap chain, or, with some image container formats, pre-generating the mipmap images in the image asset itself. Uses 33% more graphics memory than the same image without mipmaps.</li>
+</ul>
+<p>To have Qt generate mipmaps for a <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> and enable using the mipmap chain when performing texture sampling in the graphics shaders, set the <a href="qml-qtquick3d-texture.html#mipFilter-prop" translate="no">mipFilter</a> and <a href="qml-qtquick3d-texture.html#generateMipmaps-prop" translate="no">generateMipmaps</a> properties.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+     <span class="name">source</span>: <span class="string">&quot;image.png&quot;</span>
+     <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+     <span class="name">generateMipmaps</span>: <span class="number">true</span>
+ }
+</pre>
+<span id="specular-aa"></span><h3 id="specular-anti-aliasing">Specular Anti-Aliasing</h3>
+<p>Artifacts from the specular lighting contribution may be reduced by enabling Specular Anti-aliasing. These artifacts typically show up as bright dots, perhaps with a flickering appearance.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Specular AA disabled</th><th >Specular AA enabled</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/specular_aa_off.jpg" alt="" /></p></td><td ><p class="centerAlign"><img src="images/specular_aa_on.jpg" alt="" /></p></td></tr>
+</table></div>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+         <span class="name">specularAAEnabled</span>: <span class="number">true</span>
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Materials with a very smooth appearance may change their appearance as if they had a <a href="qml-qtquick3d-principledmaterial.html#roughness-prop" translate="no">more rough</a> surface when enabling specular AA. This is a result of the underlying lighting calculations.</p>
+</div>
+<span id="fx-aa"></span><h3 id="fast-approximate-anti-aliasing">Fast Approximate Anti-Aliasing</h3>
+<p><a href="qml-qtquick3d-helpers-extendedsceneenvironment.html" translate="no">ExtendedSceneEnvironment</a> offers another method of anti-aliasing in form of a post-processing effect. To enable FXAA, set <a href="qml-qtquick3d-helpers-extendedsceneenvironment.html#fxaaEnabled-prop" translate="no">fxaaEnabled</a> to true.</p>
+<pre class="qml" translate="no">
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">environment</span>: <span class="name">ExtendedSceneEnvironment</span> {
+         <span class="name">fxaaEnabled</span>: <span class="number">true</span>
+     }
+ }
+</pre>
+<h2 id="artist-employed-cheats">Artist-Employed Cheats</h2>
+<span id="silhouette-opacity-maps"></span><h3 id="silhouette-opacity-maps">Silhouette Opacity Maps</h3>
+<p>When your model has a consistent silhouette, you can apply an opacity map that makes the outer edge of the geometry transparent. Using a gradient for the opacity will let the edge of the object smoothly disappear. However, even if your opacity map transitions directly from fully-opaque to fully-transparent over the space of one pixel, the result will still provide anti-aliased edges as seen in the example above. This is because image maps, including opacity maps, use bilinear interpolation.</p>
+<ul>
+<li><b>Pros</b>: Can show softer transitions than normal AA. Can be applied per model instead of per-layer.</li>
+<li><b>Cons</b>: Cannot be used if the silhouette of the object will ever change. Multiple overlapping models that employ transparency consume fill rate performance, which is often at a premium.</li>
+</ul>
+<span id="modifying-materials"></span><h3 id="modifying-materials-or-geometry">Modifying Materials or Geometry</h3>
+<p>As demonstrated in the image for <a href="quick3d-asset-conditioning-anti-aliasing.html#reflection-aliasing">Reflection Aliasing</a> above, sometimes the simplest fix for problems is to change the artwork. If you are getting distracting specular glints on the corner of your model, ask yourself: <i>Can I make the material softer? Can I modify the geometry to smooth or change the reflection angle? Can I edit the environment map to reduce sharp transitions?</i></p>
+</div>
+<!-- @@@quick3d-asset-conditioning-anti-aliasing -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="quick3d-asset-conditioning-ibl.html">Using Image-Based Lighting</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="quick3d-asset-intro.html">Qt Quick 3D Introduction with glTF Assets</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

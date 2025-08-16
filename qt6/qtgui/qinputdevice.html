@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qinputdevice.cpp -->
+  <meta name="description" content="The QInputDevice class describes a device from which a QInputEvent originates.">
+  <title>QInputDevice Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QInputDevice</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QInputDevice Class</h1>
+<!-- $$$QInputDevice-brief -->
+<p>The QInputDevice class describes a device from which a <a href="qinputevent.html" translate="no">QInputEvent</a> originates. <a href="#details">More...</a></p>
+<!-- @@@QInputDevice -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QInputDevice&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qpointingdevice.html" translate="no">QPointingDevice</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qinputdevice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#Capability-enum" translate="no">Capabilities</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#Capability-enum" translate="no">Capability</a></b> { None, Position, Area, Pressure, Velocity, &hellip;, All }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#DeviceType-enum" translate="no">DeviceType</a></b> { Unknown, Mouse, TouchScreen, TouchPad, Stylus, &hellip;, AllDevices }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#DeviceType-enum" translate="no">DeviceTypes</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#QInputDevice" translate="no">QInputDevice</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#QInputDevice-1" translate="no">QInputDevice</a></b>(const QString &amp;<i>name</i>, qint64 <i>id</i>, QInputDevice::DeviceType <i>type</i>, const QString &amp;<i>seatName</i> = QString(), QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRect </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#availableVirtualGeometry" translate="no">availableVirtualGeometry</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QInputDevice::Capabilities </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#capabilities" translate="no">capabilities</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#hasCapability" translate="no">hasCapability</a></b>(QInputDevice::Capability <i>capability</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#name" translate="no">name</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#seatName" translate="no">seatName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#systemId" translate="no">systemId</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QInputDevice::DeviceType </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#type" translate="no">type</a></b>() const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#availableVirtualGeometry-prop" translate="no">availableVirtualGeometryChanged</a></b>(QRect <i>area</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#capabilities-prop" translate="no">capabilitiesChanged</a></b>(QInputDevice::Capabilities <i>capabilities</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;const QInputDevice *&gt; </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#devices" translate="no">devices</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const QInputDevice *</td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#primaryKeyboard" translate="no">primaryKeyboard</a></b>(const QString &amp;<i>seatName</i> = QString())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.3)</code> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qinputdevice.html#seatNames" translate="no">seatNames</a></b>()</td></tr>
+</table></div>
+<!-- $$$QInputDevice-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Each <a href="qinputevent.html" translate="no">QInputEvent</a> contains a QInputDevice pointer to allow accessing device-specific properties like type, capabilities and seat. It is the responsibility of the platform or generic plug-ins to discover, create and register an instance of this class corresponding to each available input device, via QWindowSystemInterface::registerInputDevice(), before generating any input event referring to that device.</p>
+<p>Applications do not need to instantiate this class, but can read the instances pointed to by <a href="qinputevent.html#device" translate="no">QInputEvent::device</a>() and <a href="qinputdevice.html#devices" translate="no">QInputDevice::devices</a>().</p>
+</div>
+<!-- @@@QInputDevice -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Capability$$$None$$$Position$$$Area$$$Pressure$$$Velocity$$$NormalizedPosition$$$MouseEmulation$$$PixelScroll$$$Scroll$$$Hover$$$Rotation$$$XTilt$$$YTilt$$$TangentialPressure$$$ZPosition$$$All -->
+<h3 class="flags" id="Capability-enum">enum class QInputDevice::<span class="name">Capability</span><br/>flags QInputDevice::<span class="name">Capabilities</span></h3>
+<p>Indicates what kind of information the input device or its driver can provide.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::None</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">No information about input device capabilities available.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Position</code></td><td class="topAlign tblval"><code translate="no">0x0001</code></td><td class="topAlign">Indicates that position information is available, meaning that the position() family of functions in the touch points return valid points.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Area</code></td><td class="topAlign tblval"><code translate="no">0x0002</code></td><td class="topAlign">Indicates that touch area information is available, meaning that <a href="qeventpoint.html#ellipseDiameters-prop" translate="no">QEventPoint::ellipseDiameters</a>() in the touch points return valid values.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Pressure</code></td><td class="topAlign tblval"><code translate="no">0x0004</code></td><td class="topAlign">Indicates that pressure information is available, meaning that <a href="qeventpoint.html#pressure-prop" translate="no">QEventPoint::pressure</a>() returns a valid value.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Velocity</code></td><td class="topAlign tblval"><code translate="no">0x0008</code></td><td class="topAlign">Indicates that velocity information is available, meaning that <a href="qeventpoint.html#velocity-prop" translate="no">QEventPoint::velocity</a>() returns a valid vector.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::NormalizedPosition</code></td><td class="topAlign tblval"><code translate="no">0x0020</code></td><td class="topAlign">Indicates that the normalized position is available, meaning that <a href="qeventpoint.html#globalPosition-prop" translate="no">QEventPoint::globalPosition</a>() returns a valid value.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::MouseEmulation</code></td><td class="topAlign tblval"><code translate="no">0x0040</code></td><td class="topAlign">Indicates that the device synthesizes mouse events.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Scroll</code></td><td class="topAlign tblval"><code translate="no">0x0100</code></td><td class="topAlign">Indicates that the device has a scroll capability.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::PixelScroll (since Qt 6.2)</code></td><td class="topAlign tblval"><code translate="no">0x0080</code></td><td class="topAlign">Indicates that the device (usually a <a href="qinputdevice.html#DeviceType-enum" translate="no">touchpad</a>) scrolls with <a href="qwheelevent.html#pixelDelta" translate="no">pixel precision</a>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Hover</code></td><td class="topAlign tblval"><code translate="no">0x0200</code></td><td class="topAlign">Indicates that the device has a hover capability.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::Rotation</code></td><td class="topAlign tblval"><code translate="no">0x0400</code></td><td class="topAlign">Indicates that <a href="qeventpoint.html#rotation-prop" translate="no">rotation</a> information is available.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::XTilt</code></td><td class="topAlign tblval"><code translate="no">0x0800</code></td><td class="topAlign">Indicates that <a href="qtabletevent.html#xTilt" translate="no">tilt</a> information is available for the X-axis.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::YTilt</code></td><td class="topAlign tblval"><code translate="no">0x1000</code></td><td class="topAlign">Indicates that <a href="qtabletevent.html#yTilt" translate="no">tilt</a> information is available for the Y-axis.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::TangentialPressure</code></td><td class="topAlign tblval"><code translate="no">0x2000</code></td><td class="topAlign">Indicates that <a href="qtabletevent.html#tangentialPressure" translate="no">tangential pressure</a> information is available.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::ZPosition</code></td><td class="topAlign tblval"><code translate="no">0x4000</code></td><td class="topAlign">Indicates that position information for the <a href="qtabletevent.html#z" translate="no">Z-axis</a> is available.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::Capability::All</code></td><td class="topAlign tblval"><code translate="no">0x7FFFFFFF</code></td><td class="topAlign">&nbsp;</td></tr>
+</table></div>
+<p>The Capabilities type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;Capability&gt;. It stores an OR combination of Capability values.</p>
+<!-- @@@Capability -->
+<!-- $$$DeviceType$$$Unknown$$$Mouse$$$TouchScreen$$$TouchPad$$$Puck$$$Stylus$$$Airbrush$$$Keyboard$$$AllDevices -->
+<h3 class="flags" id="DeviceType-enum">enum class QInputDevice::<span class="name">DeviceType</span><br/>flags QInputDevice::<span class="name">DeviceTypes</span></h3>
+<p>This enum represents the type of device that generated a <a href="qpointerevent.html" translate="no">QPointerEvent</a>.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Unknown</code></td><td class="topAlign tblval"><code translate="no">0x0000</code></td><td class="topAlign">The device cannot be identified.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Mouse</code></td><td class="topAlign tblval"><code translate="no">0x0001</code></td><td class="topAlign">A mouse.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::TouchScreen</code></td><td class="topAlign tblval"><code translate="no">0x0002</code></td><td class="topAlign">In this type of device, the touch surface and display are integrated. This means the surface and display typically have the same size, such that there is a direct relationship between the touch points' physical positions and the coordinate reported by <a href="qeventpoint.html" translate="no">QEventPoint</a>. As a result, Qt allows the user to interact directly with multiple QWidgets, QGraphicsItems, or Qt Quick Items at the same time.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::TouchPad</code></td><td class="topAlign tblval"><code translate="no">0x0004</code></td><td class="topAlign">In this type of device, the touch surface is separate from the display. There is not a direct relationship between the physical touch location and the on-screen coordinates. Instead, they are calculated relative to the current mouse position, and the user must use the touch-pad to move this reference point. Unlike touch-screens, Qt allows users to only interact with a single <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> or <a href="../qtwidgets/qgraphicsitem.html" translate="no">QGraphicsItem</a> at a time.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Stylus</code></td><td class="topAlign tblval"><code translate="no">0x0010</code></td><td class="topAlign">A pen-like device used on a graphics tablet such as a Wacom tablet, or on a touchscreen that provides a separate stylus sensing capability.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Airbrush</code></td><td class="topAlign tblval"><code translate="no">0x0020</code></td><td class="topAlign">A stylus with a thumbwheel to adjust <a href="qtabletevent.html#tangentialPressure" translate="no">tangentialPressure</a>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Puck</code></td><td class="topAlign tblval"><code translate="no">0x0008</code></td><td class="topAlign">A device that is similar to a flat mouse with a transparent circle with cross-hairs.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::Keyboard</code></td><td class="topAlign tblval"><code translate="no">0x1000</code></td><td class="topAlign">A keyboard.</td></tr>
+<tr><td class="topAlign"><code translate="no">QInputDevice::DeviceType::AllDevices</code></td><td class="topAlign tblval"><code translate="no">0x7FFFFFFF</code></td><td class="topAlign">Any of the above (used as a default filter value).</td></tr>
+</table></div>
+<p>The DeviceTypes type is a typedef for <a href="../qtcore/qflags.html">QFlags</a>&lt;DeviceType&gt;. It stores an OR combination of DeviceType values.</p>
+<!-- @@@DeviceType -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QInputDevice[overload1]$$$QInputDeviceQObject* -->
+<h3 class="fn" translate="no" id="QInputDevice">QInputDevice::<span class="name">QInputDevice</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Creates a new invalid input device instance as a child of <i translate="no">parent</i>.</p>
+<!-- @@@QInputDevice -->
+<!-- $$$QInputDevice$$$QInputDeviceconstQString&qint64QInputDevice::DeviceTypeconstQString&QObject* -->
+<h3 class="fn" translate="no" id="QInputDevice-1">QInputDevice::<span class="name">QInputDevice</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> <i>id</i>, <span class="type"><a href="qinputdevice.html#DeviceType-enum" translate="no">QInputDevice::DeviceType</a></span> <i>type</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>seatName</i> = QString(), <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Creates a new input device instance. The given <i translate="no">name</i> is normally a manufacturer-assigned model name if available, or something else identifiable; <i translate="no">id</i> is a platform-specific number that will be unique per device (for example the xinput ID on X11); <i translate="no">type</i> identifies what kind of device. On window systems that are capable of handling input from multiple users or sets of input devices at the same time (such as Wayland or X11), <i translate="no">seatName</i> identifies the name of the set of devices that will be used together. If the device is a child or slave device (for example one of several mice that can take turns moving the &quot;core pointer&quot;), the master device should be given as the <i translate="no">parent</i>.</p>
+<p>The platform plugin creates, registers and continues to own each device instance; usually <i translate="no">parent</i> should be given for memory management purposes even if there is no master for a particular device.</p>
+<p>By default, <a href="qinputdevice.html#capabilities" translate="no">capabilities</a>() are <code translate="no">None</code>.</p>
+<!-- @@@QInputDevice -->
+<!-- $$$availableVirtualGeometry -->
+<h3 class="fn" translate="no" id="availableVirtualGeometry"><span class="type"><a href="../qtcore/qrect.html" translate="no">QRect</a></span> QInputDevice::<span class="name">availableVirtualGeometry</span>() const</h3>
+<p>Returns the region within the <a href="qscreen.html#availableVirtualGeometry-prop" translate="no">virtual desktop</a> that this device can access.</p>
+<p>For example a <a href="qinputdevice.html#DeviceType-enum" translate="no">TouchScreen</a> input device is fixed in place upon a single physical screen, and usually calibrated so that this area is the same as <a href="qscreen.html#geometry-prop" translate="no">QScreen::geometry</a>(); whereas a <a href="qinputdevice.html#DeviceType-enum" translate="no">Mouse</a> can probably access all screens on the virtual desktop. A Wacom graphics tablet may be configured in a way that it's mapped to all screens, or only to the screen where the user prefers to create drawings, or to the window in which drawing occurs. A <a href="qinputdevice.html#DeviceType-enum" translate="no">Stylus</a> device that is integrated with a touchscreen may be physically limited to that screen.</p>
+<p>If the returned rectangle is <a href="../qtcore/qrect.html#isNull" translate="no">null</a>, it means this device can access the entire virtual desktop.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property availableVirtualGeometry. </p>
+</div><!-- @@@availableVirtualGeometry -->
+<!-- $$$capabilities -->
+<h3 class="fn" translate="no" id="capabilities"><span class="type"><a href="qinputdevice.html#Capability-enum" translate="no">QInputDevice::Capabilities</a></span> QInputDevice::<span class="name">capabilities</span>() const</h3>
+<p>Returns the device capabilities.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property capabilities. </p>
+</div><!-- @@@capabilities -->
+<!-- $$$devices[overload1]$$$devices -->
+<h3 class="fn" translate="no" id="devices"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;const <span class="type"><a href="qinputdevice.html#QInputDevice" translate="no">QInputDevice</a></span> *&gt; QInputDevice::<span class="name">devices</span>()</h3>
+<p>Returns a list of all registered input devices (keyboards and pointing devices).</p>
+<div class="admonition note">
+<p><b>Note: </b>The list of devices is not always complete on all platforms. So far, the most-complete information is available on the X11 platform, at startup and in response to hot-plugging. Most other platforms are only able to provide generic devices of various types, only after receiving events from them; and most platforms do not tell Qt when a device is plugged in, or when it is unplugged at runtime.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>The returned list cannot be used to add new devices. To add a simulated touch screen for an autotest, QTest::createTouchDevice() can be used. Platform plugins should call QWindowSystemInterface::registerInputDevice() to add devices as they are discovered.</p>
+</div>
+<!-- @@@devices -->
+<!-- $$$hasCapability[overload1]$$$hasCapabilityQInputDevice::Capability -->
+<h3 class="fn" translate="no" id="hasCapability"><span class="type">bool</span> QInputDevice::<span class="name">hasCapability</span>(<span class="type"><a href="qinputdevice.html#Capability-enum" translate="no">QInputDevice::Capability</a></span> <i>capability</i>) const</h3>
+<p>Returns whether the device capabilities include the given <i translate="no">capability</i>.</p>
+<!-- @@@hasCapability -->
+<!-- $$$name -->
+<h3 class="fn" translate="no" id="name"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QInputDevice::<span class="name">name</span>() const</h3>
+<p>Returns the device name.</p>
+<p>This string may be empty. It is however useful on systems that have multiple input devices: it can be used to differentiate from which device a <a href="qpointerevent.html" translate="no">QPointerEvent</a> originates.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property name. </p>
+</div><!-- @@@name -->
+<!-- $$$primaryKeyboard[overload1]$$$primaryKeyboardconstQString& -->
+<h3 class="fn" translate="no" id="primaryKeyboard"><code class="details extra" translate="no">[static]</code> const <span class="type"><a href="qinputdevice.html#QInputDevice" translate="no">QInputDevice</a></span> *QInputDevice::<span class="name">primaryKeyboard</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>seatName</i> = QString())</h3>
+<p>Returns the core or master keyboard on the given seat <i translate="no">seatName</i>.</p>
+<!-- @@@primaryKeyboard -->
+<!-- $$$seatName -->
+<h3 class="fn" translate="no" id="seatName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QInputDevice::<span class="name">seatName</span>() const</h3>
+<p>Returns the seat with which the device is associated, if known; otherwise empty.</p>
+<p>Devices that are intended to be used together by one user may be configured to have the same seat name. That is only possible on Wayland and X11 platforms so far.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property seatName. </p>
+</div><!-- @@@seatName -->
+<!-- $$$seatNames[overload1]$$$seatNames -->
+<h3 class="fn" translate="no" id="seatNames"><code class="details extra" translate="no">[static, since 6.3]</code> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QInputDevice::<span class="name">seatNames</span>()</h3>
+<p>Returns a list of seat names for all registered input devices (keyboards and pointing devices).</p>
+<p>This function was introduced in Qt 6.3.</p>
+<!-- @@@seatNames -->
+<!-- $$$systemId -->
+<h3 class="fn" translate="no" id="systemId"><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> QInputDevice::<span class="name">systemId</span>() const</h3>
+<p>Returns the platform specific system ID (for example xinput ID on the X11 platform).</p>
+<p>All platforms are expected to provide a unique system ID for each device.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property systemId. </p>
+</div><!-- @@@systemId -->
+<!-- $$$type -->
+<h3 class="fn" translate="no" id="type"><span class="type"><a href="qinputdevice.html#DeviceType-enum" translate="no">QInputDevice::DeviceType</a></span> QInputDevice::<span class="name">type</span>() const</h3>
+<p>Returns the device type.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property type. </p>
+</div><!-- @@@type -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

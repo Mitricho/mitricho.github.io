@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquicktranslate.cpp -->
+  <meta name="description" content="Provides a way to shear an Item.">
+  <title>Shear QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Shear</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Shear QML Type</h1>
+<!-- $$$Shear-brief -->
+<p>Provides a way to shear an Item. <a href="#details">More...</a></p>
+<!-- @@@Shear -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.9</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-shear-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#origin-prop" translate="no">origin</a></b><ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#origin.x-prop" translate="no">origin.x</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#origin.y-prop" translate="no">origin.y</a></b> : real</li>
+</ul>
+</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#xAngle-prop" translate="no">xAngle</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#xFactor-prop" translate="no">xFactor</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#yAngle-prop" translate="no">yAngle</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-shear.html#yFactor-prop" translate="no">yFactor</a></b> : real</li>
+</ul>
+<!-- $$$Shear-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The Shear type provides a way to transform an <a href="qml-qtquick-item.html" translate="no">Item</a> by a two-dimensional shear-type matrix, sometimes known as a <i>skew</i> transform.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">width</span>: <span class="number">100</span>; <span class="name">height</span>: <span class="number">100</span>
+     <span class="name">color</span>: <span class="string">&quot;blue&quot;</span>
+     <span class="name">transform</span>: <span class="name">Shear</span> {
+         <span class="name">xFactor</span>: <span class="number">1.0</span>
+     }
+ }
+</pre>
+<p>This shears the item by a factor of <code translate="no">1.0</code> along the x-axis without modifying anything along the y-axis. Each point <code translate="no">P</code> is displaced by <code translate="no">xFactor(P.y - origin.y)</code> (the signed vertical distance to the <a href="qml-qtquick-shear.html#origin-prop" translate="no">origin</a> multiplied with the <a href="qml-qtquick-shear.html#xFactor-prop" translate="no">xFactor</a>). Setting the <a href="qml-qtquick-shear.html#yFactor-prop" translate="no">yFactor</a> shears the item along the y-axis and proportionally to the horizontal distance.</p>
+<p class="centerAlign"><img src="images/x-shear.png" alt="" /></p><p>Since the default origin is at <code translate="no">(0, 0)</code>, the top of the item remains untransformed, whereas the bottom is displaced 100 pixels to the right (corresponding to the height of the item.)</p>
+<p>This code is equivalent to the following:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">width</span>: <span class="number">100</span>; <span class="name">height</span>: <span class="number">100</span>
+     <span class="name">color</span>: <span class="string">&quot;blue&quot;</span>
+     <span class="name">transform</span>: <span class="name">Shear</span> {
+         <span class="name">xAngle</span>: <span class="number">45.0</span>
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If both <code translate="no">xFactor</code>/<code translate="no">yFactor</code> and <code translate="no">xAngle</code>/<code translate="no">yAngle</code> are set, then the sum of the two displacements will be used.</p>
+</div>
+<!-- @@@Shear -->
+<h2>Property Documentation</h2>
+<!-- $$$origin -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="even" id="origin-prop"><th class="centerAlign"><p><b>origin group</b></p></th></tr>
+<tr valign="top" class="odd" id="origin.x-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">origin.x</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="origin.y-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">origin.y</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The origin point of the transformation (i.e., the point that stays fixed relative to the parent as the rest of the item is sheared).</p>
+<p>By default the origin is <code translate="no">(0, 0)</code>.</p>
+</div></div><!-- @@@origin -->
+<br/>
+<!-- $$$xAngle -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="xAngle-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">xAngle</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The angle (in degrees) by which to shear the item's coordinate system along the x-axis. This is equivalent to setting <a href="qml-qtquick-shear.html#xFactor-prop" translate="no">xFactor</a> to <code translate="no">tan(xAngle)</code>.</p>
+<p>The default value is <code translate="no">0.0</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-shear.html#xFactor-prop" translate="no">xFactor</a>.</p>
+</div></div><!-- @@@xAngle -->
+<br/>
+<!-- $$$xFactor -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="xFactor-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">xFactor</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The factor by which to shear the item's coordinate system along the x-axis. Each point <code translate="no">P</code> is displaced by <code translate="no">xFactor(P.y - origin.y)</code></p>
+<p>This corresponds to the <code translate="no">sh</code> parameter in <a href="../qtgui/qtransform.html#shear" translate="no">QTransform::shear</a>() and the <code translate="no">xShear</code> parameter in calls to <a href="qml-qtquick-planartransform.html#fromShear-method" translate="no">PlanarTransform::fromShear</a>().</p>
+<p>The default value is <code translate="no">0.0</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-shear.html#xAngle-prop" translate="no">xAngle</a>.</p>
+</div></div><!-- @@@xFactor -->
+<br/>
+<!-- $$$yAngle -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="yAngle-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">yAngle</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The angle (in degrees) by which to shear the item's coordinate system along the y-axis. This is equivalent to setting <a href="qml-qtquick-shear.html#yFactor-prop" translate="no">yFactor</a> to <code translate="no">tan(yAngle)</code>.</p>
+<p>The default value is <code translate="no">0.0</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-shear.html#yFactor-prop" translate="no">yFactor</a>.</p>
+</div></div><!-- @@@yAngle -->
+<br/>
+<!-- $$$yFactor -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="yFactor-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">yFactor</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The factor by which to shear the item's coordinate system along the y-axis. The factor by which to shear the item's coordinate system along the x-axis. Each point <code translate="no">P</code> is displaced by <code translate="no">xFactor(P.y - origin.y)</code></p>
+<p>This corresponds to the <code translate="no">sv</code> parameter in <a href="../qtgui/qtransform.html#shear" translate="no">QTransform::shear</a>() and the <code translate="no">yShear</code> parameter in calls to <a href="qml-qtquick-planartransform.html#fromShear-method" translate="no">PlanarTransform::fromShear</a>().</p>
+<p>The default value is <code translate="no">0.0</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-shear.html#yAngle-prop" translate="no">yAngle</a>.</p>
+</div></div><!-- @@@yFactor -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

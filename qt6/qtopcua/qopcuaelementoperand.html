@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuaelementoperand.cpp -->
+  <meta name="description" content="The OPC UA ElementOperand type.">
+  <title>QOpcUaElementOperand Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaElementOperand</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaElementOperand Class</h1>
+<!-- $$$QOpcUaElementOperand-brief -->
+<p>The OPC UA ElementOperand type. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaElementOperand -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaElementOperand&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuaelementoperand-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#QOpcUaElementOperand-2" translate="no">QOpcUaElementOperand</a></b>(quint32 <i>index</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#QOpcUaElementOperand-1" translate="no">QOpcUaElementOperand</a></b>(const QOpcUaElementOperand &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint32 </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#index" translate="no">index</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#setIndex" translate="no">setIndex</a></b>(quint32 <i>index</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#operator-QVariant" translate="no">operator QVariant</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaElementOperand &amp;</td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#operator-eq" translate="no">operator=</a></b>(const QOpcUaElementOperand &amp;<i>rhs</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#operator-not-eq" translate="no">operator!=</a></b>(const QOpcUaElementOperand &amp;<i>lhs</i>, const QOpcUaElementOperand &amp;<i>rhs</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuaelementoperand.html#operator-eq-eq" translate="no">operator==</a></b>(const QOpcUaElementOperand &amp;<i>lhs</i>, const QOpcUaElementOperand &amp;<i>rhs</i>)</td></tr>
+</table></div>
+<!-- $$$QOpcUaElementOperand-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The ElementOperand is defined in OPC UA 1.05 part 4, 7.7.4.2. It is used to identify another element in the filter by its index (the first element has the index 0).</p>
+<p>This is required to create complex filters, for example to reference the two operands of the AND operation in ((Severity &gt; 500) AND (Message == &quot;TestString&quot;)). The first step is to create content filter elements for the two conditions (Severity &gt; 500) and (Message == &quot;TestString&quot;). A third content filter element is required to create an AND combination of the two conditions. It consists of the AND operator and two element operands with the indices of the two conditions created before:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span><span class="operator">::</span>EventFilter filter;
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="comment">// setup select clauses</span>
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span> condition1;
+ <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span> condition2;
+ <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span> condition3;
+ condition1 <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span><span class="operator">::</span>FilterOperator<span class="operator">::</span>GreaterThan <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuasimpleattributeoperand.html" translate="no">QOpcUaSimpleAttributeOperand</a></span>(<span class="string">&quot;Severity&quot;</span>) <span class="operator">&lt;</span><span class="operator">&lt;</span>
+                 <span class="type"><a href="qopcualiteraloperand.html" translate="no">QOpcUaLiteralOperand</a></span>(<span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>(<span class="number">500</span>)<span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>Types<span class="operator">::</span>UInt16);
+ condition2 <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span><span class="operator">::</span>FilterOperator<span class="operator">::</span>Equals <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuasimpleattributeoperand.html" translate="no">QOpcUaSimpleAttributeOperand</a></span>(<span class="string">&quot;Message&quot;</span>) <span class="operator">&lt;</span><span class="operator">&lt;</span>
+                 <span class="type"><a href="qopcualiteraloperand.html" translate="no">QOpcUaLiteralOperand</a></span>(<span class="string">&quot;TestString&quot;</span><span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>Types<span class="operator">::</span>String);
+ condition3 <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuacontentfilterelement.html" translate="no">QOpcUaContentFilterElement</a></span><span class="operator">::</span>FilterOperator<span class="operator">::</span>And <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span>(<span class="number">0</span>) <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span>(<span class="number">1</span>);
+ filter <span class="operator">&lt;</span><span class="operator">&lt;</span> condition1 <span class="operator">&lt;</span><span class="operator">&lt;</span> condition2 <span class="operator">&lt;</span><span class="operator">&lt;</span> condition3;
+</pre>
+</div>
+<!-- @@@QOpcUaElementOperand -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QOpcUaElementOperand[overload1]$$$QOpcUaElementOperand -->
+<h3 class="fn" translate="no" id="QOpcUaElementOperand">QOpcUaElementOperand::<span class="name">QOpcUaElementOperand</span>()</h3>
+<p>Default constructs an element operand with no parameters set.</p>
+<!-- @@@QOpcUaElementOperand -->
+<!-- $$$QOpcUaElementOperand$$$QOpcUaElementOperandquint32 -->
+<h3 class="fn" translate="no" id="QOpcUaElementOperand-2">QOpcUaElementOperand::<span class="name">QOpcUaElementOperand</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>index</i>)</h3>
+<p>Constructs an element operand with index <i translate="no">index</i>.</p>
+<!-- @@@QOpcUaElementOperand -->
+<!-- $$$QOpcUaElementOperand$$$QOpcUaElementOperandconstQOpcUaElementOperand& -->
+<h3 class="fn" translate="no" id="QOpcUaElementOperand-1">QOpcUaElementOperand::<span class="name">QOpcUaElementOperand</span>(const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>rhs</i>)</h3>
+<p>Constructs an element operand from <i translate="no">rhs</i>.</p>
+<!-- @@@QOpcUaElementOperand -->
+<!-- $$$index[overload1]$$$index -->
+<h3 class="fn" translate="no" id="index"><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> QOpcUaElementOperand::<span class="name">index</span>() const</h3>
+<p>Returns the index of the filter element that is going to be used as operand.</p>
+<p><b>See also </b><a href="qopcuaelementoperand.html#setIndex" translate="no">setIndex</a>().</p>
+<!-- @@@index -->
+<!-- $$$setIndex[overload1]$$$setIndexquint32 -->
+<h3 class="fn" translate="no" id="setIndex"><span class="type">void</span> QOpcUaElementOperand::<span class="name">setIndex</span>(<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>index</i>)</h3>
+<p>Sets the index of the filter element that is going to be used as operand to <i translate="no">index</i>.</p>
+<p><b>See also </b><a href="qopcuaelementoperand.html#index" translate="no">index</a>().</p>
+<!-- @@@setIndex -->
+<!-- $$$operator QVariant[overload1]$$$operator QVariant -->
+<h3 class="fn" translate="no" id="operator-QVariant"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QOpcUaElementOperand::<span class="name">operator QVariant</span>() const</h3>
+<p>Converts this element operand to <a href="../qtcore/qvariant.html" translate="no">QVariant</a>.</p>
+<!-- @@@operator QVariant -->
+<!-- $$$operator=[overload1]$$$operator=constQOpcUaElementOperand& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;QOpcUaElementOperand::<span class="name">operator=</span>(const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>rhs</i>)</h3>
+<p>Sets the values from <i translate="no">rhs</i> in this element operand.</p>
+<!-- @@@operator= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$operator!=[overload1]$$$operator!=constQOpcUaElementOperand&constQOpcUaElementOperand& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[noexcept, since 6.7]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> a different value than <i translate="no">rhs</i>.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator==[overload1]$$$operator==constQOpcUaElementOperand&constQOpcUaElementOperand& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[noexcept, since 6.7]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>lhs</i>, const <span class="type"><a href="qopcuaelementoperand.html#QOpcUaElementOperand" translate="no">QOpcUaElementOperand</a></span> &amp;<i>rhs</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">lhs</i> has the same value as <i translate="no">rhs</i>.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

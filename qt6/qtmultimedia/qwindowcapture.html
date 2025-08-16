@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qwindowcapture.cpp -->
+  <meta name="description" content="This class is used for capturing a window.">
+  <title>QWindowCapture Class | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-modules.html">C++ Classes</a></li>
+<li><a href="qtmultimedia-module.html" translate="no">QtMultimedia</a></li>
+<li>QWindowCapture</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#public-slots">Public Slots</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#window-capture-limitations">Window Capture Limitations</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QWindowCapture Class</h1>
+<!-- $$$QWindowCapture-brief -->
+<p>This class is used for capturing a window. <a href="#details">More...</a></p>
+<!-- @@@QWindowCapture -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QWindowCapture&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Multimedia)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Multimedia)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += multimedia</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.6</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> In QML:</td><td class="memItemRight bottomAlign"> <a href="qml-qtmultimedia-windowcapture.html" translate="no">WindowCapture</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qwindowcapture-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#Error-enum" translate="no">Error</a></b> { NoError, InternalError, CapturingNotSupported, CaptureFailed, NotFound }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qwindowcapture.html#active-prop" translate="no">active</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qwindowcapture.html#error-prop" translate="no">error</a></b> : const Error</li>
+<li class="fn" translate="no"><b><a href="qwindowcapture.html#errorString-prop" translate="no">errorString</a></b> : const QString</li>
+<li class="fn" translate="no"><b><a href="qwindowcapture.html#window-prop" translate="no">window</a></b> : QCapturableWindow</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#QWindowCapture" translate="no">QWindowCapture</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#dtor.QWindowCapture" translate="no">~QWindowCapture</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QWindowCapture::Error </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#error-prop" translate="no">error</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#errorString-prop" translate="no">errorString</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#active-prop" translate="no">isActive</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#window-prop" translate="no">setWindow</a></b>(QCapturableWindow <i>window</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCapturableWindow </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#window-prop" translate="no">window</a></b>() const</td></tr>
+</table></div>
+<h2 id="public-slots">Public Slots</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#active-prop" translate="no">setActive</a></b>(bool <i>active</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#start" translate="no">start</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#stop" translate="no">stop</a></b>()</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#active-prop" translate="no">activeChanged</a></b>(bool)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#error-prop" translate="no">errorChanged</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#errorOccurred" translate="no">errorOccurred</a></b>(QWindowCapture::Error <i>error</i>, const QString &amp;<i>errorString</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#window-prop" translate="no">windowChanged</a></b>(QCapturableWindow <i>window</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QCapturableWindow&gt; </td><td class="memItemRight bottomAlign"><b><a href="qwindowcapture.html#capturableWindows" translate="no">capturableWindows</a></b>()</td></tr>
+</table></div>
+<!-- $$$QWindowCapture-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The class captures a window. It is managed by the <a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a> class where the captured window can be displayed in a video preview object or recorded to a file.</p>
+<h3 id="window-capture-limitations">Window Capture Limitations</h3>
+<p>The following limitations apply to using QWindowCapture:</p>
+<ul>
+<li>QWindowCapture is only supported with the FFmpeg backend.</li>
+</ul>
+</div>
+<p><b>See also </b><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a> and <a href="qcapturablewindow.html" translate="no">QCapturableWindow</a>.</p>
+<!-- @@@QWindowCapture -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$Error$$$NoError$$$InternalError$$$CapturingNotSupported$$$CaptureFailed$$$NotFound -->
+<h3 class="fn" translate="no" id="Error-enum">enum QWindowCapture::<span class="name">Error</span></h3>
+<p>Enumerates error codes that can be signaled by the <a href="qwindowcapture.html" translate="no">QWindowCapture</a> class. <a href="qwindowcapture.html#errorString-prop" translate="no">errorString</a>() provides detailed information about the error cause.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QWindowCapture::NoError</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">No error</td></tr>
+<tr><td class="topAlign"><code translate="no">QWindowCapture::InternalError</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Internal window capturing driver error</td></tr>
+<tr><td class="topAlign"><code translate="no">QWindowCapture::CapturingNotSupported</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">Window capturing is not supported</td></tr>
+<tr><td class="topAlign"><code translate="no">QWindowCapture::CaptureFailed</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign">Capturing window failed</td></tr>
+<tr><td class="topAlign"><code translate="no">QWindowCapture::NotFound</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign">Selected window not found</td></tr>
+</table></div>
+<!-- @@@Error -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$active-prop$$$isActive$$$setActivebool$$$activeChangedbool -->
+<h3 class="fn" translate="no" id="active-prop"><span class="name">active</span> : <span class="type">bool</span></h3>
+<p>This property holds whether the capturing is currently active.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>isActive</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setActive</b></span>(bool <i>active</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>activeChanged</b></span>(bool)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qwindowcapture.html#start" translate="no">start</a>() and <a href="qwindowcapture.html#stop" translate="no">stop</a>().</p>
+<!-- @@@active -->
+<!-- $$$error-prop$$$error$$$errorChanged -->
+<h3 class="fn" translate="no" id="error-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">error</span> : const <span class="type"><a href="qwindowcapture.html#Error-enum" translate="no">Error</a></span></h3>
+<p>This property holds the code of the last error.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QWindowCapture::Error </td><td class="memItemRight bottomAlign"><span class="name"><b>error</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>errorChanged</b></span>()</td></tr>
+</table></div>
+<!-- @@@error -->
+<!-- $$$errorString-prop$$$errorString$$$errorChanged -->
+<h3 class="fn" translate="no" id="errorString-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">errorString</span> : const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds a human readable string describing the cause of error.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b>errorString</b></span>() const</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qwindowcapture.html#error-prop" translate="no">errorChanged</a></b></span>()</td></tr>
+</table></div>
+<!-- @@@errorString -->
+<!-- $$$window-prop$$$window$$$setWindowQCapturableWindow$$$windowChangedQCapturableWindow -->
+<h3 class="fn" translate="no" id="window-prop"><span class="name">window</span> : <span class="type"><a href="qcapturablewindow.html" translate="no">QCapturableWindow</a></span></h3>
+<p>This property holds the window for capturing.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QCapturableWindow </td><td class="memItemRight bottomAlign"><span class="name"><b>window</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setWindow</b></span>(QCapturableWindow <i>window</i>)</td></tr>
+</table></div>
+<p><b>Notifier signal:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>windowChanged</b></span>(QCapturableWindow <i>window</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qwindowcapture.html#capturableWindows" translate="no">QWindowCapture::capturableWindows</a>.</p>
+<!-- @@@window -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QWindowCapture[overload1]$$$QWindowCaptureQObject* -->
+<h3 class="fn" translate="no" id="QWindowCapture"><code class="details extra" translate="no">[explicit]</code> QWindowCapture::<span class="name">QWindowCapture</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a new QWindowCapture object with <i translate="no">parent</i>.</p>
+<!-- @@@QWindowCapture -->
+<!-- $$$~QWindowCapture[overload1]$$$~QWindowCapture -->
+<h3 class="fn" translate="no" id="dtor.QWindowCapture"><code class="details extra" translate="no">[override virtual noexcept]</code> QWindowCapture::<span class="name">~QWindowCapture</span>()</h3>
+<p>Destroys the object.</p>
+<!-- @@@~QWindowCapture -->
+<!-- $$$capturableWindows[overload1]$$$capturableWindows -->
+<h3 class="fn" translate="no" id="capturableWindows"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcapturablewindow.html" translate="no">QCapturableWindow</a></span>&gt; QWindowCapture::<span class="name">capturableWindows</span>()</h3>
+<p>Returns a list of <a href="qcapturablewindow.html" translate="no">QCapturableWindow</a> objects that is available for capturing.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@capturableWindows -->
+<!-- $$$errorOccurred[overload1]$$$errorOccurredQWindowCapture::ErrorconstQString& -->
+<h3 class="fn" translate="no" id="errorOccurred"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QWindowCapture::<span class="name">errorOccurred</span>(<span class="type"><a href="qwindowcapture.html#Error-enum" translate="no">QWindowCapture::Error</a></span> <i>error</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>errorString</i>)</h3>
+<p>Signals when an <i translate="no">error</i> occurs, along with the <i translate="no">errorString</i>.</p>
+<!-- @@@errorOccurred -->
+<!-- $$$start[overload1]$$$start -->
+<h3 class="fn" translate="no" id="start"><code class="details extra" translate="no">[slot]</code> <span class="type">void</span> QWindowCapture::<span class="name">start</span>()</h3>
+<p>Starts capturing the <a href="qwindowcapture.html#window-prop" translate="no">window</a>.</p>
+<p>This is equivalent to setting the <a href="qwindowcapture.html#active-prop" translate="no">active</a> property to true.</p>
+<!-- @@@start -->
+<!-- $$$stop[overload1]$$$stop -->
+<h3 class="fn" translate="no" id="stop"><code class="details extra" translate="no">[slot]</code> <span class="type">void</span> QWindowCapture::<span class="name">stop</span>()</h3>
+<p>Stops capturing.</p>
+<p>This is equivalent to setting the <a href="qwindowcapture.html#active-prop" translate="no">active</a> property to false.</p>
+<!-- @@@stop -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

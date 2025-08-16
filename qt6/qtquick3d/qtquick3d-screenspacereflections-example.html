@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- screenspacereflections.qdoc -->
+  <meta name="description" content="Demonstrates reflections in Qt Quick 3D.">
+  <title>Qt Quick 3D - Screen Space Reflections Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Screen Space Reflections Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#shader-code">Shader Code</a></li>
+<li class="level1"><a href="#helper-functions">Helper functions</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Screen Space Reflections Example</h1>
+<!-- $$$screenspacereflections-brief -->
+<p>Demonstrates reflections in Qt Quick 3D.</p>
+<!-- @@@screenspacereflections -->
+<!-- $$$screenspacereflections-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/screenspacereflections-example.jpg" alt="" /></p><p>This example demonstrates how to create reflections using <i>Screen Space Reflections</i> (SSR) on a model. SSR is a post-processing effect that can enhance the scene by adding reflections to it. The idea behind SSR is that the reflections can be calculated in Screen Space after the objects have been rendered. For each fragment, a ray is emitted from the camera to this fragment and then it is reflected around the fragment's normal. After that, we follow the reflected ray and determine whether it will hit an object or not. If an object was hit, then the fragment will reflect this object. There are situations where SSR will fail. For example, when the reflected ray hits an object behind the camera. Since the reflections are calculated in Screen Space after the objects have been rendered, no information about the color of the objects behind the camera is available. Although SSR has some drawbacks, it adds more realism to the scene.</p>
+<p>This example implements SSR using <a href="qml-qtquick3d-custommaterial.html" translate="no">Custom Materials</a> that can be used on a <a href="qml-qtquick3d-model.html" translate="no">Model</a>, which will make it reflect its surroundings.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>)
+     <span class="name">eulerRotation</span>.x: -<span class="number">90</span>
+     <span class="name">eulerRotation</span>.z: <span class="number">180</span>
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, -<span class="number">50.0</span>, <span class="number">0.0</span>)
+     <span class="name">materials</span>: <span class="name">ScreenSpaceReflections</span> {
+         <span class="name">depthBias</span>: <span class="name">depthBiasSlider</span>.<span class="name">value</span>
+         <span class="name">rayMaxDistance</span>: <span class="name">distanceSlider</span>.<span class="name">value</span>
+         <span class="name">marchSteps</span>: <span class="name">marchSlider</span>.<span class="name">value</span>
+         <span class="name">refinementSteps</span>: <span class="name">refinementStepsSlider</span>.<span class="name">value</span>
+         <span class="name">specular</span>: <span class="name">specularSlider</span>.<span class="name">value</span>
+         <span class="name">materialColor</span>: <span class="name">materialColorCheckBox</span>.<span class="name">checked</span> ? <span class="string">&quot;transparent&quot;</span> : <span class="string">&quot;dimgray&quot;</span>
+     }
+ }
+</pre>
+<p>The rest of the scene has some objects which are either static or rotate above the surface to show the reflections.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+
+     <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+         <span class="name">eulerRotation</span>.y: <span class="number">0</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">50.0</span>, <span class="number">40.0</span>, <span class="number">50.0</span>)
+         <span class="name">materials</span>:  <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColorMap</span>: <span class="name">Texture</span> {
+                 <span class="name">source</span>: <span class="string">&quot;qt_logo_rect.png&quot;</span>
+             }
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span>{
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">400.0</span>, <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelHeight</span>, <span class="number">0.0</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;magenta&quot;</span>
+             }
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span>{
+         <span class="name">eulerRotation</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelRotation</span>
+         <span class="name">position</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelHeight</span>
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">pivot</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">200.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+             }
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span>{
+         <span class="name">eulerRotation</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelRotation</span>
+         <span class="name">position</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelHeight</span>
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">45</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, -<span class="number">200.0</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;blue&quot;</span>
+             }
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span>{
+         <span class="name">eulerRotation</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelRotation</span>
+         <span class="name">position</span>.y: <span class="name">screenSpaceReflectionsView</span>.<span class="name">modelHeight</span>
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">200.0</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;red&quot;</span>
+             }
+         }
+     }
+</pre>
+<h4 id="shader-code">Shader Code</h4>
+<p>Before diving into the shader's code, let's check some parameters that can be used to control the reflections.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><code translate="no">depthBias</code></td><td >This parameter is used to check if the difference between the depth of the ray and object is within a certain threshold.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">rayMaxDistance</code></td><td >Controls how far is the ending point of the ray in View Space.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">marchSteps</code></td><td >Controls how many steps are used for computation. Increasing the number of steps decreases the amount of fragments the ray moves in each iteration and increases the quality.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">refinementSteps</code></td><td >After finding where the reflected ray hit the object, a refinement process is done to try and find the exact location of the hit. This parameter controls how many steps should be used. It can give better results when the <code translate="no">marchSteps</code> is small.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">specular</code></td><td >A value between 0 and 1 to control how much reflectivity the model has.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">materialColor</code></td><td >Gives color to the model. This color is mixed with the reflection color.</td></tr>
+</table></div>
+<p>The shader starts by getting a direction from the camera to the fragment, and then reflects it around the fragment's normal. The starting point and the ending point of the ray are calculated in View Space, and then these points are transformed into Screen Space. The benefit of marching the reflected ray in Screen Space is that it results in better quality. Moreover, the ray could cover a large distance in View Space but only a few fragments in Screen Space.</p>
+<p>A vector pointing from the starting fragment to the ending fragment is calculated and divided by the <code translate="no">marchSteps</code>.</p>
+<p>The <code translate="no">rayMarch</code> function is called afterward. It marches the ray every step in Screen Space, and then transforms it back to View Space. It also gets the object at this fragment using the <code translate="no">DEPTH_TEXTURE</code> of the scene. The difference between the ray's and object's depths is calculated and compared with the <code translate="no">depthBias</code>. If a hit is found, the <code translate="no">refinementStep</code> function is called.</p>
+<pre class="cpp" translate="no">
+ void rayMarch(vec2 rayStepVector, vec2 size)
+ {
+     for(int i = 0; i &lt; marchSteps; i++)
+     {
+         rayData.rayFragCurr += rayStepVector;
+         rayData.rayCoveredPart = length(rayData.rayFragCurr - rayData.rayFragStart) / length(rayData.rayFragEnd - rayData.rayFragStart);
+         rayData.rayCoveredPart = clamp(rayData.rayCoveredPart, 0.0, 1.0);
+         float rayDepth = rayViewDepthFromScreen(size);
+         rayData.objHitViewPos = viewPosFromScreen(rayData.rayFragCurr, size);
+         float deltaDepth = rayDepth - rayData.objHitViewPos.z;
+
+         if(deltaDepth &gt; 0 &amp;&amp; deltaDepth &lt; depthBias)
+         {
+             rayData.hit = 1;
+             refinementStep(rayStepVector, size);
+             return;
+         }
+     }
+ }
+</pre>
+<p>The refinement step is the same as <code translate="no">rayMarch</code>, except it tries to find the exact position where the hit happens, so it advances the ray by half the step's distance every iteration.</p>
+<pre class="cpp" translate="no">
+ void refinementStep(vec2 rayStepVector, vec2 size)
+ {
+     for(int i = 0; i &lt; refinementSteps; i++)
+     {
+         rayData.rayCoveredPart = length(rayData.rayFragCurr - rayData.rayFragStart) / length(rayData.rayFragEnd - rayData.rayFragStart);
+         rayData.rayCoveredPart = clamp(rayData.rayCoveredPart, 0.0, 1.0);
+         float rayDepth = rayViewDepthFromScreen(size);
+         rayData.objHitViewPos = viewPosFromScreen(rayData.rayFragCurr, size);
+         float deltaDepth = rayDepth - rayData.objHitViewPos.z;
+
+         rayStepVector *= 0.5;
+         if(deltaDepth &gt; 0 &amp;&amp; deltaDepth &lt; depthBias)
+             rayData.rayFragCurr -= rayStepVector;
+         else
+             rayData.rayFragCurr += rayStepVector;
+     }
+ }
+</pre>
+<p>The visibility of the reflection is set to the hit value, and after that some visibility checks are made. As mentioned before, SSR will fail if the reflected ray hits something behind the camera, so the visibility is faded out according to how much the reflected ray is heading toward the camera. The visibility is also faded out according to how far the hit object is from the starting point of the ray.</p>
+<pre class="cpp" translate="no">
+ float visibility = rayData.hit;
+ /* Check if the ray hit an object behind the camera. This means information about the object can not be obtained from SCREEN_TEXTURE.
+    Start fading the visibility according to how much the reflected ray is moving toward the opposite direction of the camera */
+ visibility *= (1 - max(dot(-normalize(fragViewPos), reflected), 0));
+
+ /* Fade out visibility according how far is the hit object from the fragment */
+ visibility *= (1 - clamp(length(rayData.objHitViewPos - rayData.rayViewStart) / rayMaxDistance, 0, 1));
+ visibility = clamp(visibility, 0, 1);
+</pre>
+<p>Finally, the reflection color is calculated from the <code translate="no">SCREEN_TEXTURE</code> and mixed with the material color.</p>
+<pre class="cpp" translate="no">
+ vec2 uv = rayData.rayFragCurr / size;
+ uv = correctTextureCoordinates(uv);
+ vec3 reflectionColor = texture(SCREEN_TEXTURE, uv).rgb;
+ reflectionColor *= specular;
+
+ vec3 mixedColor = mix(materialColor.rgb, reflectionColor, visibility);
+ BASE_COLOR = vec4(mixedColor, materialColor.a);
+</pre>
+<h4 id="helper-functions">Helper functions</h4>
+<p>There are some helper functions used in the shader's code. The <code translate="no">correctTextureCoordinates</code> function fixes the texture's coordinate according to the used Graphics API. This has to be done in the case of D3D11 or Metal. For more information, see <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> documentation.</p>
+<pre class="cpp" translate="no">
+ vec2 correctTextureCoordinates(vec2 uv)
+ {
+     if(FRAMEBUFFER_Y_UP &lt; 0 &amp;&amp; NDC_Y_UP == 1)
+         uv.y = 1 - uv.y;
+
+     return uv;
+ }
+</pre>
+<p>The <code translate="no">rayFragOutOfBound</code> function checks if the ray is outside the screen after marching. In this case, no reflection color is used because no information is available for anything outside the screen.</p>
+<pre class="cpp" translate="no">
+ bool rayFragOutOfBound(vec2 rayFrag, vec2 size)
+ {
+     if(rayFrag.x &gt; size.x || rayFrag.y &gt; size.y)
+         return true;
+
+     if(rayFrag.x &lt; 0 || rayFrag.y &lt; 0)
+         return true;
+
+     return false;
+ }
+</pre>
+<p>The <code translate="no">viewPosFromScreen</code> function gets the object's position in View Space by using the <code translate="no">DEPTH_TEXTURE</code>.</p>
+<pre class="cpp" translate="no">
+ vec3 viewPosFromScreen(vec2 fragPos, vec2 size)
+ {
+     vec2 uv = fragPos / size;
+     vec2 texuv = correctTextureCoordinates(uv);
+
+     float depth = textureLod(DEPTH_TEXTURE, texuv, 0).r;
+     if(NEAR_CLIP_VALUE  &lt; 0.0)
+         depth = 2 * depth - 1.0;
+
+     vec3 ndc = vec3(2 * uv - 1, depth);
+     vec4 viewPos = INVERSE_PROJECTION_MATRIX * vec4(ndc, 1.0);
+     viewPos /= viewPos.w;
+     return viewPos.xyz;
+ }
+</pre>
+<p>The <code translate="no">rayViewDepthFromScreen</code> function gets the current position of the ray in View Space. This time the depth value is obtained by linearly interpolating the value between the starting point depth and ending point depth of the ray.</p>
+<pre class="cpp" translate="no">
+ float rayViewDepthFromScreen(vec2 size)
+ {
+     vec2 uv = rayData.rayFragCurr / size;
+     float depth = mix(rayData.rayFragStartDepth, rayData.rayFragEndDepth, rayData.rayCoveredPart);
+     vec3 ndc = vec3(2 * uv - 1, depth);
+     vec4 viewPos = INVERSE_PROJECTION_MATRIX * vec4(ndc, 1.0);
+     viewPos /= viewPos.w;
+     return viewPos.z;
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/screenspacereflections?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@screenspacereflections -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

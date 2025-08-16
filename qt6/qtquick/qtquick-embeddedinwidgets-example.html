@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- embeddedinwidgets.qdoc -->
+  <meta name="description" content="Demonstrates embedding a QQuickWindow into a QWidget UI via QWidget::createWindowContainer().">
+  <title>Qt Quick Examples - Embedded in Widgets | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Qt Quick Examples - Embedded in Widgets</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick Examples - Embedded in Widgets</h1>
+<!-- $$$embeddedinwidgets-brief -->
+<p>Demonstrates embedding a <a href="qquickwindow.html" translate="no">QQuickWindow</a> into a <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> UI via <a href="../qtwidgets/qwidget.html#createWindowContainer" translate="no">QWidget::createWindowContainer</a>().</p>
+<!-- @@@embeddedinwidgets -->
+<!-- $$$embeddedinwidgets-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/qml-embeddedinwidgets-example.jpg" alt="" /></p><p>This example demonstrates one of the approaches to adding Qt Quick content into a <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based application. <a href="qquickview.html" translate="no">QQuickView</a>, and its parent class, <a href="qquickwindow.html" translate="no">QQuickWindow</a> derive from <a href="../qtgui/qwindow.html" translate="no">QWindow</a>. This means that they can be used with <a href="../qtwidgets/qwidget.html#createWindowContainer" translate="no">QWidget::createWindowContainer</a>(), like any other <a href="../qtgui/qwindow.html" translate="no">QWindow</a>.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p>Embedding the window internally leads to creating a native child widget inside the widget hierarchy, and the window (the <a href="qquickview.html" translate="no">QQuickView</a> in the example) is reparented. The container widget takes care of repositioning the child window so that it appears to be part of the user interface, even though in reality it is separate native window that paints independently from its parent, the <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based top-level window.</p>
+<pre class="cpp" translate="no">
+ MainWindow<span class="operator">::</span>MainWindow()
+     : m_quickView(<span class="keyword">new</span> <span class="type"><a href="qquickview.html" translate="no">QQuickView</a></span>)
+ {
+     <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>centralWidget <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span>(<span class="keyword">this</span>);
+     <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span> <span class="operator">*</span>layout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span>(centralWidget);
+
+     m_quickView<span class="operator">-</span><span class="operator">&gt;</span>setResizeMode(<span class="type"><a href="qquickview.html" translate="no">QQuickView</a></span><span class="operator">::</span>SizeRootObjectToView);
+     connect(m_quickView<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qquickview.html" translate="no">QQuickView</a></span><span class="operator">::</span>statusChanged<span class="operator">,</span>
+             <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>quickViewStatusChanged);
+     connect(m_quickView<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span><span class="operator">::</span>sceneGraphError<span class="operator">,</span>
+             <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>sceneGraphError);
+     m_quickView<span class="operator">-</span><span class="operator">&gt;</span>loadFromModule(<span class="string">&quot;embeddedinwidgets&quot;</span><span class="operator">,</span> <span class="string">&quot;Main&quot;</span>);
+
+     <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>container <span class="operator">=</span> <span class="type"><a href="../qtwidgets/qwidget.html" translate="no">QWidget</a></span><span class="operator">::</span>createWindowContainer(m_quickView);
+     container<span class="operator">-</span><span class="operator">&gt;</span>setMinimumSize(m_quickView<span class="operator">-</span><span class="operator">&gt;</span>size());
+     container<span class="operator">-</span><span class="operator">&gt;</span>setFocusPolicy(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>TabFocus);
+
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(<span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a></span>(<span class="type"><a href="../qtcore/qstring.html#QStringLiteral" translate="no">QStringLiteral</a></span>(<span class="string">&quot;A QLineEdit&quot;</span>)));
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(container);
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(<span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlineedit.html" translate="no">QLineEdit</a></span>(<span class="type"><a href="../qtcore/qstring.html#QStringLiteral" translate="no">QStringLiteral</a></span>(<span class="string">&quot;A QLineEdit&quot;</span>)));
+     setCentralWidget(centralWidget);
+
+     <span class="type"><a href="../qtwidgets/qmenu.html" translate="no">QMenu</a></span> <span class="operator">*</span>fileMenu <span class="operator">=</span> menuBar()<span class="operator">-</span><span class="operator">&gt;</span>addMenu(tr(<span class="string">&quot;File&quot;</span>));
+     fileMenu<span class="operator">-</span><span class="operator">&gt;</span>addAction(tr(<span class="string">&quot;Quit&quot;</span>)<span class="operator">,</span> <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtcore/qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>quit);
+ }
+</pre>
+<p>The key step during initialization is the creation of <code translate="no">container</code>, a <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> that wraps and hosts the <a href="qquickview.html" translate="no">QQuickView</a>. This widget can then added to a layout like any other <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Using native window embedding is just one possible approach to combining <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> and Qt Quick user interfaces. The other, more commonly used approach for this is <a href="qquickwidget.html" translate="no">QQuickWidget</a>. See the <a href="qtquick-quickwidgets-quickwidget-example.html">Qt Quick Widgets Example</a> for an example of using <a href="qquickwidget.html" translate="no">QQuickWidget</a>. There are significant differences internally when it comes to rendering and event handling. <a href="qquickwidget.html" translate="no">QQuickWidget</a> does not use native windows at all and redirects the Qt Quick rendering into a texture that is then composited with the rest of the <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a> content via a 3D graphics API such as OpenGL or Vulkan. This brings more flexibility, at the expense of performance. It also works on platforms where there is no actual windowing system and no concept of native windows. Whereas the window embedding approach demonstrated by this example can be more performant, but it is best suited for user interfaces where the Qt Quick content occupies a fixed rectangular area and is not resized, stacked, or clipped afterwards.</p>
+</div>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quick/embeddedinwidgets?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="../qtwidgets/qwidget.html#createWindowContainer" translate="no">QWidget::createWindowContainer</a>().</p>
+<!-- @@@embeddedinwidgets -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

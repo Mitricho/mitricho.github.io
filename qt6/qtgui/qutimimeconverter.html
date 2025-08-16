@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qutimimeconverter.mm -->
+  <meta name="description" content="The QUtiMimeConverter class converts between a MIME type and a Uniform Type Identifier (UTI) format.">
+  <title>QUtiMimeConverter Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QUtiMimeConverter</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QUtiMimeConverter Class</h1>
+<!-- $$$QUtiMimeConverter-brief -->
+<p>The QUtiMimeConverter class converts between a MIME type and a <a href="https://developer.apple.com/documentation/uniformtypeidentifiers">Uniform Type Identifier (UTI)</a> format. <a href="#details">More...</a></p>
+<!-- @@@QUtiMimeConverter -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QUtiMimeConverter&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.5</td></tr>
+</table></div>
+<ul>
+<li><a href="qutimimeconverter-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> flags </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#HandlerScopeFlag-enum" translate="no">HandlerScope</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#QUtiMimeConverter" translate="no">QUtiMimeConverter</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#dtor.QUtiMimeConverter" translate="no">~QUtiMimeConverter</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#canConvert" translate="no">canConvert</a></b>(const QString &amp;<i>mime</i>, const QString &amp;<i>uti</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QList&lt;QByteArray&gt; </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#convertFromMime" translate="no">convertFromMime</a></b>(const QString &amp;<i>mime</i>, const QVariant &amp;<i>data</i>, const QString &amp;<i>uti</i>) const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QVariant </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#convertToMime" translate="no">convertToMime</a></b>(const QString &amp;<i>mime</i>, const QList&lt;QByteArray&gt; &amp;<i>data</i>, const QString &amp;<i>uti</i>) const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual int </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#count" translate="no">count</a></b>(const QMimeData *<i>mimeData</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QString </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#mimeForUti" translate="no">mimeForUti</a></b>(const QString &amp;<i>uti</i>) const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QString </td><td class="memItemRight bottomAlign"><b><a href="qutimimeconverter.html#utiForMime" translate="no">utiForMime</a></b>(const QString &amp;<i>mime</i>) const = 0</td></tr>
+</table></div>
+<!-- $$$QUtiMimeConverter-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Qt's drag and drop and clipboard facilities use the MIME standard. On X11, this maps trivially to the Xdnd protocol. On Mac, although some applications use MIME to describe clipboard contents, it is more common to use Apple's UTI format.</p>
+<p>QUtiMimeConverter's role is to bridge the gap between MIME and UTI; By subclasses this class, one can extend Qt's drag and drop and clipboard handling to convert to and from unsupported, or proprietary, UTI formats.</p>
+<p>Construct an instance of your converter implementation after instantiating <a href="qguiapplication.html" translate="no">QGuiApplication</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+ {
+     <span class="type"><a href="qguiapplication.html" translate="no">QGuiApplication</a></span> app(argc<span class="operator">,</span> argv);
+     JsonMimeConverter jsonConverter;
+ }
+</pre>
+<p>Destroying the instance will unregister the converter and remove support for the conversion. It is also valid to heap-allocate the converter instance; Qt takes ownership and will delete the converter object during <a href="qguiapplication.html" translate="no">QGuiApplication</a> shut-down.</p>
+<p>Qt has predefined support for the following UTIs:</p>
+<ul>
+<li>public.utf8-plain-text - converts to &quot;text/plain&quot;</li>
+<li>public.utf16-plain-text - converts to &quot;text/plain&quot;</li>
+<li>public.text - converts to &quot;text/plain&quot;</li>
+<li>public.html - converts to &quot;text/html&quot;</li>
+<li>public.url - converts to &quot;text/uri-list&quot;</li>
+<li>public.file-url - converts to &quot;text/uri-list&quot;</li>
+<li>public.tiff - converts to &quot;application/x-qt-image&quot;</li>
+<li>public.vcard - converts to &quot;text/plain&quot;</li>
+<li>com.apple.traditional-mac-plain-text - converts to &quot;text/plain&quot;</li>
+<li>com.apple.pict - converts to &quot;application/x-qt-image&quot;</li>
+</ul>
+<p>When working with MIME data, Qt will iterate through all instances of QUtiMimeConverter to find find an instance that can convert to, or from, a specific MIME type. It will do this by calling <a href="qutimimeconverter.html#mimeForUti" translate="no">mimeForUti</a>() or <a href="qutimimeconverter.html#utiForMime" translate="no">utiForMime</a>() on each instance, starting with (and choosing) the last created instance first. The actual conversions will be done by using <a href="qutimimeconverter.html#convertToMime" translate="no">convertToMime</a>() and <a href="qutimimeconverter.html#convertFromMime" translate="no">convertFromMime</a>().</p>
+</div>
+<!-- @@@QUtiMimeConverter -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QUtiMimeConverter[overload1]$$$QUtiMimeConverter -->
+<h3 class="fn" translate="no" id="QUtiMimeConverter">QUtiMimeConverter::<span class="name">QUtiMimeConverter</span>()</h3>
+<p>Constructs a new conversion object and adds it to the globally accessed list of available converters.</p>
+<p>Call this constructor after <a href="qguiapplication.html" translate="no">QGuiApplication</a> has been created.</p>
+<!-- @@@QUtiMimeConverter -->
+<!-- $$$~QUtiMimeConverter[overload1]$$$~QUtiMimeConverter -->
+<h3 class="fn" translate="no" id="dtor.QUtiMimeConverter"><code class="details extra" translate="no">[virtual noexcept]</code> QUtiMimeConverter::<span class="name">~QUtiMimeConverter</span>()</h3>
+<p>Destroys a conversion object, removing it from the global list of available converters.</p>
+<!-- @@@~QUtiMimeConverter -->
+<!-- $$$canConvert[overload1]$$$canConvertconstQString&constQString& -->
+<h3 class="fn" translate="no" id="canConvert"><span class="type">bool</span> QUtiMimeConverter::<span class="name">canConvert</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>mime</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>uti</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the converter can convert (both ways) between <i translate="no">mime</i> and <i translate="no">uti</i>; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@canConvert -->
+<!-- $$$convertFromMime[overload1]$$$convertFromMimeconstQString&constQVariant&constQString& -->
+<h3 class="fn" translate="no" id="convertFromMime"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span>&gt; QUtiMimeConverter::<span class="name">convertFromMime</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>mime</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>data</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>uti</i>) const</h3>
+<p>Returns <i translate="no">data</i> converted from MIME type <i translate="no">mime</i> to Mac UTI <i translate="no">uti</i>.</p>
+<p>Note that Mac UTIs must all be self-terminating. The return value may contain trailing data.</p>
+<p>All subclasses must reimplement this pure virtual function.</p>
+<!-- @@@convertFromMime -->
+<!-- $$$convertToMime[overload1]$$$convertToMimeconstQString&constQList<QByteArray>&constQString& -->
+<h3 class="fn" translate="no" id="convertToMime"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QUtiMimeConverter::<span class="name">convertToMime</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>mime</i>, const <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span>&gt; &amp;<i>data</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>uti</i>) const</h3>
+<p>Returns <i translate="no">data</i> converted from Mac UTI <i translate="no">uti</i> to MIME type <i translate="no">mime</i>.</p>
+<p>Note that Mac UTIs must all be self-terminating. The input <i translate="no">data</i> may contain trailing data.</p>
+<p>All subclasses must reimplement this pure virtual function.</p>
+<!-- @@@convertToMime -->
+<!-- $$$count[overload1]$$$countconstQMimeData* -->
+<h3 class="fn" translate="no" id="count"><code class="details extra" translate="no">[virtual]</code> <span class="type">int</span> QUtiMimeConverter::<span class="name">count</span>(const <span class="type"><a href="../qtcore/qmimedata.html" translate="no">QMimeData</a></span> *<i>mimeData</i>) const</h3>
+<p>Returns the item count for the given <i translate="no">mimeData</i></p>
+<!-- @@@count -->
+<!-- $$$mimeForUti[overload1]$$$mimeForUticonstQString& -->
+<h3 class="fn" translate="no" id="mimeForUti"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QUtiMimeConverter::<span class="name">mimeForUti</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>uti</i>) const</h3>
+<p>Returns the MIME type used for Mac UTI <i translate="no">uti</i>, or an empty string if this converter does not support converting from <i translate="no">uti</i>.</p>
+<p>All subclasses must reimplement this pure virtual function.</p>
+<!-- @@@mimeForUti -->
+<!-- $$$utiForMime[overload1]$$$utiForMimeconstQString& -->
+<h3 class="fn" translate="no" id="utiForMime"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QUtiMimeConverter::<span class="name">utiForMime</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>mime</i>) const</h3>
+<p>Returns the Mac UTI used for MIME type <i translate="no">mime</i>, or an empty string if this converter does not support converting from <i translate="no">mime</i>.</p>
+<p>All subclasses must reimplement this pure virtual function.</p>
+<!-- @@@utiForMime -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

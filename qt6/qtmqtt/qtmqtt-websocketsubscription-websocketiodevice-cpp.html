@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- websocketsubscription.qdoc -->
+  <meta name="description" content="Combining an MQTT client with a web socket connection.">
+  <title>WebSockets MQTT Subscription | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-examples.html">Qt MQTT Examples</a></li>
+<li>WebSockets MQTT Subscription</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">WebSockets MQTT Subscription</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2017 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &quot;websocketiodevice.h&quot;</span>
+
+ <span class="preprocessor">#include &lt;QtCore/QDebug&gt;</span>
+
+ <span class="preprocessor">#include &lt;QtWebSockets/qwebsockethandshakeoptions.h&gt;</span>
+
+ WebSocketIODevice<span class="operator">::</span>WebSocketIODevice(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span>(parent)
+ {
+     connect(<span class="operator">&amp;</span>m_socket<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwebsockets/qwebsocket.html" translate="no">QWebSocket</a></span><span class="operator">::</span>connected<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>WebSocketIODevice<span class="operator">::</span>onSocketConnected);
+     connect(<span class="operator">&amp;</span>m_socket<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwebsockets/qwebsocket.html" translate="no">QWebSocket</a></span><span class="operator">::</span>binaryMessageReceived<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>WebSocketIODevice<span class="operator">::</span>handleBinaryMessage);
+ }
+
+ <span class="type">bool</span> WebSocketIODevice<span class="operator">::</span>isSequential() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+
+ <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> WebSocketIODevice<span class="operator">::</span>bytesAvailable() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span><span class="operator">&gt;</span>(m_buffer<span class="operator">.</span>size()) <span class="operator">+</span> <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>bytesAvailable();
+ }
+
+ <span class="type">bool</span> WebSocketIODevice<span class="operator">::</span>open(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>OpenMode mode)
+ {
+     <span class="type"><a href="../qtwebsockets/qwebsockethandshakeoptions.html" translate="no">QWebSocketHandshakeOptions</a></span> options;
+     options<span class="operator">.</span>setSubprotocols(<span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span>{ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>fromUtf8(m_protocol) });
+
+     m_socket<span class="operator">.</span>open(m_url<span class="operator">,</span> options);
+
+     <span class="keyword">return</span> <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>open(mode);
+ }
+
+ <span class="type">void</span> WebSocketIODevice<span class="operator">::</span>close()
+ {
+     m_socket<span class="operator">.</span>close();
+     <span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>close();
+ }
+
+ <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> WebSocketIODevice<span class="operator">::</span>readData(<span class="type">char</span> <span class="operator">*</span>data<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> maxlen)
+ {
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> bytesToRead <span class="operator">=</span> <a href="../qtcore/qtminmax-qtcore-proxy.html#qMin" translate="no">qMin</a>(maxlen<span class="operator">,</span> (<span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span>)m_buffer<span class="operator">.</span>size());
+     memcpy(data<span class="operator">,</span> m_buffer<span class="operator">.</span>constData()<span class="operator">,</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>size_t<span class="operator">&gt;</span>(bytesToRead));
+     m_buffer <span class="operator">=</span> m_buffer<span class="operator">.</span>right(m_buffer<span class="operator">.</span>size() <span class="operator">-</span> bytesToRead);
+     <span class="keyword">return</span> bytesToRead;
+ }
+
+ <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> WebSocketIODevice<span class="operator">::</span>writeData(<span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>data<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> len)
+ {
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> msg(data<span class="operator">,</span> len);
+     <span class="keyword">const</span> <span class="type">int</span> length <span class="operator">=</span> m_socket<span class="operator">.</span>sendBinaryMessage(msg);
+     <span class="keyword">return</span> length;
+ }
+
+ <span class="type">void</span> WebSocketIODevice<span class="operator">::</span>setUrl(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> <span class="operator">&amp;</span>url)
+ {
+     m_url <span class="operator">=</span> url;
+ }
+
+ <span class="type">void</span> WebSocketIODevice<span class="operator">::</span>setProtocol(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> <span class="operator">&amp;</span>data)
+ {
+     m_protocol <span class="operator">=</span> data;
+ }
+
+ <span class="type">void</span> WebSocketIODevice<span class="operator">::</span>handleBinaryMessage(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> <span class="operator">&amp;</span>msg)
+ {
+     m_buffer<span class="operator">.</span>append(msg);
+     <span class="keyword">emit</span> readyRead();
+ }
+
+ <span class="type">void</span> WebSocketIODevice<span class="operator">::</span>onSocketConnected()
+ {
+     <span class="keyword">emit</span> socketConnected();
+ }
+</pre>

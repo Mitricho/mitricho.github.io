@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- opcuaviewer.qdoc -->
+  <meta name="description" content="Using the model/view approach to display all nodes of an OPC UA server in a tree view.">
+  <title>Qt OPC UA Viewer | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-examples.html">Qt OPC UA Examples</a></li>
+<li>Qt OPC UA Viewer</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt OPC UA Viewer</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2018 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &quot;treeitem.h&quot;</span>
+ <span class="preprocessor">#include &quot;opcuamodel.h&quot;</span>
+
+ <span class="preprocessor">#include &lt;QOpcUaArgument&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaAxisInformation&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaClient&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaComplexNumber&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaDoubleComplexNumber&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaEUInformation&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaExtensionObject&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaGenericStructHandler&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaGenericStructValue&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaLocalizedText&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaNode&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaQualifiedName&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaRange&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaXValue&gt;</span>
+
+ <span class="preprocessor">#include &lt;QMetaEnum&gt;</span>
+ <span class="preprocessor">#include &lt;QPixmap&gt;</span>
+
+ <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Literals<span class="operator">::</span>StringLiterals;
+
+ <span class="keyword">const</span> <span class="type">int</span> numberOfDisplayColumns <span class="operator">=</span> <span class="number">8</span>; <span class="comment">// NodeId, Value, NodeClass, DataType, BrowseName, DisplayName, Description, Historizing</span>
+
+ TreeItem<span class="operator">::</span>TreeItem(OpcUaModel <span class="operator">*</span>model)
+     : <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(nullptr)
+     <span class="operator">,</span> mModel(model)
+ {
+ }
+
+ TreeItem<span class="operator">::</span>TreeItem(<span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span> <span class="operator">*</span>node<span class="operator">,</span> OpcUaModel <span class="operator">*</span>model<span class="operator">,</span> TreeItem <span class="operator">*</span>parent)
+     : <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(parent)
+     <span class="operator">,</span> mOpcNode(node)
+     <span class="operator">,</span> mModel(model)
+     <span class="operator">,</span> mParentItem(parent)
+ {
+     connect(mOpcNode<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>attributeRead<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TreeItem<span class="operator">::</span>handleAttributes);
+     connect(mOpcNode<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>attributeUpdated<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TreeItem<span class="operator">::</span>handleAttributes);
+     connect(mOpcNode<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>browseFinished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TreeItem<span class="operator">::</span>browseFinished);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>readAttributes( <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>NodeClass
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Description
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DataType
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DisplayName
+                             <span class="operator">|</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Historizing
+                             )) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Reading attributes&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>nodeId() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;failed&quot;</span>;
+     }
+ }
+
+ TreeItem<span class="operator">::</span>TreeItem(<span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span> <span class="operator">*</span>node<span class="operator">,</span> OpcUaModel <span class="operator">*</span>model<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qopcuareferencedescription.html" translate="no">QOpcUaReferenceDescription</a></span> <span class="operator">&amp;</span>browsingData<span class="operator">,</span> TreeItem <span class="operator">*</span>parent) : TreeItem(node<span class="operator">,</span> model<span class="operator">,</span> parent)
+ {
+     mNodeBrowseName <span class="operator">=</span> browsingData<span class="operator">.</span>browseName()<span class="operator">.</span>name();
+     mNodeClass <span class="operator">=</span> browsingData<span class="operator">.</span>nodeClass();
+     mNodeId <span class="operator">=</span> browsingData<span class="operator">.</span>targetNodeId()<span class="operator">.</span>nodeId();
+     mNodeDisplayName <span class="operator">=</span> browsingData<span class="operator">.</span>displayName()<span class="operator">.</span>text();
+     mHistorizing <span class="operator">=</span> <span class="keyword">false</span>;
+ }
+
+ TreeItem<span class="operator">::</span><span class="operator">~</span>TreeItem()
+ {
+     <a href="../qtcore/qtalgorithms.html#qDeleteAll" translate="no">qDeleteAll</a>(mChildItems);
+ }
+
+ TreeItem <span class="operator">*</span>TreeItem<span class="operator">::</span>child(<span class="type">int</span> row)
+ {
+     <span class="keyword">if</span> (row <span class="operator">&gt;</span><span class="operator">=</span> mChildItems<span class="operator">.</span>size())
+         <a href="../qtcore/qtlogging.html#qCritical" translate="no">qCritical</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;TreeItem in row&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> row <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;does not exist.&quot;</span>;
+     <span class="keyword">return</span> mChildItems<span class="operator">[</span>row<span class="operator">]</span>;
+ }
+
+ <span class="type">int</span> TreeItem<span class="operator">::</span>childIndex(<span class="keyword">const</span> TreeItem <span class="operator">*</span>child) <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> mChildItems<span class="operator">.</span>indexOf(<span class="keyword">const_cast</span><span class="operator">&lt;</span>TreeItem <span class="operator">*</span><span class="operator">&gt;</span>(child));
+ }
+
+ <span class="type">int</span> TreeItem<span class="operator">::</span>childCount()
+ {
+     startBrowsing();
+     <span class="keyword">return</span> mChildItems<span class="operator">.</span>size();
+ }
+
+ <span class="type">int</span> TreeItem<span class="operator">::</span>columnCount() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> numberOfDisplayColumns;
+ }
+
+ <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> TreeItem<span class="operator">::</span>data(<span class="type">int</span> column)
+ {
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>)
+         <span class="keyword">return</span> mNodeBrowseName;
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">1</span>) {
+         <span class="keyword">if</span> (<span class="operator">!</span>mAttributesReady)
+             <span class="keyword">return</span> tr(<span class="string">&quot;Loading ...&quot;</span>);
+
+         <span class="keyword">const</span> <span class="keyword">auto</span> type <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DataType)<span class="operator">.</span>toString();
+         <span class="keyword">const</span> <span class="keyword">auto</span> value <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value);
+
+         <span class="keyword">return</span> variantToString(value<span class="operator">,</span> type);
+     }
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">2</span>) {
+         <span class="type"><a href="../qtcore/qmetaenum.html" translate="no">QMetaEnum</a></span> metaEnum <span class="operator">=</span> <span class="type"><a href="../qtcore/qmetaenum.html" translate="no">QMetaEnum</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">&gt;</span>();
+         <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> name <span class="operator">=</span> metaEnum<span class="operator">.</span>valueToKey(<span class="type">int</span>(mNodeClass));
+         <span class="keyword">return</span> name <span class="operator">+</span> <span class="string">&quot; (&quot;</span> <span class="operator">+</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(<span class="type">int</span>(mNodeClass)) <span class="operator">+</span> <span class="char">')'</span>;
+     }
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">3</span>) {
+         <span class="keyword">if</span> (<span class="operator">!</span>mAttributesReady)
+             <span class="keyword">return</span> tr(<span class="string">&quot;Loading ...&quot;</span>);
+
+         <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> typeId <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DataType)<span class="operator">.</span>toString();
+         <span class="keyword">auto</span> enumEntry <span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>namespace0IdFromNodeId(typeId);
+         <span class="keyword">if</span> (enumEntry <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeIds<span class="operator">::</span>Namespace0<span class="operator">::</span>Unknown)
+             <span class="keyword">return</span> typeId;
+         <span class="keyword">return</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>namespace0IdName(enumEntry) <span class="operator">+</span> <span class="string">&quot; (&quot;</span> <span class="operator">+</span> typeId <span class="operator">+</span> <span class="string">&quot;)&quot;</span>;
+     }
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">4</span>)
+         <span class="keyword">return</span> mNodeId;
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">5</span>)
+         <span class="keyword">return</span> mNodeDisplayName;
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">6</span>) {
+         <span class="keyword">return</span> mAttributesReady
+             <span class="operator">?</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Description)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcualocalizedtext.html" translate="no">QOpcUaLocalizedText</a></span><span class="operator">&gt;</span>()<span class="operator">.</span>text()
+             : tr(<span class="string">&quot;Loading ...&quot;</span>);
+     }
+     <span class="keyword">if</span> (column <span class="operator">=</span><span class="operator">=</span> <span class="number">7</span>) {
+         <span class="keyword">return</span> mAttributesReady
+             <span class="operator">?</span> mHistorizing <span class="operator">?</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>(<span class="string">&quot;true&quot;</span>) : <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>(<span class="string">&quot;false&quot;</span>) : tr(<span class="string">&quot;Loading ...&quot;</span>);
+     }
+     <span class="keyword">return</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span>();
+ }
+
+ <span class="type">int</span> TreeItem<span class="operator">::</span>row() <span class="keyword">const</span>
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>mParentItem)
+         <span class="keyword">return</span> <span class="number">0</span>;
+     <span class="keyword">return</span> mParentItem<span class="operator">-</span><span class="operator">&gt;</span>childIndex(<span class="keyword">this</span>);
+ }
+
+ TreeItem <span class="operator">*</span>TreeItem<span class="operator">::</span>parentItem()
+ {
+     <span class="keyword">return</span> mParentItem;
+ }
+
+ <span class="type">void</span> TreeItem<span class="operator">::</span>appendChild(TreeItem <span class="operator">*</span>child)
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>child)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">if</span> (<span class="operator">!</span>hasChildNodeItem(child<span class="operator">-</span><span class="operator">&gt;</span>mNodeId)) {
+         mChildItems<span class="operator">.</span>append(child);
+         mChildNodeIds<span class="operator">.</span>insert(child<span class="operator">-</span><span class="operator">&gt;</span>mNodeId);
+     } <span class="keyword">else</span> {
+         child<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+     }
+ }
+
+ <span class="keyword">static</span> <span class="type">QPixmap</span> createPixmap(<span class="keyword">const</span> <span class="type">QColor</span> <span class="operator">&amp;</span>c)
+ {
+     <span class="type">QPixmap</span> p(<span class="number">10</span><span class="operator">,</span><span class="number">10</span>);
+     p<span class="operator">.</span>fill(c);
+     <span class="keyword">return</span> p;
+ }
+
+ <span class="type">QPixmap</span> TreeItem<span class="operator">::</span>icon(<span class="type">int</span> column) <span class="keyword">const</span>
+ {
+     <span class="keyword">if</span> (column <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>mOpcNode)
+         <span class="keyword">return</span> <span class="type">QPixmap</span>();
+
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">QPixmap</span> objectPixmap <span class="operator">=</span> createPixmap(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>darkGreen);
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">QPixmap</span> variablePixmap <span class="operator">=</span> createPixmap(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>darkBlue);
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">QPixmap</span> methodPixmap <span class="operator">=</span> createPixmap(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>darkRed);
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type">QPixmap</span> defaultPixmap <span class="operator">=</span> createPixmap(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>gray);
+
+     <span class="keyword">switch</span> (mNodeClass) {
+     <span class="keyword">case</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">::</span>Object:
+         <span class="keyword">return</span> objectPixmap;
+     <span class="keyword">case</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">::</span>Variable:
+         <span class="keyword">return</span> variablePixmap;
+     <span class="keyword">case</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">::</span>Method:
+         <span class="keyword">return</span> methodPixmap;
+     <span class="keyword">default</span>:
+         <span class="keyword">break</span>;
+     }
+
+     <span class="keyword">return</span> defaultPixmap;
+ }
+
+ <span class="type">bool</span> TreeItem<span class="operator">::</span>hasChildNodeItem(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>nodeId) <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> mChildNodeIds<span class="operator">.</span>contains(nodeId);
+ }
+
+ <span class="type">void</span> TreeItem<span class="operator">::</span>setMonitoringEnabled(<span class="type">bool</span> active)
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>supportsMonitoring())
+         <span class="keyword">return</span>;
+
+     <span class="keyword">if</span> (active) {
+         mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">500</span>));
+     } <span class="keyword">else</span> {
+         mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>disableMonitoring(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value);
+     }
+ }
+
+ <span class="type">bool</span> TreeItem<span class="operator">::</span>monitoringEnabled() <span class="keyword">const</span>
+ {
+     <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span> monitoring <span class="operator">=</span> mOpcNode<span class="operator">.</span>get()<span class="operator">-</span><span class="operator">&gt;</span>monitoringStatus(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value);
+     <span class="keyword">return</span>  monitoring<span class="operator">.</span>statusCode() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good <span class="operator">&amp;</span><span class="operator">&amp;</span>
+             monitoring<span class="operator">.</span>monitoringMode() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span><span class="operator">::</span>MonitoringMode<span class="operator">::</span>Reporting;
+ }
+
+ <span class="type">bool</span> TreeItem<span class="operator">::</span>supportsMonitoring() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> mNodeClass <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">::</span>Variable;
+ }
+
+ <span class="type">void</span> TreeItem<span class="operator">::</span>startBrowsing()
+ {
+     <span class="keyword">if</span> (mBrowseStarted)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">if</span> (<span class="operator">!</span>mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>browseChildren())
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Browsing node&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>nodeId() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;failed&quot;</span>;
+     <span class="keyword">else</span>
+         mBrowseStarted <span class="operator">=</span> <span class="keyword">true</span>;
+ }
+
+ <span class="type">void</span> TreeItem<span class="operator">::</span>handleAttributes(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttributes attr)
+ {
+     <span class="keyword">if</span> (attr <span class="operator">&amp;</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>NodeClass)
+         mNodeClass <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>NodeClass)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeClass<span class="operator">&gt;</span>();
+     <span class="keyword">if</span> (attr <span class="operator">&amp;</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName)
+         mNodeBrowseName <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span><span class="operator">&gt;</span>()<span class="operator">.</span>name();
+     <span class="keyword">if</span> (attr <span class="operator">&amp;</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DisplayName)
+         mNodeDisplayName <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>DisplayName)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcualocalizedtext.html" translate="no">QOpcUaLocalizedText</a></span><span class="operator">&gt;</span>()<span class="operator">.</span>text();
+     <span class="keyword">if</span> (attr <span class="operator">&amp;</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Historizing) {
+         mHistorizing <span class="operator">=</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Historizing)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type">bool</span><span class="operator">&gt;</span>();
+     }
+
+     mAttributesReady <span class="operator">=</span> <span class="keyword">true</span>;
+     <span class="keyword">emit</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>dataChanged(mModel<span class="operator">-</span><span class="operator">&gt;</span>createIndex(row()<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="keyword">this</span>)<span class="operator">,</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>createIndex(row()<span class="operator">,</span> numberOfDisplayColumns <span class="operator">-</span> <span class="number">1</span><span class="operator">,</span> <span class="keyword">this</span>));
+ }
+
+ <span class="type">void</span> TreeItem<span class="operator">::</span>browseFinished(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qopcuareferencedescription.html" translate="no">QOpcUaReferenceDescription</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>children<span class="operator">,</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode statusCode)
+ {
+     <span class="keyword">if</span> (statusCode <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Good) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Browsing node&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> mOpcNode<span class="operator">-</span><span class="operator">&gt;</span>nodeId() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;finally failed:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> statusCode;
+         <span class="keyword">return</span>;
+     }
+
+     <span class="keyword">auto</span> index <span class="operator">=</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>createIndex(row()<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="keyword">this</span>);
+
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>item : children) {
+         <span class="keyword">if</span> (hasChildNodeItem(item<span class="operator">.</span>targetNodeId()<span class="operator">.</span>nodeId()))
+             <span class="keyword">continue</span>;
+
+         <span class="keyword">auto</span> node <span class="operator">=</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>opcUaClient()<span class="operator">-</span><span class="operator">&gt;</span>node(item<span class="operator">.</span>targetNodeId());
+         <span class="keyword">if</span> (<span class="operator">!</span>node) {
+             <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to instantiate node:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> item<span class="operator">.</span>targetNodeId()<span class="operator">.</span>nodeId();
+             <span class="keyword">continue</span>;
+         }
+
+         mModel<span class="operator">-</span><span class="operator">&gt;</span>beginInsertRows(index<span class="operator">,</span> mChildItems<span class="operator">.</span>size()<span class="operator">,</span> mChildItems<span class="operator">.</span>size() <span class="operator">+</span> <span class="number">1</span>);
+         appendChild(<span class="keyword">new</span> TreeItem(node<span class="operator">,</span> mModel<span class="operator">,</span> item<span class="operator">,</span> <span class="keyword">this</span>));
+         mModel<span class="operator">-</span><span class="operator">&gt;</span>endInsertRows();
+     }
+
+     <span class="keyword">emit</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>dataChanged(mModel<span class="operator">-</span><span class="operator">&gt;</span>createIndex(row()<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="keyword">this</span>)<span class="operator">,</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>createIndex(row()<span class="operator">,</span> numberOfDisplayColumns <span class="operator">-</span> <span class="number">1</span><span class="operator">,</span> <span class="keyword">this</span>));
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> TreeItem<span class="operator">::</span>variantToString(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>typeNodeId) <span class="keyword">const</span>
+ {
+     <span class="keyword">if</span> (value<span class="operator">.</span>metaType()<span class="operator">.</span>id() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span><span class="type"><a href="../qtcore/qvariant.html#QVariantList-typedef" translate="no">QVariantList</a></span>) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> list <span class="operator">=</span> value<span class="operator">.</span>toList();
+         <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> concat;
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span><span class="operator">,</span> size <span class="operator">=</span> list<span class="operator">.</span>size(); i <span class="operator">&lt;</span> size; <span class="operator">+</span><span class="operator">+</span>i) {
+             <span class="keyword">if</span> (i)
+                 concat<span class="operator">.</span>append(<span class="char">'\n'</span>_L1);
+             concat<span class="operator">.</span>append(variantToString(list<span class="operator">.</span>at(i)<span class="operator">,</span> typeNodeId));
+         }
+         <span class="keyword">return</span> concat;
+     }
+
+     <span class="keyword">if</span> (typeNodeId <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;ns=0;i=19&quot;</span>_L1) { <span class="comment">// StatusCode</span>
+         <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>name <span class="operator">=</span> <span class="type"><a href="../qtcore/qmetaenum.html" translate="no">QMetaEnum</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">&gt;</span>()<span class="operator">.</span>valueToKey(value<span class="operator">.</span>toInt());
+         <span class="keyword">return</span> name <span class="operator">?</span> QLatin1StringView(name) : <span class="string">&quot;Unknown StatusCode&quot;</span>_L1;
+     }
+     <span class="keyword">if</span> (typeNodeId <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;ns=0;i=2&quot;</span>_L1) <span class="comment">// Char</span>
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(value<span class="operator">.</span>toInt());
+     <span class="keyword">if</span> (typeNodeId <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;ns=0;i=3&quot;</span>_L1) <span class="comment">// SChar</span>
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(value<span class="operator">.</span>toUInt());
+     <span class="keyword">if</span> (typeNodeId <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;ns=0;i=4&quot;</span>_L1) <span class="comment">// Int16</span>
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(value<span class="operator">.</span>toInt());
+     <span class="keyword">if</span> (typeNodeId <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;ns=0;i=5&quot;</span>_L1) <span class="comment">// UInt16</span>
+         <span class="keyword">return</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(value<span class="operator">.</span>toUInt());
+     <span class="keyword">if</span> (value<span class="operator">.</span>metaType()<span class="operator">.</span>id() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span><span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span>)
+         <span class="keyword">return</span> <span class="string">&quot;0x%1&quot;</span>_L1<span class="operator">.</span>arg(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>fromLatin1(value<span class="operator">.</span>toByteArray()<span class="operator">.</span>toHex()));
+     <span class="keyword">if</span> (value<span class="operator">.</span>metaType()<span class="operator">.</span>id() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span><span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span>)
+         <span class="keyword">return</span> value<span class="operator">.</span>toDateTime()<span class="operator">.</span>toString(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODate);
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> name <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[NamespaceIndex: %1, Name: \&quot;%2\&quot;]&quot;</span>_s<span class="operator">.</span>arg(name<span class="operator">.</span>namespaceIndex())<span class="operator">.</span>arg(name<span class="operator">.</span>name());
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcualocalizedtext.html" translate="no">QOpcUaLocalizedText</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> text <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcualocalizedtext.html" translate="no">QOpcUaLocalizedText</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> localizedTextToString(text);
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuarange.html" translate="no">QOpcUaRange</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> range <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuarange.html" translate="no">QOpcUaRange</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> rangeToString(range);
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuacomplexnumber.html" translate="no">QOpcUaComplexNumber</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> complex <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuacomplexnumber.html" translate="no">QOpcUaComplexNumber</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[Real: %1, Imaginary: %2]&quot;</span>_s<span class="operator">.</span>arg(complex<span class="operator">.</span>real())<span class="operator">.</span>arg(complex<span class="operator">.</span>imaginary());
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuadoublecomplexnumber.html" translate="no">QOpcUaDoubleComplexNumber</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> complex <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuadoublecomplexnumber.html" translate="no">QOpcUaDoubleComplexNumber</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[Real: %1, Imaginary: %2]&quot;</span>_s<span class="operator">.</span>arg(complex<span class="operator">.</span>real())<span class="operator">.</span>arg(complex<span class="operator">.</span>imaginary());
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaxvalue.html" translate="no">QOpcUaXValue</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> xv <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaxvalue.html" translate="no">QOpcUaXValue</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[X: %1, Value: %2]&quot;</span>_s<span class="operator">.</span>arg(xv<span class="operator">.</span>x())<span class="operator">.</span>arg(xv<span class="operator">.</span>value());
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaeuinformation.html" translate="no">QOpcUaEUInformation</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> info <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaeuinformation.html" translate="no">QOpcUaEUInformation</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> euInformationToString(info);
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaaxisinformation.html" translate="no">QOpcUaAxisInformation</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> info <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaaxisinformation.html" translate="no">QOpcUaAxisInformation</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[EUInformation: %1, EURange: %2, Title: %3 , AxisScaleType: %4, AxisSteps: %5]&quot;</span>_s<span class="operator">.</span>arg(
+             euInformationToString(info<span class="operator">.</span>engineeringUnits())<span class="operator">,</span> rangeToString(info<span class="operator">.</span>eURange())<span class="operator">,</span> localizedTextToString(info<span class="operator">.</span>title())<span class="operator">,</span>
+             info<span class="operator">.</span>axisScaleType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>AxisScale<span class="operator">::</span>Linear <span class="operator">?</span> <span class="string">&quot;Linear&quot;</span> : (info<span class="operator">.</span>axisScaleType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>AxisScale<span class="operator">::</span>Ln) <span class="operator">?</span> <span class="string">&quot;Ln&quot;</span> : <span class="string">&quot;Log&quot;</span><span class="operator">,</span>
+             numberArrayToString(info<span class="operator">.</span>axisSteps()));
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaexpandednodeid.html" translate="no">QOpcUaExpandedNodeId</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> id <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaexpandednodeid.html" translate="no">QOpcUaExpandedNodeId</a></span><span class="operator">&gt;</span>();
+         <span class="keyword">return</span> u<span class="string">&quot;[NodeId: \&quot;%1\&quot;, ServerIndex: \&quot;%2\&quot;, NamespaceUri: \&quot;%3\&quot;]&quot;</span>_s<span class="operator">.</span>arg(
+                     id<span class="operator">.</span>nodeId())<span class="operator">.</span>arg(id<span class="operator">.</span>serverIndex())<span class="operator">.</span>arg(id<span class="operator">.</span>namespaceUri());
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaargument.html" translate="no">QOpcUaArgument</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> a <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaargument.html" translate="no">QOpcUaArgument</a></span><span class="operator">&gt;</span>();
+
+         <span class="keyword">return</span> u<span class="string">&quot;[Name: \&quot;%1\&quot;, DataType: \&quot;%2\&quot;, ValueRank: \&quot;%3\&quot;, ArrayDimensions: %4, Description: %5]&quot;</span>_s<span class="operator">.</span>arg(
+                     a<span class="operator">.</span>name()<span class="operator">,</span> a<span class="operator">.</span>dataTypeId())<span class="operator">.</span>arg(a<span class="operator">.</span>valueRank())<span class="operator">.</span>arg(numberArrayToString(a<span class="operator">.</span>arrayDimensions())<span class="operator">,</span>
+                     localizedTextToString(a<span class="operator">.</span>description()));
+     }
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span><span class="operator">&gt;</span>()) {
+         <span class="keyword">auto</span> obj <span class="operator">=</span> value<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span><span class="operator">&gt;</span>();
+
+         <span class="keyword">if</span> (mModel<span class="operator">-</span><span class="operator">&gt;</span>genericStructHandler() <span class="operator">&amp;</span><span class="operator">&amp;</span>
+             mModel<span class="operator">-</span><span class="operator">&gt;</span>genericStructHandler()<span class="operator">-</span><span class="operator">&gt;</span>dataTypeKindForTypeId(mModel<span class="operator">-</span><span class="operator">&gt;</span>genericStructHandler()<span class="operator">-</span><span class="operator">&gt;</span>typeIdForBinaryEncodingId(obj<span class="operator">.</span>encodingTypeId()))
+                                                   <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuagenericstructhandler.html" translate="no">QOpcUaGenericStructHandler</a></span><span class="operator">::</span>DataTypeKind<span class="operator">::</span>Struct) {
+             <span class="keyword">const</span> <span class="keyword">auto</span> decodedValue <span class="operator">=</span> mModel<span class="operator">-</span><span class="operator">&gt;</span>genericStructHandler()<span class="operator">-</span><span class="operator">&gt;</span>decode(obj);
+             <span class="keyword">if</span> (decodedValue)
+                 <span class="keyword">return</span> decodedValue<span class="operator">-</span><span class="operator">&gt;</span>toString();
+         }
+
+         <span class="keyword">return</span> u<span class="string">&quot;[TypeId: \&quot;%1\&quot;, Encoding: %2, Body: 0x%3]&quot;</span>_s<span class="operator">.</span>arg(obj<span class="operator">.</span>encodingTypeId()<span class="operator">,</span>
+                     obj<span class="operator">.</span>encoding() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span><span class="operator">::</span>Encoding<span class="operator">::</span>NoBody <span class="operator">?</span>
+                         <span class="string">&quot;NoBody&quot;</span> : (obj<span class="operator">.</span>encoding() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span><span class="operator">::</span>Encoding<span class="operator">::</span>ByteString <span class="operator">?</span>
+                             <span class="string">&quot;ByteString&quot;</span> : <span class="string">&quot;XML&quot;</span>))<span class="operator">.</span>arg(obj<span class="operator">.</span>encodedBody()<span class="operator">.</span>isEmpty() <span class="operator">?</span> <span class="string">&quot;0&quot;</span> : <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>(obj<span class="operator">.</span>encodedBody()<span class="operator">.</span>toHex()));
+     }
+
+     <span class="keyword">if</span> (value<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">&gt;</span>())
+         <span class="keyword">return</span> value<span class="operator">.</span>toString();
+
+     <span class="keyword">return</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>();
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> TreeItem<span class="operator">::</span>localizedTextToString(<span class="keyword">const</span> <span class="type"><a href="qopcualocalizedtext.html" translate="no">QOpcUaLocalizedText</a></span> <span class="operator">&amp;</span>text) <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> u<span class="string">&quot;[Locale: \&quot;%1\&quot;, Text: \&quot;%2\&quot;]&quot;</span>_s<span class="operator">.</span>arg(text<span class="operator">.</span>locale()<span class="operator">,</span> text<span class="operator">.</span>text());
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> TreeItem<span class="operator">::</span>rangeToString(<span class="keyword">const</span> <span class="type"><a href="qopcuarange.html" translate="no">QOpcUaRange</a></span> <span class="operator">&amp;</span>range) <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> u<span class="string">&quot;[Low: %1, High: %2]&quot;</span>_s<span class="operator">.</span>arg(range<span class="operator">.</span>low())<span class="operator">.</span>arg(range<span class="operator">.</span>high());
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> TreeItem<span class="operator">::</span>euInformationToString(<span class="keyword">const</span> <span class="type"><a href="qopcuaeuinformation.html" translate="no">QOpcUaEUInformation</a></span> <span class="operator">&amp;</span>info) <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> u<span class="string">&quot;[UnitId: %1, NamespaceUri: \&quot;%2\&quot;, DisplayName: %3, Description: %4]&quot;</span>_s<span class="operator">.</span>arg(info<span class="operator">.</span>unitId())<span class="operator">.</span>arg(
+                 info<span class="operator">.</span>namespaceUri()<span class="operator">,</span> localizedTextToString(info<span class="operator">.</span>displayName())<span class="operator">,</span> localizedTextToString(info<span class="operator">.</span>description()));
+ }
+</pre>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dmorphtarget.cpp -->
+  <meta name="description" content="Defines the properties of a morph target.">
+  <title>MorphTarget QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>MorphTarget</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">MorphTarget QML Type</h1>
+<!-- $$$MorphTarget-brief -->
+<p>Defines the properties of a morph target. <a href="#details">More...</a></p>
+<!-- @@@MorphTarget -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-object3d.html" translate="no">Object3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-morphtarget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-morphtarget.html#attributes-prop" translate="no">attributes</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-morphtarget.html#weight-prop" translate="no">weight</a></b> : real</li>
+</ul>
+<!-- $$$MorphTarget-description -->
+<h2 id="details">Detailed Description</h2>
+<p>Each <i>MorphTarget</i> is a morph target for a <a href="quick3d-morphing.html">vertex animation</a>. The degree of morphing is controlled by changing the <a href="qml-qtquick3d-morphtarget.html#weight-prop" translate="no">weight</a> property.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-morphtarget.html" translate="no">MorphTarget</a></span> {
+     <span class="name">id</span>: <span class="name">morphtarget0</span>
+     <span class="name">attributes</span>: <span class="name">MorphTarget</span>.<span class="name">Position</span> <span class="operator">|</span> <span class="name">MorphTarget</span>.<span class="name">Normal</span>
+     <span class="name">weight</span>: <span class="number">0.5</span>
+ }
+</pre>
+<p>The <a href="qtquick3d-morphing-example.html">morphing example</a> shows how to use a morph target.</p>
+<!-- @@@MorphTarget -->
+<h2>Property Documentation</h2>
+<!-- $$$attributes -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="attributes-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">attributes</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the set of attributes of the current morph target. In order to animate vertex attributes in morphing, the mesh must contain those target attributes and the morph target must have the attributes enabled.</p>
+<p>The attributes for a morph target are specified by OR-ing together the following values:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.Position</code></td><td class="topAlign">animates the vertex positions</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.Normal</code></td><td class="topAlign">animates the normal vectors</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.Tangent</code></td><td class="topAlign">animates the tangent vectors</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.Binormal</code></td><td class="topAlign">animates the binormal vectors</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.TexCoord0</code></td><td class="topAlign">animates the texture coordinate 0 vectors</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.TexCoord1</code></td><td class="topAlign">animates the texture coordinate 1 vectors</td></tr>
+<tr><td class="topAlign"><code translate="no">MorphTarget.Color</code></td><td class="topAlign">animates the vertex color vectors</td></tr>
+</table></div>
+</div></div><!-- @@@attributes -->
+<br/>
+<!-- $$$weight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="weight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">weight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the weight of the current morph target. The weight is the multiplication factor used by the linear interpolation. A weight of 1 means that this target is fully applied. A weight of 0 means that it has no influence.</p>
+</div></div><!-- @@@weight -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

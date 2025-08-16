@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- quicksecureclient.qdoc -->
+  <meta name="description" content="Securing the CoAP client and using it with a Qt Quick user interface.">
+  <title>Quick Secure CoAP Client | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Quick Secure CoAP Client</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Quick Secure CoAP Client</h1>
+<pre class="cpp" translate="no">
+ # Copyright (C) 2022 The Qt Company Ltd.
+ # SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
+
+ cmake_minimum_required(VERSION 3.16)
+ project(quicksecureclient LANGUAGES CXX)
+
+ if(NOT DEFINED INSTALL_EXAMPLESDIR)
+     set(INSTALL_EXAMPLESDIR &quot;examples&quot;)
+ endif()
+
+ set(INSTALL_EXAMPLEDIR &quot;${INSTALL_EXAMPLESDIR}/coap/quicksecureclient&quot;)
+
+ find_package(Qt6 REQUIRED COMPONENTS Coap Core Gui Qml Quick)
+
+ qt_standard_project_setup(REQUIRES 6.5)
+
+ qt_add_executable(quicksecureclient
+     main.cpp
+ )
+
+ set_target_properties(quicksecureclient PROPERTIES
+     WIN32_EXECUTABLE TRUE
+     MACOSX_BUNDLE TRUE
+ )
+
+ target_link_libraries(quicksecureclient PRIVATE
+     Qt6::Coap
+     Qt6::Core
+     Qt6::Gui
+     Qt6::Qml
+     Qt6::Quick
+ )
+
+ qt_add_qml_module(quicksecureclient
+     URI CoapSecureClientModule
+     SOURCES
+         qmlcoapsecureclient.cpp qmlcoapsecureclient.h
+     QML_FILES
+         FilePicker.qml
+         Main.qml
+ )
+
+ install(TARGETS quicksecureclient
+     RUNTIME DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+     BUNDLE DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+     LIBRARY DESTINATION &quot;${INSTALL_EXAMPLEDIR}&quot;
+ )
+</pre>

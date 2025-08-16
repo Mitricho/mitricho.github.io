@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- backend-notes-gstreamer.qdoc -->
+  <meta name="description" content="Platform notes for the GStreamer backend">
+  <title>Qt Multimedia GStreamer backend | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li>Qt Multimedia GStreamer backend</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#limitations-and-known-issues">Limitations and Known Issues</a></li>
+<li class="level1"><a href="#customization-points">Customization points</a></li>
+<li class="level2"><a href="#raw-pipeline-access">Raw pipeline access</a></li>
+<li class="level2"><a href="#custom-gstreamer-elements-as-sinks-and-sources">Custom GStreamer elements as sinks and sources</a></li>
+<li class="level2"><a href="#qmediaplayer-custom-sources">QMediaPlayer: custom sources</a></li>
+<li class="level1"><a href="#architectural-considerations">Architectural Considerations.</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Multimedia GStreamer backend</h1>
+<!-- $$$qtmultimedia-gstreamer.html-description -->
+<div class="descr" id="details">
+<p>This page covers the limitations of the GStreamer backend of Qt Multimedia.</p>
+<h2 id="limitations-and-known-issues">Limitations and Known Issues</h2>
+<p>GStreamer is not bundled with Qt, but it is typically deployed with the Linux distribution.</p>
+<ul>
+<li>Certain bugs may be due to the GStreamer version being used. We recommend to use the latest GStreamer bug fix release on your platform.</li>
+<li>Certain bugs may also be related to the libraries used by GStreamer, like Pulseaudio. Most notably Pulseaudio v16 has a known bug that causes the GStreamer pipeline to hang and requires backports of these two patches:<ul>
+<li><a href="https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/745">https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/745</a></li>
+<li><a href="https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/764">https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/764</a></li>
+</ul>
+<p>This bug currently affects most mainstream Linux distributions, including Ubuntu 22.04, 23.10 and 24.04, Debian 11 and 12, as well as Fedora 39 and 40.</p>
+</li>
+<li>Seeking, playback rates, loop, switching sinks have known bugs.</li>
+<li>Audio features requires PulseAudio. See <a href="qtmultimedia-linux.html">Linux platform notes</a> for details.</li>
+</ul>
+<h2 id="customization-points">Customization points</h2>
+<p>Qt Multimedia provides certain customization points to allow access to the underlying GStreamer pipeline. These customization points are considered private APIs and may be subject to change. The entry point is <code translate="no">class QGStreamerPlatformSpecificInterface</code>.</p>
+<h3 id="raw-pipeline-access">Raw pipeline access</h3>
+<p>The <code translate="no">GstPipeline</code> underlying the <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> and <a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a> can be accessed.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>This is an unsafe API, as the pipeline is still managed by the Qt implementation. Great care is required when using this API.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QtMultimedia/private/qgstreamer_platformspecificinterface_p.h&gt;</span>
+
+ <span class="operator">[</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span><span class="operator">]</span>
+ <span class="type">QMediaMediaPlayer</span> player;
+ GstPipeline <span class="operator">*</span>pipeline <span class="operator">=</span> <span class="type">QGStreamerPlatformSpecificInterface</span><span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>gstPipeline(<span class="operator">&amp;</span>player);
+ <span class="operator">[</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span><span class="operator">]</span>
+ <span class="type"><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a></span> session;
+ GstPipeline <span class="operator">*</span>pipeline <span class="operator">=</span> <span class="type">QGSreamerPlatformSpecificInterface</span><span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>gstPipeline(<span class="operator">&amp;</span>session);
+</pre>
+<h3 id="custom-gstreamer-elements-as-sinks-and-sources">Custom GStreamer elements as sinks and sources</h3>
+<p>It is possible to create GStreamer elements from a GStreamer pipeline decription and wrap them inside a <code translate="no">QCamera</code> or <code translate="no">QAudioDevice</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QtMultimedia/private/qgstreamer_platformspecificinterface_p.h&gt;</span>
+
+ <span class="operator">[</span><span class="operator">.</span><span class="operator">.</span><span class="operator">.</span><span class="operator">]</span>
+ <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> pipelineString <span class="operator">=</span> <span class="string">&quot;videotestsrc is-live=true ! gamma gamma=2.0&quot;</span>;
+
+ <span class="type"><a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a></span> session;
+ session<span class="operator">.</span>setVideoSink(wid<span class="operator">.</span>videoSink());
+
+ <span class="type"><a href="qcamera.html" translate="no">QCamera</a></span> <span class="operator">*</span>cam <span class="operator">=</span> <span class="type">QGStreamerPlatformSpecificInterface</span><span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>makeCustomGStreamerCamera(
+          pipelineString<span class="operator">,</span> <span class="operator">&amp;</span>session);
+ session<span class="operator">.</span>setCamera(cam);
+</pre>
+<h3 id="qmediaplayer-custom-sources">QMediaPlayer: custom sources</h3>
+<p>The <code translate="no">QMediaPlayer</code> accepts a GStreamer pipeline decription as source URI:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qmediaplayer.html" translate="no">QMediaPlayer</a></span> player;
+ player<span class="operator">.</span>setSource(u<span class="string">&quot;gstreamer-pipeline: videotestsrc name=testsrc&quot;</span>_s);
+</pre>
+<p>This will try to compile the pipeline description to use as source in the <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> and will be automatically connected to the sinks of the <a href="qmediaplayer.html" translate="no">QMediaPlayer</a>.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Hic sunt dracones! Custom pipelines are an experimental feature: the custom pipelines do not map well to <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> APIs, most notably the media status, metadata APIs, and transport state. Most calls will directly map to the GStreamer pipeline, which can lead to undefined behavior depending on the pipeline. In most cases, the <code translate="no">gstreamer-pipeline:</code> may not be the right choice for application code: for arbitrary video sources, the <code translate="no">QMediaCaptureSession</code> with a custom camera (see above) is the preferred choice. For arbitrarily complex pipelines that only want to draw into a Qt/QML GUI, GStreamer's <code translate="no">qml6glsink</code> (see below) may be a more robust choice.</p>
+</div>
+<h2 id="architectural-considerations">Architectural Considerations.</h2>
+<p>Qt Multimedia is not a general purpose streaming framework and not necessarily the architecturally best way to use GStreamer with Qt. Developers, who need a high degree of control over the GStreamer pipeline, but only want to show the video output Qt, may want to consider using GStreamer's <a href="https://gstreamer.freedesktop.org/documentation/qml6/index.html">qml6glsink</a>.</p>
+</div>
+<!-- @@@qtmultimedia-gstreamer.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

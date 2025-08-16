@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>&lt;QTypeInfo&gt; Proxy Page | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>&lt;QTypeInfo&gt; Proxy Page</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">&lt;QTypeInfo&gt; Proxy Page</h1>
+<h2 id="macros">Macros</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qtypeinfo-qtcore-proxy.html#Q_DECLARE_TYPEINFO" translate="no">Q_DECLARE_TYPEINFO</a></b>(<i>Type</i>, <i>Flags</i>)</td></tr>
+</table></div>
+<div class="macros">
+<h2>Macro Documentation</h2>
+<!-- $$$Q_DECLARE_TYPEINFO[overload1]$$$Q_DECLARE_TYPEINFO -->
+<h3 class="fn" translate="no" id="Q_DECLARE_TYPEINFO"><span class="name">Q_DECLARE_TYPEINFO</span>(<i>Type</i>, <i>Flags</i>)</h3>
+<p>You can use this macro to specify information about a custom type <i translate="no">Type</i>. With accurate type information, Qt's <a href="containers.html">generic containers</a> can choose appropriate storage methods and algorithms.</p>
+<p><i translate="no">Flags</i> can be one of the following:</p>
+<ul>
+<li><code translate="no">Q_PRIMITIVE_TYPE</code> specifies that <i translate="no">Type</i> requires no operation to be performed in order to be properly destroyed, and that it is possible to use memcpy() in order to create a valid independent copy of an object.</li>
+<li><code translate="no">Q_RELOCATABLE_TYPE</code> specifies that <i translate="no">Type</i> has a constructor and/or a destructor, but it can still be <i>relocated</i> in memory by using <code translate="no">memcpy()</code>.</li>
+<li><code translate="no">Q_MOVABLE_TYPE</code> is the same as <code translate="no">Q_RELOCATABLE_TYPE</code>. Prefer to use <code translate="no">Q_RELOCATABLE_TYPE</code> in new code. Note: despite the name, this has nothing to do with move constructors or C++ move semantics.</li>
+<li><code translate="no">Q_COMPLEX_TYPE</code> (the default) specifies that <i translate="no">Type</i> has constructors and/or a destructor and that it may not be moved in memory.</li>
+</ul>
+<p>Example of a &quot;primitive&quot; type:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">struct</span> Point2D
+ {
+     <span class="type">int</span> x;
+     <span class="type">int</span> y;
+ };
+
+ Q_DECLARE_TYPEINFO(Point2D<span class="operator">,</span> Q_PRIMITIVE_TYPE);
+</pre>
+<p>An example of a non-POD &quot;primitive&quot; type is <a href="quuid.html" translate="no">QUuid</a>: Even though <a href="quuid.html" translate="no">QUuid</a> has constructors (and therefore isn't POD), every bit pattern still represents a valid object, and memcpy() can be used to create a valid independent copy of a <a href="quuid.html" translate="no">QUuid</a> object.</p>
+<p>Example of a relocatable type:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Point2D
+ {
+ <span class="keyword">public</span>:
+     Point2D() { data <span class="operator">=</span> <span class="keyword">new</span> <span class="type">int</span><span class="operator">[</span><span class="number">2</span><span class="operator">]</span>; }
+     Point2D(<span class="keyword">const</span> Point2D <span class="operator">&amp;</span>other) { <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> }
+     <span class="operator">~</span>Point2D() { <span class="keyword">delete</span><span class="operator">[</span><span class="operator">]</span> data; }
+
+     Point2D <span class="operator">&amp;</span><span class="keyword">operator</span><span class="operator">=</span>(<span class="keyword">const</span> Point2D <span class="operator">&amp;</span>other) { <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> }
+
+     <span class="type">int</span> x() <span class="keyword">const</span> { <span class="keyword">return</span> data<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>; }
+     <span class="type">int</span> y() <span class="keyword">const</span> { <span class="keyword">return</span> data<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>; }
+
+ <span class="keyword">private</span>:
+     <span class="type">int</span> <span class="operator">*</span>data;
+ };
+
+ Q_DECLARE_TYPEINFO(Point2D<span class="operator">,</span> Q_RELOCATABLE_TYPE);
+</pre>
+<p>Qt will try to detect the class of a type using standard C++ type traits; use this macro to tune the behavior. For instance many types would be candidates for Q_RELOCATABLE_TYPE despite not being trivially-copyable.</p>
+<!-- @@@Q_DECLARE_TYPEINFO -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

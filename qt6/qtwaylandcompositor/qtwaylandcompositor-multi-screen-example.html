@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- multi-screen.qdoc -->
+  <meta name="description" content="Multi Screen is a desktop-style Wayland compositor for multiple screens.">
+  <title>Multi Screen | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-examples.html">Qt Wayland Compositor Examples</a></li>
+<li>Multi Screen</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#supporting-multiple-screens">Supporting multiple screens</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Multi Screen</h1>
+<!-- $$$multi-screen-brief -->
+<p>Multi Screen is a desktop-style Wayland compositor for multiple screens.</p>
+<!-- @@@multi-screen -->
+<!-- $$$multi-screen-description -->
+<div class="descr" id="details">
+<h4 id="introduction">Introduction</h4>
+<p>Multi-screen is a desktop-style Wayland compositor example for multiple screens.</p>
+<p class="centerAlign"><img src="images/multi-screen.jpg" alt="" /></p><p>For an introduction to the basic principles of creating a <a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a> with Qt, see the <a href="qtwaylandcompositor-minimal-qml-example.html">Minimal QML example</a>.</p>
+<h4 id="supporting-multiple-screens">Supporting multiple screens</h4>
+<p>For each available screen on the system, the example creates a <code translate="no">CompositorScreen</code>, which is a subclass of <a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a>. If there is only one physical screen available, the example emulates three screens with dummy data.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtqmlmodels/qml-qtqml-models-instantiator.html" translate="no">Instantiator</a></span> {
+     <span class="name">id</span>: <span class="name">screens</span>
+     <span class="name">model</span>: <span class="name">emulated</span> ? <span class="name">emulatedScreens</span> : <span class="name">Qt</span>.<span class="name">application</span>.<span class="name">screens</span>
+
+     <span class="name">delegate</span>: <span class="name">CompositorScreen</span> {
+         <span class="name">surfaceArea</span>.color: <span class="string">&quot;lightsteelblue&quot;</span>
+         <span class="name">text</span>: <span class="name">name</span>
+         <span class="name">compositor</span>: <span class="name">comp</span>
+         <span class="name">screen</span>: <span class="name">emulated</span> ? <span class="name">Qt</span>.<span class="name">application</span>.<span class="name">screens</span>[<span class="number">0</span>] : <span class="name">modelData</span>
+         <span class="name">Component</span>.onCompleted: <span class="keyword">if</span> (!<span class="name">comp</span>.<span class="name">defaultOutput</span>) <span class="name">comp</span>.<span class="name">defaultOutput</span> <span class="operator">=</span> this
+         <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">point</span>(<span class="name">virtualX</span>, <span class="name">virtualY</span>)
+         <span class="name">windowed</span>: <span class="name">emulated</span>
+     }
+ }
+</pre>
+<p>Each <a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a> contains a <a href="qtwaylandcompositor-minimal-cpp-example.html#window">Window</a>, which is used for containing client content, as is the standard setup with <a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a>. Since each <a href="qtwaylandcompositor-minimal-cpp-example.html#window">Window</a> is isolated from the others, we cannot share any Qt Quick items between them. Therefore, when a client connects and a <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a> is created, one <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> is created on each of the screens.</p>
+<pre class="qml" translate="no">
+ <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">screens</span>.<span class="name">count</span>; ++<span class="name">i</span>)
+     <span class="name">createShellSurfaceItem</span>(<span class="name">shellSurface</span>, <span class="name">moveItem</span>, <span class="name">screens</span>.<span class="name">objectAt</span>(<span class="name">i</span>));
+</pre>
+<p>These items serve as views of the same client content. The client's surface itself will only be created once, and will be shared by the surface items.</p>
+<p>Top-level surface items are created as children of the background <a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a> in each of the outputs. These views are stored for later, and if the client spawns any child windows, these are parented to the top-level window's item.</p>
+<pre class="qml" translate="no">
+ var parentSurfaceItem = <span class="name">output</span>.<span class="name">viewsBySurface</span>[<span class="name">shellSurface</span>.<span class="name">parentSurface</span>];
+ var parent = <span class="name">parentSurfaceItem</span> <span class="operator">||</span> <span class="name">output</span>.<span class="name">surfaceArea</span>;
+</pre>
+<p>The client content will be visible only on one or two screens at a time. <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> positions are synchronized so that when windows enter one screen, they are moved off of another at the same time. This gives the appearance of a single item which moves seamlessly between screens. The global position of the client is stored in a shared <a href="qml-qtwayland-compositor-shellsurfaceitem.html#moveItem-prop" translate="no">moveItem</a> and relative position of each screen's <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> is calculated based on this. If the <code translate="no">moveItem</code> is currently outside the bounds of one screen, its coordinates will reflect this, and it will not be visible on that screen.</p>
+<pre class="qml" translate="no">
+ <span class="name">x</span>: <span class="name">surfaceItem</span>.<span class="name">moveItem</span>.<span class="name">x</span> <span class="operator">-</span> <span class="name">surfaceItem</span>.<span class="name">output</span>.<span class="name">geometry</span>.<span class="name">x</span>
+ <span class="name">y</span>: <span class="name">surfaceItem</span>.<span class="name">moveItem</span>.<span class="name">y</span> <span class="operator">-</span> <span class="name">surfaceItem</span>.<span class="name">output</span>.<span class="name">geometry</span>.<span class="name">y</span>
+</pre>
+<p>Finally, <a href="qml-qtwayland-compositor-waylandquickitem.html#setPrimary-method" translate="no">WaylandQuickItem::setPrimary</a>() is called at appropriate times to set the primary view for the <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a>, which is used when the client asks to be maximized or fullscreen. The primary <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> is selected based on how much of it is currently visible.</p>
+<div class="admonition note">
+<p><b>Note: </b>In order to support multiple Wayland outputs in the same compositor, the <a href="../qtcore/qt.html#ApplicationAttribute-enum" translate="no">Qt::AA_ShareOpenGLContexts</a> attribute must be set before the <a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a> object is constructed. In the example, we do this at the very beginning of the <code translate="no">main()</code> function.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setAttribute(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>AA_ShareOpenGLContexts<span class="operator">,</span> <span class="keyword">true</span>);
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtwayland.git/tree/examples/wayland/multi-screen?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="qtwaylandcompositor-multi-output-example.html">Multi Output</a>.</p>
+<!-- @@@multi-screen -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

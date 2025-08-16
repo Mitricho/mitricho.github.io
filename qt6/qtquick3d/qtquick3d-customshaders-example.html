@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-customshaders.qdoc -->
+  <meta name="description" content="Demonstrates the use of custom vertex and fragment shaders.">
+  <title>Qt Quick 3D - Custom Shaders Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Custom Shaders Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#implementing-a-custom-material">Implementing a custom material</a></li>
+<li class="level1"><a href="#using-a-custom-material">Using a custom material</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Custom Shaders Example</h1>
+<!-- $$$customshaders-brief -->
+<p>Demonstrates the use of custom vertex and fragment shaders.</p>
+<!-- @@@customshaders -->
+<!-- $$$customshaders-description -->
+<div class="descr" id="details">
+<p>This example demonstrates using a material with completely custom vertex and fragment shader code.</p>
+<p class="centerAlign"><img src="images/customshaders-example.jpg" alt="" /></p><p>This example is the counterpart to the <a href="qtquick3d-custommaterial-example.html">custommaterials</a> example, which demonstrates the other group of custom materials: <code translate="no">shaded</code> materials where the shader code snippet augments a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, rather than replacing it.</p>
+<h4 id="implementing-a-custom-material">Implementing a custom material</h4>
+<p>In this example, a mesh is deformed by the vertex shader according to a sine function. The end result is controlled by two sliders corresponding to the time and amplitude values of the sine function.</p>
+<p>The fragment shader is used to color the mesh according to the position values of the vertices. There are two fragment shaders included: one with and without texturing. The textured version samples a texture that is source from either an image file, or from a live Qt Quick layer.</p>
+<p>The material does not participate in the default lighting or shadowing system, and therefore has its <a href="qml-qtquick3d-custommaterial.html#shadingMode-prop" translate="no">shadingMode</a> property set to <code translate="no">CustomMaterial.Unshaded</code>.</p>
+<p>See <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> for a detailed description of custom material capabilities.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a></span> {
+     <span class="name">id</span>: <span class="name">root</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">time</span>: <span class="number">0.0</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">amplitude</span>: <span class="number">5.0</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">alpha</span>: <span class="number">1.0</span>
+
+     property <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <span class="name">texturing</span>: <span class="number">false</span>
+     property <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <span class="name">textureFromItem</span>: <span class="number">false</span>
+     property <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> <span class="name">texSrc</span>
+     <span class="type"><a href="qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">texFromFile</span>
+         <span class="name">source</span>: <span class="string">&quot;qt_logo.png&quot;</span>
+     }
+     <span class="type"><a href="qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+         <span class="name">id</span>: <span class="name">texFromItem</span>
+         <span class="name">sourceItem</span>: <span class="name">root</span>.<span class="name">texSrc</span>
+     }
+     property <span class="type"><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a></span> <span class="name">tex</span>: <span class="name">TextureInput</span> {
+         <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">texturing</span>
+         <span class="name">texture</span>: <span class="name">root</span>.<span class="name">textureFromItem</span> ? <span class="name">texFromItem</span> : <span class="name">texFromFile</span>
+     }
+
+     <span class="name">shadingMode</span>: <span class="name">CustomMaterial</span>.<span class="name">Unshaded</span>
+     <span class="name">sourceBlend</span>: <span class="name">root</span>.<span class="name">alpha</span> <span class="operator">&lt;</span> <span class="number">1.0</span> ? <span class="name">CustomMaterial</span>.<span class="name">SrcAlpha</span> : <span class="name">CustomMaterial</span>.<span class="name">NoBlend</span>
+     <span class="name">destinationBlend</span>: <span class="name">root</span>.<span class="name">alpha</span> <span class="operator">&lt;</span> <span class="number">1.0</span> ? <span class="name">CustomMaterial</span>.<span class="name">OneMinusSrcAlpha</span> : <span class="name">CustomMaterial</span>.<span class="name">NoBlend</span>
+     <span class="name">cullMode</span>: <span class="name">CustomMaterial</span>.<span class="name">BackFaceCulling</span>
+
+     <span class="name">vertexShader</span>: <span class="string">&quot;example.vert&quot;</span>
+     <span class="name">fragmentShader</span>: <span class="name">root</span>.<span class="name">texturing</span> ? <span class="string">&quot;example_tex.frag&quot;</span> : <span class="string">&quot;example.frag&quot;</span>
+ }
+</pre>
+<h4 id="using-a-custom-material">Using a custom material</h4>
+<p>A custom material using custom shaders is used the same way as any other material. The uniforms in the shader can be easily updated through QML property bindings.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
+     NumberAnimation on <span class="name">eulerRotation</span>.y {
+         <span class="name">from</span>: <span class="number">0</span>
+         <span class="name">to</span>: <span class="number">360</span>
+         <span class="name">duration</span>: <span class="number">3000</span>
+         <span class="name">loops</span>: -<span class="number">1</span>
+         <span class="name">running</span>: <span class="name">control</span>.<span class="name">animateRotation</span>
+     }
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+     <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+     <span class="name">materials</span>: [
+         <span class="type">ExampleMaterial</span> {
+             <span class="name">id</span>: <span class="name">exampleMaterial</span>
+             <span class="name">time</span>: <span class="name">control</span>.<span class="name">time</span>
+             <span class="name">amplitude</span>: <span class="name">control</span>.<span class="name">amplitude</span>
+             <span class="name">alpha</span>: <span class="name">control</span>.<span class="name">alpha</span>
+             <span class="name">texturing</span>: <span class="name">control</span>.<span class="name">texturing</span>
+             <span class="name">textureFromItem</span>: <span class="name">control</span>.<span class="name">textureFromItem</span>
+             <span class="name">texSrc</span>: <span class="name">Rectangle</span> {
+                 <span class="name">layer</span>.enabled: <span class="number">true</span>
+                 <span class="name">layer</span>.textureMirroring: <span class="name">ShaderEffectSource</span>.<span class="name">NoMirroring</span>
+                 <span class="name">visible</span>: <span class="number">false</span>
+                 SequentialAnimation on <span class="name">color</span> {
+                     <span class="type"><a href="../qtquick/qml-qtquick-coloranimation.html" translate="no">ColorAnimation</a></span> { <span class="name">from</span>: <span class="string">&quot;black&quot;</span>; <span class="name">to</span>: <span class="string">&quot;yellow&quot;</span>; <span class="name">duration</span>: <span class="number">2000</span> }
+                     <span class="type"><a href="../qtquick/qml-qtquick-coloranimation.html" translate="no">ColorAnimation</a></span> { <span class="name">from</span>: <span class="string">&quot;yellow&quot;</span>; <span class="name">to</span>: <span class="string">&quot;cyan&quot;</span>; <span class="name">duration</span>: <span class="number">1000</span> }
+                     <span class="type"><a href="../qtquick/qml-qtquick-coloranimation.html" translate="no">ColorAnimation</a></span> { <span class="name">from</span>: <span class="string">&quot;cyan&quot;</span>; <span class="name">to</span>: <span class="string">&quot;black&quot;</span>; <span class="name">duration</span>: <span class="number">500</span> }
+                     <span class="name">loops</span>: -<span class="number">1</span>
+                 }
+                 <span class="name">width</span>: <span class="number">512</span>
+                 <span class="name">height</span>: <span class="number">512</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-image.html" translate="no">Image</a></span> {
+                     <span class="name">source</span>: <span class="string">&quot;qt_logo.png&quot;</span>
+                     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                 }
+             }
+         }
+     ]
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/customshaders?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@customshaders -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

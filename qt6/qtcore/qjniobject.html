@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qjniobject.cpp -->
+  <meta name="description" content="A convenience wrapper around the Java Native Interface (JNI).">
+  <title>QJniObject Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QJniObject</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#method-signatures">Method Signatures</a></li>
+<li class="level2"><a href="#handling-java-exception">Handling Java Exception</a></li>
+<li class="level2"><a href="#java-native-methods">Java Native Methods</a></li>
+<li class="level2"><a href="#the-lifetime-of-a-java-object">The Lifetime of a Java Object</a></li>
+<li class="level2"><a href="#jni-types">JNI Types</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QJniObject Class</h1>
+<!-- $$$QJniObject-brief -->
+<p>A convenience wrapper around the Java Native Interface (JNI). <a href="#details">More...</a></p>
+<!-- @@@QJniObject -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QJniObject&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.1</td></tr>
+</table></div>
+<ul>
+<li><a href="qjniobject-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-1" translate="no">QJniObject</a></b>(const char *<i>className</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-2" translate="no">QJniObject</a></b>(jclass <i>clazz</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-3" translate="no">QJniObject</a></b>(jobject <i>object</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-4" translate="no">QJniObject</a></b>(const char *<i>className</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-5" translate="no">QJniObject</a></b>(jclass <i>clazz</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-6" translate="no">QJniObject</a></b>(const char *<i>className</i>, const char *<i>signature</i>, ...)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#QJniObject-7" translate="no">QJniObject</a></b>(jclass <i>clazz</i>, const char *<i>signature</i>, ...)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#dtor.QJniObject" translate="no">~QJniObject</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callMethod" translate="no">callMethod</a></b>(const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callMethod-1" translate="no">callMethod</a></b>(const char *<i>methodName</i>, const char *<i>signature</i>, Args &amp;&amp;... <i>args</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callObjectMethod" translate="no">callObjectMethod</a></b>(const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callObjectMethod-1" translate="no">callObjectMethod</a></b>(const char *<i>methodName</i>, const char *<i>signature</i>, ...) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.2)</code> QByteArray </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#className" translate="no">className</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getField" translate="no">getField</a></b>(const char *<i>fieldName</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getObjectField" translate="no">getObjectField</a></b>(const char *<i>fieldName</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getObjectField-1" translate="no">getObjectField</a></b>(const char *<i>fieldName</i>, const char *<i>signature</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> jobject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#object" translate="no">object</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> T </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#object-1" translate="no">object</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.2)</code> jclass </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#objectClass" translate="no">objectClass</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setField" translate="no">setField</a></b>(const char *<i>fieldName</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setField-1" translate="no">setField</a></b>(const char *<i>fieldName</i>, const char *<i>signature</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#swap" translate="no">swap</a></b>(QJniObject &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#toString" translate="no">toString</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject &amp;</td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#operator-eq" translate="no">operator=</a></b>(T <i>object</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod" translate="no">callStaticMethod</a></b>(const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod-1" translate="no">callStaticMethod</a></b>(const char *<i>className</i>, const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod-2" translate="no">callStaticMethod</a></b>(jclass <i>clazz</i>, const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod-3" translate="no">callStaticMethod</a></b>(jclass <i>clazz</i>, jmethodID <i>methodId</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod-4" translate="no">callStaticMethod</a></b>(const char *<i>className</i>, const char *<i>methodName</i>, const char *<i>signature</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticMethod-5" translate="no">callStaticMethod</a></b>(jclass <i>clazz</i>, const char *<i>methodName</i>, const char *<i>signature</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticObjectMethod" translate="no">callStaticObjectMethod</a></b>(const char *<i>className</i>, const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticObjectMethod-1" translate="no">callStaticObjectMethod</a></b>(jclass <i>clazz</i>, const char *<i>methodName</i>, Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticObjectMethod-2" translate="no">callStaticObjectMethod</a></b>(jclass <i>clazz</i>, jmethodID <i>methodId</i>, ...)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticObjectMethod-3" translate="no">callStaticObjectMethod</a></b>(const char *<i>className</i>, const char *<i>methodName</i>, const char *<i>signature</i>, ...)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#callStaticObjectMethod-4" translate="no">callStaticObjectMethod</a></b>(jclass <i>clazz</i>, const char *<i>methodName</i>, const char *<i>signature</i>, ...)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.4)</code> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#construct" translate="no">construct</a></b>(Args &amp;&amp;... <i>args</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#fromLocalRef" translate="no">fromLocalRef</a></b>(jobject <i>localRef</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#fromString" translate="no">fromString</a></b>(const QString &amp;<i>string</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticField" translate="no">getStaticField</a></b>(const char *<i>fieldName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticField-1" translate="no">getStaticField</a></b>(const char *<i>className</i>, const char *<i>fieldName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticField-2" translate="no">getStaticField</a></b>(jclass <i>clazz</i>, const char *<i>fieldName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticObjectField" translate="no">getStaticObjectField</a></b>(const char *<i>className</i>, const char *<i>fieldName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticObjectField-1" translate="no">getStaticObjectField</a></b>(jclass <i>clazz</i>, const char *<i>fieldName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticObjectField-2" translate="no">getStaticObjectField</a></b>(const char *<i>className</i>, const char *<i>fieldName</i>, const char *<i>signature</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniObject </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#getStaticObjectField-3" translate="no">getStaticObjectField</a></b>(jclass <i>clazz</i>, const char *<i>fieldName</i>, const char *<i>signature</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#isClassAvailable" translate="no">isClassAvailable</a></b>(const char *<i>className</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setStaticField" translate="no">setStaticField</a></b>(const char *<i>fieldName</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setStaticField-1" translate="no">setStaticField</a></b>(const char *<i>className</i>, const char *<i>fieldName</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setStaticField-2" translate="no">setStaticField</a></b>(jclass <i>clazz</i>, const char *<i>fieldName</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setStaticField-3" translate="no">setStaticField</a></b>(const char *<i>className</i>, const char *<i>fieldName</i>, const char *<i>signature</i>, T <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#setStaticField-4" translate="no">setStaticField</a></b>(jclass <i>clazz</i>, const char *<i>fieldName</i>, const char *<i>signature</i>, T <i>value</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#operator-not-eq" translate="no">operator!=</a></b>(const QJniObject &amp;<i>o1</i>, const QJniObject &amp;<i>o2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qjniobject.html#operator-eq-eq" translate="no">operator==</a></b>(const QJniObject &amp;<i>o1</i>, const QJniObject &amp;<i>o2</i>)</td></tr>
+</table></div>
+<!-- $$$QJniObject-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The QJniObject class wraps a reference to a Java object, ensuring it isn't garbage-collected and providing access to most <code translate="no">JNIEnv</code> method calls (member, static) and fields (setter, getter). It eliminates much boiler-plate that would normally be needed, with direct JNI access, for every operation, including exception-handling.</p>
+<div class="admonition note">
+<p><b>Note: </b>This API has been designed and tested for use with Android. It has not been tested for other platforms.</p>
+</div>
+<h3 id="method-signatures">Method Signatures</h3>
+<p>QJniObject provides convenience functions that will use the correct signature based on the provided or deduced template arguments.</p>
+<pre class="cpp" translate="no">
+ jint x <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;getSize&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callMethod<span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span>(<span class="string">&quot;touch&quot;</span>);
+ jint ret <span class="operator">=</span> jString1<span class="operator">.</span>callMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;compareToIgnoreCase&quot;</span><span class="operator">,</span> jString2<span class="operator">.</span>object<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>());
+</pre>
+<p>These functions are variadic templates, and the compiler will deduce the signature from the actual argument types. Only the return type needs to be provided explicitly. QJniObject can deduce the signature string for functions that take <a href="qjniobject.html#jni-types" translate="no">JNI types</a>, and for types that have been declared with the <a href="qtjnitypes.html" translate="no">QtJniTypes</a> type mapping.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// Java class</span>
+ package org<span class="operator">.</span>qtproject<span class="operator">.</span>qt;
+ <span class="keyword">class</span> TestClass
+ {
+     <span class="keyword">static</span> TestClass create() { <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> }
+     <span class="keyword">static</span> String fromNumber(<span class="type">int</span> x) { <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> }
+     <span class="keyword">static</span> String<span class="operator">[</span><span class="operator">]</span> stringArray(String s1<span class="operator">,</span> String s2) { <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span> }
+ }
+</pre>
+<pre class="cpp" translate="no">
+ <span class="comment">// C++ code</span>
+ Q_DECLARE_JNI_CLASS(TestClass<span class="operator">,</span> <span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>)
+
+ <span class="comment">// ...</span>
+ <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="type">QtJniTypes</span>;
+ TestClass testClass <span class="operator">=</span> TestClass<span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>TestClass<span class="operator">&gt;</span>(<span class="string">&quot;create&quot;</span>);
+</pre>
+<p>This allows working with arbitrary Java and Android types in C++ code, without having to create JNI signature strings explicitly.</p>
+<h4 id="explicit-jni-signatures">Explicit JNI Signatures</h4>
+<p>It is possible to supply the signature yourself. In that case, it is important that the signature matches the function you want to call.</p>
+<ul>
+<li>Class names need to be fully-qualified, for example: <code translate="no">&quot;java/lang/String&quot;</code>.</li>
+<li>Method signatures are written as <code translate="no">&quot;(ArgumentsTypes)ReturnType&quot;</code>, see <a href="qjniobject.html#jni-types" translate="no">JNI Types</a>.</li>
+<li>All object types are returned as a QJniObject.</li>
+</ul>
+<p>The example below demonstrates how to call different static functions:</p>
+<p>The signature structure is <code translate="no">&quot;(ArgumentsTypes)ReturnType&quot;</code>. Array types in the signature must have the <code translate="no">[</code> prefix, and the fully-qualified <code translate="no">Object</code> type names must have the <code translate="no">L</code> prefix and the <code translate="no">;</code> suffix. The signature for the <code translate="no">create</code> function is <code translate="no">&quot;()Lorg/qtproject/qt/TestClass;</code>. The signatures for the second and third functions are <code translate="no">&quot;(I)Ljava/lang/String;&quot;</code> and <code translate="no">&quot;(Ljava/lang/String;Ljava/lang/String;)[Ljava/lang/String;&quot;</code>, respectively.</p>
+<p>We can call the <code translate="no">create()</code> function like this:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// C++ code</span>
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> testClass <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span><span class="operator">,</span>
+                                                           <span class="string">&quot;create&quot;</span><span class="operator">,</span>
+                                                           <span class="string">&quot;()Lorg/qtproject/qt/TestClass;&quot;</span>);
+</pre>
+<p>For the second and third function we can rely on QJniObject's template methods to create the implicit signature string, but we can also pass the signature string explicitly:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// C++ code</span>
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> stringNumber <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span><span class="operator">,</span>
+                                                              <span class="string">&quot;fromNumber&quot;</span><span class="operator">,</span>
+                                                              <span class="string">&quot;(I)Ljava/lang/String;&quot;</span><span class="operator">,</span> <span class="number">10</span>);
+</pre>
+<p>For the implicit signature creation to work we need to specify the return type explicitly:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// C++ code</span>
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string1 <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(<span class="string">&quot;String1&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string2 <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(<span class="string">&quot;String2&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> stringArray <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod<span class="operator">&lt;</span>jobjectArray<span class="operator">&gt;</span>(
+                                                             <span class="string">&quot;org/qtproject/qt/TestClass&quot;</span><span class="operator">,</span>
+                                                             <span class="string">&quot;stringArray&quot;</span><span class="operator">,</span>
+                                                             string1<span class="operator">.</span>object<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>()<span class="operator">,</span>
+                                                             string2<span class="operator">.</span>object<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>());
+</pre>
+<p>Note that while the first template parameter specifies the return type of the Java function, the method will still return a QJniObject.</p>
+<h3 id="handling-java-exception">Handling Java Exception</h3>
+<p>After calling Java functions that might throw exceptions, it is important to check for, handle and clear out any exception before continuing. All QJniObject functions handle exceptions internally by reporting and clearing them, saving client code the need to handle exceptions.</p>
+<div class="admonition note">
+<p><b>Note: </b>The user must handle exceptions manually when doing JNI calls using <code translate="no">JNIEnv</code> directly. It is unsafe to make other JNI calls when exceptions are pending. For more information, see <a href="qjnienvironment.html#checkAndClearExceptions" translate="no">QJniEnvironment::checkAndClearExceptions</a>().</p>
+</div>
+<h3 id="java-native-methods">Java Native Methods</h3>
+<p>Java native methods makes it possible to call native code from Java, this is done by creating a function declaration in Java and prefixing it with the <code translate="no">native</code> keyword. Before a native function can be called from Java, you need to map the Java native function to a native function in your code. Mapping functions can be done by calling <a href="qjnienvironment.html#registerNativeMethods" translate="no">QJniEnvironment::registerNativeMethods</a>().</p>
+<p>The example below demonstrates how this could be done.</p>
+<p>Java implementation:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> FooJavaClass
+ {
+     <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">void</span> foo(<span class="type">int</span> x)
+     {
+         <span class="keyword">if</span> (x <span class="operator">&lt;</span> <span class="number">100</span>)
+             callNativeOne(x);
+         <span class="keyword">else</span>
+             callNativeTwo(x);
+     }
+
+ <span class="keyword">private</span> <span class="keyword">static</span> native <span class="type">void</span> callNativeOne(<span class="type">int</span> x);
+ <span class="keyword">private</span> <span class="keyword">static</span> native <span class="type">void</span> callNativeTwo(<span class="type">int</span> x);
+
+ }
+</pre>
+<p>C++ Implementation:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="type">void</span> fromJavaOne(JNIEnv <span class="operator">*</span>env<span class="operator">,</span> jobject thiz<span class="operator">,</span> jint x)
+ {
+     Q_UNUSED(env);
+     Q_UNUSED(thiz);
+     <a href="qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> x <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;&lt; 100&quot;</span>;
+ }
+
+ <span class="keyword">static</span> <span class="type">void</span> fromJavaTwo(JNIEnv <span class="operator">*</span>env<span class="operator">,</span> jobject thiz<span class="operator">,</span> jint x)
+ {
+     Q_UNUSED(env);
+     Q_UNUSED(thiz);
+     <a href="qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> x <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;&gt;= 100&quot;</span>;
+ }
+
+ <span class="type">void</span> foo()
+ {
+     <span class="comment">// register the native methods first, ideally it better be done with the app start</span>
+     <span class="keyword">const</span> JNINativeMethod methods<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span>
+                 {{<span class="string">&quot;callNativeOne&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="type">void</span> <span class="operator">*</span><span class="operator">&gt;</span>(fromJavaOne)}<span class="operator">,</span>
+                  {<span class="string">&quot;callNativeTwo&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="type">void</span> <span class="operator">*</span><span class="operator">&gt;</span>(fromJavaTwo)}};
+     <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+     env<span class="operator">.</span>registerNativeMethods(<span class="string">&quot;my/java/project/FooJavaClass&quot;</span><span class="operator">,</span> methods<span class="operator">,</span> <span class="number">2</span>);
+
+     <span class="comment">// Call the java method which will calls back to the C++ functions</span>
+     <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span>(<span class="string">&quot;my/java/project/FooJavaClass&quot;</span><span class="operator">,</span> <span class="string">&quot;foo&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="number">10</span>);  <span class="comment">// Output: 10 &lt; 100</span>
+     <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span><span class="type">void</span><span class="operator">&gt;</span>(<span class="string">&quot;my/java/project/FooJavaClass&quot;</span><span class="operator">,</span> <span class="string">&quot;foo&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="number">100</span>); <span class="comment">// Output: 100 &gt;= 100</span>
+ }
+</pre>
+<h3 id="the-lifetime-of-a-java-object">The Lifetime of a Java Object</h3>
+<p>Most <a href="qjniobject.html#object-types" translate="no">objects</a> received from Java will be local references and will only stay valid until you return from the native method. After that, the object becomes eligible for garbage collection. If your code creates many local references in a loop you should delete them manually with each iteration, otherwise you might run out of memory. For more information, see <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/design.html#global_and_local_references">JNI Design Overview: Global and Local References</a>. Local references created outside a native method scope must be deleted manually, since the garbage collector will not free them automatically because we are using <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html#attach_current_thread">AttachCurrentThread</a>. For more information, see <a href="https://developer.android.com/training/articles/perf-jni#local-and-global-references">JNI tips: Local and global references</a>.</p>
+<p>If you want to keep a Java object alive you need to either create a new global reference to the object and release it when you are done, or construct a new QJniObject and let it manage the lifetime of the Java object.</p>
+<div class="admonition note">
+<p><b>Note: </b>The QJniObject only manages its own references, if you construct a QJniObject from a global or local reference that reference will not be released by the QJniObject.</p>
+</div>
+<h3 id="jni-types">JNI Types</h3>
+<h4 id="object-types">Object Types</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Type</th><th >Signature</th></tr></thead>
+<tr valign="top" class="odd"><td >jobject</td><td >Ljava/lang/Object;</td></tr>
+<tr valign="top" class="even"><td >jclass</td><td >Ljava/lang/Class;</td></tr>
+<tr valign="top" class="odd"><td >jstring</td><td >Ljava/lang/String;</td></tr>
+<tr valign="top" class="even"><td >jthrowable</td><td >Ljava/lang/Throwable;</td></tr>
+<tr valign="top" class="odd"><td >jobjectArray</td><td >[Ljava/lang/Object;</td></tr>
+<tr valign="top" class="even"><td >jarray</td><td >[<i>&lt;type&gt;</i></td></tr>
+<tr valign="top" class="odd"><td >jbooleanArray</td><td >[Z</td></tr>
+<tr valign="top" class="even"><td >jbyteArray</td><td >[B</td></tr>
+<tr valign="top" class="odd"><td >jcharArray</td><td >[C</td></tr>
+<tr valign="top" class="even"><td >jshortArray</td><td >[S</td></tr>
+<tr valign="top" class="odd"><td >jintArray</td><td >[I</td></tr>
+<tr valign="top" class="even"><td >jlongArray</td><td >[J</td></tr>
+<tr valign="top" class="odd"><td >jfloatArray</td><td >[F</td></tr>
+<tr valign="top" class="even"><td >jdoubleArray</td><td >[D</td></tr>
+</table></div>
+<h4 id="primitive-types">Primitive Types</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Type</th><th >Signature</th></tr></thead>
+<tr valign="top" class="odd"><td >jboolean</td><td >Z</td></tr>
+<tr valign="top" class="even"><td >jbyte</td><td >B</td></tr>
+<tr valign="top" class="odd"><td >jchar</td><td >C</td></tr>
+<tr valign="top" class="even"><td >jshort</td><td >S</td></tr>
+<tr valign="top" class="odd"><td >jint</td><td >I</td></tr>
+<tr valign="top" class="even"><td >jlong</td><td >J</td></tr>
+<tr valign="top" class="odd"><td >jfloat</td><td >F</td></tr>
+<tr valign="top" class="even"><td >jdouble</td><td >D</td></tr>
+</table></div>
+<h4 id="other">Other</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Type</th><th >Signature</th></tr></thead>
+<tr valign="top" class="odd"><td >void</td><td >V</td></tr>
+<tr valign="top" class="even"><td ><i>Custom type</i></td><td >L<i>&lt;fully-qualified-name&gt;</i>;</td></tr>
+</table></div>
+<p>For more information about JNI, see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/jniTOC.html">Java Native Interface Specification</a>.</p>
+</div>
+<p><b>See also </b><a href="qjnienvironment.html" translate="no">QJniEnvironment</a> and <a href="qjniobject.html#object" translate="no">object</a>().</p>
+<!-- @@@QJniObject -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="object-1">template &lt;typename T&gt; <span class="type">T</span> QJniObject::<span class="name">object</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="object"><span class="type">jobject</span> QJniObject::<span class="name">object</span>() const</h3></div>
+<p>Returns the object held by the <a href="qjniobject.html" translate="no">QJniObject</a> either as jobject or as type T. T can be one of <a href="qjniobject.html#object-types" translate="no">JNI Object Types</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(<span class="string">&quot;Hello, JNI&quot;</span>);
+ jstring jstring <span class="operator">=</span> string<span class="operator">.</span>object<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>();
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The returned object is still kept alive by this <a href="qjniobject.html" translate="no">QJniObject</a>. To keep the object alive beyond the lifetime of this <a href="qjniobject.html" translate="no">QJniObject</a>, for example to record it for later use, the easiest approach is to store it in another <a href="qjniobject.html" translate="no">QJniObject</a> with a suitable lifetime. Alternatively, you may create a new global reference to the object and store it, taking care to free it when you are done with it.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> functionScope()
+ {
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> helloString(<span class="string">&quot;Hello&quot;</span>);
+     jstring myJString <span class="operator">=</span> <span class="number">0</span>;
+     {
+         <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(helloString);
+         myJString <span class="operator">=</span> string<span class="operator">.</span>object<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>();
+     }
+
+    <span class="comment">// Ops! myJString is no longer valid.</span>
+ }
+</pre>
+<!-- @@@ -->
+<!-- $$$QJniObject[overload1]$$$QJniObject -->
+<h3 class="fn" translate="no" id="QJniObject">QJniObject::<span class="name">QJniObject</span>()</h3>
+<p>Constructs an invalid JNI object.</p>
+<p><b>See also </b><a href="qjniobject.html#isValid" translate="no">isValid</a>().</p>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectconstchar* -->
+<h3 class="fn" translate="no" id="QJniObject-1"><code class="details extra" translate="no">[explicit]</code> QJniObject::<span class="name">QJniObject</span>(const <span class="type">char</span> *<i>className</i>)</h3>
+<p>Constructs a new JNI object by calling the default constructor of <i translate="no">className</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString(<span class="string">&quot;java/lang/String&quot;</span>);
+</pre>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectjclass -->
+<h3 class="fn" translate="no" id="QJniObject-2"><code class="details extra" translate="no">[explicit]</code> QJniObject::<span class="name">QJniObject</span>(<span class="type">jclass</span> <i>clazz</i>)</h3>
+<p>Constructs a new JNI object by calling the default constructor of <i translate="no">clazz</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The QJniObject will create a new reference to the class <i translate="no">clazz</i> and releases it again when it is destroyed. References to the class created outside the QJniObject need to be managed by the caller.</p>
+</div>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectjobject -->
+<h3 class="fn" translate="no" id="QJniObject-3">QJniObject::<span class="name">QJniObject</span>(<span class="type">jobject</span> <i>object</i>)</h3>
+<p>Constructs a new JNI object around the Java object <i translate="no">object</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The QJniObject will hold a reference to the Java object <i translate="no">object</i> and release it when destroyed. Any references to the Java object <i translate="no">object</i> outside QJniObject needs to be managed by the caller. In most cases you should never call this function with a local reference unless you intend to manage the local reference yourself. See <a href="qjniobject.html#fromLocalRef" translate="no">QJniObject::fromLocalRef</a>() for converting a local reference to a QJniObject.</p>
+</div>
+<p><b>See also </b><a href="qjniobject.html#fromLocalRef" translate="no">fromLocalRef</a>().</p>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="QJniObject-4"><code class="details extra" translate="no">[explicit, since 6.4]</code> template &lt;typename... Args&gt; QJniObject::<span class="name">QJniObject</span>(const <span class="type">char</span> *<i>className</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Constructs a new JNI object by calling the constructor of <i translate="no">className</i> with the arguments <i translate="no">args</i>. This constructor is only available if all <i translate="no">args</i> are known <a href="qjniobject.html#jni-types" translate="no">JNI Types</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ <span class="type">char</span><span class="operator">*</span> str <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;
+ jstring myJStringArg <span class="operator">=</span> env<span class="operator">-</span><span class="operator">&gt;</span>NewStringUTF(str);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myNewJavaString(<span class="string">&quot;java/lang/String&quot;</span><span class="operator">,</span> myJStringArg);
+</pre>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectjclassArgs&&... -->
+<h3 class="fn" translate="no" id="QJniObject-5"><code class="details extra" translate="no">[explicit, since 6.4]</code> template &lt;typename... Args&gt; QJniObject::<span class="name">QJniObject</span>(<span class="type">jclass</span> <i>clazz</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Constructs a new JNI object from <i translate="no">clazz</i> by calling the constructor with the arguments <i translate="no">args</i>. This constructor is only available if all <i translate="no">args</i> are known <a href="qjniobject.html#jni-types" translate="no">JNI Types</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass myClazz <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span>(myClazz<span class="operator">,</span> <span class="number">3</span>);
+</pre>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectconstchar*constchar*... -->
+<h3 class="fn" translate="no" id="QJniObject-6"><code class="details extra" translate="no">[explicit]</code> QJniObject::<span class="name">QJniObject</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>signature</i>, ...)</h3>
+<p>Constructs a new JNI object by calling the constructor of <i translate="no">className</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ <span class="type">char</span><span class="operator">*</span> str <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;
+ jstring myJStringArg <span class="operator">=</span> env<span class="operator">-</span><span class="operator">&gt;</span>NewStringUTF(str);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myNewJavaString(<span class="string">&quot;java/lang/String&quot;</span><span class="operator">,</span> <span class="string">&quot;(Ljava/lang/String;)V&quot;</span><span class="operator">,</span> myJStringArg);
+</pre>
+<!-- @@@QJniObject -->
+<!-- $$$QJniObject$$$QJniObjectjclassconstchar*... -->
+<h3 class="fn" translate="no" id="QJniObject-7"><code class="details extra" translate="no">[explicit]</code> QJniObject::<span class="name">QJniObject</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>signature</i>, ...)</h3>
+<p>Constructs a new JNI object from <i translate="no">clazz</i> by calling the constructor with <i translate="no">signature</i> specifying the types of any subsequent arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass myClazz <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span>(myClazz<span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="number">3</span>);
+</pre>
+<!-- @@@QJniObject -->
+<!-- $$$~QJniObject[overload1]$$$~QJniObject -->
+<h3 class="fn" translate="no" id="dtor.QJniObject"><code class="details extra" translate="no">[noexcept]</code> QJniObject::<span class="name">~QJniObject</span>()</h3>
+<p>Destroys the JNI object and releases any references held by the JNI object.</p>
+<!-- @@@~QJniObject -->
+<!-- $$$callMethod[overload1]$$$callMethodconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="callMethod"><code class="details extra" translate="no">[since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callMethod</span>(const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>) const</h3>
+<p>Calls the method <i translate="no">methodName</i> with arguments <i translate="no">args</i> and returns the value (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>);
+ jint size <span class="operator">=</span> myJavaString<span class="operator">.</span>callMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;length&quot;</span>);
+</pre>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callMethod -->
+<!-- $$$callMethod$$$callMethodconstchar*constchar*Args&&... -->
+<h3 class="fn" translate="no" id="callMethod-1"><code class="details extra" translate="no">[since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callMethod</span>(const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>) const</h3>
+<p>Calls the object's method <i translate="no">methodName</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments <i translate="no">args</i>, and returns the value (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>);
+ jint index <span class="operator">=</span> myJavaString<span class="operator">.</span>callMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;indexOf&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)I&quot;</span><span class="operator">,</span> <span class="number">0x0051</span>);
+</pre>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callMethod -->
+<!-- $$$callObjectMethod[overload1]$$$callObjectMethodconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="callObjectMethod"><code class="details extra" translate="no">[since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callObjectMethod</span>(const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>) const</h3>
+<p>Calls the Java objects method <i translate="no">methodName</i> with arguments <i translate="no">args</i> and returns a new <a href="qjniobject.html" translate="no">QJniObject</a> for the returned Java object.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(<span class="string">&quot;Hello, Java&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString2 <span class="operator">=</span> myJavaString1<span class="operator">.</span>callObjectMethod<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(<span class="string">&quot;toString&quot;</span>);
+</pre>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callObjectMethod -->
+<!-- $$$callObjectMethod$$$callObjectMethodconstchar*constchar*... -->
+<h3 class="fn" translate="no" id="callObjectMethod-1"><span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callObjectMethod</span>(const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, ...) const</h3>
+<p>Calls the Java object's method <i translate="no">methodName</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(<span class="string">&quot;Hello, Java&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> mySubstring <span class="operator">=</span> myJavaString<span class="operator">.</span>callObjectMethod(<span class="string">&quot;substring&quot;</span><span class="operator">,</span>
+                                                        <span class="string">&quot;(II)Ljava/lang/String;&quot;</span><span class="operator">,</span> <span class="number">7</span><span class="operator">,</span> <span class="number">11</span>);
+</pre>
+<!-- @@@callObjectMethod -->
+<!-- $$$callStaticMethod[overload1]$$$callStaticMethodconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod"><code class="details extra" translate="no">[static, since 6.7]</code> template &lt;typename Klass, typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method <i translate="no">methodName</i> on the class <code translate="no">Klass</code> and returns the value of type <code translate="no">Ret</code> (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>. <code translate="no">Klass</code> needs to be a C++ type with a registered type mapping to a Java type.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticMethod$$$callStaticMethodconstchar*constchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod-1"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method <i translate="no">methodName</i> on class <i translate="no">className</i> with arguments <i translate="no">args</i>, and returns the value of type <code translate="no">Ret</code> (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ jint value <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;MyClass&quot;</span><span class="operator">,</span> <span class="string">&quot;staticMethod&quot;</span>);
+</pre>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticMethod$$$callStaticMethodjclassconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod-2"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method <i translate="no">methodName</i> on <i translate="no">clazz</i> and returns the value of type <code translate="no">Ret</code> (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass javaMathClass <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;java/lang/Math&quot;</span>);
+ jdouble randNr <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>jdouble<span class="operator">&gt;</span>(javaMathClass<span class="operator">,</span> <span class="string">&quot;random&quot;</span>);
+</pre>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticMethod$$$callStaticMethodjclassjmethodIDArgs&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod-3"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(<span class="type">jclass</span> <i>clazz</i>, <span class="type">jmethodID</span> <i>methodId</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method identified by <i translate="no">methodId</i> from the class <i translate="no">clazz</i> with any subsequent arguments, and returns the value of type <code translate="no">Ret</code> (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<p>Useful when <i translate="no">clazz</i> and <i translate="no">methodId</i> are already cached from previous operations.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass javaMathClass <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;java/lang/Math&quot;</span>);
+ jmethodID methodId <span class="operator">=</span> env<span class="operator">.</span>findStaticMethod(javaMathClass<span class="operator">,</span> <span class="string">&quot;max&quot;</span><span class="operator">,</span> <span class="string">&quot;(II)I&quot;</span>);
+ <span class="keyword">if</span> (methodId <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>) {
+     jint a <span class="operator">=</span> <span class="number">2</span>;
+     jint b <span class="operator">=</span> <span class="number">4</span>;
+     jint max <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(javaMathClass<span class="operator">,</span> methodId<span class="operator">,</span> a<span class="operator">,</span> b);
+ }
+</pre>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticMethod$$$callStaticMethodconstchar*constchar*constchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod-4"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method <i translate="no">methodName</i> from class <i translate="no">className</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments <i translate="no">args</i>. Returns the result of the method (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ jint a <span class="operator">=</span> <span class="number">2</span>;
+ jint b <span class="operator">=</span> <span class="number">4</span>;
+ jint max <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;java/lang/Math&quot;</span><span class="operator">,</span> <span class="string">&quot;max&quot;</span><span class="operator">,</span> <span class="string">&quot;(II)I&quot;</span><span class="operator">,</span> a<span class="operator">,</span> b);
+</pre>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticMethod$$$callStaticMethodjclassconstchar*constchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticMethod-5"><code class="details extra" translate="no">[static]</code> template &lt;typename Ret, typename... Args&gt; <span class="type">auto</span> QJniObject::<span class="name">callStaticMethod</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method <i translate="no">methodName</i> from <i translate="no">clazz</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments. Returns the result of the method (unless <code translate="no">Ret</code> is <code translate="no">void</code>). If <code translate="no">Ret</code> is a jobject type, then the returned value will be a <a href="qjniobject.html" translate="no">QJniObject</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass javaMathClass <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;java/lang/Math&quot;</span>);
+ jint a <span class="operator">=</span> <span class="number">2</span>;
+ jint b <span class="operator">=</span> <span class="number">4</span>;
+ jint max <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticMethod<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(javaMathClass<span class="operator">,</span> <span class="string">&quot;max&quot;</span><span class="operator">,</span> <span class="string">&quot;(II)I&quot;</span><span class="operator">,</span> a<span class="operator">,</span> b);
+</pre>
+<!-- @@@callStaticMethod -->
+<!-- $$$callStaticObjectMethod[overload1]$$$callStaticObjectMethodconstchar*constchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticObjectMethod"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callStaticObjectMethod</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method with <i translate="no">methodName</i> on the class <i translate="no">className</i>, passing arguments <i translate="no">args</i>, and returns a new <a href="qjniobject.html" translate="no">QJniObject</a> for the returned Java object.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(<span class="string">&quot;CustomClass&quot;</span><span class="operator">,</span> <span class="string">&quot;getClassName&quot;</span>);
+</pre>
+<p>The method signature is deduced at compile time from <code translate="no">Ret</code> and the types of <i translate="no">args</i>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticObjectMethod -->
+<!-- $$$callStaticObjectMethod$$$callStaticObjectMethodjclassconstchar*Args&&... -->
+<h3 class="fn" translate="no" id="callStaticObjectMethod-1"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Ret, typename... Args&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callStaticObjectMethod</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>methodName</i>, <span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Calls the static method with <i translate="no">methodName</i> on <i translate="no">clazz</i>, passing arguments <i translate="no">args</i>, and returns a new <a href="qjniobject.html" translate="no">QJniObject</a> for the returned Java object.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@callStaticObjectMethod -->
+<!-- $$$callStaticObjectMethod$$$callStaticObjectMethodjclassjmethodID... -->
+<h3 class="fn" translate="no" id="callStaticObjectMethod-2"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callStaticObjectMethod</span>(<span class="type">jclass</span> <i>clazz</i>, <span class="type">jmethodID</span> <i>methodId</i>, ...)</h3>
+<p>Calls the static method identified by <i translate="no">methodId</i> from the class <i translate="no">clazz</i> with any subsequent arguments. Useful when <i translate="no">clazz</i> and <i translate="no">methodId</i> are already cached from previous operations.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjnienvironment.html" translate="no">QJniEnvironment</a></span> env;
+ jclass clazz <span class="operator">=</span> env<span class="operator">.</span>findClass(<span class="string">&quot;java/lang/String&quot;</span>);
+ jmethodID methodId <span class="operator">=</span> env<span class="operator">.</span>findStaticMethod(clazz<span class="operator">,</span> <span class="string">&quot;valueOf&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)Ljava/lang/String;&quot;</span>);
+ <span class="keyword">if</span> (methodId <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>)
+     <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> str <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod(clazz<span class="operator">,</span> methodId<span class="operator">,</span> <span class="number">10</span>);
+</pre>
+<!-- @@@callStaticObjectMethod -->
+<!-- $$$callStaticObjectMethod$$$callStaticObjectMethodconstchar*constchar*constchar*... -->
+<h3 class="fn" translate="no" id="callStaticObjectMethod-3"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callStaticObjectMethod</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, ...)</h3>
+<p>Calls the static method <i translate="no">methodName</i> from the class <i translate="no">className</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> thread <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod(<span class="string">&quot;java/lang/Thread&quot;</span><span class="operator">,</span> <span class="string">&quot;currentThread&quot;</span><span class="operator">,</span>
+                                                        <span class="string">&quot;()Ljava/lang/Thread;&quot;</span>);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>callStaticObjectMethod(<span class="string">&quot;java/lang/String&quot;</span><span class="operator">,</span> <span class="string">&quot;valueOf&quot;</span><span class="operator">,</span>
+                                                        <span class="string">&quot;(I)Ljava/lang/String;&quot;</span><span class="operator">,</span> <span class="number">10</span>);
+</pre>
+<!-- @@@callStaticObjectMethod -->
+<!-- $$$callStaticObjectMethod$$$callStaticObjectMethodjclassconstchar*constchar*... -->
+<h3 class="fn" translate="no" id="callStaticObjectMethod-4"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">callStaticObjectMethod</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>methodName</i>, const <span class="type">char</span> *<i>signature</i>, ...)</h3>
+<p>Calls the static method <i translate="no">methodName</i> from class <i translate="no">clazz</i> with <i translate="no">signature</i> specifying the types of any subsequent arguments.</p>
+<!-- @@@callStaticObjectMethod -->
+<!-- $$$className[overload1]$$$className -->
+<h3 class="fn" translate="no" id="className"><code class="details extra" translate="no">[since 6.2]</code> <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> QJniObject::<span class="name">className</span>() const</h3>
+<p>Returns the name of the class object held by the <a href="qjniobject.html" translate="no">QJniObject</a> as a <code translate="no">QByteArray</code>.</p>
+<p>This function was introduced in Qt 6.2.</p>
+<!-- @@@className -->
+<!-- $$$construct[overload1]$$$constructArgs&&... -->
+<h3 class="fn" translate="no" id="construct"><code class="details extra" translate="no">[static, since 6.4]</code> template &lt;typename Class, typename... Args&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">construct</span>(<span class="type">Args</span> &amp;&amp;... <i>args</i>)</h3>
+<p>Constructs an instance of the Java class that is the equivalent of <code translate="no">Class</code> and returns a <a href="qjniobject.html" translate="no">QJniObject</a> containing the JNI object. The arguments in <i translate="no">args</i> are passed to the Java constructor.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> javaString <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>construct<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>();
+</pre>
+<p>This function is only available if all <i translate="no">args</i> are known <a href="qjniobject.html#jni-types" translate="no">JNI Types</a>.</p>
+<p>This function was introduced in Qt 6.4.</p>
+<!-- @@@construct -->
+<!-- $$$fromLocalRef[overload1]$$$fromLocalRefjobject -->
+<h3 class="fn" translate="no" id="fromLocalRef"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">fromLocalRef</span>(<span class="type">jobject</span> <i>localRef</i>)</h3>
+<p>Creates a <a href="qjniobject.html" translate="no">QJniObject</a> from the local JNI reference <i translate="no">localRef</i>. This function takes ownership of <i translate="no">localRef</i> and frees it before returning.</p>
+<div class="admonition note">
+<p><b>Note: </b>Only call this function with a local JNI reference. For example, most raw JNI calls, through the JNI environment, return local references to a java object.</p>
+</div>
+<pre class="cpp" translate="no">
+ jobject localRef <span class="operator">=</span> env<span class="operator">-</span><span class="operator">&gt;</span>GetObjectArrayElement(array<span class="operator">,</span> index);
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> element <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromLocalRef(localRef);
+</pre>
+<!-- @@@fromLocalRef -->
+<!-- $$$fromString[overload1]$$$fromStringconstQString& -->
+<h3 class="fn" translate="no" id="fromString"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">fromString</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>string</i>)</h3>
+<p>Creates a Java string from the <a href="qstring.html" translate="no">QString</a> <i translate="no">string</i> and returns a <a href="qjniobject.html" translate="no">QJniObject</a> holding that string.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> myQString <span class="operator">=</span> <span class="string">&quot;QString&quot;</span>;
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> myJavaString <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>fromString(myQString);
+</pre>
+<p><b>See also </b><a href="qjniobject.html#toString" translate="no">toString</a>().</p>
+<!-- @@@fromString -->
+<!-- $$$getField[overload1]$$$getFieldconstchar* -->
+<h3 class="fn" translate="no" id="getField">template &lt;typename T&gt; <span class="type">auto</span> QJniObject::<span class="name">getField</span>(const <span class="type">char</span> *<i>fieldName</i>) const</h3>
+<p>Retrieves the value of the field <i translate="no">fieldName</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> volumeControl(<span class="string">&quot;org/qtproject/qt/TestClass&quot;</span>);
+ jint fieldValue <span class="operator">=</span> volumeControl<span class="operator">.</span>getField<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;FIELD_NAME&quot;</span>);
+</pre>
+<!-- @@@getField -->
+<!-- $$$getObjectField[overload1]$$$getObjectFieldconstchar* -->
+<h3 class="fn" translate="no" id="getObjectField">template &lt;typename T&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getObjectField</span>(const <span class="type">char</span> *<i>fieldName</i>) const</h3>
+<p>Retrieves a JNI object from the field <i translate="no">fieldName</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> field <span class="operator">=</span> jniObject<span class="operator">.</span>getObjectField<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(<span class="string">&quot;FIELD_NAME&quot;</span>);
+</pre>
+<!-- @@@getObjectField -->
+<!-- $$$getObjectField$$$getObjectFieldconstchar*constchar* -->
+<h3 class="fn" translate="no" id="getObjectField-1"><span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getObjectField</span>(const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>) const</h3>
+<p>Retrieves a JNI object from the field <i translate="no">fieldName</i> with <i translate="no">signature</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function can be used without a template type.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> field <span class="operator">=</span> jniObject<span class="operator">.</span>getObjectField(<span class="string">&quot;FIELD_NAME&quot;</span><span class="operator">,</span> <span class="string">&quot;Ljava/lang/String;&quot;</span>);
+</pre>
+<!-- @@@getObjectField -->
+<!-- $$$getStaticField[overload1]$$$getStaticFieldconstchar* -->
+<h3 class="fn" translate="no" id="getStaticField"><code class="details extra" translate="no">[static]</code> template &lt;typename Klass, typename T&gt; <span class="type">auto</span> QJniObject::<span class="name">getStaticField</span>(const <span class="type">char</span> *<i>fieldName</i>)</h3>
+<p>Retrieves the value from the static field <i translate="no">fieldName</i> for the class <code translate="no">Klass</code>.</p>
+<p><code translate="no">Klass</code> needs to be a C++ type with a registered type mapping to a Java type.</p>
+<!-- @@@getStaticField -->
+<!-- $$$getStaticField$$$getStaticFieldconstchar*constchar* -->
+<h3 class="fn" translate="no" id="getStaticField-1"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">auto</span> QJniObject::<span class="name">getStaticField</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>fieldName</i>)</h3>
+<p>Retrieves the value from the static field <i translate="no">fieldName</i> on the class <i translate="no">className</i>.</p>
+<!-- @@@getStaticField -->
+<!-- $$$getStaticField$$$getStaticFieldjclassconstchar* -->
+<h3 class="fn" translate="no" id="getStaticField-2"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">auto</span> QJniObject::<span class="name">getStaticField</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>fieldName</i>)</h3>
+<p>Retrieves the value from the static field <i translate="no">fieldName</i> on <i translate="no">clazz</i>.</p>
+<!-- @@@getStaticField -->
+<!-- $$$getStaticObjectField[overload1]$$$getStaticObjectFieldconstchar*constchar* -->
+<h3 class="fn" translate="no" id="getStaticObjectField"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getStaticObjectField</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>fieldName</i>)</h3>
+<p>Retrieves the object from the field <i translate="no">fieldName</i> on the class <i translate="no">className</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> jobj <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>getStaticObjectField<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(<span class="string">&quot;class/with/Fields&quot;</span><span class="operator">,</span> <span class="string">&quot;FIELD_NAME&quot;</span>);
+</pre>
+<!-- @@@getStaticObjectField -->
+<!-- $$$getStaticObjectField$$$getStaticObjectFieldjclassconstchar* -->
+<h3 class="fn" translate="no" id="getStaticObjectField-1"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getStaticObjectField</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>fieldName</i>)</h3>
+<p>Retrieves the object from the field <i translate="no">fieldName</i> on <i translate="no">clazz</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> jobj <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>getStaticObjectField<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(clazz<span class="operator">,</span> <span class="string">&quot;FIELD_NAME&quot;</span>);
+</pre>
+<!-- @@@getStaticObjectField -->
+<!-- $$$getStaticObjectField$$$getStaticObjectFieldconstchar*constchar*constchar* -->
+<h3 class="fn" translate="no" id="getStaticObjectField-2"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getStaticObjectField</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>)</h3>
+<p>Retrieves a JNI object from the field <i translate="no">fieldName</i> with <i translate="no">signature</i> from class <i translate="no">className</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function can be used without a template type.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> jobj <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>getStaticObjectField(<span class="string">&quot;class/with/Fields&quot;</span><span class="operator">,</span> <span class="string">&quot;FIELD_NAME&quot;</span><span class="operator">,</span>
+                                                    <span class="string">&quot;Ljava/lang/String;&quot;</span>);
+</pre>
+<!-- @@@getStaticObjectField -->
+<!-- $$$getStaticObjectField$$$getStaticObjectFieldjclassconstchar*constchar* -->
+<h3 class="fn" translate="no" id="getStaticObjectField-3"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> QJniObject::<span class="name">getStaticObjectField</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>)</h3>
+<p>Retrieves a JNI object from the field <i translate="no">fieldName</i> with <i translate="no">signature</i> from class <i translate="no">clazz</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function can be used without a template type.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> jobj <span class="operator">=</span> <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>getStaticObjectField(clazz<span class="operator">,</span> <span class="string">&quot;FIELD_NAME&quot;</span><span class="operator">,</span> <span class="string">&quot;Ljava/lang/String;&quot;</span>);
+</pre>
+<!-- @@@getStaticObjectField -->
+<!-- $$$isClassAvailable[overload1]$$$isClassAvailableconstchar* -->
+<h3 class="fn" translate="no" id="isClassAvailable"><code class="details extra" translate="no">[static]</code> <span class="type">bool</span> QJniObject::<span class="name">isClassAvailable</span>(const <span class="type">char</span> *<i>className</i>)</h3>
+<p>Returns true if the Java class <i translate="no">className</i> is available.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">if</span> (<span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span><span class="operator">::</span>isClassAvailable(<span class="string">&quot;java/lang/String&quot;</span>)) {
+     <span class="comment">// condition statement</span>
+ }
+</pre>
+<!-- @@@isClassAvailable -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><span class="type">bool</span> QJniObject::<span class="name">isValid</span>() const</h3>
+<p>Returns true if this instance holds a valid Java object.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> qjniObject;                        <span class="comment">// ==&gt; isValid() == false</span>
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> qjniObject(<span class="number">0</span>)                      <span class="comment">// ==&gt; isValid() == false</span>
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> qjniObject(<span class="string">&quot;could/not/find/Class&quot;</span>) <span class="comment">// ==&gt; isValid() == false</span>
+</pre>
+<!-- @@@isValid -->
+<!-- $$$objectClass[overload1]$$$objectClass -->
+<h3 class="fn" translate="no" id="objectClass"><code class="details extra" translate="no">[since 6.2]</code> <span class="type">jclass</span> QJniObject::<span class="name">objectClass</span>() const</h3>
+<p>Returns the class object held by the <a href="qjniobject.html" translate="no">QJniObject</a> as a <code translate="no">jclass</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The returned object is still kept alive by this <a href="qjniobject.html" translate="no">QJniObject</a>. To keep the object alive beyond the lifetime of this <a href="qjniobject.html" translate="no">QJniObject</a>, for example to record it for later use, the easiest approach is to store it in another <a href="qjniobject.html" translate="no">QJniObject</a> with a suitable lifetime. Alternatively, you may create a new global reference to the object and store it, taking care to free it when you are done with it.</p>
+</div>
+<p>This function was introduced in Qt 6.2.</p>
+<!-- @@@objectClass -->
+<!-- $$$setField[overload1]$$$setFieldconstchar*T -->
+<h3 class="fn" translate="no" id="setField">template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setField</span>(const <span class="type">char</span> *<i>fieldName</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the value of <i translate="no">fieldName</i> to <i translate="no">value</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> obj;
+ obj<span class="operator">.</span>setField<span class="operator">&lt;</span>jint<span class="operator">&gt;</span>(<span class="string">&quot;AN_INT_FIELD&quot;</span><span class="operator">,</span> <span class="number">10</span>);
+ jstring myString <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ obj<span class="operator">.</span>setField<span class="operator">&lt;</span>jstring<span class="operator">&gt;</span>(<span class="string">&quot;A_STRING_FIELD&quot;</span><span class="operator">,</span> myString);
+</pre>
+<!-- @@@setField -->
+<!-- $$$setField$$$setFieldconstchar*constchar*T -->
+<h3 class="fn" translate="no" id="setField-1">template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setField</span>(const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the value of <i translate="no">fieldName</i> with <i translate="no">signature</i> to <i translate="no">value</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> stringArray <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> obj <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+ obj<span class="operator">.</span>setObjectField<span class="operator">&lt;</span>jobjectArray<span class="operator">&gt;</span>(<span class="string">&quot;KEY_VALUES&quot;</span><span class="operator">,</span> <span class="string">&quot;([Ljava/lang/String;)V&quot;</span><span class="operator">,</span>
+                            stringArray<span class="operator">.</span>object<span class="operator">&lt;</span>jobjectArray<span class="operator">&gt;</span>())
+</pre>
+<!-- @@@setField -->
+<!-- $$$setStaticField[overload1]$$$setStaticFieldconstchar*T -->
+<h3 class="fn" translate="no" id="setStaticField"><code class="details extra" translate="no">[static]</code> template &lt;typename Klass, typename T&gt; <span class="type">auto</span> QJniObject::<span class="name">setStaticField</span>(const <span class="type">char</span> *<i>fieldName</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the static field <i translate="no">fieldName</i> of the class <code translate="no">Klass</code> to <i translate="no">value</i>.</p>
+<p><code translate="no">Klass</code> needs to be a C++ type with a registered type mapping to a Java type.</p>
+<!-- @@@setStaticField -->
+<!-- $$$setStaticField$$$setStaticFieldconstchar*constchar*T -->
+<h3 class="fn" translate="no" id="setStaticField-1"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setStaticField</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>fieldName</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the static field <i translate="no">fieldName</i> of the class <i translate="no">className</i> to <i translate="no">value</i>.</p>
+<!-- @@@setStaticField -->
+<!-- $$$setStaticField$$$setStaticFieldjclassconstchar*T -->
+<h3 class="fn" translate="no" id="setStaticField-2"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setStaticField</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>fieldName</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the static field <i translate="no">fieldName</i> of the class <i translate="no">clazz</i> to <i translate="no">value</i>.</p>
+<!-- @@@setStaticField -->
+<!-- $$$setStaticField$$$setStaticFieldconstchar*constchar*constchar*T -->
+<h3 class="fn" translate="no" id="setStaticField-3"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setStaticField</span>(const <span class="type">char</span> *<i>className</i>, const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the static field <i translate="no">fieldName</i> on the class <i translate="no">className</i> to <i translate="no">value</i> using the setter with <i translate="no">signature</i>.</p>
+<!-- @@@setStaticField -->
+<!-- $$$setStaticField$$$setStaticFieldjclassconstchar*constchar*T -->
+<h3 class="fn" translate="no" id="setStaticField-4"><code class="details extra" translate="no">[static]</code> template &lt;typename T&gt; <span class="type">void</span> QJniObject::<span class="name">setStaticField</span>(<span class="type">jclass</span> <i>clazz</i>, const <span class="type">char</span> *<i>fieldName</i>, const <span class="type">char</span> *<i>signature</i>, <span class="type">T</span> <i>value</i>)</h3>
+<p>Sets the static field <i translate="no">fieldName</i> on the class <i translate="no">clazz</i> to <i translate="no">value</i> using the setter with <i translate="no">signature</i>.</p>
+<!-- @@@setStaticField -->
+<!-- $$$swap[overload1]$$$swapQJniObject& -->
+<h3 class="fn" translate="no" id="swap"><code class="details extra" translate="no">[noexcept, since 6.8]</code> <span class="type">void</span> QJniObject::<span class="name">swap</span>(<span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;<i>other</i>)</h3>
+<p>Swaps this object with <i translate="no">other</i>. This operation is very fast and never fails.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<!-- @@@swap -->
+<!-- $$$toString[overload1]$$$toString -->
+<h3 class="fn" translate="no" id="toString"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QJniObject::<span class="name">toString</span>() const</h3>
+<p>Returns a <a href="qstring.html" translate="no">QString</a> with a string representation of the java object. Calling this function on a Java String object is a convenient way of getting the actual string data.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> string <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>; <span class="comment">//  &quot;Hello Java&quot;</span>
+ <span class="type"><a href="qstring.html" translate="no">QString</a></span> qstring <span class="operator">=</span> string<span class="operator">.</span>toString(); <span class="comment">// &quot;Hello Java&quot;</span>
+</pre>
+<p><b>See also </b><a href="qjniobject.html#fromString" translate="no">fromString</a>().</p>
+<!-- @@@toString -->
+<!-- $$$operator=[overload1]$$$operator=T -->
+<h3 class="fn" translate="no" id="operator-eq">template &lt;typename T, std::enable_if_t&lt;std::is_convertible_v&lt;T, jobject&gt;, bool&gt; = true&gt; <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;QJniObject::<span class="name">operator=</span>(<span class="type">T</span> <i>object</i>)</h3>
+<p>Replace the current object with <i translate="no">object</i>. The old Java object will be released.</p>
+<!-- @@@operator= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$operator!=[overload1]$$$operator!=constQJniObject&constQJniObject& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;<i>o1</i>, const <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;<i>o2</i>)</h3>
+<p>Returns true if <i translate="no">o1</i> holds a reference to a different object than <i translate="no">o2</i>.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator==[overload1]$$$operator==constQJniObject&constQJniObject& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;<i>o1</i>, const <span class="type"><a href="qjniobject.html#QJniObject" translate="no">QJniObject</a></span> &amp;<i>o2</i>)</h3>
+<p>Returns true if both objects, <i translate="no">o1</i> and <i translate="no">o2</i>, are referencing the same Java object, or if both are NULL. In any other cases false will be returned.</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

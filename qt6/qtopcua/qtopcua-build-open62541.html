@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtopcua.qdoc -->
+  <meta name="description" content="Build instructions for the Qt OPC UA Open62541 plugin.">
+  <title>Building Qt OPC UA Open62541 Plugin | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li>Building Qt OPC UA Open62541 Plugin</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtopcua-build-openssl.html" />
+  <link rel="next" href="qopcuaxmldatatypes2cpp.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtopcua-build-openssl.html">Using the OpenSSL Dependency for Security Support and GDS</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qopcuaxmldatatypes2cpp.html">The Qt OPC UA data type generator</a>
+</p>
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Building Qt OPC UA Open62541 Plugin</h1>
+<!-- $$$qtopcua-build-open62541.html-description -->
+<div class="descr" id="details">
+<p>The Open62541 plugin is built by default from the included 3rd party sources and has no external dependencies. The open62541 library uses OpenSSL for security. If the OpenSSL library is detected during configuration, security is enabled for the tests and the open62541 backend. The Open62541 source and header files bundled with Qt OPC UA have been generated from the open62541 v1.4.9 tag using the following commands:</p>
+<pre class="cpp" translate="no">
+ cmake <span class="operator">-</span>DUA_ENABLE_AMALGAMATION<span class="operator">=</span>ON <span class="operator">-</span>DUA_AMALGAMATION_MULTIARCH<span class="operator">=</span>ON <span class="operator">-</span>DUA_MULTITHREADING<span class="operator">=</span><span class="number">0</span> <span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>open62541<span class="operator">-</span>source
+ make
+</pre>
+<p>In case you want to build a custom version of the open62541 plugin, an installed open62541 v1.4.9 built with the default options is required. To enable encryption support, the open62541 build must be configured using the following parameters:</p>
+<pre class="cpp" translate="no">
+ cmake <span class="operator">-</span>DUA_ENABLE_ENCRYPTION<span class="operator">=</span>OPENSSL <span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>open62541<span class="operator">-</span>source
+</pre>
+<p>The following options must be passed to cmake when building with a custom open62541 installation.</p>
+<pre class="cpp" translate="no">
+ <span class="operator">-</span>DINPUT_open62541<span class="operator">=</span>system <span class="operator">-</span>DCMAKE_PREFIX_PATH<span class="operator">=</span><span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>open62541<span class="operator">-</span>install<span class="operator">-</span>dir
+</pre>
+<p>The <i translate="no">CMAKE_PREFIX_PATH</i> is only required if open62541 is installed in a location cmake doesn't check by default.</p>
+</div>
+<!-- @@@qtopcua-build-open62541.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtopcua-build-openssl.html">Using the OpenSSL Dependency for Security Support and GDS</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qopcuaxmldatatypes2cpp.html">The Qt OPC UA data type generator</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

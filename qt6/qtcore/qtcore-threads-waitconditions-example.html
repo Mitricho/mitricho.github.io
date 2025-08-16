@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- waitconditions.qdoc -->
+  <meta name="description" content="The Producer and Consumer using Wait Conditions example shows how to use QWaitCondition and QMutex to control access to a circular buffer shared by a producer thread and a consumer thread.">
+  <title>Producer and Consumer using Wait Conditions | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Producer and Consumer using Wait Conditions</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#global-variables">Global Variables</a></li>
+<li class="level1"><a href="#producer-class">Producer Class</a></li>
+<li class="level1"><a href="#consumer-class">Consumer Class</a></li>
+<li class="level1"><a href="#the-main-function">The main() Function</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Producer and Consumer using Wait Conditions</h1>
+<!-- $$$threads/waitconditions-brief -->
+<p>The Producer and Consumer using Wait Conditions example shows how to use <a href="qwaitcondition.html" translate="no">QWaitCondition</a> and <a href="qmutex.html" translate="no">QMutex</a> to control access to a circular buffer shared by a producer thread and a consumer thread.</p>
+<!-- @@@threads/waitconditions -->
+<!-- $$$threads/waitconditions-description -->
+<div class="descr" id="details">
+<p>The producer writes data to the buffer until it reaches the end of the buffer, at which point it restarts from the beginning, overwriting existing data. The consumer thread reads the data as it is produced and writes it to standard error.</p>
+<p>Wait conditions make it possible to have a higher level of concurrency than what is possible with mutexes alone. If accesses to the buffer were simply guarded by a <a href="qmutex.html" translate="no">QMutex</a>, the consumer thread couldn't access the buffer at the same time as the producer thread. Yet, there is no harm in having both threads working on <i>different parts</i> of the buffer at the same time.</p>
+<p>The example comprises two classes: <code translate="no">Producer</code> and <code translate="no">Consumer</code>. Both inherit from <a href="qthread.html" translate="no">QThread</a>. The circular buffer used for communicating between these two classes and the synchronization tools that protect it are global variables.</p>
+<p>An alternative to using <a href="qwaitcondition.html" translate="no">QWaitCondition</a> and <a href="qmutex.html" translate="no">QMutex</a> to solve the producer-consumer problem is to use <a href="qsemaphore.html" translate="no">QSemaphore</a>. This is what the <a href="qtcore-threads-semaphores-example.html">Producer and Consumer using Semaphores</a> example does.</p>
+<h4 id="global-variables">Global Variables</h4>
+<p>Let's start by reviewing the circular buffer and the associated synchronization tools:</p>
+<pre class="cpp" translate="no">
+ constexpr <span class="type">int</span> DataSize <span class="operator">=</span> <span class="number">100000</span>;
+ constexpr <span class="type">int</span> BufferSize <span class="operator">=</span> <span class="number">8192</span>;
+
+ <span class="type"><a href="qmutex.html" translate="no">QMutex</a></span> mutex; <span class="comment">// protects the buffer and the counter</span>
+ <span class="type">char</span> buffer<span class="operator">[</span>BufferSize<span class="operator">]</span>;
+ <span class="type">int</span> numUsedBytes;
+
+ <span class="type"><a href="qwaitcondition.html" translate="no">QWaitCondition</a></span> bufferNotEmpty;
+ <span class="type"><a href="qwaitcondition.html" translate="no">QWaitCondition</a></span> bufferNotFull;
+</pre>
+<p><code translate="no">DataSize</code> is the amount of data that the producer will generate. To keep the example as simple as possible, we make it a constant. <code translate="no">BufferSize</code> is the size of the circular buffer. It is less than <code translate="no">DataSize</code>, meaning that at some point the producer will reach the end of the buffer and restart from the beginning.</p>
+<p>To synchronize the producer and the consumer, we need two wait conditions and one mutex. The <code translate="no">bufferNotEmpty</code> condition is signalled when the producer has generated some data, telling the consumer that it can start reading it. The <code translate="no">bufferNotFull</code> condition is signalled when the consumer has read some data, telling the producer that it can generate more. The <code translate="no">numUsedBytes</code> is the number of bytes in the buffer that contain data.</p>
+<p>Together, the wait conditions, the mutex, and the <code translate="no">numUsedBytes</code> counter ensure that the producer is never more than <code translate="no">BufferSize</code> bytes ahead of the consumer, and that the consumer never reads data that the producer hasn't generated yet.</p>
+<h4 id="producer-class">Producer Class</h4>
+<p>Let's review the code for the <code translate="no">Producer</code> class:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Producer : <span class="keyword">public</span> <span class="type"><a href="qthread.html" translate="no">QThread</a></span>
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> Producer(<span class="type"><a href="qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr)
+         : <span class="type"><a href="qthread.html" translate="no">QThread</a></span>(parent)
+     {
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> run() override
+     {
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> DataSize; <span class="operator">+</span><span class="operator">+</span>i) {
+             {
+                 <span class="keyword">const</span> <span class="type"><a href="qmutexlocker.html" translate="no">QMutexLocker</a></span> locker(<span class="operator">&amp;</span>mutex);
+                 <span class="keyword">while</span> (numUsedBytes <span class="operator">=</span><span class="operator">=</span> BufferSize)
+                     bufferNotFull<span class="operator">.</span>wait(<span class="operator">&amp;</span>mutex);
+             }
+
+             buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span> <span class="operator">=</span> <span class="string">&quot;ACGT&quot;</span><span class="operator">[</span><span class="type"><a href="qrandomgenerator.html" translate="no">QRandomGenerator</a></span><span class="operator">::</span>global()<span class="operator">-</span><span class="operator">&gt;</span>bounded(<span class="number">4</span>)<span class="operator">]</span>;
+
+             {
+                 <span class="keyword">const</span> <span class="type"><a href="qmutexlocker.html" translate="no">QMutexLocker</a></span> locker(<span class="operator">&amp;</span>mutex);
+                 <span class="operator">+</span><span class="operator">+</span>numUsedBytes;
+                 bufferNotEmpty<span class="operator">.</span>wakeAll();
+             }
+         }
+     }
+ };
+</pre>
+<p>The producer generates <code translate="no">DataSize</code> bytes of data. Before it writes a byte to the circular buffer, it must first check whether the buffer is full (i.e., <code translate="no">numUsedBytes</code> equals <code translate="no">BufferSize</code>). If the buffer is full, the thread waits on the <code translate="no">bufferNotFull</code> condition.</p>
+<p>At the end, the producer increments <code translate="no">numUsedBytes</code> and signalls that the condition <code translate="no">bufferNotEmpty</code> is true, since <code translate="no">numUsedBytes</code> is necessarily greater than 0.</p>
+<p>We guard all accesses to the <code translate="no">numUsedBytes</code> variable with a mutex. In addition, the <a href="qwaitcondition.html#wait" translate="no">QWaitCondition::wait</a>() function accepts a mutex as its argument. This mutex is unlocked before the thread is put to sleep and locked when the thread wakes up. Furthermore, the transition from the locked state to the wait state is atomic, to prevent race conditions from occurring.</p>
+<h4 id="consumer-class">Consumer Class</h4>
+<p>Let's turn to the <code translate="no">Consumer</code> class:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Consumer : <span class="keyword">public</span> <span class="type"><a href="qthread.html" translate="no">QThread</a></span>
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> Consumer(<span class="type"><a href="qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr)
+         : <span class="type"><a href="qthread.html" translate="no">QThread</a></span>(parent)
+     {
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> run() override
+     {
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> DataSize; <span class="operator">+</span><span class="operator">+</span>i) {
+             {
+                 <span class="keyword">const</span> <span class="type"><a href="qmutexlocker.html" translate="no">QMutexLocker</a></span> locker(<span class="operator">&amp;</span>mutex);
+                 <span class="keyword">while</span> (numUsedBytes <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>)
+                     bufferNotEmpty<span class="operator">.</span>wait(<span class="operator">&amp;</span>mutex);
+             }
+
+             fprintf(stderr<span class="operator">,</span> <span class="string">&quot;%c&quot;</span><span class="operator">,</span> buffer<span class="operator">[</span>i <span class="operator">%</span> BufferSize<span class="operator">]</span>);
+
+             {
+                 <span class="keyword">const</span> <span class="type"><a href="qmutexlocker.html" translate="no">QMutexLocker</a></span> locker(<span class="operator">&amp;</span>mutex);
+                 <span class="operator">-</span><span class="operator">-</span>numUsedBytes;
+                 bufferNotFull<span class="operator">.</span>wakeAll();
+             }
+         }
+         fprintf(stderr<span class="operator">,</span> <span class="string">&quot;\n&quot;</span>);
+     }
+ };
+</pre>
+<p>The code is very similar to the producer. Before we read the byte, we check whether the buffer is empty (<code translate="no">numUsedBytes</code> is 0) instead of whether it's full and wait on the <code translate="no">bufferNotEmpty</code> condition if it's empty. After we've read the byte, we decrement <code translate="no">numUsedBytes</code> (instead of incrementing it), and we signal the <code translate="no">bufferNotFull</code> condition (instead of the <code translate="no">bufferNotEmpty</code> condition).</p>
+<h4 id="the-main-function">The main() Function</h4>
+<p>In <code translate="no">main()</code>, we create the two threads and call <a href="qthread.html#wait" translate="no">QThread::wait</a>() to ensure that both threads get time to finish before we exit:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+     Producer producer;
+     Consumer consumer;
+     producer<span class="operator">.</span>start();
+     consumer<span class="operator">.</span>start();
+     producer<span class="operator">.</span>wait();
+     consumer<span class="operator">.</span>wait();
+     <span class="keyword">return</span> <span class="number">0</span>;
+ }
+</pre>
+<p>So what happens when we run the program? Initially, the producer thread is the only one that can do anything; the consumer is blocked waiting for the <code translate="no">bufferNotEmpty</code> condition to be signalled (<code translate="no">numUsedBytes</code> is 0). Once the producer has put one byte in the buffer, <code translate="no">numUsedBytes</code> is strictly greater than 0, and the <code translate="no">bufferNotEmpty</code> condition is signalled. At that point, two things can happen: Either the consumer thread takes over and reads that byte, or the producer gets to produce a second byte.</p>
+<p>The producer-consumer model presented in this example makes it possible to write highly concurrent multithreaded applications. On a multiprocessor machine, the program is potentially up to twice as fast as the equivalent mutex-based program, since the two threads can be active at the same time on different parts of the buffer.</p>
+<p>Be aware though that these benefits aren't always realized. Locking and unlocking a <a href="qmutex.html" translate="no">QMutex</a> has a cost. In practice, it would probably be worthwhile to divide the buffer into chunks and to operate on chunks instead of individual bytes. The buffer size is also a parameter that must be selected carefully, based on experimentation.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/corelib/threads/waitconditions?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@threads/waitconditions -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtqml-qml-script-compiler.qdoc -->
+  <meta name="description" content="A tool to compile functions and expressions in QML.">
+  <title>QML script compiler | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qtqml-tooling.html">Qt Qml Tooling</a></li>
+<li>QML script compiler</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtqml-qml-type-compiler.html" />
+  <link rel="next" href="qtqml-tooling-qmltyperegistrar.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtqml-qml-type-compiler.html">QML type compiler</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-tooling-qmltyperegistrar.html">qmltyperegistrar</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#qmlcachegen">qmlcachegen</a></li>
+<li class="level1"><a href="#qmlsc">qmlsc</a></li>
+<li class="level2"><a href="#static-mode">static mode</a></li>
+<li class="level2"><a href="#direct-mode">direct mode</a></li>
+<li class="level1"><a href="#limitations-when-compiling-javascript-to-c">Limitations when compiling JavaScript to C++</a></li>
+<li class="level1"><a href="#obtaining-statistics-about-the-compilation-of-functions-and-bindings">Obtaining statistics about the compilation of functions and bindings</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML script compiler</h1>
+<!-- $$$qtqml-qml-script-compiler.html-description -->
+<div class="descr" id="details">
+<p>The QML script compiler compiles functions and expressions in QML and JavaScript files to a byte code that can be interpreted or Just-in-time compiled by the QML engine.</p>
+<p>In addition, it compiles some functions and expressions in QML files into C++ code, within limitations set by the nature of JavaScript. It generates C++ code for functions that can be exhaustively analyzed. The following flow chart explains the compilation workflow.</p>
+<p class="centerAlign"><img src="images/qmlsc-compilation-scheme.png" alt="" /></p><p>QML script compiler is available in two versions. One is <i>qmlcachegen</i>, which is a part of the <a href="qtqml-qtquick-compiler-tech.html">Qt Quick Compiler</a>. Another one is <i>qmlsc</i>, which is a part of the commercial-only add-on <i>Qt Quick Compiler Extensions</i>.</p>
+<h2 id="qmlcachegen">qmlcachegen</h2>
+<p><i>qmlcachegen</i> uses the meta-object system and generates lookups and stores them in a central place, a compilation unit. The compilation unit contains a representation of document structure, compact byte code representation for each function and expression, and native code for functions and bindings that compiler fully understands. The byte code in a compilation unit can be used by the QML engine to avoid re-compilation and to speed up execution.</p>
+<h2 id="qmlsc">qmlsc</h2>
+<p><i>qmlsc</i>, on the flip side, extends the base functionality of qmlcachegen by providing two extra modes.</p>
+<ul>
+<li><a href="qtqml-qml-script-compiler.html#static-mode">static mode</a></li>
+<li><a href="qtqml-qml-script-compiler.html#direct-mode">direct mode</a></li>
+</ul>
+<h3 id="static-mode">static mode</h3>
+<p>In static mode, qmlsc assumes that no properties of any types exposed to C++ can be shadowed by derived types. It eliminates the shadow checking mechanism and allows more JavaScript code to be compiled to C++ and eventually generates faster code.</p>
+<p>To enable static mode in qmlsc, you should pass <code translate="no">--static</code> via <code translate="no">QT_QMLCACHEGEN_ARGUMENTS</code> to <a href="qt-add-qml-module.html">qt_add_qml_module</a>.</p>
+<pre class="cpp plain" translate="no">
+ qt_add_qml_module(someTarget
+ ...
+ )
+
+ set_target_properties(someTarget PROPERTIES
+     QT_QMLCACHEGEN_ARGUMENTS &quot;--static&quot;
+ )
+</pre>
+<div class="admonition warning">
+<p><b>Warning: </b>qmlsc static-mode generates invalid code if any properties are shadowed in the QML document.</p>
+</div>
+<h3 id="direct-mode">direct mode</h3>
+<p>In direct mode, qmlsc assumes that all C++ types used in your QML code are available and can be included as C++ headers to the generated code. Then the generated code accesses or modifies properties by directly calling getters, setters and invokable functions in those headers which makes the execution even faster. This means you have to link to private Qt APIs in CMake.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Private Qt APIs change often. You will need to recompile Qt for each new version.</p>
+</div>
+<div class="admonition warning">
+<p><b>Warning: </b>If a type is only defined in a plugin or has no header, you can’t use it in direct mode.</p>
+</div>
+<p>To enable direct mode, you should consider the followings:</p>
+<ul>
+<li>you should pass <code translate="no">--direct-calls</code> via <code translate="no">QT_QMLCACHEGEN_ARGUMENTS</code> to <a href="qt-add-qml-module.html">qt_add_qml_module</a>.<pre class="cpp plain" translate="no">
+ qt_add_qml_module(someTarget
+ ...
+ )
+
+ set_target_properties(someTarget PROPERTIES
+     QT_QMLCACHEGEN_ARGUMENTS &quot;--direct-calls&quot;
+ )
+</pre>
+</li>
+<li>Link all the relavant private Qt modules instead of their public counterparts.<pre class="cpp plain" translate="no">
+ qt_add_qml_module(someTarget
+ ...
+ )
+
+ target_link_libraries(someTarget PRIVATE
+     Qt::QmlPrivate
+     Qt::QuickPrivate
+     ...
+ )
+</pre>
+</li>
+<li>Do not set the <code translate="no">PLUGIN_TARGET</code> to be the same as the backing library target.<pre class="cpp plain" translate="no">
+ # direct mode will not function in this setup.
+ qt_add_qml_module(someTarget
+ PLUGIN_TARGET someTarget
+ ...
+ )
+</pre>
+</li>
+</ul>
+<h2 id="limitations-when-compiling-javascript-to-c">Limitations when compiling JavaScript to C++</h2>
+<p>Many JavaScript constructs cannot be efficiently represented in C++. The QML script compiler skips the C++ code generation for functions that contain such constructs and only generates byte code to be interpreted or run through the Just-in-time compiler. Most common QML expressions are rather simple: value lookups on QObjects, arithmetics, simple if/else or loop constructs. Those can easily be expressed in C++, and doing so makes your application run faster.</p>
+<h2 id="obtaining-statistics-about-the-compilation-of-functions-and-bindings">Obtaining statistics about the compilation of functions and bindings</h2>
+<p>The QML Script Compiler records statistics when compiling QML to C++. These can give insight into the compilation of functions and bindings and whether it was successful or which error has caused it to fail. In addition to showing these results per binding or function, the statistics are also summarized per file, per module, and at the project level. This can give a quick overview of how well a project is being compiled.</p>
+<p>To show statistics, invoke the <i>all_aotstats</i> cmake target.</p>
+<p>The collection of compilation statistics is enabled by default. In order to disable it, set the <a href="cmake-variable-qt-qml-generate-aotstats.html">QT_QML_GENERATE_AOTSTATS</a> CMake variable to OFF before the first call to <a href="qt-add-qml-module.html">qt_add_qml_module</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>These statistics are only available for modules registered through the <a href="qt-add-qml-module.html">qt_add_qml_module</a> cmake API</p>
+</div>
+</div>
+<!-- @@@qtqml-qml-script-compiler.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtqml-qml-type-compiler.html">QML type compiler</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-tooling-qmltyperegistrar.html">qmltyperegistrar</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

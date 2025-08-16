@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qcanbus.cpp -->
+  <meta name="description" content="The QCanBus class handles registration and creation of bus plugins.">
+  <title>QCanBus Class | Qt Serial Bus | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtserialbus-index.html">Qt Serial Bus</a></li>
+<li><a href="qtserialbus-module.html" translate="no">C++ Classes</a></li>
+<li>QCanBus</li>
+<li id="buildversion"><a href="qtserialbus-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QCanBus Class</h1>
+<!-- $$$QCanBus-brief -->
+<p>The QCanBus class handles registration and creation of bus plugins. <a href="#details">More...</a></p>
+<!-- @@@QCanBus -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QCanBus&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS SerialBus)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::SerialBus)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += serialbus</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qcanbus-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> QList&lt;QCanBusDeviceInfo&gt; </td><td class="memItemRight bottomAlign"><b><a href="qcanbus.html#availableDevices" translate="no">availableDevices</a></b>(QString *<i>errorMessage</i> = nullptr) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QCanBusDeviceInfo&gt; </td><td class="memItemRight bottomAlign"><b><a href="qcanbus.html#availableDevices-1" translate="no">availableDevices</a></b>(const QString &amp;<i>plugin</i>, QString *<i>errorMessage</i> = nullptr) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCanBusDevice *</td><td class="memItemRight bottomAlign"><b><a href="qcanbus.html#createDevice" translate="no">createDevice</a></b>(const QString &amp;<i>plugin</i>, const QString &amp;<i>interfaceName</i>, QString *<i>errorMessage</i> = nullptr) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcanbus.html#plugins" translate="no">plugins</a></b>() const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QCanBus *</td><td class="memItemRight bottomAlign"><b><a href="qcanbus.html#instance" translate="no">instance</a></b>()</td></tr>
+</table></div>
+<!-- $$$QCanBus-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QCanBus loads Qt CAN Bus plugins at runtime. The ownership of serial bus plugins is transferred to the loader.</p>
+</div>
+<!-- @@@QCanBus -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$availableDevices[overload1]$$$availableDevicesQString* -->
+<h3 class="fn" translate="no" id="availableDevices"><code class="details extra" translate="no">[since 6.8]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcanbusdeviceinfo.html" translate="no">QCanBusDeviceInfo</a></span>&gt; QCanBus::<span class="name">availableDevices</span>(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> *<i>errorMessage</i> = nullptr) const</h3>
+<p>Returns the available devices for all plugins, i.e. all available CAN interfaces.</p>
+<p>In case of failure, the optional parameter <i translate="no">errorMessage</i> returns a textual error description.</p>
+<div class="admonition note">
+<p><b>Note: </b>Some plugins might not or only partially support this function.</p>
+</div>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qcanbus.html#createDevice" translate="no">createDevice</a>().</p>
+<!-- @@@availableDevices -->
+<!-- $$$availableDevices$$$availableDevicesconstQString&QString* -->
+<h3 class="fn" translate="no" id="availableDevices-1"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcanbusdeviceinfo.html" translate="no">QCanBusDeviceInfo</a></span>&gt; QCanBus::<span class="name">availableDevices</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>plugin</i>, <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> *<i>errorMessage</i> = nullptr) const</h3>
+<p>Returns the available interfaces for <i translate="no">plugin</i>. In case of failure, the optional parameter <i translate="no">errorMessage</i> returns a textual error description.</p>
+<div class="admonition note">
+<p><b>Note: </b>Some plugins might not or only partially support this function.</p>
+</div>
+<p>For example, the following call returns a list of all available SocketCAN interfaces (which can be used for <a href="qcanbus.html#createDevice" translate="no">createDevice</a>()):</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> errorString;
+ <span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcanbusdeviceinfo.html" translate="no">QCanBusDeviceInfo</a></span><span class="operator">&gt;</span> devices <span class="operator">=</span> <span class="type">QCanBus</span><span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>availableDevices(
+     <span class="type"><a href="../qtcore/qstring.html#QStringLiteral" translate="no">QStringLiteral</a></span>(<span class="string">&quot;socketcan&quot;</span>)<span class="operator">,</span> <span class="operator">&amp;</span>errorString);
+ <span class="keyword">if</span> (<span class="operator">!</span>errorString<span class="operator">.</span>isEmpty())
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> errorString;
+</pre>
+<p><b>See also </b><a href="qcanbus.html#createDevice" translate="no">createDevice</a>().</p>
+<!-- @@@availableDevices -->
+<!-- $$$createDevice[overload1]$$$createDeviceconstQString&constQString&QString* -->
+<h3 class="fn" translate="no" id="createDevice"><span class="type"><a href="qcanbusdevice.html" translate="no">QCanBusDevice</a></span> *QCanBus::<span class="name">createDevice</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>plugin</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>interfaceName</i>, <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> *<i>errorMessage</i> = nullptr) const</h3>
+<p>Creates a CAN bus device. <i translate="no">plugin</i> is the name of the plugin as returned by the <a href="qcanbus.html#plugins" translate="no">plugins</a>() method. <i translate="no">interfaceName</i> is the CAN bus interface name. In case of failure, the optional parameter <i translate="no">errorMessage</i> returns a textual error description.</p>
+<p>Ownership of the returned plugin is transferred to the caller. Returns <code translate="no">nullptr</code> if no suitable device can be found.</p>
+<p>For example, the following call would connect to the SocketCAN interface vcan0:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> errorString;
+ <span class="type"><a href="qcanbusdevice.html" translate="no">QCanBusDevice</a></span> <span class="operator">*</span>device <span class="operator">=</span> <span class="type">QCanBus</span><span class="operator">::</span>instance()<span class="operator">-</span><span class="operator">&gt;</span>createDevice(
+     <span class="type"><a href="../qtcore/qstring.html#QStringLiteral" translate="no">QStringLiteral</a></span>(<span class="string">&quot;socketcan&quot;</span>)<span class="operator">,</span> <span class="type"><a href="../qtcore/qstring.html#QStringLiteral" translate="no">QStringLiteral</a></span>(<span class="string">&quot;vcan0&quot;</span>)<span class="operator">,</span> <span class="operator">&amp;</span>errorString);
+ <span class="keyword">if</span> (<span class="operator">!</span>device)
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> errorString;
+ <span class="keyword">else</span>
+     device<span class="operator">-</span><span class="operator">&gt;</span>connectDevice();
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The <i translate="no">interfaceName</i> is plugin-dependent. See the corresponding plugin documentation for more information: <a href="qtcanbus-backends.html#can-bus-plugins">CAN Bus Plugins</a>. To get a list of available interfaces, <a href="qcanbus.html#availableDevices" translate="no">availableDevices</a>() can be used.</p>
+</div>
+<p><b>See also </b><a href="qcanbus.html#availableDevices" translate="no">availableDevices</a>().</p>
+<!-- @@@createDevice -->
+<!-- $$$instance[overload1]$$$instance -->
+<h3 class="fn" translate="no" id="instance"><code class="details extra" translate="no">[static]</code> <span class="type">QCanBus</span> *QCanBus::<span class="name">instance</span>()</h3>
+<p>Returns a pointer to the <a href="qcanbus.html" translate="no">QCanBus</a> class. The object is loaded if necessary. <a href="qcanbus.html" translate="no">QCanBus</a> uses the singleton design pattern.</p>
+<!-- @@@instance -->
+<!-- $$$plugins[overload1]$$$plugins -->
+<h3 class="fn" translate="no" id="plugins"><span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> QCanBus::<span class="name">plugins</span>() const</h3>
+<p>Returns a list of identifiers for all loaded plugins.</p>
+<!-- @@@plugins -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

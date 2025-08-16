@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- rendercontrol_rhi.qdoc -->
+  <meta name="description" content="Shows how to render a Qt Quick scene into a QRhiTexture.">
+  <title>QQuickRenderControl RHI Example | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>QQuickRenderControl RHI Example</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QQuickRenderControl RHI Example</h1>
+<!-- $$$rendercontrol/rendercontrol_rhi-brief -->
+<p>Shows how to render a Qt Quick scene into a <a href="../qtgui/qrhitexture.html" translate="no">QRhiTexture</a>.</p>
+<!-- @@@rendercontrol/rendercontrol_rhi -->
+<!-- $$$rendercontrol/rendercontrol_rhi-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/rendercontrol-rhi-example.jpg" alt="" /></p><p>This example demonstrates how to set up a Qt Quick scene that has its rendering redirected into a <a href="../qtgui/qrhitexture.html" translate="no">QRhiTexture</a>. The application is then free to do whatever it wants with the resulting texture from each frame. This example is a <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based application that performs a readback of the image data, and then displays the collected per-frame renders with CPU and GPU-based timing information for each.</p>
+<p>By using Qt's 3D graphics API abstraction, this example is not tied to any particular graphics API. At startup, a dialog is shown with the platforms' potentially supported 3D APIs.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtwidgets/qdialog.html" translate="no">QDialog</a></span> apiSelect;
+     <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span> <span class="operator">*</span>selLayout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qvboxlayout.html" translate="no">QVBoxLayout</a></span>;
+     selLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(<span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlabel.html" translate="no">QLabel</a></span>(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;Select graphics API to use&quot;</span>)));
+     <span class="type"><a href="../qtwidgets/qlistwidget.html" translate="no">QListWidget</a></span> <span class="operator">*</span>apiList <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlistwidget.html" translate="no">QListWidget</a></span>;
+     <span class="type"><a href="../qtcore/qvarlengtharray.html" translate="no">QVarLengthArray</a></span><span class="operator">&lt;</span><span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>GraphicsApi<span class="operator">,</span> <span class="number">5</span><span class="operator">&gt;</span> apiValues;
+ <span class="preprocessor">#ifdef Q_OS_WIN</span>
+     apiList<span class="operator">-</span><span class="operator">&gt;</span>addItem(<span class="string">&quot;Direct3D 11&quot;</span>);
+     apiValues<span class="operator">.</span>append(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Direct3D11);
+     apiList<span class="operator">-</span><span class="operator">&gt;</span>addItem(<span class="string">&quot;Direct3D 12&quot;</span>);
+     apiValues<span class="operator">.</span>append(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Direct3D12);
+ <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#if QT_CONFIG(metal)</span>
+     apiList<span class="operator">-</span><span class="operator">&gt;</span>addItem(<span class="string">&quot;Metal&quot;</span>);
+     apiValues<span class="operator">.</span>append(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Metal);
+ <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#if QT_CONFIG(vulkan)</span>
+     apiList<span class="operator">-</span><span class="operator">&gt;</span>addItem(<span class="string">&quot;Vulkan&quot;</span>);
+     apiValues<span class="operator">.</span>append(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Vulkan);
+ <span class="preprocessor">#endif</span>
+ <span class="preprocessor">#if QT_CONFIG(opengl)</span>
+     apiList<span class="operator">-</span><span class="operator">&gt;</span>addItem(<span class="string">&quot;OpenGL / OpenGL ES&quot;</span>);
+     apiValues<span class="operator">.</span>append(<span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>OpenGL);
+ <span class="preprocessor">#endif</span>
+     <span class="keyword">if</span> (apiValues<span class="operator">.</span>isEmpty()) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(nullptr<span class="operator">,</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;No 3D graphics API&quot;</span>)<span class="operator">,</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>tr(<span class="string">&quot;No 3D graphics APIs are supported in this Qt build&quot;</span>));
+         <span class="keyword">return</span> <span class="number">1</span>;
+     }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>It is not guaranteed that all selections will be functional on a given platform.</p>
+</div>
+<p>Once a selection is made, a QML file is loaded. However, we will not simply create a <a href="qquickview.html" translate="no">QQuickView</a> instance and <a href="../qtgui/qwindow.html#show" translate="no">show</a>() it. Rather, the <a href="qquickwindow.html" translate="no">QQuickWindow</a> that manages the Qt Quick scene is never shown on-screen. Instead, the application takes control over when and to where render, via <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>load(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>filename)
+ {
+     reset();
+
+     m_renderControl<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a></span>);
+     m_scene<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span>(m_renderControl<span class="operator">.</span>get()));
+
+     <span class="comment">// enable lastCompletedGpuTime() on QRhiCommandBuffer, if supported by the underlying 3D API</span>
+     <span class="type"><a href="qquickgraphicsconfiguration.html" translate="no">QQuickGraphicsConfiguration</a></span> config;
+     config<span class="operator">.</span>setTimestamps(<span class="keyword">true</span>);
+     m_scene<span class="operator">-</span><span class="operator">&gt;</span>setGraphicsConfiguration(config);
+
+ <span class="preprocessor">#if QT_CONFIG(vulkan)</span>
+     <span class="keyword">if</span> (m_scene<span class="operator">-</span><span class="operator">&gt;</span>graphicsApi() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Vulkan)
+         m_scene<span class="operator">-</span><span class="operator">&gt;</span>setVulkanInstance(m_vulkanInstance);
+ <span class="preprocessor">#endif</span>
+
+     m_qmlEngine<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="../qtqml/qqmlengine.html" translate="no">QQmlEngine</a></span>);
+     m_qmlComponent<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="../qtqml/qqmlcomponent.html" translate="no">QQmlComponent</a></span>(m_qmlEngine<span class="operator">.</span>get()<span class="operator">,</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span><span class="operator">::</span>fromLocalFile(filename)));
+     <span class="keyword">if</span> (m_qmlComponent<span class="operator">-</span><span class="operator">&gt;</span>isError()) {
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="../qtqml/qqmlerror.html" translate="no">QQmlError</a></span> <span class="operator">&amp;</span>error : m_qmlComponent<span class="operator">-</span><span class="operator">&gt;</span>errors())
+             <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> error<span class="operator">.</span>url() <span class="operator">&lt;</span><span class="operator">&lt;</span> error<span class="operator">.</span>line() <span class="operator">&lt;</span><span class="operator">&lt;</span> error;
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot load QML scene&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Failed to load %1&quot;</span>)<span class="operator">.</span>arg(filename));
+         reset();
+         <span class="keyword">return</span>;
+     }
+</pre>
+<p>Once the object tree is instantiated, the root item (a <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a>) is queried, its size is ensured to be valid and then propagated.</p>
+<div class="admonition note">
+<p><b>Note: </b>Scenes that use the <a href="qml-qtquick-window.html" translate="no">Window</a> element within the object tree are not supported.</p>
+</div>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>rootObject <span class="operator">=</span> m_qmlComponent<span class="operator">-</span><span class="operator">&gt;</span>create();
+     <span class="keyword">if</span> (m_qmlComponent<span class="operator">-</span><span class="operator">&gt;</span>isError()) {
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="../qtqml/qqmlerror.html" translate="no">QQmlError</a></span> <span class="operator">&amp;</span>error : m_qmlComponent<span class="operator">-</span><span class="operator">&gt;</span>errors())
+             <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> error<span class="operator">.</span>url() <span class="operator">&lt;</span><span class="operator">&lt;</span> error<span class="operator">.</span>line() <span class="operator">&lt;</span><span class="operator">&lt;</span> error;
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot load QML scene&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Failed to create component&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     <span class="type"><a href="qquickitem.html" translate="no">QQuickItem</a></span> <span class="operator">*</span>rootItem <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type"><a href="qquickitem.html" translate="no">QQuickItem</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(rootObject);
+     <span class="keyword">if</span> (<span class="operator">!</span>rootItem) {
+         <span class="comment">// Get rid of the on-screen window, if the root object was a Window</span>
+         <span class="keyword">if</span> (<span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span> <span class="operator">*</span>w <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(rootObject))
+             <span class="keyword">delete</span> w;
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span>
+                               tr(<span class="string">&quot;Invalid root item in QML scene&quot;</span>)<span class="operator">,</span>
+                               tr(<span class="string">&quot;Root object is not a QQuickItem. If this is a scene with Window in it, note that such scenes are not supported.&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     <span class="keyword">if</span> (rootItem<span class="operator">-</span><span class="operator">&gt;</span>size()<span class="operator">.</span>width() <span class="operator">&lt;</span> <span class="number">16</span>)
+         rootItem<span class="operator">-</span><span class="operator">&gt;</span>setSize(<span class="type"><a href="../qtcore/qsizef.html" translate="no">QSizeF</a></span>(<span class="number">640</span><span class="operator">,</span> <span class="number">360</span>));
+
+     m_scene<span class="operator">-</span><span class="operator">&gt;</span>contentItem()<span class="operator">-</span><span class="operator">&gt;</span>setSize(rootItem<span class="operator">-</span><span class="operator">&gt;</span>size());
+     m_scene<span class="operator">-</span><span class="operator">&gt;</span>setGeometry(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> rootItem<span class="operator">-</span><span class="operator">&gt;</span>width()<span class="operator">,</span> rootItem<span class="operator">-</span><span class="operator">&gt;</span>height());
+
+     rootItem<span class="operator">-</span><span class="operator">&gt;</span>setParentItem(m_scene<span class="operator">-</span><span class="operator">&gt;</span>contentItem());
+
+     m_statusMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;QML scene loaded&quot;</span>));
+</pre>
+<p>At this point there are no rendering resources initialized, i.e., nothing has been done with the native 3D graphics API yet. A <a href="../qtgui/qrhi.html" translate="no">QRhi</a> is instantiated only in the next step, and that is what triggers setting up the Vulkan, Metal, Direct 3D, etc. rendering system under the hood.</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">const</span> <span class="type">bool</span> initSuccess <span class="operator">=</span> m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>initialize();
+     <span class="keyword">if</span> (<span class="operator">!</span>initSuccess) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot initialize renderer&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;QQuickRenderControl::initialize() failed&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     <span class="keyword">const</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>GraphicsApi api <span class="operator">=</span> m_scene<span class="operator">-</span><span class="operator">&gt;</span>rendererInterface()<span class="operator">-</span><span class="operator">&gt;</span>graphicsApi();
+     <span class="keyword">switch</span> (api) {
+     <span class="keyword">case</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>OpenGL:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;OpenGL&quot;</span>));
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Direct3D11:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;D3D11&quot;</span>));
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Direct3D12:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;D3D12&quot;</span>));
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Vulkan:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;Vulkan&quot;</span>));
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a></span><span class="operator">::</span>Metal:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;Metal&quot;</span>));
+         <span class="keyword">break</span>;
+     <span class="keyword">default</span>:
+         m_apiMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;Unknown 3D API&quot;</span>));
+         <span class="keyword">break</span>;
+     }
+
+     <span class="type"><a href="../qtgui/qrhi.html" translate="no">QRhi</a></span> <span class="operator">*</span>rhi <span class="operator">=</span> m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>rhi();
+     <span class="keyword">if</span> (<span class="operator">!</span>rhi) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot render&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;No QRhi from QQuickRenderControl&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     m_driverInfoMsg<span class="operator">-</span><span class="operator">&gt;</span>setText(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>fromUtf8(rhi<span class="operator">-</span><span class="operator">&gt;</span>driverInfo()<span class="operator">.</span>deviceName));
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>This application uses a model where Qt creates an instance of <a href="../qtgui/qrhi.html" translate="no">QRhi</a>. This is not the only possible approach: if the application maintains its own <a href="../qtgui/qrhi.html" translate="no">QRhi</a> (and so OpenGL context, Vulkan device, etc.), then Qt Quick can be requested to adopt and use that existing <a href="../qtgui/qrhi.html" translate="no">QRhi</a>. That is done via passing a <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a> created by <a href="qquickgraphicsdevice.html#fromRhi" translate="no">QQuickGraphicsDevice::fromRhi</a>() to <a href="qquickwindow.html" translate="no">QQuickWindow</a>, similarly to how <a href="qquickgraphicsconfiguration.html" translate="no">QQuickGraphicsConfiguration</a> is set in the snippet above. Consider for example the case of wanting to use the Qt Quick rendered textures in a <a href="../qtwidgets/qrhiwidget.html" translate="no">QRhiWidget</a>: in that case the <a href="../qtwidgets/qrhiwidget.html" translate="no">QRhiWidget</a>'s <a href="../qtgui/qrhi.html" translate="no">QRhi</a> will need to passed on to Qt Quick, instead of letting Qt Quick create its own.</p>
+</div>
+<p>Once <a href="qquickrendercontrol.html#initialize" translate="no">QQuickRenderControl::initialize</a>() succeeds, the renderer is live and ready to go. For that, we need a color buffer to render into.</p>
+<p><a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a> is a lightweight implicitly-shared class that carries (but those not own) various sets of native or <a href="../qtgui/qrhi.html" translate="no">QRhi</a> objects that describe textures, render targets, or similar. Calling <a href="qquickwindow.html#setRenderTarget" translate="no">setRenderTarget</a>() on the <a href="qquickwindow.html" translate="no">QQuickWindow</a> (remember that we have a <a href="qquickwindow.html" translate="no">QQuickWindow</a> that is not visible on-screen) is what triggers redirecting the Qt Quick scene graph's rendering into the texture provided by the application. When working with <a href="../qtgui/qrhi.html" translate="no">QRhi</a> (and not with native 3D API objects such as OpenGL texture IDs or VkImage objects), the application should set up a <a href="../qtgui/qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a> and then pass it to Qt Quick via <a href="qquickrendertarget.html#fromRhiRenderTarget" translate="no">QQuickRenderTarget::fromRhiRenderTarget</a>().</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> pixelSize <span class="operator">=</span> rootItem<span class="operator">-</span><span class="operator">&gt;</span>size()<span class="operator">.</span>toSize(); <span class="comment">// no scaling, i.e. the item size is in pixels</span>
+
+     m_texture<span class="operator">.</span>reset(rhi<span class="operator">-</span><span class="operator">&gt;</span>newTexture(<span class="type"><a href="../qtgui/qrhitexture.html" translate="no">QRhiTexture</a></span><span class="operator">::</span>RGBA8<span class="operator">,</span> pixelSize<span class="operator">,</span> <span class="number">1</span><span class="operator">,</span>
+                                     <span class="type"><a href="../qtgui/qrhitexture.html" translate="no">QRhiTexture</a></span><span class="operator">::</span>RenderTarget <span class="operator">|</span> <span class="type"><a href="../qtgui/qrhitexture.html" translate="no">QRhiTexture</a></span><span class="operator">::</span>UsedAsTransferSource));
+     <span class="keyword">if</span> (<span class="operator">!</span>m_texture<span class="operator">-</span><span class="operator">&gt;</span>create()) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot render&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Cannot create texture object&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     m_ds<span class="operator">.</span>reset(rhi<span class="operator">-</span><span class="operator">&gt;</span>newRenderBuffer(<span class="type"><a href="../qtgui/qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a></span><span class="operator">::</span>DepthStencil<span class="operator">,</span> pixelSize<span class="operator">,</span> <span class="number">1</span>));
+     <span class="keyword">if</span> (<span class="operator">!</span>m_ds<span class="operator">-</span><span class="operator">&gt;</span>create()) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot render&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Cannot create depth-stencil buffer&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     <span class="type"><a href="../qtgui/qrhitexturerendertargetdescription.html" translate="no">QRhiTextureRenderTargetDescription</a></span> rtDesc(<span class="type"><a href="../qtgui/qrhicolorattachment.html" translate="no">QRhiColorAttachment</a></span>(m_texture<span class="operator">.</span>get()));
+     rtDesc<span class="operator">.</span>setDepthStencilBuffer(m_ds<span class="operator">.</span>get());
+     m_rt<span class="operator">.</span>reset(rhi<span class="operator">-</span><span class="operator">&gt;</span>newTextureRenderTarget(rtDesc));
+     m_rpDesc<span class="operator">.</span>reset(m_rt<span class="operator">-</span><span class="operator">&gt;</span>newCompatibleRenderPassDescriptor());
+     m_rt<span class="operator">-</span><span class="operator">&gt;</span>setRenderPassDescriptor(m_rpDesc<span class="operator">.</span>get());
+     <span class="keyword">if</span> (<span class="operator">!</span>m_rt<span class="operator">-</span><span class="operator">&gt;</span>create()) {
+         <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> tr(<span class="string">&quot;Cannot render&quot;</span>)<span class="operator">,</span> tr(<span class="string">&quot;Cannot create render target&quot;</span>));
+         reset();
+         <span class="keyword">return</span>;
+     }
+
+     m_scene<span class="operator">-</span><span class="operator">&gt;</span>setRenderTarget(<span class="type"><a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a></span><span class="operator">::</span>fromRhiRenderTarget(m_rt<span class="operator">.</span>get()));
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Always provide a depth-stencil buffer for Qt Quick since both of these buffers and the depth and stencil test may get utilized by the Qt Quick scenegraph when rendering.</p>
+</div>
+<p>The main render loop is the following. This also shows how to perform GPU-&gt;CPU readbacks of images. Once a <a href="../qtgui/qimage.html" translate="no">QImage</a> is available, the <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based user interface updates accordingly. We will omit diving into the details for that here.</p>
+<p>The example also demonstrates a simple way of measuring the cost of rendering a frame on the CPU and the GPU. Offscreen-rendered frames are well suited for this due to certain internal <a href="../qtgui/qrhi.html" translate="no">QRhi</a> behavior, which implies that operations that otherwise are asynchronous (in the sense that they complete only when rendering a subsequent frame), are guaranteed to be ready once <a href="../qtgui/qrhi.html#endOffscreenFrame" translate="no">QRhi::endOffscreenFrame</a>() (i.e., <a href="qquickrendercontrol.html#endFrame" translate="no">QQuickRenderControl::endFrame</a>()) returns. We use this knowledge when reading back the texture, and it applies also to GPU timestamps as well. That is why the application can display the GPU time for each frame, while guaranteeing that the time actually refers to that particular frame (not an earlier one). See <a href="../qtgui/qrhicommandbuffer.html#lastCompletedGpuTime" translate="no">lastCompletedGpuTime</a>() for details around GPU timings. The CPU side timings are taken using <a href="../qtcore/qelapsedtimer.html" translate="no">QElapsedTimer</a>.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtcore/qelapsedtimer.html" translate="no">QElapsedTimer</a></span> cpuTimer;
+     cpuTimer<span class="operator">.</span>start();
+
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>polishItems();
+
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>beginFrame();
+
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>sync();
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>render();
+
+     <span class="type"><a href="../qtgui/qrhi.html" translate="no">QRhi</a></span> <span class="operator">*</span>rhi <span class="operator">=</span> m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>rhi();
+     <span class="type"><a href="../qtgui/qrhireadbackresult.html" translate="no">QRhiReadbackResult</a></span> readResult;
+     <span class="type"><a href="../qtgui/qrhiresourceupdatebatch.html" translate="no">QRhiResourceUpdateBatch</a></span> <span class="operator">*</span>readbackBatch <span class="operator">=</span> rhi<span class="operator">-</span><span class="operator">&gt;</span>nextResourceUpdateBatch();
+     readbackBatch<span class="operator">-</span><span class="operator">&gt;</span>readBackTexture(m_texture<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span>readResult);
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>commandBuffer()<span class="operator">-</span><span class="operator">&gt;</span>resourceUpdate(readbackBatch);
+
+     m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>endFrame();
+
+     <span class="keyword">const</span> <span class="type">double</span> gpuRenderTimeMs <span class="operator">=</span> m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>commandBuffer()<span class="operator">-</span><span class="operator">&gt;</span>lastCompletedGpuTime() <span class="operator">*</span> <span class="number">1000.0</span>;
+     <span class="keyword">const</span> <span class="type">double</span> cpuRenderTimeMs <span class="operator">=</span> cpuTimer<span class="operator">.</span>nsecsElapsed() <span class="operator">/</span> <span class="number">1000000.0</span>;
+
+     <span class="comment">// m_renderControl-&gt;begin/endFrame() is based on QRhi's</span>
+     <span class="comment">// begin/endOffscreenFrame() under the hood, meaning it does not do</span>
+     <span class="comment">// pipelining, unlike swapchain-based frames, and therefore the readback is</span>
+     <span class="comment">// guaranteed to complete once endFrame() returns.</span>
+     <span class="type"><a href="../qtgui/qimage.html" translate="no">QImage</a></span> wrapperImage(<span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#uchar-typedef" translate="no">uchar</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(readResult<span class="operator">.</span>data<span class="operator">.</span>constData())<span class="operator">,</span>
+                     readResult<span class="operator">.</span>pixelSize<span class="operator">.</span>width()<span class="operator">,</span> readResult<span class="operator">.</span>pixelSize<span class="operator">.</span>height()<span class="operator">,</span>
+                     <span class="type"><a href="../qtgui/qimage.html" translate="no">QImage</a></span><span class="operator">::</span>Format_RGBA8888_Premultiplied);
+     <span class="type"><a href="../qtgui/qimage.html" translate="no">QImage</a></span> result;
+     <span class="keyword">if</span> (rhi<span class="operator">-</span><span class="operator">&gt;</span>isYUpInFramebuffer())
+         result <span class="operator">=</span> wrapperImage<span class="operator">.</span>flipped();
+     <span class="keyword">else</span>
+         result <span class="operator">=</span> wrapperImage<span class="operator">.</span>copy();
+</pre>
+<p>One important piece is the stepping of Qt Quick animations. As we do not have an on-screen window that can drive the animation system either via measuring elapsed time, an ordinary timer, or presentation rate-based throttling, redirecting the Qt Quick rendering often implies that the driving of animations needs to be taken over by the application. Otherwise, animations function based on a plain system timer, but the actual elapsed time will often have nothing to do with what the offscreen-rendered scene is expected to perceive. Consider rendering 5 frames in a row, in a tight loop. How the animations in those 5 frames move depends on the speed with which the CPU executes the loop iterations. That is almost never ideal. To ensure consistent animations, install a custom QAnimationDriver. While this is an undocumented (but public) API meant for advanced users, the example here provides a simple example of using it.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> AnimationDriver : <span class="keyword">public</span> <span class="type">QAnimationDriver</span>
+ {
+ <span class="keyword">public</span>:
+     AnimationDriver(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr)
+         : <span class="type">QAnimationDriver</span>(parent)<span class="operator">,</span>
+           m_step(<span class="number">16</span>)
+     {
+     }
+
+     <span class="type">void</span> setStep(<span class="type">int</span> milliseconds)
+     {
+         m_step <span class="operator">=</span> milliseconds;
+     }
+
+     <span class="type">void</span> advance() override
+     {
+         m_elapsed <span class="operator">+</span><span class="operator">=</span> m_step;
+         advanceAnimation();
+     }
+
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> elapsed() <span class="keyword">const</span> override
+     {
+         <span class="keyword">return</span> m_elapsed;
+     }
+
+ <span class="keyword">private</span>:
+     <span class="type">int</span> m_step;
+     <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> m_elapsed <span class="operator">=</span> <span class="number">0</span>;
+ };
+</pre>
+<p>The application has a <a href="../qtwidgets/qslider.html" translate="no">QSlider</a> that can be used to change the animation step value from the default 16 milliseconds to something else. Note the call to the setStep() function of our QAnimationDriver subclass.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="../qtwidgets/qslider.html" translate="no">QSlider</a></span> <span class="operator">*</span>animSlider <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qslider.html" translate="no">QSlider</a></span>;
+     animSlider<span class="operator">-</span><span class="operator">&gt;</span>setOrientation(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Horizontal);
+     animSlider<span class="operator">-</span><span class="operator">&gt;</span>setMinimum(<span class="number">1</span>);
+     animSlider<span class="operator">-</span><span class="operator">&gt;</span>setMaximum(<span class="number">1000</span>);
+     <span class="type"><a href="../qtwidgets/qlabel.html" translate="no">QLabel</a></span> <span class="operator">*</span>animLabel <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qlabel.html" translate="no">QLabel</a></span>;
+     <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(animSlider<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qslider.html" translate="no">QSlider</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> animSlider<span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> animLabel<span class="operator">,</span> animSlider<span class="operator">]</span> {
+         <span class="keyword">if</span> (m_animationDriver)
+             m_animationDriver<span class="operator">-</span><span class="operator">&gt;</span>setStep(animSlider<span class="operator">-</span><span class="operator">&gt;</span>value());
+         animLabel<span class="operator">-</span><span class="operator">&gt;</span>setText(tr(<span class="string">&quot;Simulated elapsed time per frame: %1 ms&quot;</span>)<span class="operator">.</span>arg(animSlider<span class="operator">-</span><span class="operator">&gt;</span>value()));
+     });
+     animSlider<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="number">16</span>);
+     <span class="type"><a href="../qtwidgets/qcheckbox.html" translate="no">QCheckBox</a></span> <span class="operator">*</span>animCheckBox <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtwidgets/qcheckbox.html" translate="no">QCheckBox</a></span>(tr(<span class="string">&quot;Custom animation driver&quot;</span>));
+     animCheckBox<span class="operator">-</span><span class="operator">&gt;</span>setToolTip(tr(<span class="string">&quot;Note: Installing the custom animation driver makes widget drawing unreliable, depending on the platform.\n&quot;</span>
+                                 <span class="string">&quot;This is due to widgets themselves relying on QPropertyAnimation and similar, which are driven by the same QAnimationDriver.\n&quot;</span>
+                                 <span class="string">&quot;In any case, the functionality of the widgets are not affected, just the rendering may lag behind.\n&quot;</span>
+                                 <span class="string">&quot;When not checked, Qt Quick animations advance based on the system time, i.e. the time elapsed since the last press of the Next button.&quot;</span>));
+     <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(animCheckBox<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qcheckbox.html" translate="no">QCheckBox</a></span><span class="operator">::</span>checkStateChanged<span class="operator">,</span> animCheckBox<span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> animCheckBox<span class="operator">,</span> animSlider<span class="operator">,</span> animLabel<span class="operator">]</span> {
+         <span class="keyword">if</span> (animCheckBox<span class="operator">-</span><span class="operator">&gt;</span>isChecked()) {
+             animSlider<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">true</span>);
+             animLabel<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">true</span>);
+             m_animationDriver <span class="operator">=</span> <span class="keyword">new</span> AnimationDriver(<span class="keyword">this</span>);
+             m_animationDriver<span class="operator">-</span><span class="operator">&gt;</span>install();
+             m_animationDriver<span class="operator">-</span><span class="operator">&gt;</span>setStep(animSlider<span class="operator">-</span><span class="operator">&gt;</span>value());
+         } <span class="keyword">else</span> {
+             animSlider<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+             animLabel<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+             <span class="keyword">delete</span> m_animationDriver;
+             m_animationDriver <span class="operator">=</span> nullptr;
+         }
+     });
+     animSlider<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     animLabel<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     controlLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(animCheckBox);
+     controlLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(animLabel);
+     controlLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(animSlider);
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Installing the custom animation driver is made optional via the <code translate="no">animCheckBox</code> check box. This allows comparing the effect of having and not having a custom animation driver installed. In addition, on some platforms (and perhaps depending on the theme), having the custom driver enabled may lead to lags in widget drawing. This is as expected, because if some widget animation (e.g. highlight of a <a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a> or <a href="../qtwidgets/qcheckbox.html" translate="no">QCheckBox</a>) is managed via <a href="../qtcore/qpropertyanimation.html" translate="no">QPropertyAnimation</a> and similar, then those animation are driven by the same QAnimationDriver, and that does not advance until a new frame is requested by clicking on the buttons.</p>
+</div>
+<p>Advancing the animations is done before each frame (i.e., before the <a href="qquickrendercontrol.html#beginFrame" translate="no">QQuickRenderControl::beginFrame</a>() call) by simply calling advance():</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>stepAnimations()
+ {
+     <span class="keyword">if</span> (m_animationDriver) {
+         <span class="comment">// Now the Qt Quick scene will think that &lt;slider value&gt; milliseconds have</span>
+         <span class="comment">// elapsed and update animations accordingly when doing the next frame.</span>
+         m_animationDriver<span class="operator">-</span><span class="operator">&gt;</span>advance();
+     }
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quick/rendercontrol/rendercontrol_rhi?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="../qtgui/qrhi.html" translate="no">QRhi</a>, <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a>, and <a href="qquickwindow.html" translate="no">QQuickWindow</a>.</p>
+<!-- @@@rendercontrol/rendercontrol_rhi -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

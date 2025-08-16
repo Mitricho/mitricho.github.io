@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- minimal-qml.qdoc -->
+  <meta name="description" content="Minimal QML is a simple example that demonstrates how to write a Wayland compositor in QML.">
+  <title>Minimal QML | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-examples.html">Qt Wayland Compositor Examples</a></li>
+<li>Minimal QML</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-waylandcompositor-object">The WaylandCompositor Object</a></li>
+<li class="level1"><a href="#shell-extensions">Shell Extensions</a></li>
+<li class="level1"><a href="#creating-the-scene">Creating the Scene</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Minimal QML</h1>
+<!-- $$$minimal-qml-brief -->
+<p>Minimal QML is a simple example that demonstrates how to write a Wayland compositor in QML.</p>
+<!-- @@@minimal-qml -->
+<!-- $$$minimal-qml-description -->
+<div class="descr" id="details">
+<p>Minimal QML is a desktop-style Wayland compositor example implementing a complete Qt Wayland Compositor with as little code as possible. The compositor is implemented with Qt Quick and QML.</p>
+<p class="centerAlign"><img src="images/minimal-qml.png" alt="" /></p><h4 id="the-waylandcompositor-object">The WaylandCompositor Object</h4>
+<p>The top-level item of the compositor is a <a href="qml-qtwayland-compositor-waylandcompositor.html" translate="no">WaylandCompositor</a>. This represents the Wayland server itself and manages the connections to clients as they come in.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtwayland-compositor-waylandcompositor.html" translate="no">WaylandCompositor</a></span> {
+</pre>
+<p>By default, the server supports the core Wayland protocol for communicating with clients. Usually, though, you will also want to support one or more extensions to the protocol. This gives the client more tools to influence its role in the windowing system.</p>
+<p>Qt supports several standard and common extensions. In addition, it is easy to create and support custom extensions, as long as support can be added in both the client and server code.</p>
+<h4 id="shell-extensions">Shell Extensions</h4>
+<p>Typically, a compositor will support at least one <a href="qtwaylandcompositor-shellextensions.html">shell extension</a>. Extensions are added to the compositor by instantiating them as direct children of the <a href="qml-qtwayland-compositor-waylandcompositor.html" translate="no">WaylandCompositor</a> object. They will automatically be added to its <code translate="no">extensions</code> property and broadcast to clients when they connect.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtwayland-compositor-wlshell-wlshell.html" translate="no">WlShell</a></span> {
+     <span class="name">onWlShellSurfaceCreated</span>: (<span class="keyword"></span>shellSurface) =&gt; <span class="keyword"></span><span class="name">shellSurfaces</span>.<span class="name">append</span>({shellSurface: <span class="name">shellSurface</span>});
+ }
+ <span class="type"><a href="qml-qtwayland-compositor-xdgshell-xdgshell.html" translate="no">XdgShell</a></span> {
+     <span class="name">onToplevelCreated</span>: (<span class="keyword"></span>toplevel, xdgSurface) =&gt; <span class="keyword"></span><span class="name">shellSurfaces</span>.<span class="name">append</span>({shellSurface: <span class="name">xdgSurface</span>});
+ }
+ <span class="type"><a href="qml-qtwayland-compositor-iviapplication-iviapplication.html" translate="no">IviApplication</a></span> {
+     <span class="name">onIviSurfaceCreated</span>: (<span class="keyword"></span>iviSurface) =&gt; <span class="keyword"></span><span class="name">shellSurfaces</span>.<span class="name">append</span>({shellSurface: <span class="name">iviSurface</span>});
+ }
+</pre>
+<p>The <i>Minimal QML</i> example supports three different shells: <a href="qml-qtwayland-compositor-wlshell-wlshell.html" translate="no">WlShell</a>, <a href="qml-qtwayland-compositor-xdgshell-xdgshell.html" translate="no">XdgShell</a> and <a href="qml-qtwayland-compositor-iviapplication-iviapplication.html" translate="no">IviApplication</a>.</p>
+<p>A client can connect to either of these and it will be used as a channel for communicating about certain things between the client and compositor, such as creating new windows, negotiating size, and so on.</p>
+<p>When a client creates a new surface, its active extension will receive a signal of this. The signal contains a <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a> argument. Depending on which extension received the signal, this argument will be of a subclass of <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a>: <a href="qml-qtwayland-compositor-wlshell-wlshellsurface.html" translate="no">WlShellSurface</a>, <a href="qml-qtwayland-compositor-xdgshell-xdgsurface.html" translate="no">XdgSurface</a> or <a href="qml-qtwayland-compositor-iviapplication-ivisurface.html" translate="no">IviSurface</a> respectively.</p>
+<p>The <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a> can be used to access features of the shell extension for the specific surface. In the <i>Minimal QML</i> example, we simply want to add the client to our scene. To record existence of the new window, we add it to a simple <a href="../qtqmlmodels/qml-qtqml-models-listmodel.html" translate="no">ListModel</a> for safe-keeping.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtqmlmodels/qml-qtqml-models-listmodel.html" translate="no">ListModel</a></span> { <span class="name">id</span>: <span class="name">shellSurfaces</span> }
+</pre>
+<h4 id="creating-the-scene">Creating the Scene</h4>
+<p>Most of the necessary compositor code is already ready. The final step is to make sure applications are actually visible on the screen.</p>
+<p>For all compositors, we have to define at least one output. This is done by instantiating a <a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a> object as the direct child of the <a href="qml-qtwayland-compositor-waylandcompositor.html" translate="no">WaylandCompositor</a>. If there is only a single output, this will represent the primary screen on the system. (You may also create multiple <a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a> objects to address multiple screens if they are available. See the <a href="qtwaylandcompositor-multi-screen-example.html">Multi Screen example</a> for more details about this.)</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a></span> {
+     <span class="name">sizeFollowsWindow</span>: <span class="number">true</span>
+     <span class="name">window</span>: <span class="name">Window</span> {
+         <span class="name">width</span>: <span class="number">1024</span>
+         <span class="name">height</span>: <span class="number">768</span>
+         <span class="name">visible</span>: <span class="number">true</span>
+</pre>
+<p>Inside the <a href="qml-qtwayland-compositor-waylandoutput.html" translate="no">WaylandOutput</a>, we create a <a href="qtwaylandcompositor-minimal-cpp-example.html#window">Window</a> that serves as the container for our scene. In the example, we give this a size. The size used if the compositor is running as an application inside another windowing system which supports custom-sized windows. In a typical use case on an embedded device, where the compositor is the only display server running, it will probably be running on a full-screen platform plugin (such as <code translate="no">eglfs</code>) and the size set here will not matter.</p>
+<p>The final step is to create items for each of the <a href="qml-qtwayland-compositor-shellsurface.html" translate="no">ShellSurface</a> objects that have been created. For this, we can use the <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> class.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+     <span class="name">model</span>: <span class="name">shellSurfaces</span>
+     <span class="comment">// ShellSurfaceItem handles displaying a shell surface.</span>
+     <span class="comment">// It has implementations for things like interactive</span>
+     <span class="comment">// resize/move, and forwarding of mouse and keyboard</span>
+     <span class="comment">// events to the client process.</span>
+     <span class="type"><a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a></span> {
+         <span class="name">shellSurface</span>: <span class="name">modelData</span>
+         <span class="name">onSurfaceDestroyed</span>: <span class="name">shellSurfaces</span>.<span class="name">remove</span>(<span class="name">index</span>)
+     }
+ }
+</pre>
+<p>We create a <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a> for each of the shell surfaces in our model, and assign them to the <code translate="no">shellSurface</code> property. In addition, we make sure the model is updated when the shell surface is destroyed. This can happen when a client manually closes a window, and if it exits or crashes.</p>
+<p>And this is all the code needed to create a functional Wayland compositor using Qt Quick and QML. For another example of a compositor written in QML but which has a few more features, take a look at the <a href="qtwaylandcompositor-fancy-compositor-example.html">Fancy Compositor example</a>.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtwayland.git/tree/examples/wayland/minimal-qml?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@minimal-qml -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

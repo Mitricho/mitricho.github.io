@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dxractionmapper.cpp -->
+  <meta name="description" content="Represents an action from an input controller.">
+  <title>XrInputAction QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-xr-qmlmodule.html" translate="no">QtQuick3D.Xr (Technical Preview)</a></li>
+<li>XrInputAction</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">XrInputAction QML Type</h1>
+<!-- $$$XrInputAction-brief -->
+<p>Represents an action from an input controller. <a href="#details">More...</a></p>
+<!-- @@@XrInputAction -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Xr</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.8</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="../qtqml/qml-qtqml-qtobject.html" translate="no">QtObject</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Status:</td><td class="memItemRight bottomAlign"> Technical Preview<span class="status technical-preview"></span></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-xr-xrinputaction-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#actionId-prop" translate="no">actionId</a></b> : List&lt;enumeration&gt;</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#actionName-prop" translate="no">actionName</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#enabled-prop" translate="no">enabled</a></b> : bool <code class="summary extra" translate="no">(since 6.9)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#hand-prop" translate="no">hand</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#pressed-prop" translate="no">pressed</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#value-prop" translate="no">value</a></b> : real</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-xr-xrinputaction.html#triggered-signal" translate="no">triggered</a></b>()</li>
+</ul>
+<!-- $$$XrInputAction-description -->
+<h2 id="details">Detailed Description</h2>
+<p>Actions can be boolean, such as a button press, or analog, such as a joystick axis.</p>
+<p>Use the <a href="qml-qtquick3d-xr-xrinputaction.html#pressed-prop" translate="no">pressed</a> property or the <a href="qml-qtquick3d-xr-xrinputaction.html#triggered-signal" translate="no">triggered</a> signal to react to a boolean action. An analog action will set the <a href="qml-qtquick3d-xr-xrinputaction.html#value-prop" translate="no">value</a> property.</p>
+<div class="admonition note">
+<p><b>Note: </b>For convenience, an analog property will also set the <code translate="no">pressed</code> property and emit the <code translate="no">triggered</code> signal, while a boolean property will set <code translate="no">value</code> to 1.0 when pressed.</p>
+</div>
+<p>The following shows how to react to either the right hand grip being pressed or to a right hand pinch gesture from hand tracking:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-xr-xrinputaction.html" translate="no">XrInputAction</a></span> {
+     <span class="name">hand</span>: <span class="name">XrInputAction</span>.<span class="name">RightHand</span>
+     <span class="name">actionId</span>: [<span class="name">XrInputAction</span>.<span class="name">SqueezePressed</span>, <span class="name">XrInputAction</span>.<span class="name">SqueezeValue</span>, <span class="name">XrInputAction</span>.<span class="name">IndexFingerPinch</span>]
+     <span class="name">onTriggered</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Do action here.&quot;</span>)
+ }
+</pre>
+<p>The reason for specifying both <code translate="no">SqueezePressed</code> and <code translate="no">SqueezeValue</code> is that some controllers have an analog grip button, and some controllers just have an on/off grip switch.</p>
+<!-- @@@XrInputAction -->
+<h2>Property Documentation</h2>
+<!-- $$$actionId -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="actionId-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">actionId</span> : <span class="type">List</span>&lt;<span class="type">enumeration</span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the action(s) to react to</p>
+<p>Holds a List of IDs that can be of the following values:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.Button1Pressed</code></td><td class="topAlign">Button 1 is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.Button1Touched</code></td><td class="topAlign">Button 1 is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.Button2Pressed</code></td><td class="topAlign">Button 2 is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.Button2Touched</code></td><td class="topAlign">Button 2 is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ButtonMenuPressed</code></td><td class="topAlign">The menu button is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ButtonMenuTouched</code></td><td class="topAlign">The menu button is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ButtonSystemPressed</code></td><td class="topAlign">The system button is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ButtonSystemTouched</code></td><td class="topAlign">The system button is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.SqueezeValue</code></td><td class="topAlign">How far the grip button is pressed. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.SqueezeForce</code></td><td class="topAlign">The force applied to the grip button. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.SqueezePressed</code></td><td class="topAlign">The grip button is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TriggerValue</code></td><td class="topAlign">How far the trigger button is pressed. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TriggerPressed</code></td><td class="topAlign">The trigger is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TriggerTouched</code></td><td class="topAlign">The trigger is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ThumbstickX</code></td><td class="topAlign">The X-axis value of the thumbstick. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ThumbstickY</code></td><td class="topAlign">The Y-axis value of the thumbstick. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ThumbstickPressed</code></td><td class="topAlign">The thumbstick is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ThumbstickTouched</code></td><td class="topAlign">The thumbstick is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.ThumbrestTouched</code></td><td class="topAlign">The thumbrest is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TrackpadX</code></td><td class="topAlign">The X-axis position on the trackpad. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TrackpadY</code></td><td class="topAlign">The Y-axis position on the trackpad. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TrackpadForce</code></td><td class="topAlign">The force applied on the trackpad. <i>Analog</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TrackpadTouched</code></td><td class="topAlign">The trackpad is touched. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.TrackpadPressed</code></td><td class="topAlign">The trackpad is pressed. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.IndexFingerPinch</code></td><td class="topAlign">Thumb to index finger pinch gesture. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.MiddleFingerPinch</code></td><td class="topAlign">Thumb to middle finger pinch gesture. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.RingFingerPinch</code></td><td class="topAlign">Thumb to ring finger pinch gesture. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.LittleFingerPinch</code></td><td class="topAlign">Thumb to little finger pinch gesture. <i>Boolean</i>.</td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.HandTrackingMenuPress</code></td><td class="topAlign">Hand tracking menu gesture. <i>Boolean</i>.</td></tr>
+</table></div>
+</div></div><!-- @@@actionId -->
+<br/>
+<!-- $$$actionName -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="actionName-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">actionName</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The name of the input action.</p>
+<p>Use this property to specify the name of the custom input action you want to react to. This property does not have an effect if <a href="qml-qtquick3d-xr-xrinputaction.html#actionId-prop" translate="no">actionId</a> is set.</p>
+</div></div><!-- @@@actionName -->
+<br/>
+<!-- $$$enabled -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="enabled-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">enabled</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[default: true, since 6.9]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property determines whether the input action will react to events.</p>
+<p>This property was introduced in Qt 6.9.</p>
+</div></div><!-- @@@enabled -->
+<br/>
+<!-- $$$hand -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="hand-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">hand</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The Hand that this input action will apply to.</p>
+<p>Specifies the hand ro react to.</p>
+<p>It can be one of:</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.LeftHand</code></td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.RightHand</code></td></tr>
+<tr><td class="topAlign"><code translate="no">XrInputAction.Unknown</code></td></tr>
+</table></div>
+</div></div><!-- @@@hand -->
+<br/>
+<!-- $$$pressed -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="pressed-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">pressed</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Indicates whether the input action is currently pressed.</p>
+<p>Use this property to check if the input action (for example, a button) is currently pressed.</p>
+</div></div><!-- @@@pressed -->
+<br/>
+<!-- $$$value -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="value-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">value</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The analog value of the input action.</p>
+<p>For analog inputs, such as a thumbstick position, this property holds the value of the input (usually in the range [0, 1]).</p>
+</div></div><!-- @@@value -->
+<br/>
+<h2>Signal Documentation</h2>
+<!-- $$$triggered[overload1]$$$triggered -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="triggered-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">triggered</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when a boolean action is activated. This happens at the same time as the <a href="qml-qtquick3d-xr-xrinputaction.html#pressed-prop" translate="no">pressed</a> property is set to <code translate="no">true</code>.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onTriggered</code>.</p>
+</div></div></div><!-- @@@triggered -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

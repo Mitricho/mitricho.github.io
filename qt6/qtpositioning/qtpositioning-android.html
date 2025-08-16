@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtpositioning-android.qdoc -->
+  <meta name="description" content="Notes on using Qt Positioning on Android">
+  <title>Qt Positioning on Android | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li>Qt Positioning on Android</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="positioning-cpp-qml.html" />
+  <link rel="next" href="qtpositioning-ios.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="positioning-cpp-qml.html">Interfaces between C++ and QML Code</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtpositioning-ios.html">iOS support</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#using-qt-positioning-from-android-services">Using Qt Positioning from Android Services</a></li>
+<li class="level2"><a href="#using-foreground-service">Using Foreground Service</a></li>
+<li class="level2"><a href="#use-background-location-permission">Use Background Location Permission</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Positioning on Android</h1>
+<!-- $$$qtpositioning-android.html-description -->
+<div class="descr" id="details">
+<h2 id="using-qt-positioning-from-android-services">Using Qt Positioning from Android Services</h2>
+<p>Using Qt Positioning from a service requires several extra actions to be taken, depending on the Android version. The sections below give more details on these actions.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Android 8 (API level 26), the OS limits how frequently an application can retrieve the user's current location while running in the background. The application will normally be able to receive location updates only a few times each hour. For more information, see <a href="https://developer.android.com/about/versions/oreo/background-location-limits">Background Location Limits</a>.</p>
+</div>
+<h3 id="using-foreground-service">Using Foreground Service</h3>
+<p>Since Android 8 (API level 26), the background service can be killed by the Android OS when the application goes to the background. This normally happens after around a minute of running in the background. To keep the location service running, the service should be implemented as a <a href="https://developer.android.com/guide/components/foreground-services">Foreground Service</a>. Such service shows a status bar notification, which cannot be dismissed until the service is stopped or removed from the foreground. This allows the user to be always aware of the important background activities.</p>
+<div class="admonition note">
+<p><b>Note: </b>Since Android 9 (API level 28), foreground services require a special <code translate="no">FOREGROUND_SERVICE</code> permission. See the Android documentation for more details on implementing foreground services.</p>
+</div>
+<h3 id="use-background-location-permission">Use Background Location Permission</h3>
+<p>Since Android 10 (API level 29), the service <i>must</i> request the <a href="https://developer.android.com/reference/android/Manifest.permission#ACCESS_BACKGROUND_LOCATION">ACCESS_BACKGROUND_LOCATION</a> permission. It should be added to the <code translate="no">AndroidManifest.xml</code> file as follows:</p>
+<pre class="cpp plain" translate="no">
+ &lt;uses-permission android:name=&quot;android.permission.ACCESS_BACKGROUND_LOCATION&quot; /&gt;
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Once the permission is added to <code translate="no">AndroidManifest.xml</code>, it is still required to explicitly allow the constant access to the location services for the application. To do it, one should navigate to <b translate="no">Settings</b> -&gt; <b translate="no">Apps</b>, select a proper application, open its permissions, and specify the <b translate="no">Allow all the time</b> permission for Location (see the screenshot below).</p>
+</div>
+<p class="centerAlign"><img src="images/permissions.png" alt="" /></p><p>Check <a href="https://developer.android.com/training/location/background">Access Location in the Background</a> Android documentation for more details.</p>
+</div>
+<!-- @@@qtpositioning-android.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="positioning-cpp-qml.html">Interfaces between C++ and QML Code</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtpositioning-ios.html">iOS support</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

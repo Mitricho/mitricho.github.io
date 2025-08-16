@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- rhiwindow.qdoc -->
+  <meta name="description" content="This example shows how to create a minimal QWindow-based application using QRhi.">
+  <title>RHI Window Example | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li>RHI Window Example</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#3d-api-support">3D API Support</a></li>
+<li class="level1"><a href="#build-system-notes">Build System Notes</a></li>
+<li class="level1"><a href="#features">Features</a></li>
+<li class="level1"><a href="#shaders">Shaders</a></li>
+<li class="level1"><a href="#api-specific-initialization">API-specific Initialization</a></li>
+<li class="level1"><a href="#expose-events">Expose Events</a></li>
+<li class="level1"><a href="#swapchain-depth-stencil-buffer-and-resizing">Swapchain, Depth-Stencil buffer, and Resizing</a></li>
+<li class="level1"><a href="#render-loop">Render Loop</a></li>
+<li class="level1"><a href="#resource-and-pipeline-setup">Resource and Pipeline Setup</a></li>
+<li class="level1"><a href="#rendering">Rendering</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">RHI Window Example</h1>
+<!-- $$$rhiwindow-brief -->
+<p>This example shows how to create a minimal <a href="qwindow.html" translate="no">QWindow</a>-based application using <a href="qrhi.html" translate="no">QRhi</a>.</p>
+<!-- @@@rhiwindow -->
+<!-- $$$rhiwindow-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/rhiwindow_example.jpg" alt="" /></p><p>Qt 6.6 starts offering its accelerated 3D API and shader abstraction layer for application use as well. Applications can now use the same 3D graphics classes Qt itself uses to implement the Qt Quick scenegraph or the Qt Quick 3D engine. In earlier Qt versions <a href="qrhi.html" translate="no">QRhi</a> and the related classes were all private APIs. From 6.6 on these classes are in a similar category as QPA family of classes: neither fully public nor private, but something in-between, with a more limited compatibility promise compared to public APIs. On the other hand, <a href="qrhi.html" translate="no">QRhi</a> and the related classes now come with full documentation similarly to public APIs.</p>
+<p>There are multiple ways to use <a href="qrhi.html" translate="no">QRhi</a>, the example here shows the most low-level approach: targeting a <a href="qwindow.html" translate="no">QWindow</a>, while not using Qt Quick, Qt Quick 3D, or Widgets in any form, and setting up all the rendering and windowing infrastructure in the application.</p>
+<p>In contrast, when writing a QML application with Qt Quick or Qt Quick 3D, and wanting to add <a href="qrhi.html" translate="no">QRhi</a>-based rendering to it, such an application is going to rely on the window and rendering infrastructure Qt Quick has already initialized, and it is likely going to query an existing <a href="qrhi.html" translate="no">QRhi</a> instance from the <a href="../qtquick/qquickwindow.html" translate="no">QQuickWindow</a>. There dealing with <a href="qrhi.html#create" translate="no">QRhi::create</a>(), platform/API specifics such as <a href="qvulkaninstance.html" translate="no">Vulkan instances</a>, or correctly handling <a href="qexposeevent.html" translate="no">expose</a> and resize events for the window are all managed by Qt Quick. Whereas in this example, all that is managed and taken care of by the application itself.</p>
+<div class="admonition note">
+<p><b>Note: </b>For <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based applications in particular, it should be noted that <a href="../qtwidgets/qwidget.html#createWindowContainer" translate="no">QWidget::createWindowContainer</a>() allows embedding a <a href="qwindow.html" translate="no">QWindow</a> (backed by a native window) into the widget-based user interface. Therefore, the <code translate="no">HelloWindow</code> class from this example is reusable in <a href="../qtwidgets/qwidget.html" translate="no">QWidget</a>-based applications, assuming the necessary initialization from <code translate="no">main()</code> is in place as well.</p>
+</div>
+<h4 id="3d-api-support">3D API Support</h4>
+<p>The application supports all the current <a href="qrhi.html#Implementation-enum" translate="no">QRhi backends</a>. When no command-line arguments are specified, platform-specific defaults are used: Direct 3D 11 on Windows, OpenGL on Linux, Metal on macOS/iOS.</p>
+<p>Running with <code translate="no">--help</code> shows the available command-line options:</p>
+<ul>
+<li>-d or &ndash;d3d11 for Direct 3D 11</li>
+<li>-D or &ndash;d3d12 for Direct 3D 12</li>
+<li>-m or &ndash;metal for Metal</li>
+<li>-v or &ndash;vulkan for Vulkan</li>
+<li>-g or &ndash;opengl for OpenGL or OpenGL ES</li>
+<li>-n or &ndash;null for the <a href="qrhi.html#Implementation-enum" translate="no">Null backend</a></li>
+</ul>
+<h4 id="build-system-notes">Build System Notes</h4>
+<p>This application relies solely on the Qt GUI module. It does not use Qt Widgets or Qt Quick.</p>
+<p>In order to access the RHI APIs, which are available to all Qt applications but come with a limited compatibility promise, the <code translate="no">target_link_libraries</code> CMake command lists <code translate="no">Qt6::GuiPrivate</code>. This is what enables the <code translate="no">#include &lt;rhi/qrhi.h&gt;</code> include statement to compile successfully.</p>
+<h4 id="features">Features</h4>
+<p>The application features:</p>
+<ul>
+<li>A resizable <a href="qwindow.html" translate="no">QWindow</a>,</li>
+<li>a swapchain and depth-stencil buffer that properly follows the size of the window,</li>
+<li>logic to initialize, render, and tear down at the appropriate time based on events such as <a href="qexposeevent.html" translate="no">QExposeEvent</a> and <a href="qplatformsurfaceevent.html" translate="no">QPlatformSurfaceEvent</a>,</li>
+<li>rendering a fullscreen textured quad, using a texture the contents of which is generated in a <a href="qimage.html" translate="no">QImage</a> via <a href="qpainter.html" translate="no">QPainter</a> (using the raster paint engine, i.e. the generating of the image's pixel data is all CPU-based, that data is then uploaded into a GPU texture),</li>
+<li>rendering a triangle with blending and depth testing enabled, using a perspective projection, while applying a model transform that changes on every frame,</li>
+<li>an efficient, cross-platform render loop using <a href="qwindow.html#requestUpdate" translate="no">requestUpdate</a>().</li>
+</ul>
+<h4 id="shaders">Shaders</h4>
+<p>The application uses two sets of vertex and fragment shader pairs:</p>
+<ul>
+<li>one for the fullscreen quad, which uses no vertex inputs and the fragment shader samples a texture (<code translate="no">quad.vert</code>, <code translate="no">quad.frag</code>),</li>
+<li>and another pair for the triangle, where vertex positions and colors are provided in a vertex buffer and a modelview-projection matrix is provided in a uniform buffer (<code translate="no">color.vert</code>, <code translate="no">color.frag</code>).</li>
+</ul>
+<p>The shaders are written as Vulkan-compatible GLSL source code.</p>
+<p>Due to being a Qt GUI module example, this example cannot have a dependency on the <a href="../qtshadertools/qtshadertools-index.html">Qt Shader Tools</a> module. This means that CMake helper functions such as <code translate="no">qt_add_shaders</code> are not available for use. Therefore, the example has the pre-processed <code translate="no">.qsb</code> files included in the <code translate="no">shaders/prebuilt</code> folder, and they are simply included within the executable via <code translate="no">qt_add_resources</code>. This approach is not generally recommended for applications, consider rather using <a href="../qtshadertools/qtshadertools-build.html">qt_add_shaders</a>, which avoids the need to manually generate and manage the <code translate="no">.qsb</code> files.</p>
+<p>To generate the <code translate="no">.qsb</code> files for this example, the command <code translate="no">qsb --qt6 color.vert -o prebuilt/color.vert.qsb</code> etc. was used. This leads to compiling to <a href="https://www.khronos.org/spir/">SPIR-V</a> and than transpiling into GLSL (<code translate="no">100 es</code> and <code translate="no">120</code>), HLSL (5.0), and MSL (1.2). All the shader versions are then packed together into a <a href="qshader.html" translate="no">QShader</a> and serialized to disk.</p>
+<h4 id="api-specific-initialization">API-specific Initialization</h4>
+<p>For some of the 3D APIs the main() function has to perform the appropriate API-specific initialiation, e.g. to create a <a href="qvulkaninstance.html" translate="no">QVulkanInstance</a> when using Vulkan. For OpenGL we have to ensure a depth buffer is available, this is done via <a href="qsurfaceformat.html" translate="no">QSurfaceFormat</a>. These steps are not in the scope of <a href="qrhi.html" translate="no">QRhi</a> since <a href="qrhi.html" translate="no">QRhi</a> backends for OpenGL or Vulkan build on the existing Qt facilities such as <a href="qopenglcontext.html" translate="no">QOpenGLContext</a> or <a href="qvulkaninstance.html" translate="no">QVulkanInstance</a>.</p>
+<pre class="cpp" translate="no">
+    <span class="comment">// For OpenGL, to ensure there is a depth/stencil buffer for the window.</span>
+    <span class="comment">// With other APIs this is under the application's control (QRhiRenderBuffer etc.)</span>
+    <span class="comment">// and so no special setup is needed for those.</span>
+    <span class="type"><a href="qsurfaceformat.html" translate="no">QSurfaceFormat</a></span> fmt;
+    fmt<span class="operator">.</span>setDepthBufferSize(<span class="number">24</span>);
+    fmt<span class="operator">.</span>setStencilBufferSize(<span class="number">8</span>);
+    <span class="comment">// Special case macOS to allow using OpenGL there.</span>
+    <span class="comment">// (the default Metal is the recommended approach, though)</span>
+    <span class="comment">// gl_VertexID is a GLSL 130 feature, and so the default OpenGL 2.1 context</span>
+    <span class="comment">// we get on macOS is not sufficient.</span>
+ <span class="preprocessor">#ifdef Q_OS_MACOS</span>
+    fmt<span class="operator">.</span>setVersion(<span class="number">4</span><span class="operator">,</span> <span class="number">1</span>);
+    fmt<span class="operator">.</span>setProfile(<span class="type"><a href="qsurfaceformat.html" translate="no">QSurfaceFormat</a></span><span class="operator">::</span>CoreProfile);
+ <span class="preprocessor">#endif</span>
+    <span class="type"><a href="qsurfaceformat.html" translate="no">QSurfaceFormat</a></span><span class="operator">::</span>setDefaultFormat(fmt);
+
+    <span class="comment">// For Vulkan.</span>
+ <span class="preprocessor">#if QT_CONFIG(vulkan)</span>
+    <span class="type"><a href="qvulkaninstance.html" translate="no">QVulkanInstance</a></span> inst;
+    <span class="keyword">if</span> (graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Vulkan) {
+        <span class="comment">// Request validation, if available. This is completely optional</span>
+        <span class="comment">// and has a performance impact, and should be avoided in production use.</span>
+        inst<span class="operator">.</span>setLayers({ <span class="string">&quot;VK_LAYER_KHRONOS_validation&quot;</span> });
+        <span class="comment">// Play nice with QRhi.</span>
+        inst<span class="operator">.</span>setExtensions(<span class="type"><a href="qrhivulkaninitparams.html" translate="no">QRhiVulkanInitParams</a></span><span class="operator">::</span>preferredInstanceExtensions());
+        <span class="keyword">if</span> (<span class="operator">!</span>inst<span class="operator">.</span>create()) {
+            <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Failed to create Vulkan instance, switching to OpenGL&quot;</span>);
+            graphicsApi <span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>OpenGLES2;
+        }
+    }
+ <span class="preprocessor">#endif</span>
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>For Vulkan, note how <a href="qrhivulkaninitparams.html#preferredInstanceExtensions" translate="no">QRhiVulkanInitParams::preferredInstanceExtensions</a>() is taken into account to ensure the appropriate extensions are enabled.</p>
+</div>
+<p><code translate="no">HelloWindow</code> is a subclass of <code translate="no">RhiWindow</code>, which in turn is a <a href="qwindow.html" translate="no">QWindow</a>. <code translate="no">RhiWindow</code> contains everything needed to manage a resizable window with a swapchain (and depth-stencil buffer), and is potentially reusable in other applications as well. <code translate="no">HelloWindow</code> contains the rendering logic specific to this particular example application.</p>
+<p>In the <a href="qwindow.html" translate="no">QWindow</a> subclass constructor the surface type is set based on the selected 3D API.</p>
+<pre class="cpp" translate="no">
+ RhiWindow<span class="operator">::</span>RhiWindow(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Implementation graphicsApi)
+     : m_graphicsApi(graphicsApi)
+ {
+     <span class="keyword">switch</span> (graphicsApi) {
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>OpenGLES2:
+         setSurfaceType(OpenGLSurface);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Vulkan:
+         setSurfaceType(VulkanSurface);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D11:
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D12:
+         setSurfaceType(Direct3DSurface);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Metal:
+         setSurfaceType(MetalSurface);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Null:
+         <span class="keyword">break</span>; <span class="comment">// RasterSurface</span>
+     }
+ }
+</pre>
+<p>Creating and initializing a <a href="qrhi.html" translate="no">QRhi</a> object is implemented in RhiWindow::init(). Note that this is invoked only when the window is <code translate="no">renderable</code>, which is indicated by an <a href="qexposeevent.html" translate="no">expose event</a>.</p>
+<p>Depending on which 3D API we use, the appropriate InitParams struct needs to be passed to <a href="qrhi.html#create" translate="no">QRhi::create</a>(). With OpenGL for example, a <a href="qoffscreensurface.html" translate="no">QOffscreenSurface</a> (or some other <a href="qsurface.html" translate="no">QSurface</a>) must be created by the application and provided for use to the <a href="qrhi.html" translate="no">QRhi</a>. With Vulkan, a successfully initialized <a href="qvulkaninstance.html" translate="no">QVulkanInstance</a> is required. Others, such as Direct 3D or Metal need no additional information to be able to initialize.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RhiWindow<span class="operator">::</span>init()
+ {
+     <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Null) {
+         <span class="type"><a href="qrhinullinitparams.html" translate="no">QRhiNullInitParams</a></span> params;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Null<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     }
+
+ <span class="preprocessor">#if QT_CONFIG(opengl)</span>
+     <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>OpenGLES2) {
+         m_fallbackSurface<span class="operator">.</span>reset(QRhiGles2InitParams<span class="operator">::</span>newFallbackSurface());
+         QRhiGles2InitParams params;
+         params<span class="operator">.</span>fallbackSurface <span class="operator">=</span> m_fallbackSurface<span class="operator">.</span>get();
+         params<span class="operator">.</span>window <span class="operator">=</span> <span class="keyword">this</span>;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>OpenGLES2<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     }
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#if QT_CONFIG(vulkan)</span>
+     <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Vulkan) {
+         <span class="type"><a href="qrhivulkaninitparams.html" translate="no">QRhiVulkanInitParams</a></span> params;
+         params<span class="operator">.</span>inst <span class="operator">=</span> vulkanInstance();
+         params<span class="operator">.</span>window <span class="operator">=</span> <span class="keyword">this</span>;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Vulkan<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     }
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#ifdef Q_OS_WIN</span>
+     <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D11) {
+         QRhiD3D11InitParams params;
+         <span class="comment">// Enable the debug layer, if available. This is optional</span>
+         <span class="comment">// and should be avoided in production builds.</span>
+         params<span class="operator">.</span>enableDebugLayer <span class="operator">=</span> <span class="keyword">true</span>;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D11<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     } <span class="keyword">else</span> <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D12) {
+         QRhiD3D12InitParams params;
+         <span class="comment">// Enable the debug layer, if available. This is optional</span>
+         <span class="comment">// and should be avoided in production builds.</span>
+         params<span class="operator">.</span>enableDebugLayer <span class="operator">=</span> <span class="keyword">true</span>;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>D3D12<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     }
+ <span class="preprocessor">#endif</span>
+
+ <span class="preprocessor">#if QT_CONFIG(metal)</span>
+     <span class="keyword">if</span> (m_graphicsApi <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Metal) {
+         <span class="type"><a href="qrhimetalinitparams.html" translate="no">QRhiMetalInitParams</a></span> params;
+         m_rhi<span class="operator">.</span>reset(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>create(<span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>Metal<span class="operator">,</span> <span class="operator">&amp;</span>params));
+     }
+ <span class="preprocessor">#endif</span>
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_rhi)
+         <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Failed to create RHI backend&quot;</span>);
+</pre>
+<p>Apart from this, everything else, all the rendering code, is fully cross-platform and has no branching or conditions specific to any of the 3D API.</p>
+<h4 id="expose-events">Expose Events</h4>
+<p>What <code translate="no">renderable</code> exactly means is platform-specific. For example, on macOS a window that is fully obscured (fully behind some other window) is not renderable, whereas on Windows obscuring has no significance. Fortunately, the application needs no special knowledge about this: Qt's platform plugins abstract the differences behind the expose event. However, the <a href="qwindow.html#exposeEvent" translate="no">exposeEvent</a>() reimplementation also needs to be aware that an empty output size (e.g. width and height of 0) is also something that should be treated as a non-renderable situation. On Windows for example, this is what is going to happen when minimizing the window. Hence the check based on <a href="qrhiswapchain.html#surfacePixelSize" translate="no">QRhiSwapChain::surfacePixelSize</a>().</p>
+<p>This implementation of expose event handling attempts to be robust, safe, and portable. Qt Quick itself also implements a very similar logic in its render loops.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RhiWindow<span class="operator">::</span>exposeEvent(<span class="type"><a href="qexposeevent.html" translate="no">QExposeEvent</a></span> <span class="operator">*</span>)
+ {
+     <span class="comment">// initialize and start rendering when the window becomes usable for graphics purposes</span>
+     <span class="keyword">if</span> (isExposed() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>m_initialized) {
+         init();
+         resizeSwapChain();
+         m_initialized <span class="operator">=</span> <span class="keyword">true</span>;
+     }
+
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> surfaceSize <span class="operator">=</span> m_hasSwapChain <span class="operator">?</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>surfacePixelSize() : <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span>();
+
+     <span class="comment">// stop pushing frames when not exposed (or size is 0)</span>
+     <span class="keyword">if</span> ((<span class="operator">!</span>isExposed() <span class="operator">|</span><span class="operator">|</span> (m_hasSwapChain <span class="operator">&amp;</span><span class="operator">&amp;</span> surfaceSize<span class="operator">.</span>isEmpty())) <span class="operator">&amp;</span><span class="operator">&amp;</span> m_initialized <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>m_notExposed)
+         m_notExposed <span class="operator">=</span> <span class="keyword">true</span>;
+
+     <span class="comment">// Continue when exposed again and the surface has a valid size. Note that</span>
+     <span class="comment">// surfaceSize can be (0, 0) even though size() reports a valid one, hence</span>
+     <span class="comment">// trusting surfacePixelSize() and not QWindow.</span>
+     <span class="keyword">if</span> (isExposed() <span class="operator">&amp;</span><span class="operator">&amp;</span> m_initialized <span class="operator">&amp;</span><span class="operator">&amp;</span> m_notExposed <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>surfaceSize<span class="operator">.</span>isEmpty()) {
+         m_notExposed <span class="operator">=</span> <span class="keyword">false</span>;
+         m_newlyExposed <span class="operator">=</span> <span class="keyword">true</span>;
+     }
+
+     <span class="comment">// always render a frame on exposeEvent() (when exposed) in order to update</span>
+     <span class="comment">// immediately on window resize.</span>
+     <span class="keyword">if</span> (isExposed() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>surfaceSize<span class="operator">.</span>isEmpty())
+         render();
+ }
+</pre>
+<p>In RhiWindow::render(), which is invoked in response to the <a href="../qtcore/qevent.html#Type-enum" translate="no">UpdateRequest</a> event generated by <a href="qwindow.html#requestUpdate" translate="no">requestUpdate</a>(), the following check is in place, to prevent attempting to render when the swapchain initialization failed, or when the window became non-renderable.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RhiWindow<span class="operator">::</span>render()
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>m_hasSwapChain <span class="operator">|</span><span class="operator">|</span> m_notExposed)
+         <span class="keyword">return</span>;
+</pre>
+<h4 id="swapchain-depth-stencil-buffer-and-resizing">Swapchain, Depth-Stencil buffer, and Resizing</h4>
+<p>To render to the <a href="qwindow.html" translate="no">QWindow</a>, a <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a> is needed. In addition, a <a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a> acting as the depth-stencil buffer is created as well since the application demonstrates how depth testing can be enabled in a graphics pipeline. With some legacy 3D APIs managing the depth/stencil buffer for a window is part of the corresponding windowing system interface API (EGL, WGL, GLX, etc., meaning the depth/stencil buffer is implicitly managed together with the <code translate="no">window surface</code>), whereas with modern APIs managing the depth-stencil buffer for a window-based render target is no different from offscreen render targets. <a href="qrhi.html" translate="no">QRhi</a> abstracts this, but for best performance it still needs to be indicated that the <a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a> is <a href="qrhirenderbuffer.html#Flag-enum" translate="no">used with together with a QRhiSwapChain</a>.</p>
+<p>The <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a> is associated with the <a href="qwindow.html" translate="no">QWindow</a> and the depth/stencil buffer.</p>
+<pre class="cpp" translate="no">
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span><span class="type"><a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a></span><span class="operator">&gt;</span> m_sc;
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span><span class="type"><a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a></span><span class="operator">&gt;</span> m_ds;
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span><span class="type"><a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a></span><span class="operator">&gt;</span> m_rp;
+
+     m_sc<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newSwapChain());
+     m_ds<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newRenderBuffer(<span class="type"><a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a></span><span class="operator">::</span>DepthStencil<span class="operator">,</span>
+                                       <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span>()<span class="operator">,</span> <span class="comment">// no need to set the size here, due to UsedWithSwapChainOnly</span>
+                                       <span class="number">1</span><span class="operator">,</span>
+                                       <span class="type"><a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a></span><span class="operator">::</span>UsedWithSwapChainOnly));
+     m_sc<span class="operator">-</span><span class="operator">&gt;</span>setWindow(<span class="keyword">this</span>);
+     m_sc<span class="operator">-</span><span class="operator">&gt;</span>setDepthStencil(m_ds<span class="operator">.</span>get());
+     m_rp<span class="operator">.</span>reset(m_sc<span class="operator">-</span><span class="operator">&gt;</span>newCompatibleRenderPassDescriptor());
+     m_sc<span class="operator">-</span><span class="operator">&gt;</span>setRenderPassDescriptor(m_rp<span class="operator">.</span>get());
+</pre>
+<p>When the window size changes, the swapchain needs to be resized as well. This is implemented in resizeSwapChain().</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> RhiWindow<span class="operator">::</span>resizeSwapChain()
+ {
+     m_hasSwapChain <span class="operator">=</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>createOrResize(); <span class="comment">// also handles m_ds</span>
+
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> outputSize <span class="operator">=</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>currentPixelSize();
+     m_viewProjection <span class="operator">=</span> m_rhi<span class="operator">-</span><span class="operator">&gt;</span>clipSpaceCorrMatrix();
+     m_viewProjection<span class="operator">.</span>perspective(<span class="number">45.0f</span><span class="operator">,</span> outputSize<span class="operator">.</span>width() <span class="operator">/</span> (<span class="type">float</span>) outputSize<span class="operator">.</span>height()<span class="operator">,</span> <span class="number">0.01f</span><span class="operator">,</span> <span class="number">1000.0f</span>);
+     m_viewProjection<span class="operator">.</span>translate(<span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="operator">-</span><span class="number">4</span>);
+ }
+</pre>
+<p>Unlike other <a href="qrhiresource.html" translate="no">QRhiResource</a> subclasses, <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a> features slightly different semantics when it comes to its create-function. As the name, <a href="qrhiswapchain.html#createOrResize" translate="no">createOrResize</a>(), suggests, this needs to be called whenever it is known that the output window size may be out of sync with what the swapchain was last initialized. The associated <a href="qrhirenderbuffer.html" translate="no">QRhiRenderBuffer</a> for depth-stencil gets its <a href="qrhirenderbuffer.html#pixelSize" translate="no">size</a> set automatically, and <a href="qrhirenderbuffer.html#create" translate="no">create</a>() is called on it implicitly from the swapchain's createOrResize().</p>
+<p>This is also a convenient place to (re)calculate the projection and view matrices since the perspective projection we set up depends on the output aspect ratio.</p>
+<div class="admonition note">
+<p><b>Note: </b>To eliminate coordinate system differences, the <a href="qrhi.html#clipSpaceCorrMatrix" translate="no">a backend/API-specific &quot;correction&quot; matrix</a> is queried from <a href="qrhi.html" translate="no">QRhi</a> and baked in to the projection matrix. This is what allows the application to work with OpenGL-style vertex data, assuming a coordinate system with the origin at the bottom-left.</p>
+</div>
+<p>The resizeSwapChain() function is called from RhiWindow::render() when it is discovered that the currently reported size is not the same anymore as what the swapchain was last initialized with.</p>
+<p>See <a href="qrhiswapchain.html#currentPixelSize" translate="no">QRhiSwapChain::currentPixelSize</a>() and <a href="qrhiswapchain.html#surfacePixelSize" translate="no">QRhiSwapChain::surfacePixelSize</a>() for further details.</p>
+<p>High DPI support is built-in: the sizes, as the naming indicates, are always in pixels, taking the window-specific <a href="qwindow.html#devicePixelRatio" translate="no">scale factor</a> into account. On the <a href="qrhi.html" translate="no">QRhi</a> (and 3D API) level there is no concept of high DPI scaling, everything is always in pixels. This means that a <a href="qwindow.html" translate="no">QWindow</a> with a size() of 1280x720 and a devicePixelRatio() of 2 is a render target (swapchain) with a (pixel) size of 2560x1440.</p>
+<pre class="cpp" translate="no">
+     <span class="comment">// If the window got resized or newly exposed, resize the swapchain. (the</span>
+     <span class="comment">// newly-exposed case is not actually required by some platforms, but is</span>
+     <span class="comment">// here for robustness and portability)</span>
+     <span class="comment">//</span>
+     <span class="comment">// This (exposeEvent + the logic here) is the only safe way to perform</span>
+     <span class="comment">// resize handling. Note the usage of the RHI's surfacePixelSize(), and</span>
+     <span class="comment">// never QWindow::size(). (the two may or may not be the same under the hood,</span>
+     <span class="comment">// depending on the backend and platform)</span>
+     <span class="comment">//</span>
+     <span class="keyword">if</span> (m_sc<span class="operator">-</span><span class="operator">&gt;</span>currentPixelSize() <span class="operator">!</span><span class="operator">=</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>surfacePixelSize() <span class="operator">|</span><span class="operator">|</span> m_newlyExposed) {
+         resizeSwapChain();
+         <span class="keyword">if</span> (<span class="operator">!</span>m_hasSwapChain)
+             <span class="keyword">return</span>;
+         m_newlyExposed <span class="operator">=</span> <span class="keyword">false</span>;
+     }
+</pre>
+<h4 id="render-loop">Render Loop</h4>
+<p>The application renders continuously, throttled by the presentation rate (vsync). This is ensured by calling <a href="qwindow.html#requestUpdate" translate="no">requestUpdate</a>() from RhiWindow::render() when the currently recorded frame has been submitted.</p>
+<pre class="cpp" translate="no">
+     m_rhi<span class="operator">-</span><span class="operator">&gt;</span>endFrame(m_sc<span class="operator">.</span>get());
+
+     <span class="comment">// Always request the next frame via requestUpdate(). On some platforms this is backed</span>
+     <span class="comment">// by a platform-specific solution, e.g. CVDisplayLink on macOS, which is potentially</span>
+     <span class="comment">// more efficient than a timer, queued metacalls, etc.</span>
+     requestUpdate();
+ }
+</pre>
+<p>This eventually leads to getting a <a href="../qtcore/qevent.html#Type-enum" translate="no">UpdateRequest</a> event. This is handled in the reimplementation of event().</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> RhiWindow<span class="operator">::</span>event(<span class="type"><a href="../qtcore/qevent.html" translate="no">QEvent</a></span> <span class="operator">*</span>e)
+ {
+     <span class="keyword">switch</span> (e<span class="operator">-</span><span class="operator">&gt;</span>type()) {
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qevent.html" translate="no">QEvent</a></span><span class="operator">::</span>UpdateRequest:
+         render();
+         <span class="keyword">break</span>;
+
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qevent.html" translate="no">QEvent</a></span><span class="operator">::</span>PlatformSurface:
+         <span class="comment">// this is the proper time to tear down the swapchain (while the native window and surface are still around)</span>
+         <span class="keyword">if</span> (<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="qplatformsurfaceevent.html" translate="no">QPlatformSurfaceEvent</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(e)<span class="operator">-</span><span class="operator">&gt;</span>surfaceEventType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qplatformsurfaceevent.html" translate="no">QPlatformSurfaceEvent</a></span><span class="operator">::</span>SurfaceAboutToBeDestroyed)
+             releaseSwapChain();
+         <span class="keyword">break</span>;
+
+     <span class="keyword">default</span>:
+         <span class="keyword">break</span>;
+     }
+
+     <span class="keyword">return</span> <span class="type"><a href="qwindow.html" translate="no">QWindow</a></span><span class="operator">::</span>event(e);
+ }
+</pre>
+<h4 id="resource-and-pipeline-setup">Resource and Pipeline Setup</h4>
+<p>The application records a single render pass that issues two draw calls, with two different graphics pipelines. One is the &quot;background&quot;, with the texture containing the <a href="qpainter.html" translate="no">QPainter</a>-generated image, then a single triangle is rendered on top with blending enabled.</p>
+<p>The vertex and uniform buffer used with the triangle is created like this. The size of the uniform buffer is 68 bytes since the shader specific a <code translate="no">mat4</code> and a <code translate="no">float</code> member in the uniform block. Watch out for the <a href="https://registry.khronos.org/OpenGL/specs/gl/glspec45.core.pdf#page=159">std140 layout rules</a>. This presents no surprises in this example since the <code translate="no">float</code> member that follows the <code translate="no">mat4</code> has the correct alignment without any additional padding, but it may become relevant in other applications, especially when working with types such as <code translate="no">vec2</code> or <code translate="no">vec3</code>. When in doubt, consider checking the <a href="qshaderdescription.html" translate="no">QShaderDescription</a> for the <a href="qshader.html#description" translate="no">QShader</a>, or, what is often more convenient, run the <code translate="no">qsb</code> tool on the <code translate="no">.qsb</code> file with the <code translate="no">-d</code> argument to inspect the metadata in human-readable form. The printed information includes, among other things, the uniform block member offsets, sizes, and the total size in bytes of each uniform block.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> HelloWindow<span class="operator">::</span>customInit()
+ {
+     m_initialUpdates <span class="operator">=</span> m_rhi<span class="operator">-</span><span class="operator">&gt;</span>nextResourceUpdateBatch();
+
+     m_vbuf<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newBuffer(<span class="type"><a href="qrhibuffer.html" translate="no">QRhiBuffer</a></span><span class="operator">::</span>Immutable<span class="operator">,</span> <span class="type"><a href="qrhibuffer.html" translate="no">QRhiBuffer</a></span><span class="operator">::</span>VertexBuffer<span class="operator">,</span> <span class="keyword">sizeof</span>(vertexData)));
+     m_vbuf<span class="operator">-</span><span class="operator">&gt;</span>create();
+     m_initialUpdates<span class="operator">-</span><span class="operator">&gt;</span>uploadStaticBuffer(m_vbuf<span class="operator">.</span>get()<span class="operator">,</span> vertexData);
+
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> UBUF_SIZE <span class="operator">=</span> <span class="number">68</span>;
+     m_ubuf<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newBuffer(<span class="type"><a href="qrhibuffer.html" translate="no">QRhiBuffer</a></span><span class="operator">::</span>Dynamic<span class="operator">,</span> <span class="type"><a href="qrhibuffer.html" translate="no">QRhiBuffer</a></span><span class="operator">::</span>UniformBuffer<span class="operator">,</span> UBUF_SIZE));
+     m_ubuf<span class="operator">-</span><span class="operator">&gt;</span>create();
+</pre>
+<p>The vertex and fragment shaders both need a uniform buffer at binding point 0. This is ensured by the <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a> object. The graphics pipeline is then setup with the shaders and a number of additional information. The example also relies on a number of convenient defaults, e.g. the primitive topology is <a href="qrhigraphicspipeline.html#Topology-enum" translate="no">Triangles</a>, but that is the default, and therefore it is not explicitly set. See <a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a> for further details.</p>
+<p>In addition to specifying the topology and various state, the pipeline must also be associated with:</p>
+<ul>
+<li>The vertex input layout in form of a <a href="qrhivertexinputlayout.html" translate="no">QRhiVertexInputLayout</a>. This specifies the type and component count for each vertex input location, the total stride in bytes per vertex, and other related data. <a href="qrhivertexinputlayout.html" translate="no">QRhiVertexInputLayout</a> only holds data, not actual native resources, and is copiable.</li>
+<li>A valid and successfully initialized <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a> object. This describes the layout of the resource bindings (uniform buffers, textures, samplers) the shaders expect. This must either by the <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a> used when recording the draw calls, or another that is <a href="qrhishaderresourcebindings.html#isLayoutCompatible" translate="no">layout-compatible with it</a>. This simple application takes the former approach.</li>
+<li>A valid <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> object. This must be retrieved from, or <a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">be compatible with</a> the render target. The example uses the former, by creating a <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> object via <a href="qrhiswapchain.html#newCompatibleRenderPassDescriptor" translate="no">QRhiSwapChain::newCompatibleRenderPassDescriptor</a>().</li>
+</ul>
+<pre class="cpp" translate="no">
+    m_colorTriSrb<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newShaderResourceBindings());
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="type"><a href="qrhishaderresourcebinding.html" translate="no">QRhiShaderResourceBinding</a></span><span class="operator">::</span>StageFlags visibility <span class="operator">=</span>
+            <span class="type"><a href="qrhishaderresourcebinding.html" translate="no">QRhiShaderResourceBinding</a></span><span class="operator">::</span>VertexStage <span class="operator">|</span> <span class="type"><a href="qrhishaderresourcebinding.html" translate="no">QRhiShaderResourceBinding</a></span><span class="operator">::</span>FragmentStage;
+    m_colorTriSrb<span class="operator">-</span><span class="operator">&gt;</span>setBindings({
+            <span class="type"><a href="qrhishaderresourcebinding.html" translate="no">QRhiShaderResourceBinding</a></span><span class="operator">::</span>uniformBuffer(<span class="number">0</span><span class="operator">,</span> visibility<span class="operator">,</span> m_ubuf<span class="operator">.</span>get())
+    });
+    m_colorTriSrb<span class="operator">-</span><span class="operator">&gt;</span>create();
+
+    m_colorPipeline<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newGraphicsPipeline());
+    <span class="comment">// Enable depth testing; not quite needed for a simple triangle, but we</span>
+    <span class="comment">// have a depth-stencil buffer so why not.</span>
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setDepthTest(<span class="keyword">true</span>);
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setDepthWrite(<span class="keyword">true</span>);
+    <span class="comment">// Blend factors default to One, OneOneMinusSrcAlpha, which is convenient.</span>
+    <span class="type"><a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>TargetBlend premulAlphaBlend;
+    premulAlphaBlend<span class="operator">.</span>enable <span class="operator">=</span> <span class="keyword">true</span>;
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setTargetBlends({ premulAlphaBlend });
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setShaderStages({
+        { <span class="type"><a href="qrhishaderstage.html" translate="no">QRhiShaderStage</a></span><span class="operator">::</span>Vertex<span class="operator">,</span> getShader(QLatin1String(<span class="string">&quot;:/color.vert.qsb&quot;</span>)) }<span class="operator">,</span>
+        { <span class="type"><a href="qrhishaderstage.html" translate="no">QRhiShaderStage</a></span><span class="operator">::</span>Fragment<span class="operator">,</span> getShader(QLatin1String(<span class="string">&quot;:/color.frag.qsb&quot;</span>)) }
+    });
+    <span class="type"><a href="qrhivertexinputlayout.html" translate="no">QRhiVertexInputLayout</a></span> inputLayout;
+    inputLayout<span class="operator">.</span>setBindings({
+        { <span class="number">5</span> <span class="operator">*</span> <span class="keyword">sizeof</span>(<span class="type">float</span>) }
+    });
+    inputLayout<span class="operator">.</span>setAttributes({
+        { <span class="number">0</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="type"><a href="qrhivertexinputattribute.html" translate="no">QRhiVertexInputAttribute</a></span><span class="operator">::</span>Float2<span class="operator">,</span> <span class="number">0</span> }<span class="operator">,</span>
+        { <span class="number">0</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="type"><a href="qrhivertexinputattribute.html" translate="no">QRhiVertexInputAttribute</a></span><span class="operator">::</span>Float3<span class="operator">,</span> <span class="number">2</span> <span class="operator">*</span> <span class="keyword">sizeof</span>(<span class="type">float</span>) }
+    });
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setVertexInputLayout(inputLayout);
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setShaderResourceBindings(m_colorTriSrb<span class="operator">.</span>get());
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>setRenderPassDescriptor(m_rp<span class="operator">.</span>get());
+    m_colorPipeline<span class="operator">-</span><span class="operator">&gt;</span>create();
+</pre>
+<p>getShader() is a helper function that loads a <code translate="no">.qsb</code> file and deserializes a <a href="qshader.html" translate="no">QShader</a> from it.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="type"><a href="qshader.html" translate="no">QShader</a></span> getShader(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>name)
+ {
+     <span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span> f(name);
+     <span class="keyword">if</span> (f<span class="operator">.</span>open(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>ReadOnly))
+         <span class="keyword">return</span> <span class="type"><a href="qshader.html" translate="no">QShader</a></span><span class="operator">::</span>fromSerialized(f<span class="operator">.</span>readAll());
+
+     <span class="keyword">return</span> <span class="type"><a href="qshader.html" translate="no">QShader</a></span>();
+ }
+</pre>
+<p>The <code translate="no">color.vert</code> shader specifies the following as the vertex inputs:</p>
+<pre class="cpp plain" translate="no">
+ layout(location = 0) in vec4 position;
+ layout(location = 1) in vec3 color;
+</pre>
+<p>The C++ code however provides vertex data as 2 floats for position, with 3 floats for the color interleaved. (<code translate="no">x</code>, <code translate="no">y</code>, <code translate="no">r</code>, <code translate="no">g</code>, <code translate="no">b</code> for each vertex) This is why the stride is <code translate="no">5 * sizeof(float)</code> and the inputs for locations 0 and 1 are specified as <code translate="no">Float2</code> and <code translate="no">Float3</code>, respectively. This is valid, and the <code translate="no">z</code> and <code translate="no">w</code> of the <code translate="no">vec4</code> position will get set automatically.</p>
+<h4 id="rendering">Rendering</h4>
+<p>Recording a frame is started by calling <a href="qrhi.html#beginFrame" translate="no">QRhi::beginFrame</a>() and finished by calling <a href="qrhi.html#endFrame" translate="no">QRhi::endFrame</a>().</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>FrameOpResult result <span class="operator">=</span> m_rhi<span class="operator">-</span><span class="operator">&gt;</span>beginFrame(m_sc<span class="operator">.</span>get());
+     <span class="keyword">if</span> (result <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>FrameOpSwapChainOutOfDate) {
+         resizeSwapChain();
+         <span class="keyword">if</span> (<span class="operator">!</span>m_hasSwapChain)
+             <span class="keyword">return</span>;
+         result <span class="operator">=</span> m_rhi<span class="operator">-</span><span class="operator">&gt;</span>beginFrame(m_sc<span class="operator">.</span>get());
+     }
+     <span class="keyword">if</span> (result <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qrhi.html" translate="no">QRhi</a></span><span class="operator">::</span>FrameOpSuccess) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;beginFrame failed with %d, will retry&quot;</span><span class="operator">,</span> result);
+         requestUpdate();
+         <span class="keyword">return</span>;
+     }
+
+     customRender();
+</pre>
+<p>Some of the resources (buffers, textures) have static data in the application, meaning the content never changes. The vertex buffer's content is provided in the initialization step for example, and is not changed afterwards. These data update operations are recorded in <code translate="no">m_initialUpdates</code>. When not yet done, the commands on this resource update batch are merged into the per-frame batch.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> HelloWindow<span class="operator">::</span>customRender()
+ {
+     <span class="type"><a href="qrhiresourceupdatebatch.html" translate="no">QRhiResourceUpdateBatch</a></span> <span class="operator">*</span>resourceUpdates <span class="operator">=</span> m_rhi<span class="operator">-</span><span class="operator">&gt;</span>nextResourceUpdateBatch();
+
+     <span class="keyword">if</span> (m_initialUpdates) {
+         resourceUpdates<span class="operator">-</span><span class="operator">&gt;</span>merge(m_initialUpdates);
+         m_initialUpdates<span class="operator">-</span><span class="operator">&gt;</span>release();
+         m_initialUpdates <span class="operator">=</span> nullptr;
+     }
+</pre>
+<p>Having a per-frame resource update batch is necessary since the uniform buffer contents with the modelview-projection matrix and the opacity changes on every frame.</p>
+<pre class="cpp" translate="no">
+     m_rotation <span class="operator">+</span><span class="operator">=</span> <span class="number">1.0f</span>;
+     QMatrix4x4 modelViewProjection <span class="operator">=</span> m_viewProjection;
+     modelViewProjection<span class="operator">.</span>rotate(m_rotation<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span>);
+     resourceUpdates<span class="operator">-</span><span class="operator">&gt;</span>updateDynamicBuffer(m_ubuf<span class="operator">.</span>get()<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">64</span><span class="operator">,</span> modelViewProjection<span class="operator">.</span>constData());
+     m_opacity <span class="operator">+</span><span class="operator">=</span> m_opacityDir <span class="operator">*</span> <span class="number">0.005f</span>;
+     <span class="keyword">if</span> (m_opacity <span class="operator">&lt;</span> <span class="number">0.0f</span> <span class="operator">|</span><span class="operator">|</span> m_opacity <span class="operator">&gt;</span> <span class="number">1.0f</span>) {
+         m_opacityDir <span class="operator">*</span><span class="operator">=</span> <span class="operator">-</span><span class="number">1</span>;
+         m_opacity <span class="operator">=</span> <a href="../qtcore/qtminmax-qtcore-proxy.html#qBound" translate="no">qBound</a>(<span class="number">0.0f</span><span class="operator">,</span> m_opacity<span class="operator">,</span> <span class="number">1.0f</span>);
+     }
+     resourceUpdates<span class="operator">-</span><span class="operator">&gt;</span>updateDynamicBuffer(m_ubuf<span class="operator">.</span>get()<span class="operator">,</span> <span class="number">64</span><span class="operator">,</span> <span class="number">4</span><span class="operator">,</span> <span class="operator">&amp;</span>m_opacity);
+</pre>
+<p>To begin recording the render pass, a <a href="qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a> is queried, and the output size is determined, which will be useful for setting up the viewport and resizing our fullscreen texture, if needed.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a></span> <span class="operator">*</span>cb <span class="operator">=</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>currentFrameCommandBuffer();
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> outputSizeInPixels <span class="operator">=</span> m_sc<span class="operator">-</span><span class="operator">&gt;</span>currentPixelSize();
+</pre>
+<p>Starting a render pass implies clearing the render target's color and depth-stencil buffers (unless the render target flags indicate otherwise, but that is only an option for texture-based render targets). Here we specify black for color, 1.0f for depth, and 0 for stencil (unused). The last argument, <code translate="no">resourceUpdates</code>, is what ensures that the data update commands recorded on the batch get committed. Alternatively, we could have used <a href="qrhicommandbuffer.html#resourceUpdate" translate="no">QRhiCommandBuffer::resourceUpdate</a>() instead. The render pass targets a swapchain, hence calling <a href="qrhiswapchain.html#currentFrameRenderTarget" translate="no">currentFrameRenderTarget</a>() to get a valid <a href="qrhirendertarget.html" translate="no">QRhiRenderTarget</a>.</p>
+<pre class="cpp" translate="no">
+     cb<span class="operator">-</span><span class="operator">&gt;</span>beginPass(m_sc<span class="operator">-</span><span class="operator">&gt;</span>currentFrameRenderTarget()<span class="operator">,</span> <span class="type"><a href="qt-sub-qtgui.html" translate="no">Qt</a></span><span class="operator">::</span>black<span class="operator">,</span> { <span class="number">1.0f</span><span class="operator">,</span> <span class="number">0</span> }<span class="operator">,</span> resourceUpdates);
+</pre>
+<p>Recording the draw call for the triangle is straightforward: set the pipeline, set the shader resources, set the vertex/index buffer(s), and record the draw call. Here we use a non-indexed draw with just 3 vertices.</p>
+<pre class="cpp" translate="no">
+     cb<span class="operator">-</span><span class="operator">&gt;</span>setGraphicsPipeline(m_colorPipeline<span class="operator">.</span>get());
+     cb<span class="operator">-</span><span class="operator">&gt;</span>setShaderResources();
+     <span class="keyword">const</span> <span class="type"><a href="qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a></span><span class="operator">::</span>VertexInput vbufBinding(m_vbuf<span class="operator">.</span>get()<span class="operator">,</span> <span class="number">0</span>);
+     cb<span class="operator">-</span><span class="operator">&gt;</span>setVertexInput(<span class="number">0</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="operator">&amp;</span>vbufBinding);
+     cb<span class="operator">-</span><span class="operator">&gt;</span>draw(<span class="number">3</span>);
+
+     cb<span class="operator">-</span><span class="operator">&gt;</span>endPass();
+</pre>
+<p>The <a href="qrhicommandbuffer.html#setShaderResources" translate="no">setShaderResources</a>() call has no arguments given, which implies using <code translate="no">m_colorTriSrb</code> since that was associated with the active <a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a> (<code translate="no">m_colorPipeline</code>).</p>
+<p>We will not dive into the details of the rendering of the fullscreen background image. See the example source code for that. It is however worth noting a common pattern for &quot;resizing&quot; a texture or buffer resource. There is no such thing as changing the size of an existing native resource, so changing a texture or buffer size must be followed by a call to create(), to release and recreate the underlying native resources. To ensure that the <a href="qrhitexture.html" translate="no">QRhiTexture</a> always has the required size, the application implements the following logic. Note that <code translate="no">m_texture</code> stays valid for the entire lifetime of the window, which means object references to it, e.g. in a <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a>, continue to be valid all the time. It is only the underlying native resources that come and go over time.</p>
+<p>Note also that we set a device pixel ratio on the image that matches the window that we're drawing into. This ensures that the drawing code can be DPR-agnostic, producing the same layout regardless of the DPR, while also taking advantage of the additional pixels for improved fidelity.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> HelloWindow<span class="operator">::</span>ensureFullscreenTexture(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> <span class="operator">&amp;</span>pixelSize<span class="operator">,</span> <span class="type"><a href="qrhiresourceupdatebatch.html" translate="no">QRhiResourceUpdateBatch</a></span> <span class="operator">*</span>u)
+ {
+     <span class="keyword">if</span> (m_texture <span class="operator">&amp;</span><span class="operator">&amp;</span> m_texture<span class="operator">-</span><span class="operator">&gt;</span>pixelSize() <span class="operator">=</span><span class="operator">=</span> pixelSize)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_texture)
+         m_texture<span class="operator">.</span>reset(m_rhi<span class="operator">-</span><span class="operator">&gt;</span>newTexture(<span class="type"><a href="qrhitexture.html" translate="no">QRhiTexture</a></span><span class="operator">::</span>RGBA8<span class="operator">,</span> pixelSize));
+     <span class="keyword">else</span>
+         m_texture<span class="operator">-</span><span class="operator">&gt;</span>setPixelSize(pixelSize);
+
+     m_texture<span class="operator">-</span><span class="operator">&gt;</span>create();
+
+     <span class="type"><a href="qimage.html" translate="no">QImage</a></span> image(pixelSize<span class="operator">,</span> <span class="type"><a href="qimage.html" translate="no">QImage</a></span><span class="operator">::</span>Format_RGBA8888_Premultiplied);
+     image<span class="operator">.</span>setDevicePixelRatio(devicePixelRatio());
+</pre>
+<p>Once a <a href="qimage.html" translate="no">QImage</a> is generated and the <a href="qpainter.html" translate="no">QPainter</a>-based drawing into it has finished, we use <a href="qrhiresourceupdatebatch.html#uploadTexture" translate="no">uploadTexture</a>() to record a texture upload on the resource update batch:</p>
+<pre class="cpp" translate="no">
+     u<span class="operator">-</span><span class="operator">&gt;</span>uploadTexture(m_texture<span class="operator">.</span>get()<span class="operator">,</span> image);
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/gui/rhiwindow?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="qrhi.html" translate="no">QRhi</a>, <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a>, <a href="qwindow.html" translate="no">QWindow</a>, <a href="qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a>, <a href="qrhiresourceupdatebatch.html" translate="no">QRhiResourceUpdateBatch</a>, <a href="qrhibuffer.html" translate="no">QRhiBuffer</a>, and <a href="qrhitexture.html" translate="no">QRhiTexture</a>.</p>
+<!-- @@@rhiwindow -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt6-changes.qdoc -->
+  <meta name="description" content="Migrate Qt Quick 3D to Qt 6.">
+  <title>Changes to Qt Quick 3D | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li>Changes to Qt Quick 3D</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquick3d-xr-simple-example.html" />
+  <link rel="next" href="qtquick3d-helpers-qmlmodule.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquick3d-xr-simple-example.html">Qt Quick 3D - XR Simple Example</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-helpers-qmlmodule.html">Reference - Helpers QML Types</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#rhi">RHI</a></li>
+<li class="level1"><a href="#other-api-changes">Other API changes</a></li>
+<li class="level2"><a href="#qml-import-version">QML import version</a></li>
+<li class="level2"><a href="#lighting">Lighting</a></li>
+<li class="level2"><a href="#custom-materials">Custom Materials</a></li>
+<li class="level2"><a href="#post-processing-effects">Post-processing Effects</a></li>
+<li class="level2"><a href="#principled-material">Principled Material</a></li>
+<li class="level2"><a href="#default-material">Default Material</a></li>
+<li class="level2"><a href="#predefined-materials">Predefined materials</a></li>
+<li class="level2"><a href="#tessellation-and-displacement-maps">Tessellation and displacement maps</a></li>
+<li class="level2"><a href="#qt-quick-items-as-children-of-3d-nodes">Qt Quick Items as children of 3D Nodes</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Changes to Qt Quick 3D</h1>
+<!-- $$$qtquick3d-changes-qt6.html-description -->
+<div class="descr" id="details">
+<p>Qt 6 is a result of the conscious effort to make the framework more efficient and easy to use.</p>
+<p>We try to maintain binary and source compatibility for all the public APIs in each release. But some changes were inevitable in an effort to make Qt a better framework. Parts of the Qt Quick 3D API have been substantially modified.</p>
+<p>In this topic we summarize those changes in Qt Quick 3D, and provide guidance to handle them.</p>
+<h2 id="rhi">RHI</h2>
+<p>From Qt 6.0 onwards, the default adaptation of Qt Quick always renders via a graphics abstraction layer, the Qt Rendering Hardware Interface (RHI), provided by the <a href="../qtgui/qtgui-module.html" translate="no">QtGui</a> module. This means that, unlike Qt 5, no direct OpenGL calls are made by the scene graph. Rather, it records resource and draw commands by using the RHI APIs, which then translate the command stream into OpenGL, Vulkan, Metal, or Direct 3D calls. Shader handling is also unified by writing shader code once, compiling to <a href="https://www.khronos.org/spir/">SPIR-V</a>, and then translating to the language appropriate for the various graphics APIs.</p>
+<p>For Qt Quick 3D the biggest change in Qt 6.0 is the migration to the common Rendering Hardware Interface, which allows Qt Quick 3D to run on Direct3D, Metal and Vulkan in addition to OpenGL and OpenGL ES.</p>
+<p>Qt Quick and Qt Quick 3D are now fully unified in this regard. Any configuration setting related to the RHI, for example, which graphics API to choose to render with, are applicable to both.</p>
+<p>See <a href="qtquick3d-requirements.html">Qt Quick 3D Graphics Requirements</a> for further details.</p>
+<h2 id="other-api-changes">Other API changes</h2>
+<h3 id="qml-import-version">QML import version</h3>
+<p>Starting with Qt 6.0, the version number for QML import statements is the same as the Qt version number. It is now also possible to import a module without specifying a version: this will import the latest version of the module.</p>
+<h3 id="lighting">Lighting</h3>
+<p><a href="qml-qtquick3d-light.html#brightness-prop" translate="no">Light brightness</a> now represents an energy multiplier defaulting to 1.0, where Qt 5 would use a percentage value defaulting to 100. In practice this means that all <code translate="no">brightness</code> values should be divided by 100.</p>
+<p><code translate="no">SceneEnvironment.probeBrightness</code> is renamed to <a href="qml-qtquick3d-sceneenvironment.html#probeExposure-prop" translate="no">probeExposure</a> and is also redefined to be a multiplier with a default value of 1.0. That is, all <code translate="no">probeBrightness</code> values should be renamed to <code translate="no">probeExposure</code> and divided by 100.</p>
+<p><code translate="no">AreaLight</code> has been removed for performance reasons. In many cases it can be replaced with <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a>, which was added in Qt Quick 3D 5.15.</p>
+<h3 id="custom-materials">Custom Materials</h3>
+<p>The custom materials API has been completely reworked in 6.0. This means any existing custom materials will have to be substantially rewritten. See the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> documentation for details of the new API.</p>
+<h3 id="post-processing-effects">Post-processing Effects</h3>
+<p><a href="qml-qtquick3d-effect.html" translate="no">Effect</a> has been enhanced to allow for shader code that is very close to what <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> supports, following the same patterns when it comes to structure and built-in keywords. This means that existing effects involving custom shader code will need to be migrated before they can function in Qt 6.0. See the <a href="qml-qtquick3d-effect.html" translate="no">Effect</a> documentation for details.</p>
+<h3 id="principled-material">Principled Material</h3>
+<p>The <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> QML type has been greatly improved in Qt Quick 6.0, and now more closely follows the principles of Physically Based Rendering. Imported models should now render correctly without changing properties of the materials. Existing materials will need to be changed to undo any compensations for previous inaccuracies.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th ><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> in Qt 5</th><th ><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> in Qt 6</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-principled-qt5.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-principled-qt6.png" alt="" /></p></td></tr>
+</table></div>
+<p>Some properties change their defaults:</p>
+<ul>
+<li><a href="qml-qtquick3d-principledmaterial.html#metalness-prop" translate="no">metalness</a> defaults to 0 instead of 1.</li>
+<li><a href="qml-qtquick3d-principledmaterial.html#specularAmount-prop" translate="no">specularAmount</a> defaults to 0.5 instead of 0.</li>
+</ul>
+<h3 id="default-material">Default Material</h3>
+<p>Some properties change their defaults:</p>
+<ul>
+<li><a href="qml-qtquick3d-defaultmaterial.html#specularRoughness-prop" translate="no">specularRoughness</a> defaults to 0 instead of 50.</li>
+</ul>
+<h3 id="predefined-materials">Predefined materials</h3>
+<p>There are no predefined materials included in <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> 6.0. Any materials added in future releases will probably not be compatible with the old ones. The Materials import does not exist. (The <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> type is moved to the base <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> import.)</p>
+<p>These are the material QML types that have been removed in Qt 6.0:</p>
+<ul>
+<li>AluminumAnodizedEmissiveMaterial</li>
+<li>AluminumAnodizedMaterial</li>
+<li>AluminumBrushedMaterial</li>
+<li>AluminumEmissiveMaterial</li>
+<li>AluminumMaterial</li>
+<li>CopperMaterial</li>
+<li>FrostedGlassMaterial</li>
+<li>FrostedGlassSinglePassMaterial</li>
+<li>GlassMaterial</li>
+<li>GlassRefractiveMaterial</li>
+<li>PaperArtisticMaterial</li>
+<li>PaperOfficeMaterial</li>
+<li>PlasticStructuredRedEmissiveMaterial</li>
+<li>PlasticStructuredRedMaterial</li>
+<li>SteelMilledConcentricMaterial</li>
+</ul>
+<h3 id="tessellation-and-displacement-maps">Tessellation and displacement maps</h3>
+<p>Model tesselation mode is gone due to increased focus on supporting embedded hardware. In addition, as a result, displacement map support has been removed from materials. Similar effects can be achieved with a <a href="qml-qtquick3d-custommaterial.html" translate="no">custom material</a>.</p>
+<h3 id="qt-quick-items-as-children-of-3d-nodes">Qt Quick <a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a>s as children of 3D <a href="qml-qtquick3d-node.html" translate="no">Node</a>s</h3>
+<p>While syntactically identical, the way 2D child items are handled is quite different internally. In Qt 6.0 there is no implicit render to texture step. Rather, the 2D Qt Quick content is rendered in line, with the appropriate perspective projection, in the same render pass, which provides better performance, lower resource usage, and in some cases potentially improved visual fidelity (with <a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a>, for example). See <a href="qtquick3d-2d.html">Qt Quick 3D Scenes with 2D Content</a> for an overview.</p>
+<p>If going through a texture is important for some reason (clipping, opacity), make the 2D <a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a> subtree a layer explicitly by setting <code translate="no">layer.enabled: true</code>. This way the behavior is closer to what Qt 5.15 provided.</p>
+<p>The 2D content is no longer centered at the parent Node's origin. Rather, it is the top-level 2D Item's top-left corner that is placed to the 3D Node's origin. Therefore, the top-level 2D Item will often want to specify an anchor, such as, <code translate="no">anchors.centerIn: parent</code>, to get results matching Qt 5.15.</p>
+</div>
+<!-- @@@qtquick3d-changes-qt6.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquick3d-xr-simple-example.html">Qt Quick 3D - XR Simple Example</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-helpers-qmlmodule.html">Reference - Helpers QML Types</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickgroupbox.cpp -->
+  <meta name="description" content="Visual frame and title for a logical group of controls.">
+  <title>GroupBox QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>GroupBox</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#checkable-groupbox">Checkable GroupBox</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">GroupBox QML Type</h1>
+<!-- $$$GroupBox-brief -->
+<p>Visual frame and title for a logical group of controls. <a href="#details">More...</a></p>
+<!-- @@@GroupBox -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-frame.html" translate="no">Frame</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-groupbox-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-groupbox.html#implicitLabelHeight-prop" translate="no">implicitLabelHeight</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-groupbox.html#implicitLabelWidth-prop" translate="no">implicitLabelWidth</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-groupbox.html#label-prop" translate="no">label</a></b> : Item</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-groupbox.html#title-prop" translate="no">title</a></b> : string</li>
+</ul>
+<!-- $$$GroupBox-description -->
+<h2 id="details">Detailed Description</h2>
+<p>GroupBox is used to layout a logical group of controls together, within a <a href="qml-qtquick-controls-groupbox.html#title-prop" translate="no">titled</a> visual frame. GroupBox does not provide a layout of its own, but requires you to position its contents, for instance by creating a <a href="../qtquick/qml-qtquick-layouts-rowlayout.html" translate="no">RowLayout</a> or a <a href="../qtquick/qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a>.</p>
+<p>Items declared as children of a GroupBox are automatically parented to the GroupBox's <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>. Items created dynamically need to be explicitly parented to the contentItem.</p>
+<p>If only a single item is used within a GroupBox, it will resize to fit the implicit size of its contained item. This makes it particularly suitable for use together with layouts.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-groupbox.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-groupbox.html" translate="no">GroupBox</a></span> {
+     <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Synchronize&quot;</span>)
+     <span class="type"><a href="../qtquick/qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;E-mail&quot;</span>) }
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Calendar&quot;</span>) }
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Contacts&quot;</span>) }
+     }
+ }
+</pre>
+<h3 id="checkable-groupbox">Checkable GroupBox</h3>
+<p>Even though GroupBox has no built-in check box, it is straightforward to create a checkable GroupBox by pairing it with a <a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-groupbox-checkable.png" alt="" /></p><p>It is a common pattern to enable or disable the groupbox's children when its checkbox is toggled on or off, but it is up to the application to decide on the behavior of the checkbox.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-groupbox.html" translate="no">GroupBox</a></span> {
+     <span class="name">label</span>: <span class="name">CheckBox</span> {
+         <span class="name">id</span>: <span class="name">checkBox</span>
+         <span class="name">checked</span>: <span class="number">true</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Synchronize&quot;</span>)
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">enabled</span>: <span class="name">checkBox</span>.<span class="name">checked</span>
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;E-mail&quot;</span>) }
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Calendar&quot;</span>) }
+         <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Contacts&quot;</span>) }
+     }
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a>, <a href="qtquickcontrols-customize.html#customizing-groupbox">Customizing GroupBox</a>, and <a href="qtquickcontrols-containers.html">Container Controls</a>.</p>
+<!-- @@@GroupBox -->
+<h2>Property Documentation</h2>
+<!-- $$$implicitLabelHeight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitLabelHeight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitLabelHeight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit label height.</p>
+<p>The value is equal to <code translate="no">label ? label.implicitHeight : 0</code>.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-groupbox.html#implicitLabelWidth-prop" translate="no">implicitLabelWidth</a>.</p>
+</div></div><!-- @@@implicitLabelHeight -->
+<br/>
+<!-- $$$implicitLabelWidth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitLabelWidth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitLabelWidth</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit label width.</p>
+<p>The value is equal to <code translate="no">label ? label.implicitWidth : 0</code>.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-groupbox.html#implicitLabelHeight-prop" translate="no">implicitLabelHeight</a>.</p>
+</div></div><!-- @@@implicitLabelWidth -->
+<br/>
+<!-- $$$label -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="label-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">label</span> : <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the label item that visualizes <a href="qml-qtquick-controls-groupbox.html#title-prop" translate="no">title</a>.</p>
+<p><b>See also </b><a href="qtquickcontrols-customize.html#customizing-groupbox">Customizing GroupBox</a>.</p>
+</div></div><!-- @@@label -->
+<br/>
+<!-- $$$title -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="title-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">title</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the title.</p>
+<p>The title is typically displayed above the groupbox to summarize its contents.</p>
+</div></div><!-- @@@title -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

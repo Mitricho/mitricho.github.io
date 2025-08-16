@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-outline_extension.qdoc -->
+  <meta name="description" content="Demonstrates how the QtQuick3D Render Extension can be used to implement stencil outlining.">
+  <title>Qt Quick 3D - Stencil Outline Extension Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Stencil Outline Extension Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Stencil Outline Extension Example</h1>
+<!-- $$$extensions/stenciloutline-brief -->
+<p>Demonstrates how the <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> Render Extension can be used to implement stencil outlining.</p>
+<!-- @@@extensions/stenciloutline -->
+<!-- $$$extensions/stenciloutline-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/stencil_outline.jpg" alt="" /></p><p>This example shows how the <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> Render Extensions can be used to add support for stencil outlining.</p>
+<p>The first step is to implement the front-end item by creating a new <a href="qquick3drenderextension.html" translate="no">Render Extension</a> item which exposes the properties needed to QML. In this example we expose 3 properties, a <code translate="no">target</code> which takes the <a href="qml-qtquick3d-model.html" translate="no">model</a> we want to outline, the <a href="qml-qtquick3d-material.html" translate="no">material</a> we want to use for the outline, and a <code translate="no">scale</code> value for adjusting the size of the outline.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> OutlineRenderExtension : <span class="keyword">public</span> QQuick3DRenderExtension
+ {
+     Q_OBJECT
+     Q_PROPERTY(QQuick3DObject <span class="operator">*</span> target READ target WRITE setTarget NOTIFY targetChanged)
+     Q_PROPERTY(QQuick3DObject <span class="operator">*</span> outlineMaterial READ outlineMaterial WRITE setOutlineMaterial NOTIFY outlineMaterialChanged)
+     Q_PROPERTY(<span class="type">float</span> outlineScale READ outlineScale WRITE setOutlineScale NOTIFY outlineScaleChanged)
+     QML_ELEMENT
+
+ <span class="keyword">public</span>:
+     OutlineRenderExtension() <span class="operator">=</span> <span class="keyword">default</span>;
+     <span class="operator">~</span>OutlineRenderExtension() override;
+
+     <span class="type">float</span> outlineScale() <span class="keyword">const</span>;
+     <span class="type">void</span> setOutlineScale(<span class="type">float</span> newOutlineScale);
+
+     QQuick3DObject <span class="operator">*</span>target() <span class="keyword">const</span>;
+     <span class="type">void</span> setTarget(QQuick3DObject <span class="operator">*</span>newTarget);
+
+     QQuick3DObject <span class="operator">*</span>outlineMaterial() <span class="keyword">const</span>;
+     <span class="type">void</span> setOutlineMaterial(QQuick3DObject <span class="operator">*</span>newOutlineMaterial);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> outlineColorChanged();
+     <span class="type">void</span> outlineScaleChanged();
+     <span class="type">void</span> targetChanged();
+     <span class="type">void</span> outlineMaterialChanged();
+
+ <span class="keyword">protected</span>:
+     <span class="type">QSSGRenderGraphObject</span> <span class="operator">*</span>updateSpatialNode(<span class="type">QSSGRenderGraphObject</span> <span class="operator">*</span>node) override;
+
+ <span class="keyword">private</span>:
+     <span class="keyword">enum</span> Dirty : <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span>
+     {
+         Target <span class="operator">=</span> <span class="number">1</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="number">0</span><span class="operator">,</span>
+         OutlineMaterial <span class="operator">=</span> <span class="number">1</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="number">1</span><span class="operator">,</span>
+         OutlineScale <span class="operator">=</span> <span class="number">1</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="number">2</span>
+     };
+
+     <span class="keyword">using</span> DirtyT <span class="operator">=</span> std<span class="operator">::</span>underlying_type_t<span class="operator">&lt;</span>Dirty<span class="operator">&gt;</span>;
+
+     <span class="type">void</span> markDirty(Dirty v);
+
+     <span class="type"><a href="../qtcore/qpointer.html" translate="no">QPointer</a></span><span class="operator">&lt;</span>QQuick3DObject<span class="operator">&gt;</span> m_target;
+     <span class="type"><a href="../qtcore/qpointer.html" translate="no">QPointer</a></span><span class="operator">&lt;</span>QQuick3DObject<span class="operator">&gt;</span> m_outlineMaterial;
+     <span class="type">float</span> m_outlineScale <span class="operator">=</span> <span class="number">1.05f</span>;
+     DirtyT m_dirtyFlag {};
+ };
+</pre>
+<p>The second step is to implement the back-end <a href="qssgrenderextension.html" translate="no">Render Extension</a> class, this is the class that contains the code that will be run by <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a>.</p>
+<p>For this extension we'll be rendering <code translate="no">after</code> the built-in color-pass, and we'll want to render as part of the main render pass, so we'll return <a href="qssgrenderextension.html#RenderStage-enum" translate="no">PostColor</a> and <a href="qssgrenderextension.html#RenderMode-enum" translate="no">Main</a> in in our <a href="qssgrenderextension.html#stage" translate="no">QSSGRenderExtension::stage</a>() and <a href="qssgrenderextension.html#mode" translate="no">QSSGRenderExtension::mode</a>() functions respectively.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> OutlineRenderer : <span class="keyword">public</span> <span class="type"><a href="qssgrenderextension.html" translate="no">QSSGRenderExtension</a></span>
+ {
+ <span class="keyword">public</span>:
+     OutlineRenderer() <span class="operator">=</span> <span class="keyword">default</span>;
+
+     <span class="type">bool</span> prepareData(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data) override;
+     <span class="type">void</span> prepareRender(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data) override;
+     <span class="type">void</span> render(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data) override;
+     <span class="type">void</span> resetForFrame() override;
+     RenderMode mode() <span class="keyword">const</span> override { <span class="keyword">return</span> RenderMode<span class="operator">::</span>Main; }
+     RenderStage stage() <span class="keyword">const</span> override { <span class="keyword">return</span> RenderStage<span class="operator">::</span>PostColor; };
+
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepContextId-typedef" translate="no">QSSGPrepContextId</a></span> stencilPrepContext { <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepContextId-typedef" translate="no">QSSGPrepContextId</a></span><span class="operator">::</span>Invalid };
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepContextId-typedef" translate="no">QSSGPrepContextId</a></span> outlinePrepContext { <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepContextId-typedef" translate="no">QSSGPrepContextId</a></span><span class="operator">::</span>Invalid };
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span> stencilPrepResult { <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid };
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span> outlinePrepResult { <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid };
+     <span class="type"><a href="../qtcore/qpointer.html" translate="no">QPointer</a></span><span class="operator">&lt;</span>QQuick3DObject<span class="operator">&gt;</span> model;
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGNodeId-typedef" translate="no">QSSGNodeId</a></span> modelId { <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGNodeId-typedef" translate="no">QSSGNodeId</a></span><span class="operator">::</span>Invalid };
+     <span class="type"><a href="../qtcore/qpointer.html" translate="no">QPointer</a></span><span class="operator">&lt;</span>QQuick3DObject<span class="operator">&gt;</span> material;
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGResourceId-typedef" translate="no">QSSGResourceId</a></span> outlineMaterialId {};
+     <span class="type">float</span> outlineScale <span class="operator">=</span> <span class="number">1.05f</span>;
+
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGRenderablesId-typedef" translate="no">QSSGRenderablesId</a></span> stencilRenderables;
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGRenderablesId-typedef" translate="no">QSSGRenderablesId</a></span> outlineRenderables;
+ };
+</pre>
+<p>The next function that needs to be implement is <a href="qssgrenderextension.html#prepareData" translate="no">QSSGRenderExtension::prepareData</a>(), this function should collect and set-up the data this extension will be using for rendering. If there's nothing to render this function should return <code translate="no">false</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> OutlineRenderer<span class="operator">::</span>prepareData(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data)
+ {
+     <span class="comment">// Make sure we have a model and a material.</span>
+     <span class="keyword">if</span> (<span class="operator">!</span>model <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>material)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     modelId <span class="operator">=</span> QQuick3DExtensionHelpers<span class="operator">::</span>getNodeId(<span class="operator">*</span>model);
+     <span class="keyword">if</span> (modelId <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGNodeId-typedef" translate="no">QSSGNodeId</a></span><span class="operator">::</span>Invalid)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     outlineMaterialId <span class="operator">=</span> QQuick3DExtensionHelpers<span class="operator">::</span>getResourceId(<span class="operator">*</span>material);
+     <span class="keyword">if</span> (outlineMaterialId <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGResourceId-typedef" translate="no">QSSGResourceId</a></span><span class="operator">::</span>Invalid)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="comment">// This is the active camera for the scene (the camera used to render the QtQuick3D scene)</span>
+     <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGCameraId-typedef" translate="no">QSSGCameraId</a></span> camera <span class="operator">=</span> data<span class="operator">.</span>activeCamera();
+     <span class="keyword">if</span> (camera <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGCameraId-typedef" translate="no">QSSGCameraId</a></span><span class="operator">::</span>Invalid)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="comment">// We are going to render the same renderable(s) twice so we need to create two contexts.</span>
+     stencilPrepContext <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>prepareForRender(data<span class="operator">,</span> <span class="operator">*</span><span class="keyword">this</span><span class="operator">,</span> camera<span class="operator">,</span> <span class="number">0</span>);
+     outlinePrepContext <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>prepareForRender(data<span class="operator">,</span> <span class="operator">*</span><span class="keyword">this</span><span class="operator">,</span> camera<span class="operator">,</span> <span class="number">1</span>);
+     <span class="comment">// Create the renderables for the target model. One for the original with stencil write, and one for the outline model.</span>
+     <span class="comment">// Note that we 'Steal' the model here, that tells QtQuick3D that we'll take over the rendering of the model.</span>
+     stencilRenderables <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>createRenderables(data<span class="operator">,</span> stencilPrepContext<span class="operator">,</span> { modelId }<span class="operator">,</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>CreateFlag<span class="operator">::</span>Steal);
+     outlineRenderables <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>createRenderables(data<span class="operator">,</span> outlinePrepContext<span class="operator">,</span> { modelId });
+
+     <span class="comment">// Now we can start setting the data for our models.</span>
+     <span class="comment">// Here we set a material and a scale for the outline</span>
+     <span class="type"><a href="qssgmodelhelpers.html" translate="no">QSSGModelHelpers</a></span><span class="operator">::</span>setModelMaterials(data<span class="operator">,</span> outlineRenderables<span class="operator">,</span> modelId<span class="operator">,</span> { outlineMaterialId });
+     QMatrix4x4 globalTransform <span class="operator">=</span> <span class="type"><a href="qssgmodelhelpers.html" translate="no">QSSGModelHelpers</a></span><span class="operator">::</span>getGlobalTransform(data<span class="operator">,</span> modelId);
+     globalTransform<span class="operator">.</span>scale(outlineScale);
+     <span class="type"><a href="qssgmodelhelpers.html" translate="no">QSSGModelHelpers</a></span><span class="operator">::</span>setGlobalTransform(data<span class="operator">,</span> outlineRenderables<span class="operator">,</span> modelId<span class="operator">,</span> globalTransform);
+
+     <span class="comment">// When all changes are done, we need to commit the changes.</span>
+     stencilPrepResult <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>commit(data<span class="operator">,</span> stencilPrepContext<span class="operator">,</span> stencilRenderables);
+     outlinePrepResult <span class="operator">=</span> <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>commit(data<span class="operator">,</span> outlinePrepContext<span class="operator">,</span> outlineRenderables);
+
+     <span class="comment">// If there's something to be rendered we return true.</span>
+     <span class="keyword">const</span> <span class="type">bool</span> dataReady <span class="operator">=</span> (stencilPrepResult <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid <span class="operator">&amp;</span><span class="operator">&amp;</span> outlinePrepResult <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid);
+
+     <span class="keyword">return</span> dataReady;
+ }
+</pre>
+<p>If <a href="qssgrenderextension.html#prepareData" translate="no">QSSGRenderExtension::prepareData</a>() returned <code translate="no">true</code> the next function to be called is <a href="qssgrenderextension.html#prepareRender" translate="no">QSSGRenderExtension::prepareRender</a>(). In this function we'll set-up the <a href="qssgrhigraphicspipelinestate.html" translate="no">pipeline state</a> for our two renderables and tell <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> to prepare the primitives etc. for the renderables by calling <a href="qssgrenderhelpers.html#prepareRenderables" translate="no">QSSGRenderHelpers::prepareRenderables</a>().</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> OutlineRenderer<span class="operator">::</span>prepareRender(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data)
+ {
+     Q_ASSERT(modelId <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGNodeId-typedef" translate="no">QSSGNodeId</a></span><span class="operator">::</span>Invalid);
+     Q_ASSERT(stencilPrepResult <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid <span class="operator">&amp;</span><span class="operator">&amp;</span> outlinePrepResult <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid);
+
+     <span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>ctx <span class="operator">=</span> data<span class="operator">.</span>contextInterface();
+
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>rhiCtx <span class="operator">=</span> ctx<span class="operator">-</span><span class="operator">&gt;</span>rhiContext()) {
+         <span class="keyword">const</span> <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span> basePs <span class="operator">=</span> data<span class="operator">.</span>getPipelineState();
+         <span class="type"><a href="../qtgui/qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a></span> <span class="operator">*</span>rpDesc <span class="operator">=</span> rhiCtx<span class="operator">-</span><span class="operator">&gt;</span>mainRenderPassDescriptor();
+         <span class="keyword">const</span> <span class="type">int</span> samples <span class="operator">=</span> rhiCtx<span class="operator">-</span><span class="operator">&gt;</span>mainPassSampleCount();
+
+         { <span class="comment">// Original model - Write to the stencil buffer.</span>
+             <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span> ps <span class="operator">=</span> basePs;
+             ps<span class="operator">.</span>flags <span class="operator">|</span><span class="operator">=</span> { <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>BlendEnabled<span class="operator">,</span>
+                           <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>DepthWriteEnabled<span class="operator">,</span>
+                           <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>UsesStencilRef<span class="operator">,</span>
+                           <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>DepthTestEnabled };
+             ps<span class="operator">.</span>stencilWriteMask <span class="operator">=</span> <span class="number">0xff</span>;
+             ps<span class="operator">.</span>stencilRef <span class="operator">=</span> <span class="number">1</span>;
+             ps<span class="operator">.</span>samples <span class="operator">=</span> samples;
+             ps<span class="operator">.</span>cullMode <span class="operator">=</span> <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Back;
+
+             ps<span class="operator">.</span>stencilOpFrontState <span class="operator">=</span> { <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Keep<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Keep<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Replace<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Always };
+
+             <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>prepareRenderables(data<span class="operator">,</span> stencilPrepResult<span class="operator">,</span> rpDesc<span class="operator">,</span> ps);
+         }
+
+         { <span class="comment">// Scaled version - Only draw outside the original.</span>
+             <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span> ps <span class="operator">=</span> basePs;
+             ps<span class="operator">.</span>flags <span class="operator">|</span><span class="operator">=</span> { <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>BlendEnabled<span class="operator">,</span>
+                           <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>UsesStencilRef<span class="operator">,</span>
+                           <span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>DepthTestEnabled };
+             ps<span class="operator">.</span>flags<span class="operator">.</span>setFlag(<span class="type"><a href="qssgrhigraphicspipelinestate.html" translate="no">QSSGRhiGraphicsPipelineState</a></span><span class="operator">::</span>Flag<span class="operator">::</span>DepthWriteEnabled<span class="operator">,</span> <span class="keyword">false</span>);
+             ps<span class="operator">.</span>stencilWriteMask <span class="operator">=</span> <span class="number">0</span>;
+             ps<span class="operator">.</span>stencilRef <span class="operator">=</span> <span class="number">1</span>;
+             ps<span class="operator">.</span>cullMode <span class="operator">=</span> <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Back;
+
+             ps<span class="operator">.</span>stencilOpFrontState <span class="operator">=</span> { <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Keep<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Keep<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>Replace<span class="operator">,</span>
+                                        <span class="type"><a href="../qtgui/qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a></span><span class="operator">::</span>NotEqual };
+
+             <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>prepareRenderables(data<span class="operator">,</span> outlinePrepResult<span class="operator">,</span> rpDesc<span class="operator">,</span> ps);
+         }
+     }
+ }
+</pre>
+<p>When the engine is ready to record the rendering calls for our extension it will call the virtual <a href="qssgrenderextension.html#render" translate="no">QSSGRenderExtension::render</a>() function. In this example we can simply call <a href="qssgrenderhelpers.html#renderRenderables" translate="no">QSSGRenderHelpers::renderRenderables</a>() for the two models, they will then be rendered just the same way as <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> would have done internally, only this time with our settings.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> OutlineRenderer<span class="operator">::</span>render(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> <span class="operator">&amp;</span>data)
+ {
+     Q_ASSERT(stencilPrepResult <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtquick3d-qtquick3d-proxy.html#QSSGPrepResultId-typedef" translate="no">QSSGPrepResultId</a></span><span class="operator">::</span>Invalid);
+
+     <span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>ctx <span class="operator">=</span> data<span class="operator">.</span>contextInterface();
+     <span class="keyword">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>rhiCtx <span class="operator">=</span> ctx<span class="operator">-</span><span class="operator">&gt;</span>rhiContext()) {
+         <span class="type"><a href="../qtgui/qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a></span> <span class="operator">*</span>cb <span class="operator">=</span> rhiCtx<span class="operator">-</span><span class="operator">&gt;</span>commandBuffer();
+         cb<span class="operator">-</span><span class="operator">&gt;</span>debugMarkBegin(<span class="type"><a href="../qtcore/qbytearray.html#QByteArrayLiteral" translate="no">QByteArrayLiteral</a></span>(<span class="string">&quot;Stencil outline pass&quot;</span>));
+         <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>renderRenderables(data<span class="operator">,</span> stencilPrepResult);
+         <span class="type"><a href="qssgrenderhelpers.html" translate="no">QSSGRenderHelpers</a></span><span class="operator">::</span>renderRenderables(data<span class="operator">,</span> outlinePrepResult);
+         cb<span class="operator">-</span><span class="operator">&gt;</span>debugMarkEnd();
+     }
+ }
+</pre>
+<p>The <code translate="no">OutlineRenderExtension</code> is made active by adding it to the <a href="qml-qtquick3d-view3d.html" translate="no">View3D's</a> <a href="qml-qtquick3d-view3d.html#extensions-prop" translate="no">extensions</a> property.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+     <span class="name">id</span>: <span class="name">view3d</span>
+     <span class="name">anchors</span>.topMargin: <span class="number">100</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">extensions</span>: [ <span class="type">OutlineRenderExtension</span> {
+             <span class="name">id</span>: <span class="name">outlineRenderer</span>
+             <span class="name">outlineMaterial</span>: <span class="name">outlineMaterial</span>
+         }
+     ]
+</pre>
+<p>Now when a <code translate="no">model</code> is picked we just need to set the picked <code translate="no">model</code> as the <code translate="no">target</code> for the <code translate="no">OutlineRenderExtension</code> to have it rendered with an outline.</p>
+<pre class="qml" translate="no">
+     <span class="type"><a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">view3d</span>
+         <span class="name">onClicked</span>: (<span class="keyword"></span>mouse)=&gt; {
+               let hit = <span class="name">view3d</span>.<span class="name">pick</span>(<span class="name">mouse</span>.<span class="name">x</span>, <span class="name">mouse</span>.<span class="name">y</span>)
+               <span class="name">outlineRenderer</span>.<span class="name">target</span> <span class="operator">=</span> <span class="name">hit</span>.<span class="name">objectHit</span>
+         }
+     }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/extensions/stenciloutline?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@extensions/stenciloutline -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-example-bakedlightmap.qdoc -->
+  <meta name="description" content="Demonstrates the use of baked lightmaps in a 3D scene.">
+  <title>Qt Quick 3D - Baked Lightmap Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Baked Lightmap Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#setting-up-the-light">Setting up the Light</a></li>
+<li class="level1"><a href="#setting-up-the-model">Setting up the Model</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Baked Lightmap Example</h1>
+<!-- $$$bakedlightmap-brief -->
+<p>Demonstrates the use of baked lightmaps in a 3D scene.</p>
+<!-- @@@bakedlightmap -->
+<!-- $$$bakedlightmap-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/bakedlightmap-example.jpg" alt="" /></p><p>This example demonstrates using fully baked lighting in a scene. As a result, the rendered scene looks a lot more realistic, mainly because of the added indirect illumination. With the help of a checkbox it also allows disabling lightmapping, thus allowing comparing the rendering results of the real-time and fully baked approaches.</p>
+<h4 id="setting-up-the-light">Setting up the Light</h4>
+<p>The scene has a single point light. When the checkbox is checked, the <a href="qml-qtquick3d-light.html#bakeMode-prop" translate="no">bakeMode</a> of the light is set to Light.BakeModeAll.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a></span> {
+     <span class="name">bakeMode</span>: <span class="name">root</span>.<span class="name">lightBakeMode</span>
+     <span class="name">y</span>: <span class="number">190</span>
+     <span class="name">brightness</span>: <span class="name">brightnessSlider</span>.<span class="name">value</span>
+     <span class="name">castsShadow</span>: <span class="number">true</span>
+     <span class="name">shadowFactor</span>: <span class="number">75</span>
+     <span class="name">shadowBias</span>: <span class="number">20</span>
+ }
+</pre>
+<p>Setting the property to a value other than <a href="qml-qtquick3d-light.html#bakeMode-prop" translate="no">Light.BakeModeDisabled</a> serves a double purpose: at lightmap baking time it indicates that the light is part of the lightmapped scene, contributing to it. At run time, when rendering the scene normally, it indicates the light is a fully or partially baked light, which leads to disabling certain real time calculations in materials for lightmapped models. This is why the checkbox toggles <code translate="no">both</code> the bakeMode property on the Light and also the enabled property of the <a href="qml-qtquick3d-bakedlightmap.html" translate="no">BakedLightmap</a> associated with the Model objects.</p>
+<h4 id="setting-up-the-model">Setting up the Model</h4>
+<p>The <a href="https://en.wikipedia.org/wiki/Cornell_box">Cornell box</a> is a Model with 8 submeshes. This is encapsulated as the Box type, an instance of which is instantiated in the main scene.</p>
+<pre class="qml" translate="no">
+ <span class="type">Box</span> {
+     <span class="name">usedInBakedLighting</span>: <span class="number">true</span>
+     <span class="name">lightmapBaseResolution</span>: <span class="number">256</span>
+     <span class="name">bakedLightmap</span>: <span class="name">BakedLightmap</span> {
+         <span class="name">enabled</span>: <span class="name">root</span>.<span class="name">lmEnabled</span>
+         <span class="name">key</span>: <span class="string">&quot;box&quot;</span>
+         <span class="name">loadPrefix</span>: <span class="string">&quot;file:&quot;</span>
+     }
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)
+ }
+</pre>
+<p>This model both <code translate="no">participates</code> in the lightmapped scene, and has a lightmap <code translate="no">baked for it</code>. The former is indicated by the <a href="qml-qtquick3d-model.html#usedInBakedLighting-prop" translate="no">usedInBakedLighting</a> property. This alone does not ensure our box miniscene gets a lightmap baked for it, only that it participates in lightmapping (i.e. the light rays can bounce off the model when calculating indirect illumination).</p>
+<p>To get the lightmap fully generated and then stored during the baking process, a <a href="qml-qtquick3d-bakedlightmap.html" translate="no">BakedLightmap</a> object with <a href="qml-qtquick3d-bakedlightmap.html#enabled-prop" translate="no">enabled</a> set to <code translate="no">true</code> is set as well. The <a href="qml-qtquick3d-bakedlightmap.html#key-prop" translate="no">key</a> specifies a unique identifier.</p>
+<p>For simple deployment, the application packs the generated lightmaps (<code translate="no">.exr</code> files) into the execuatble via the Qt resource system. The CMakeLists.txt lists <code translate="no">qlm_box.exr</code> to be added as a resource. When rebaking the lightmap, the application needs to be built again so the changed file is picked up. To ensure that the engine can find the file at run time, the <a href="qml-qtquick3d-bakedlightmap.html#loadPrefix-prop" translate="no">loadPrefix</a> is set.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/bakedlightmap?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@bakedlightmap -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

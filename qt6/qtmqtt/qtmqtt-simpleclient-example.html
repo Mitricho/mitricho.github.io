@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- simpleclient.qdoc -->
+  <meta name="description" content="Creating a minimalistic telemetry application.">
+  <title>Simple MQTT Client | Qt MQTT | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmqtt-index.html">Qt MQTT</a></li>
+<li><a href="qtmqtt-examples.html">Qt MQTT Examples</a></li>
+<li>Simple MQTT Client</li>
+<li id="buildversion"><a href="qtmqtt-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#creating-a-client">Creating a Client</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Simple MQTT Client</h1>
+<!-- $$$simpleclient-brief -->
+<p>Creating a minimalistic telemetry application.</p>
+<!-- @@@simpleclient -->
+<!-- $$$simpleclient-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/simpleclient.png" alt="" /></p><p><i>Simple MQTT Client</i> demonstrates how to create a minimalistic client application.</p>
+<p>To use the application, you first specify a broker, such as <i>test.mosquitto.org</i> or <i>broker.hivemq.com</i> and the port number 1883, and connect to it. You can then subscribe to a topic and send a message, which you will also receive.</p>
+<div class="admonition note">
+<p><b>Note: </b>Port number 1883 is not encrypted, and therefore it is suitable only for development and testing purposes. In production, always use encrypted connections.</p>
+</div>
+<h4 id="creating-a-client">Creating a Client</h4>
+<p>First, we use the <a href="qmqttclient.html" translate="no">QMqttClient</a> class to create an MQTT client. The class provides properties for setting a unique client ID as well as the broker host name and port to connect to:</p>
+<pre class="cpp" translate="no">
+     m_client <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qmqttclient.html" translate="no">QMqttClient</a></span>(<span class="keyword">this</span>);
+     m_client<span class="operator">-</span><span class="operator">&gt;</span>setHostname(ui<span class="operator">-</span><span class="operator">&gt;</span>lineEditHost<span class="operator">-</span><span class="operator">&gt;</span>text());
+     m_client<span class="operator">-</span><span class="operator">&gt;</span>setPort(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span>(ui<span class="operator">-</span><span class="operator">&gt;</span>spinBoxPort<span class="operator">-</span><span class="operator">&gt;</span>value()));
+</pre>
+<p>We do not set the client ID, and therefore it will be automatically generated for us.</p>
+<p>Next, we connect to <a href="qmqttclient.html#messageReceived" translate="no">QMqttClient::messageReceived</a>() to receive all messages sent to the broker:</p>
+<pre class="cpp" translate="no">
+     connect(m_client<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmqttclient.html" translate="no">QMqttClient</a></span><span class="operator">::</span>messageReceived<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> <span class="operator">&amp;</span>message<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qmqtttopicname.html" translate="no">QMqttTopicName</a></span> <span class="operator">&amp;</span>topic) {
+         <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> content <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">.</span>toString()
+                     <span class="operator">+</span> <span class="string">&quot; Received Topic: &quot;</span>_L1
+                     <span class="operator">+</span> topic<span class="operator">.</span>name()
+                     <span class="operator">+</span> <span class="string">&quot; Message: &quot;</span>_L1
+                     <span class="operator">+</span> message
+                     <span class="operator">+</span> u<span class="char">'\n'</span>;
+         ui<span class="operator">-</span><span class="operator">&gt;</span>editLog<span class="operator">-</span><span class="operator">&gt;</span>insertPlainText(content);
+     });
+</pre>
+<p>When users subscribe to topics in the client, we call <a href="qmqttclient.html#subscribe" translate="no">QMqttClient::subscribe</a>() on the specified topic:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>on_buttonSubscribe_clicked()
+ {
+     <span class="keyword">auto</span> subscription <span class="operator">=</span> m_client<span class="operator">-</span><span class="operator">&gt;</span>subscribe(ui<span class="operator">-</span><span class="operator">&gt;</span>lineEditTopic<span class="operator">-</span><span class="operator">&gt;</span>text());
+     <span class="keyword">if</span> (<span class="operator">!</span>subscription) {
+         <span class="type">QMessageBox</span><span class="operator">::</span>critical(<span class="keyword">this</span><span class="operator">,</span> u<span class="string">&quot;Error&quot;</span>_s<span class="operator">,</span>
+                               u<span class="string">&quot;Could not subscribe. Is there a valid connection?&quot;</span>_s);
+         <span class="keyword">return</span>;
+     }
+</pre>
+<p>In this example, we subscribe to all topics. For more information about how to receive messages on particular topics, see the <a href="qtmqtt-subscriptions-example.html">MQTT Subscriptions</a> example.</p>
+<p>For an example of how to use the <a href="qmqttclient.html" translate="no">QMqttClient</a> class in a Qt Quick application, see <a href="qtmqtt-quicksubscription-example.html">Qt Quick Subscription</a>.</p>
+<p>Files:</p>
+<ul>
+<li><a href="qtmqtt-simpleclient-cmakelists-txt.html" translate="no">simpleclient/CMakeLists.txt</a></li>
+<li><a href="qtmqtt-simpleclient-main-cpp.html" translate="no">simpleclient/main.cpp</a></li>
+<li><a href="qtmqtt-simpleclient-mainwindow-cpp.html" translate="no">simpleclient/mainwindow.cpp</a></li>
+<li><a href="qtmqtt-simpleclient-mainwindow-h.html" translate="no">simpleclient/mainwindow.h</a></li>
+<li><a href="qtmqtt-simpleclient-mainwindow-ui.html" translate="no">simpleclient/mainwindow.ui</a></li>
+<li><a href="qtmqtt-simpleclient-simpleclient-pro.html" translate="no">simpleclient/simpleclient.pro</a></li>
+</ul>
+</div>
+<!-- @@@simpleclient -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

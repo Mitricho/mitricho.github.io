@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dparticleemitburst.cpp -->
+  <meta name="description" content="Declarative emitter bursts.">
+  <title>EmitBurst3D QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-particles3d-qmlmodule.html" translate="no">QtQuick3D.Particles3D</a></li>
+<li>EmitBurst3D</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">EmitBurst3D QML Type</h1>
+<!-- $$$EmitBurst3D-brief -->
+<p>Declarative emitter bursts. <a href="#details">More...</a></p>
+<!-- @@@EmitBurst3D -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Particles3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.2</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="../qtqml/qml-qtqml-qtobject.html" translate="no">QtObject</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-particles3d-dynamicburst3d.html" translate="no">DynamicBurst3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-particles3d-emitburst3d-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-emitburst3d.html#amount-prop" translate="no">amount</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-emitburst3d.html#duration-prop" translate="no">duration</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-emitburst3d.html#time-prop" translate="no">time</a></b> : int</li>
+</ul>
+<!-- $$$EmitBurst3D-description -->
+<h2 id="details">Detailed Description</h2>
+<p>This element defines particle bursts in the <a href="qml-qtquick3d-particles3d-particleemitter3d.html" translate="no">ParticleEmitter3D</a>. These bursts are static, meaning that they are evaluated when the particlesystem starts. This allows better performance than <a href="qml-qtquick3d-particles3d-dynamicburst3d.html" translate="no">DynamicBurst3D</a> and bursting outside of the particlesystem time (so e.g. burst at 1000ms while system time starts from 2000ms).</p>
+<div class="admonition note">
+<p><b>Note: </b>EmitBurst3D uses emitter properties (position, rotation etc.) at the particlesystem start. For dynamic emitters, use <a href="qml-qtquick3d-particles3d-dynamicburst3d.html" translate="no">DynamicBurst3D</a> instead.</p>
+</div>
+<p>For example, to emit 100 particles at the beginning, and 50 particles at 2 seconds, so that both bursts take 200 milliseconds:</p>
+<pre class="qml" translate="no">
+ ParticleEmitter3D {
+     ...
+     emitBursts: [
+         EmitBurst3D {
+             time: 0
+             amount: 100
+             duration: 200
+         },
+         EmitBurst3D {
+             time: 2000
+             amount: 50
+             duration: 200
+         }
+     ]
+ }
+</pre>
+<!-- @@@EmitBurst3D -->
+<h2>Property Documentation</h2>
+<!-- $$$amount -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="amount-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">amount</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the amount of particles emitted during the burst.</p>
+<p>The default value is <code translate="no">0</code>.</p>
+</div></div><!-- @@@amount -->
+<br/>
+<!-- $$$duration -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="duration-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">duration</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the duration of the burst. The default value is 0, meaning all particles will burst at the beginning of <a href="qml-qtquick3d-particles3d-emitburst3d.html#time-prop" translate="no">time</a>. If the duration is set, particles emitting is distributed between <code translate="no">time</code> and <code translate="no">time</code> + <code translate="no">duration</code>.</p>
+<p>For example, to have emit rate of 400 between 1000 and 1200 milliseconds:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-particles3d-emitburst3d.html" translate="no">EmitBurst3D</a></span> {
+     <span class="name">time</span>: <span class="number">1000</span>
+     <span class="name">amount</span>: <span class="number">80</span>
+     <span class="name">duration</span>: <span class="number">1200</span>
+ }
+</pre>
+<p>The default value is <code translate="no">0</code>.</p>
+</div></div><!-- @@@duration -->
+<br/>
+<!-- $$$time -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="time-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">time</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the time in milliseconds when emitting the burst starts.</p>
+<p>The default value is <code translate="no">0</code>.</p>
+</div></div><!-- @@@time -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

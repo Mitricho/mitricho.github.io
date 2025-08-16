@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- custom.qdoc -->
+  <meta name="description" content="The example shows how to handle custom Modbus function codes.">
+  <title>Modbus Custom Command | Qt Serial Bus | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtserialbus-index.html">Qt Serial Bus</a></li>
+<li><a href="qtserialbus-examples.html">Qt SerialBus Examples</a></li>
+<li>Modbus Custom Command</li>
+<li id="buildversion"><a href="qtserialbus-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#user-defined-modbus-function-codes">User-Defined Modbus Function Codes</a></li>
+<li class="level1"><a href="#sending-custom-modbus-commands">Sending Custom Modbus Commands</a></li>
+<li class="level1"><a href="#custom-modbus-server">Custom Modbus Server</a></li>
+<li class="level1"><a href="#custom-modbus-client">Custom Modbus Client</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Modbus Custom Command</h1>
+<!-- $$$modbus/custom-brief -->
+<p>The example shows how to handle custom Modbus function codes.</p>
+<!-- @@@modbus/custom -->
+<!-- $$$modbus/custom-description -->
+<div class="descr" id="details">
+<p>The example acts as both Modbus client and server in a single application. The connection between them is established via Modbus TCP. It is used to send and receive custom Modbus requests and adjusts its internal states based on the request and response.</p>
+<p>The main purpose of the example is to provide some demo code on how to implement a Modbus client or Modbus server handling custom Modbus function codes.</p>
+<p class="centerAlign"><img src="images/custom.png" alt="" /></p><h4 id="user-defined-modbus-function-codes">User-Defined Modbus Function Codes</h4>
+<p>The Modbus protocol supports function codes in the range <code translate="no">1 - 127 (0x01 - 0x7F HEX)</code>. Most of the function codes are well defined and publicly documented. However, there are two ranges that can be used for user-defined functions. Those are <code translate="no">65 - 72 (0x41 - 48 HEX)</code> and <code translate="no">100 - 110 (0x64 - 0x6E HEX)</code>. The user can select function codes from these ranges and handle them in some custom way.</p>
+<p>This application uses function code <code translate="no">65 (0x41 HEX)</code> to implement <code translate="no">CustomRead</code> command and function code <code translate="no">66 (0x42 HEX)</code> to implement <code translate="no">CustomWrite</code> command. In this example the custom commands are used to simply read and write the <a href="qmodbusdataunit.html#RegisterType-enum" translate="no">Holding Registers</a>.</p>
+<h4 id="sending-custom-modbus-commands">Sending Custom Modbus Commands</h4>
+<p>The custom Modbus commands are sent using the <a href="qmodbusclient.html#sendRawRequest" translate="no">QModbusClient::sendRawRequest</a>() method. This method requires to generate a <a href="qmodbusrequest.html" translate="no">QModbusRequest</a> object with the desired function code and a list of arguments which will be encoded into a <a href="../qtcore/qbytearray.html" translate="no">QByteArray</a>:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> unit {
+         <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>HoldingRegisters<span class="operator">,</span>
+         ui<span class="operator">-</span><span class="operator">&gt;</span>startAddress<span class="operator">-</span><span class="operator">&gt;</span>value()<span class="operator">,</span>
+         <a href="../qtcore/qtminmax-qtcore-proxy.html#qMin" translate="no">qMin</a>(ui<span class="operator">-</span><span class="operator">&gt;</span>numberOfRegisters<span class="operator">-</span><span class="operator">&gt;</span>currentText()<span class="operator">.</span>toUShort()<span class="operator">,</span>
+             <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>(<span class="number">10</span> <span class="operator">-</span> ui<span class="operator">-</span><span class="operator">&gt;</span>startAddress<span class="operator">-</span><span class="operator">&gt;</span>value())) <span class="comment">// do not go beyond 10 entries</span>
+     };
+
+     <span class="keyword">for</span> (qsizetype i <span class="operator">=</span> <span class="number">0</span><span class="operator">,</span> total <span class="operator">=</span> unit<span class="operator">.</span>valueCount(); i <span class="operator">&lt;</span> total; <span class="operator">+</span><span class="operator">+</span>i)
+         unit<span class="operator">.</span>setValue(i<span class="operator">,</span> m_model<span class="operator">-</span><span class="operator">&gt;</span>m_registers<span class="operator">[</span>i <span class="operator">+</span> unit<span class="operator">.</span>startAddress()<span class="operator">]</span>);
+
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> byteCount <span class="operator">=</span> <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span>(unit<span class="operator">.</span>valueCount() <span class="operator">*</span> <span class="number">2</span>);
+     <span class="type"><a href="qmodbusrequest.html" translate="no">QModbusRequest</a></span> writeRequest {
+         <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span><span class="operator">::</span>FunctionCode(ModbusClient<span class="operator">::</span>CustomWrite)<span class="operator">,</span>
+         <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>(unit<span class="operator">.</span>startAddress())<span class="operator">,</span>
+         <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>(unit<span class="operator">.</span>valueCount())<span class="operator">,</span> byteCount<span class="operator">,</span> unit<span class="operator">.</span>values()
+     };
+</pre>
+<p>The <a href="qmodbusclient.html#sendRawRequest" translate="no">QModbusClient::sendRawRequest</a>() method returns a <a href="qmodbusreply.html" translate="no">QModbusReply</a> object which can be used to check for errors as usual:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">if</span> (<span class="keyword">auto</span> <span class="operator">*</span>reply <span class="operator">=</span> m_client<span class="operator">.</span>sendRawRequest(writeRequest<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>serverAddress<span class="operator">-</span><span class="operator">&gt;</span>value())) {
+         <span class="keyword">if</span> (<span class="operator">!</span>reply<span class="operator">-</span><span class="operator">&gt;</span>isFinished()) {
+             connect(reply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmodbusreply.html" translate="no">QModbusReply</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> reply<span class="operator">]</span>() {
+                 <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>error() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>ProtocolError) {
+                     statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write response error: %1 (Modbus exception: 0x%2)&quot;</span>)
+                         <span class="operator">.</span>arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>arg(reply<span class="operator">-</span><span class="operator">&gt;</span>rawResult()<span class="operator">.</span>exceptionCode()<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span>
+                         <span class="number">5000</span>);
+                 } <span class="keyword">else</span> <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>error() <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>NoError) {
+                     statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write response error: %1 (code: 0x%2)&quot;</span>)<span class="operator">.</span>
+                         arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>arg(reply<span class="operator">-</span><span class="operator">&gt;</span>error()<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span> <span class="number">5000</span>);
+                 }
+
+                 reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+                 }
+             );
+         }
+     } <span class="keyword">else</span> {
+         statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write error: &quot;</span>) <span class="operator">+</span> m_client<span class="operator">.</span>errorString()<span class="operator">,</span> <span class="number">5000</span>);
+     }
+</pre>
+<h4 id="custom-modbus-server">Custom Modbus Server</h4>
+<p>The custom server is derived from the <a href="qmodbustcpserver.html" translate="no">QModbusTcpServer</a> class. It overrides the <a href="qmodbusserver.html#processPrivateRequest" translate="no">QModbusServer::processPrivateRequest</a>() method.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> ModbusServer : <span class="keyword">public</span> <span class="type"><a href="qmodbustcpserver.html" translate="no">QModbusTcpServer</a></span>
+ {
+     Q_OBJECT
+     Q_DISABLE_COPY_MOVE(ModbusServer)
+
+ <span class="keyword">public</span>:
+     ModbusServer(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qmodbusresponse.html" translate="no">QModbusResponse</a></span> processPrivateRequest(<span class="keyword">const</span> <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span> <span class="operator">&amp;</span>request) override;
+ };
+</pre>
+<p>The base server class calls the <a href="qmodbusserver.html#processPrivateRequest" translate="no">processPrivateRequest</a>() method when a command with a custom function code is received.</p>
+<p>The custom implementation handles the <code translate="no">CustomRead</code> command by generating a <a href="qmodbusresponse.html" translate="no">QModbusResponse</a> with the values of requested registers:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">if</span> (ModbusClient<span class="operator">::</span>CustomRead <span class="operator">=</span><span class="operator">=</span> request<span class="operator">.</span>functionCode()) {
+         <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> startAddress<span class="operator">,</span> count;
+         request<span class="operator">.</span>decodeData(<span class="operator">&amp;</span>startAddress<span class="operator">,</span> <span class="operator">&amp;</span>count);
+
+         <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> unit(<span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>HoldingRegisters<span class="operator">,</span> startAddress<span class="operator">,</span> count);
+         <span class="keyword">if</span> (<span class="operator">!</span>data(<span class="operator">&amp;</span>unit)) {
+             <span class="keyword">return</span> <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span>(request<span class="operator">.</span>functionCode()<span class="operator">,</span>
+                 <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span><span class="operator">::</span>IllegalDataAddress);
+         }
+         <span class="keyword">return</span> <span class="type"><a href="qmodbusresponse.html" translate="no">QModbusResponse</a></span>(request<span class="operator">.</span>functionCode()<span class="operator">,</span> startAddress<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span>(count <span class="operator">*</span> <span class="number">2</span>)<span class="operator">,</span> unit<span class="operator">.</span>values());
+     }
+</pre>
+<p>Handling <code translate="no">CustomWrite</code> command includes extracting the new values from the received <a href="qmodbuspdu.html" translate="no">QModbusPdu</a>, doing the actual value update, and returning a <a href="qmodbusresponse.html" translate="no">QModbusResponse</a> with the registers that were actually updated:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">if</span> (ModbusClient<span class="operator">::</span>CustomWrite <span class="operator">=</span><span class="operator">=</span> request<span class="operator">.</span>functionCode()) {
+         <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> byteCount;
+         <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> startAddress<span class="operator">,</span> numberOfRegisters;
+         request<span class="operator">.</span>decodeData(<span class="operator">&amp;</span>startAddress<span class="operator">,</span> <span class="operator">&amp;</span>numberOfRegisters<span class="operator">,</span> <span class="operator">&amp;</span>byteCount);
+
+         <span class="keyword">if</span> (byteCount <span class="operator">%</span> <span class="number">2</span> <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>) {
+             <span class="keyword">return</span> <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span>(request<span class="operator">.</span>functionCode()<span class="operator">,</span>
+                 <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span><span class="operator">::</span>IllegalDataValue);
+         }
+
+         <span class="keyword">const</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> pduData <span class="operator">=</span> request<span class="operator">.</span>data()<span class="operator">.</span>remove(<span class="number">0</span><span class="operator">,</span> WriteHeaderSize);
+         <span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> stream(pduData);
+
+         <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span> values;
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> numberOfRegisters; i<span class="operator">+</span><span class="operator">+</span>) {
+             <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> tmp;
+             stream <span class="operator">&gt;</span><span class="operator">&gt;</span> tmp;
+             values<span class="operator">.</span>append(tmp);
+         }
+
+         <span class="keyword">if</span> (<span class="operator">!</span>writeData({<span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>HoldingRegisters<span class="operator">,</span> startAddress<span class="operator">,</span> values})) {
+             <span class="keyword">return</span> <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span>(request<span class="operator">.</span>functionCode()<span class="operator">,</span>
+                 <span class="type"><a href="qmodbusexceptionresponse.html" translate="no">QModbusExceptionResponse</a></span><span class="operator">::</span>ServerDeviceFailure);
+         }
+
+         <span class="keyword">return</span> <span class="type"><a href="qmodbusresponse.html" translate="no">QModbusResponse</a></span>(request<span class="operator">.</span>functionCode()<span class="operator">,</span> startAddress<span class="operator">,</span> numberOfRegisters);
+     }
+</pre>
+<h4 id="custom-modbus-client">Custom Modbus Client</h4>
+<p>The custom client is derived from the <a href="qmodbustcpclient.html" translate="no">QModbusTcpClient</a> class. It overrides the <a href="qmodbusclient.html#processPrivateResponse" translate="no">QModbusClient::processPrivateResponse</a>() method.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> ModbusClient : <span class="keyword">public</span> <span class="type"><a href="qmodbustcpclient.html" translate="no">QModbusTcpClient</a></span>
+ {
+     Q_OBJECT
+     Q_DISABLE_COPY_MOVE(ModbusClient)
+
+ <span class="keyword">public</span>:
+     ModbusClient(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     <span class="keyword">static</span> constexpr <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span><span class="operator">::</span>FunctionCode CustomRead {<span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span><span class="operator">::</span>FunctionCode(<span class="number">0x41</span>)};
+     <span class="keyword">static</span> constexpr <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span><span class="operator">::</span>FunctionCode CustomWrite {<span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span><span class="operator">::</span>FunctionCode(<span class="number">0x42</span>)};
+
+ <span class="keyword">private</span>:
+     <span class="type">bool</span> processPrivateResponse(<span class="keyword">const</span> <span class="type"><a href="qmodbusresponse.html" translate="no">QModbusResponse</a></span> <span class="operator">&amp;</span>response<span class="operator">,</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> <span class="operator">*</span>data) override;
+ };
+</pre>
+<p>The base client class calls the <a href="qmodbusclient.html#processPrivateResponse" translate="no">processPrivateResponse</a>() method to process the server responses with custom function codes.</p>
+<p>The custom implementation handles the responses with <code translate="no">CustomRead</code> and <code translate="no">CustomWrite</code> function codes:</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> ModbusClient<span class="operator">::</span>processPrivateResponse(<span class="keyword">const</span> <span class="type"><a href="qmodbusresponse.html" translate="no">QModbusResponse</a></span> <span class="operator">&amp;</span>response<span class="operator">,</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> <span class="operator">*</span>data)
+ {
+     <span class="keyword">if</span> (<span class="operator">!</span>response<span class="operator">.</span>isValid())
+         <span class="keyword">return</span> <span class="type"><a href="qmodbusclient.html" translate="no">QModbusClient</a></span><span class="operator">::</span>processPrivateResponse(response<span class="operator">,</span> data);
+
+     <span class="keyword">if</span> (CustomRead <span class="operator">=</span><span class="operator">=</span> response<span class="operator">.</span>functionCode())
+         <span class="keyword">return</span> collateBytes(response<span class="operator">,</span> data);
+
+     <span class="keyword">if</span> (CustomWrite <span class="operator">=</span><span class="operator">=</span> response<span class="operator">.</span>functionCode())
+         <span class="keyword">return</span> collateMultipleValues(response<span class="operator">,</span> data);
+     <span class="keyword">return</span> <span class="type"><a href="qmodbusclient.html" translate="no">QModbusClient</a></span><span class="operator">::</span>processPrivateResponse(response<span class="operator">,</span> data);
+ }
+</pre>
+<p>The <code translate="no">CustomRead</code> response is handled by decoding the provided <a href="qmodbuspdu.html" translate="no">QModbusPdu</a> and extracting the values for requested registers:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="type">bool</span> collateBytes(<span class="keyword">const</span> <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span> <span class="operator">&amp;</span>response<span class="operator">,</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> <span class="operator">*</span>data)
+ {
+     <span class="keyword">if</span> (response<span class="operator">.</span>dataSize() <span class="operator">&lt;</span> MinimumReadResponseSize)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> address; <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> byteCount;
+     response<span class="operator">.</span>decodeData(<span class="operator">&amp;</span>address<span class="operator">,</span> <span class="operator">&amp;</span>byteCount);
+
+     <span class="keyword">if</span> (byteCount <span class="operator">%</span> <span class="number">2</span> <span class="operator">!</span><span class="operator">=</span> <span class="number">0</span>)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="keyword">if</span> (data) {
+         <span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> stream(response<span class="operator">.</span>data()<span class="operator">.</span>remove(<span class="number">0</span><span class="operator">,</span> <span class="number">3</span>));
+
+         <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span> values;
+         <span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#quint8-typedef" translate="no">quint8</a></span> itemCount <span class="operator">=</span> byteCount <span class="operator">/</span> <span class="number">2</span>;
+         <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> itemCount; i<span class="operator">+</span><span class="operator">+</span>) {
+             <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> tmp;
+             stream <span class="operator">&gt;</span><span class="operator">&gt;</span> tmp;
+             values<span class="operator">.</span>append(tmp);
+         }
+         <span class="operator">*</span>data <span class="operator">=</span> {<span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>HoldingRegisters<span class="operator">,</span> address<span class="operator">,</span> values};
+     }
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<p>The <code translate="no">CustomWrite</code> response is handled by simply validating the response parameters:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="type">bool</span> collateMultipleValues(<span class="keyword">const</span> <span class="type"><a href="qmodbuspdu.html" translate="no">QModbusPdu</a></span> <span class="operator">&amp;</span>response<span class="operator">,</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> <span class="operator">*</span>data)
+ {
+     <span class="keyword">if</span> (response<span class="operator">.</span>dataSize() <span class="operator">!</span><span class="operator">=</span> WriteResponseSize)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> address<span class="operator">,</span> count;
+     response<span class="operator">.</span>decodeData(<span class="operator">&amp;</span>address<span class="operator">,</span> <span class="operator">&amp;</span>count);
+
+     <span class="keyword">if</span> (count <span class="operator">&lt;</span> <span class="number">1</span> <span class="operator">|</span><span class="operator">|</span> count <span class="operator">&gt;</span> <span class="number">10</span>)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="keyword">if</span> (data)
+         <span class="operator">*</span>data <span class="operator">=</span> {<span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>HoldingRegisters<span class="operator">,</span> address<span class="operator">,</span> count};
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+</pre>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p>This example cannot be used in conjunction with other applications. Once the example is started, it can only exchange custom Modbus commands within the application itself. All interactions between the client and server use the Modbus TCP protocol.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtserialbus.git/tree/examples/serialbus/modbus/custom?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@modbus/custom -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- skinning.qdoc -->
+  <meta name="description" content="Demonstrates how to render a simple skinning animation in Qt Quick 3D.">
+  <title>Qt Quick 3D - Simple Skinning Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Simple Skinning Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#make-a-skinning-geometry">Make a skinning geometry.</a></li>
+<li class="level1"><a href="#set-up-skinned-data-in-qml">Set up skinned data in QML</a></li>
+<li class="level2"><a href="#position-data-and-indexes">Position data and indexes</a></li>
+<li class="level2"><a href="#joints-and-weights-data">Joints and weights data</a></li>
+<li class="level2"><a href="#skeleton-and-joint-hierarchy">Skeleton and Joint hierarchy</a></li>
+<li class="level2"><a href="#placing-models-using-inversebindposes">Placing models using inverseBindPoses</a></li>
+<li class="level1"><a href="#animate-with-joint-nodes">Animate with Joint nodes</a></li>
+<li class="level1"><a href="#a-more-complete-approach-to-skinning">A more complete approach to skinning</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Simple Skinning Example</h1>
+<!-- $$$skinning-brief -->
+<p>Demonstrates how to render a simple skinning animation in Qt Quick 3D.</p>
+<!-- @@@skinning -->
+<!-- $$$skinning-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/skinning.png" alt="" /></p><p>Generally most <a href="quick3d-vertex-skinning.html">skin animations</a> will be designed by modeling tools, and Quick3D also supports glTF formats through the <a href="qtquick3d-tool-balsam.html">Balsam importer</a> and Qt Design Studio. This example shows how each property is used for the skin animation in Quick3D.</p>
+<div class="admonition note">
+<p><b>Note: </b>All the data in this example come from <a href="https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_020_Skins.md">gfTF-Tutorial Skins</a>.</p>
+</div>
+<h4 id="make-a-skinning-geometry">Make a skinning geometry.</h4>
+<p>To use custom geometry data, we will define a geometry having positions, joints, weights, and indexes.</p>
+<pre class="cpp" translate="no">
+ Q_OBJECT
+ QML_NAMED_ELEMENT(SkinGeometry)
+ Q_PROPERTY(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span>QVector3D<span class="operator">&gt;</span> positions READ positions WRITE setPositions NOTIFY positionsChanged)
+ Q_PROPERTY(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint32-typedef" translate="no">qint32</a></span><span class="operator">&gt;</span> joints READ joints WRITE setJoints NOTIFY jointsChanged)
+ Q_PROPERTY(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type">float</span><span class="operator">&gt;</span> weights READ weights WRITE setWeights NOTIFY weightsChanged)
+ Q_PROPERTY(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span><span class="operator">&gt;</span> indexes READ indexes WRITE setIndexes NOTIFY indexesChanged)
+</pre>
+<p>Each position is a vertex position and each vertex has 4 joints' indexes and corresponding weights.</p>
+<h4 id="set-up-skinned-data-in-qml">Set up skinned data in QML</h4>
+<h5 id="position-data-and-indexes">Position data and indexes</h5>
+<p>We will draw 8 triangles with 10 vertexes. The table below shows the QML code and a visualization of the vertexes.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >QML Code</th><th >Visualized</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="name">positions</span>: [
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>), <span class="comment">// vertex 0</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>), <span class="comment">// vertex 1</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">0.0</span>), <span class="comment">// vertex 2</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.0</span>, <span class="number">0.5</span>, <span class="number">0.0</span>), <span class="comment">// vertex 3</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>), <span class="comment">// vertex 4</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>), <span class="comment">// vertex 5</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">1.5</span>, <span class="number">0.0</span>), <span class="comment">// vertex 6</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.0</span>, <span class="number">1.5</span>, <span class="number">0.0</span>), <span class="comment">// vertex 7</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">0.0</span>), <span class="comment">// vertex 8</span>
+     <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">0.0</span>)  <span class="comment">// vertex 9</span>
+ ]
+ <span class="name">indexes</span>: [
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="comment">// triangle 0</span>
+     <span class="number">0</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="comment">// triangle 1</span>
+     <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="comment">// triangle 2</span>
+     <span class="number">2</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="comment">// triangle 3</span>
+     <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="comment">// triangle 4</span>
+     <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="comment">// triangle 5</span>
+     <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="comment">// triangle 6</span>
+     <span class="number">6</span>, <span class="number">9</span>, <span class="number">8</span>  <span class="comment">// triangle 7</span>
+ ]
+</pre>
+</td><td ><p class="centerAlign"><img src="images/vertexinfo.png" alt="&quot;Vertex positions and geomery&quot;" /></p></td></tr>
+</table></div>
+<h5 id="joints-and-weights-data">Joints and weights data</h5>
+<p>Every vertex needs to specify the indexes of the joints that should have an influence on it during the skinning process. For each vertex we store these indexes as 4D vectors (Qt limits the number of joints that may influence a vertex to 4). Our geometry will have just two joint nodes (0 and 1), but since we use 4D vectors we set the remaining two joint indexes and their weights to 0.</p>
+<pre class="qml" translate="no">
+ <span class="name">joints</span>: [
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 0</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 1</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 2</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 3</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 4</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 5</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 6</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 7</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="comment">// vertex 8</span>
+     <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>  <span class="comment">// vertex 9</span>
+ ]
+</pre>
+<p>Corresponding weight values are as below.</p>
+<pre class="qml" translate="no">
+ <span class="name">weights</span>: [
+     <span class="number">1.00</span>, <span class="number">0.00</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 0</span>
+     <span class="number">1.00</span>, <span class="number">0.00</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 1</span>
+     <span class="number">0.75</span>, <span class="number">0.25</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 2</span>
+     <span class="number">0.75</span>, <span class="number">0.25</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 3</span>
+     <span class="number">0.50</span>, <span class="number">0.50</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 4</span>
+     <span class="number">0.50</span>, <span class="number">0.50</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 5</span>
+     <span class="number">0.25</span>, <span class="number">0.75</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 6</span>
+     <span class="number">0.25</span>, <span class="number">0.75</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 7</span>
+     <span class="number">0.00</span>, <span class="number">1.00</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="comment">// vertex 8</span>
+     <span class="number">0.00</span>, <span class="number">1.00</span>, <span class="number">0.0</span>, <span class="number">0.0</span>  <span class="comment">// vertex 9</span>
+ ]
+</pre>
+<h5 id="skeleton-and-joint-hierarchy">Skeleton and Joint hierarchy</h5>
+<p>For skinning, we add a <i>skeleton</i> property to the <a href="qml-qtquick3d-model.html" translate="no">Model</a>:</p>
+<pre class="qml" translate="no">
+ <span class="name">skeleton</span>: <span class="name">qmlskeleton</span>
+ <span class="type"><a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a></span> {
+     <span class="name">id</span>: <span class="name">qmlskeleton</span>
+     <span class="type"><a href="qml-qtquick3d-joint.html" translate="no">Joint</a></span> {
+         <span class="name">id</span>: <span class="name">joint0</span>
+         <span class="name">index</span>: <span class="number">0</span>
+         <span class="name">skeletonRoot</span>: <span class="name">qmlskeleton</span>
+         <span class="type"><a href="qml-qtquick3d-joint.html" translate="no">Joint</a></span> {
+             <span class="name">id</span>: <span class="name">joint1</span>
+             <span class="name">index</span>: <span class="number">1</span>
+             <span class="name">skeletonRoot</span>: <span class="name">qmlskeleton</span>
+             <span class="name">eulerRotation</span>.z: <span class="number">45</span>
+         }
+     }
+ }
+</pre>
+<p>The two <a href="qml-qtquick3d-joint.html" translate="no">Joint</a>s are connected in a <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a>. We will rotate <code translate="no">joint1</code> 45 degrees around the z-axis. The images below show how the joints are placed in the geometry and how the initial skeleton is oriented.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Joints in the geometry</th><th >Initial skeleton</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/jointinfo.png" alt="&quot;2 joints in the geometry&quot;" /></p></td><td ><p class="centerAlign"><img src="images/jointinfo2.png" alt="&quot;Initial Skeleton&quot;" /></p></td></tr>
+</table></div>
+<h5 id="placing-models-using-inversebindposes">Placing models using inverseBindPoses</h5>
+<p>Once a model has a valid <a href="qml-qtquick3d-model.html#skeleton-prop" translate="no">skeleton</a>, it is necessary to define the <i>initial pose</i> of the skeleton. This defines the baseline for the skeletal animation: moving a joint from its initial position causes the model's vertexes to move according to the <code translate="no">joints</code> and <code translate="no">weights</code> tables. The geometry of each node is specified in a peculiar way: <a href="qml-qtquick3d-model.html#inverseBindPoses-prop" translate="no">Model.inverseBindPoses</a> is set to the <i>inverse</i> of the matrix that would transform the joint to its initial position. In order to move it to the center, we will simply set the same transform for both joints: a matrix that translates -0.5 along the x-axis and -1.0 along the y-axis.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >QML code</th><th >Initial position</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="name">inverseBindPoses</span>: [
+     <span class="name">Qt</span>.<span class="name">matrix4x4</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">0.5</span>,
+                  <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>,
+                  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,
+                  <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>),
+     <span class="name">Qt</span>.<span class="name">matrix4x4</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">0.5</span>,
+                  <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>,
+                  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,
+                  <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)
+ ]
+</pre>
+</td><td ><p class="centerAlign"><img src="images/inverseBindPoses.png" alt="&quot;Initial position&quot;" /></p></td><td ><p class="centerAlign"><img src="images/inverseBindPoses2.png" alt="&quot;Transformed by InversebindPoses&quot;" /></p></td></tr>
+</table></div>
+<h4 id="animate-with-joint-nodes">Animate with Joint nodes</h4>
+<p>Now that we have prepared a skinned object, we can animate it by changing the <a href="qml-qtquick3d-joint.html" translate="no">Joint</a>s' properties, specifically <i>eulerRotation</i>.</p>
+<pre class="qml" translate="no">
+ <span class="type">Timeline</span> {
+     <span class="name">id</span>: <span class="name">timeline0</span>
+     <span class="name">startFrame</span>: <span class="number">0</span>
+     <span class="name">endFrame</span>: <span class="number">1000</span>
+     <span class="name">currentFrame</span>: <span class="number">0</span>
+     <span class="name">enabled</span>: <span class="number">true</span>
+     <span class="name">animations</span>: [
+         <span class="type">TimelineAnimation</span> {
+             <span class="name">duration</span>: <span class="number">5000</span>
+             <span class="name">from</span>: <span class="number">0</span>
+             <span class="name">to</span>: <span class="number">1000</span>
+             <span class="name">running</span>: <span class="number">true</span>
+         }
+     ]
+
+     <span class="type">KeyframeGroup</span> {
+         <span class="name">target</span>: <span class="name">joint1</span>
+         <span class="name">property</span>: <span class="string">&quot;eulerRotation.z&quot;</span>
+
+         <span class="type">Keyframe</span> {
+             <span class="name">frame</span>: <span class="number">0</span>
+             <span class="name">value</span>: <span class="number">0</span>
+         }
+         <span class="type">Keyframe</span> {
+             <span class="name">frame</span>: <span class="number">250</span>
+             <span class="name">value</span>: <span class="number">90</span>
+         }
+         <span class="type">Keyframe</span> {
+             <span class="name">frame</span>: <span class="number">750</span>
+             <span class="name">value</span>: -<span class="number">90</span>
+         }
+         <span class="type">Keyframe</span> {
+             <span class="name">frame</span>: <span class="number">1000</span>
+             <span class="name">value</span>: <span class="number">0</span>
+         }
+     }
+ }
+</pre>
+<h4 id="a-more-complete-approach-to-skinning">A more complete approach to skinning</h4>
+<p>Skeleton is a resource but it's hierarchy and position is used for the Model's transformation.</p>
+<p>Instead of a <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a> node, we can use the resource type <a href="qml-qtquick3d-skin.html" translate="no">Skin</a>. Since the <a href="qml-qtquick3d-skin.html" translate="no">Skin</a> type is not a spatial node in the scene, its position will not affect the model. A minimal working Skin node will normally consist of a node list, joints and an optional inverse bind matrices, inverseBindPoses.</p>
+<p>Using the <a href="qml-qtquick3d-skin.html" translate="no">Skin</a> item the previous example can be written like this:</p>
+<pre class="qml" translate="no">
+ <span class="name">skin</span>: <span class="name">Skin</span> {
+     <span class="name">id</span>: <span class="name">skin0</span>
+     <span class="name">joints</span>: [
+         <span class="name">joint0</span>,
+         <span class="name">joint1</span>
+     ]
+     <span class="name">inverseBindPoses</span>: [
+         <span class="name">Qt</span>.<span class="name">matrix4x4</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">0.5</span>,
+                      <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>,
+                      <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,
+                      <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>),
+         <span class="name">Qt</span>.<span class="name">matrix4x4</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, -<span class="number">0.5</span>,
+                      <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>,
+                      <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,
+                      <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)
+     ]
+ }
+</pre>
+<p>From the code snippet we can see that the <a href="qml-qtquick3d-skin.html" translate="no">Skin</a> only has two lists, a joints and an inverseBindPoses, which differs from the <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a> approach, as it does not have any hierarchy and just uses existing node's hierarchy.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+     <span class="name">id</span>: <span class="name">joint0</span>
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+         <span class="name">id</span>: <span class="name">joint1</span>
+         <span class="name">eulerRotation</span>.z: <span class="number">45</span>
+     }
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/skinning?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@skinning -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

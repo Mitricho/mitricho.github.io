@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qmediaformat.cpp -->
+  <meta name="description" content="Describes an encoding format for a multimedia file or stream.">
+  <title>QMediaFormat Class | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-modules.html">C++ Classes</a></li>
+<li><a href="qtmultimedia-module.html" translate="no">QtMultimedia</a></li>
+<li>QMediaFormat</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QMediaFormat Class</h1>
+<!-- $$$QMediaFormat-brief -->
+<p>Describes an encoding format for a multimedia file or stream. <a href="#details">More...</a></p>
+<!-- @@@QMediaFormat -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QMediaFormat&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Multimedia)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Multimedia)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += multimedia</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qmediaformat-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#AudioCodec-enum" translate="no">AudioCodec</a></b> { WMA, AC3, AAC, ALAC, DolbyTrueHD, &hellip;, Unspecified }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#ConversionMode-enum" translate="no">ConversionMode</a></b> { Encode, Decode }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#FileFormat-enum" translate="no">FileFormat</a></b> { WMA, AAC, Matroska, WMV, MP3, &hellip;, UnspecifiedFormat }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#ResolveFlags-enum" translate="no">ResolveFlags</a></b> { NoFlags, RequiresVideo }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#VideoCodec-enum" translate="no">VideoCodec</a></b> { VP8, MPEG2, MPEG1, WMV, H265, &hellip;, Unspecified }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qmediaformat.html#audioCodec-prop" translate="no">audioCodec</a></b> : AudioCodec</li>
+<li class="fn" translate="no"><b><a href="qmediaformat.html#fileFormat-prop" translate="no">fileFormat</a></b> : FileFormat</li>
+<li class="fn" translate="no"><b><a href="qmediaformat.html#videoCodec-prop" translate="no">videoCodec</a></b> : VideoCodec</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#QMediaFormat-1" translate="no">QMediaFormat</a></b>(QMediaFormat::FileFormat <i>format</i> = UnspecifiedFormat)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#QMediaFormat-2" translate="no">QMediaFormat</a></b>(const QMediaFormat &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></b>(QMediaFormat &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#dtor.QMediaFormat" translate="no">~QMediaFormat</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMediaFormat::AudioCodec </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#audioCodec" translate="no">audioCodec</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMediaFormat::FileFormat </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#fileFormat-prop" translate="no">fileFormat</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#isSupported" translate="no">isSupported</a></b>(QMediaFormat::ConversionMode <i>mode</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMimeType </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#mimeType" translate="no">mimeType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#resolveForEncoding" translate="no">resolveForEncoding</a></b>(QMediaFormat::ResolveFlags <i>flags</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#setAudioCodec" translate="no">setAudioCodec</a></b>(QMediaFormat::AudioCodec <i>codec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#fileFormat-prop" translate="no">setFileFormat</a></b>(QMediaFormat::FileFormat <i>f</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#setVideoCodec" translate="no">setVideoCodec</a></b>(QMediaFormat::VideoCodec <i>codec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QMediaFormat::AudioCodec&gt; </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#supportedAudioCodecs" translate="no">supportedAudioCodecs</a></b>(QMediaFormat::ConversionMode <i>m</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QMediaFormat::FileFormat&gt; </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#supportedFileFormats" translate="no">supportedFileFormats</a></b>(QMediaFormat::ConversionMode <i>m</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QMediaFormat::VideoCodec&gt; </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#supportedVideoCodecs" translate="no">supportedVideoCodecs</a></b>(QMediaFormat::ConversionMode <i>m</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#swap" translate="no">swap</a></b>(QMediaFormat &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMediaFormat::VideoCodec </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#videoCodec" translate="no">videoCodec</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#operator-not-eq" translate="no">operator!=</a></b>(const QMediaFormat &amp;<i>other</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMediaFormat &amp;</td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#operator-eq" translate="no">operator=</a></b>(QMediaFormat &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMediaFormat &amp;</td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#operator-eq-1" translate="no">operator=</a></b>(const QMediaFormat &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#operator-eq-eq" translate="no">operator==</a></b>(const QMediaFormat &amp;<i>other</i>) const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#audioCodecDescription" translate="no">audioCodecDescription</a></b>(QMediaFormat::AudioCodec <i>codec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#audioCodecName" translate="no">audioCodecName</a></b>(QMediaFormat::AudioCodec <i>codec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#fileFormatDescription" translate="no">fileFormatDescription</a></b>(QMediaFormat::FileFormat <i>fileFormat</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#fileFormatName" translate="no">fileFormatName</a></b>(QMediaFormat::FileFormat <i>fileFormat</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#videoCodecDescription" translate="no">videoCodecDescription</a></b>(QMediaFormat::VideoCodec <i>codec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qmediaformat.html#videoCodecName" translate="no">videoCodecName</a></b>(QMediaFormat::VideoCodec <i>codec</i>)</td></tr>
+</table></div>
+<!-- $$$QMediaFormat-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QMediaFormat describes an encoding format for a multimedia file or stream.</p>
+<p>You can check whether a certain media format can be used for encoding or decoding using QMediaFormat.</p>
+</div>
+<!-- @@@QMediaFormat -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$AudioCodec$$$Unspecified$$$MP3$$$AAC$$$AC3$$$EAC3$$$FLAC$$$DolbyTrueHD$$$Opus$$$Vorbis$$$Wave$$$WMA$$$ALAC$$$LastAudioCodec -->
+<h3 class="fn" translate="no" id="AudioCodec-enum">enum class QMediaFormat::<span class="name">AudioCodec</span></h3>
+<p>Describes the audio codec used in multimedia file or stream.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::WMA</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Windows_Media_Audio">Windows Media Audio</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::AC3</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Dolby_Digital">Dolby Digital</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::AAC</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Advanced_Audio_Coding">Advanced Audio Coding</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::ALAC</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/ALAC">Apple Lossless Audio Codec</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::DolbyTrueHD</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Dolby_TrueHD">Dolby TrueHD</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::EAC3</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Dolby_Digital_Plus">Dolby Digital Plus (EAC3)</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::MP3</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MP3">MPEG-1 Audio Layer III or MPEG-2 Audio Layer III</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::Wave</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/WAV">Waveform Audio File Format</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::Vorbis</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Vorbis">Ogg Vorbis</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::FLAC</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/FLAC">Free Lossless Audio Codec</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::Opus</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Opus_(audio_format)">Opus Audio Format</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AudioCodec::Unspecified</code></td><td class="topAlign tblval"><code translate="no">-1</code></td><td class="topAlign">Unspecified codec</td></tr>
+</table></div>
+<!-- @@@AudioCodec -->
+<!-- $$$ConversionMode$$$Encode$$$Decode -->
+<h3 class="fn" translate="no" id="ConversionMode-enum">enum QMediaFormat::<span class="name">ConversionMode</span></h3>
+<p>In many cases, systems have asymmetric capabilities and can often decode more formats or codecs than can be encoded. This enum describes the requested conversion mode to be used when checking whether a certain file format or codec is supported.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Encode</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Used to check whether a certain file format or codec can be encoded.</td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Decode</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Used to check whether a certain file format or codec can be decoded.</td></tr>
+</table></div>
+<p><b>See also </b><a href="qmediaformat.html#supportedFileFormats" translate="no">supportedFileFormats</a>, <a href="qmediaformat.html#supportedAudioCodecs" translate="no">supportedAudioCodecs</a>, and <a href="qmediaformat.html#supportedVideoCodecs" translate="no">supportedVideoCodecs</a>.</p>
+<!-- @@@ConversionMode -->
+<!-- $$$FileFormat$$$UnspecifiedFormat$$$WMV$$$AVI$$$Matroska$$$MPEG4$$$Ogg$$$QuickTime$$$WebM$$$Mpeg4Audio$$$AAC$$$WMA$$$MP3$$$FLAC$$$Wave$$$LastFileFormat -->
+<h3 class="fn" translate="no" id="FileFormat-enum">enum QMediaFormat::<span class="name">FileFormat</span></h3>
+<p>Describes the container format used in a multimedia file or stream.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::WMA</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Windows_Media_Audio">Windows Media Audio</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AAC</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Advanced_Audio_Coding">Advanced Audio Coding</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Matroska</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Matroska">Matroska (MKV)</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::WMV</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Windows_Media_Video">Windows Media Video</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::MP3</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MP3">MPEG-1 Audio Layer III or MPEG-2 Audio Layer III</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Wave</code></td><td class="topAlign tblval"><code translate="no">12</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/WAV">Waveform Audio File Format</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Ogg</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Ogg">Ogg</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::MPEG4</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MPEG-4">MPEG-4</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::AVI</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Audio_Video_Interleave">Audio Video Interleave</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::QuickTime</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/QuickTime">QuickTime</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::WebM</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/WebM">WebM</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::Mpeg4Audio</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MPEG-4_Part_3">MPEG-4 Part 3 or MPEG-4 Audio (formally ISO/IEC 14496-3)</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::FLAC</code></td><td class="topAlign tblval"><code translate="no">11</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/FLAC">Free Lossless Audio Codec</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::UnspecifiedFormat</code></td><td class="topAlign tblval"><code translate="no">-1</code></td><td class="topAlign">The format is unspecified.</td></tr>
+</table></div>
+<!-- @@@FileFormat -->
+<!-- $$$ResolveFlags$$$NoFlags$$$RequiresVideo -->
+<h3 class="fn" translate="no" id="ResolveFlags-enum">enum QMediaFormat::<span class="name">ResolveFlags</span></h3>
+<p>Describes the requirements for resolving a suitable format for <a href="qmediarecorder.html" translate="no">QMediaRecorder</a>.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::NoFlags</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">No requirements</td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::RequiresVideo</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">A video codec is required</td></tr>
+</table></div>
+<p><b>See also </b><a href="qmediaformat.html#resolveForEncoding" translate="no">resolveForEncoding</a>().</p>
+<!-- @@@ResolveFlags -->
+<!-- $$$VideoCodec$$$Unspecified$$$MPEG1$$$MPEG2$$$MPEG4$$$H264$$$H265$$$VP8$$$VP9$$$AV1$$$Theora$$$WMV$$$MotionJPEG$$$LastVideoCodec -->
+<h3 class="fn" translate="no" id="VideoCodec-enum">enum class QMediaFormat::<span class="name">VideoCodec</span></h3>
+<p>Describes the video coded used in multimedia file or stream.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::VP8</code></td><td class="topAlign tblval"><code translate="no">5</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/VP8">VP8</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::MPEG2</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MPEG-2">MPEG-2</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::MPEG1</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MPEG-1">MPEG-1</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::WMV</code></td><td class="topAlign tblval"><code translate="no">9</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Windows_Media_Video">Windows Media Video</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::H265</code></td><td class="topAlign tblval"><code translate="no">4</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">High Efficiency Video Coding (HEVC)</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::H264</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Advanced_Video_Coding">Advanced Video Coding</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::MPEG4</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/MPEG-4">MPEG-4</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::AV1</code></td><td class="topAlign tblval"><code translate="no">7</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/AV1">AOMedia Video 1</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::MotionJPEG</code></td><td class="topAlign tblval"><code translate="no">10</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Motion_JPEG">MotionJPEG</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::VP9</code></td><td class="topAlign tblval"><code translate="no">6</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/VP9">VP9</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::Theora</code></td><td class="topAlign tblval"><code translate="no">8</code></td><td class="topAlign"><a href="https://en.wikipedia.org/wiki/Theora">Theora</a></td></tr>
+<tr><td class="topAlign"><code translate="no">QMediaFormat::VideoCodec::Unspecified</code></td><td class="topAlign tblval"><code translate="no">-1</code></td><td class="topAlign">Video codec not specified</td></tr>
+</table></div>
+<!-- @@@VideoCodec -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$audioCodec-prop$$$audioCodec$$$setAudioCodecQMediaFormat::AudioCodec -->
+<h3 class="fn" translate="no" id="audioCodec-prop"><span class="name">audioCodec</span> : <span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">AudioCodec</a></span></h3>
+<p>This property holds the audio codec of the media.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMediaFormat::AudioCodec </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qmediaformat.html#audioCodec" translate="no">audioCodec</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qmediaformat.html#setAudioCodec" translate="no">setAudioCodec</a></b></span>(QMediaFormat::AudioCodec <i>codec</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a>.</p>
+<!-- @@@audioCodec -->
+<!-- $$$fileFormat-prop$$$fileFormat$$$setFileFormatQMediaFormat::FileFormat -->
+<h3 class="fn" translate="no" id="fileFormat-prop"><span class="name">fileFormat</span> : <span class="type"><a href="qmediaformat.html#FileFormat-enum" translate="no">FileFormat</a></span></h3>
+<p>This property holds the file (container) format of the media.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMediaFormat::FileFormat </td><td class="memItemRight bottomAlign"><span class="name"><b>fileFormat</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setFileFormat</b></span>(QMediaFormat::FileFormat <i>f</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qmediaformat.html#FileFormat-enum" translate="no">QMediaFormat::FileFormat</a>.</p>
+<!-- @@@fileFormat -->
+<!-- $$$videoCodec-prop$$$videoCodec$$$setVideoCodecQMediaFormat::VideoCodec -->
+<h3 class="fn" translate="no" id="videoCodec-prop"><span class="name">videoCodec</span> : <span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">VideoCodec</a></span></h3>
+<p>This property holds the video codec of the media.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMediaFormat::VideoCodec </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qmediaformat.html#videoCodec" translate="no">videoCodec</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qmediaformat.html#setVideoCodec" translate="no">setVideoCodec</a></b></span>(QMediaFormat::VideoCodec <i>codec</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a>.</p>
+<!-- @@@videoCodec -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QMediaFormat$$$QMediaFormatQMediaFormat::FileFormat -->
+<h3 class="fn" translate="no" id="QMediaFormat-1">QMediaFormat::<span class="name">QMediaFormat</span>(<span class="type"><a href="qmediaformat.html#FileFormat-enum" translate="no">QMediaFormat::FileFormat</a></span> <i>format</i> = UnspecifiedFormat)</h3>
+<p>Constructs a QMediaFormat object for <i translate="no">format</i>.</p>
+<!-- @@@QMediaFormat -->
+<!-- $$$QMediaFormat$$$QMediaFormatconstQMediaFormat& -->
+<h3 class="fn" translate="no" id="QMediaFormat-2"><code class="details extra" translate="no">[noexcept]</code> QMediaFormat::<span class="name">QMediaFormat</span>(const <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;<i>other</i>)</h3>
+<p>Constructs a QMediaFormat object by copying from <i translate="no">other</i>.</p>
+<!-- @@@QMediaFormat -->
+<!-- $$$QMediaFormat[overload1]$$$QMediaFormatQMediaFormat&& -->
+<h3 class="fn" translate="no" id="QMediaFormat"><code class="details extra" translate="no">[noexcept]</code> QMediaFormat::<span class="name">QMediaFormat</span>(<span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;&amp;<i>other</i>)</h3>
+<p>Constructs a QMediaFormat objects by moving from <i translate="no">other</i>.</p>
+<!-- @@@QMediaFormat -->
+<!-- $$$~QMediaFormat[overload1]$$$~QMediaFormat -->
+<h3 class="fn" translate="no" id="dtor.QMediaFormat"><code class="details extra" translate="no">[noexcept]</code> QMediaFormat::<span class="name">~QMediaFormat</span>()</h3>
+<p>Destroys the <a href="qmediaformat.html" translate="no">QMediaFormat</a> object.</p>
+<!-- @@@~QMediaFormat -->
+<!-- $$$audioCodec -->
+<h3 class="fn" translate="no" id="audioCodec"><span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a></span> QMediaFormat::<span class="name">audioCodec</span>() const</h3>
+<p>Returns the audio codec used in this format.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property audioCodec. </p>
+</div><p><b>See also </b><a href="qmediaformat.html#setAudioCodec" translate="no">setAudioCodec</a>() and <a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a>.</p>
+<!-- @@@audioCodec -->
+<!-- $$$audioCodecDescription[overload1]$$$audioCodecDescriptionQMediaFormat::AudioCodec -->
+<h3 class="fn" translate="no" id="audioCodecDescription"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">audioCodecDescription</span>(<span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a></span> <i>codec</i>)</h3>
+<p>Returns a description for <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@audioCodecDescription -->
+<!-- $$$audioCodecName[overload1]$$$audioCodecNameQMediaFormat::AudioCodec -->
+<h3 class="fn" translate="no" id="audioCodecName"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">audioCodecName</span>(<span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a></span> <i>codec</i>)</h3>
+<p>Returns a string based name for <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@audioCodecName -->
+<!-- $$$fileFormatDescription[overload1]$$$fileFormatDescriptionQMediaFormat::FileFormat -->
+<h3 class="fn" translate="no" id="fileFormatDescription"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">fileFormatDescription</span>(<span class="type"><a href="qmediaformat.html#FileFormat-enum" translate="no">QMediaFormat::FileFormat</a></span> <i>fileFormat</i>)</h3>
+<p>Returns a description for <i translate="no">fileFormat</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@fileFormatDescription -->
+<!-- $$$fileFormatName[overload1]$$$fileFormatNameQMediaFormat::FileFormat -->
+<h3 class="fn" translate="no" id="fileFormatName"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">fileFormatName</span>(<span class="type"><a href="qmediaformat.html#FileFormat-enum" translate="no">QMediaFormat::FileFormat</a></span> <i>fileFormat</i>)</h3>
+<p>Returns a string based name for <i translate="no">fileFormat</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@fileFormatName -->
+<!-- $$$isSupported[overload1]$$$isSupportedQMediaFormat::ConversionMode -->
+<h3 class="fn" translate="no" id="isSupported"><code class="details extra" translate="no">[invokable]</code> <span class="type">bool</span> QMediaFormat::<span class="name">isSupported</span>(<span class="type"><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a></span> <i>mode</i>) const</h3>
+<p>Returns <code translate="no">true</code> if Qt Multimedia can encode or decode this format, depending on <i translate="no">mode</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@isSupported -->
+<!-- $$$mimeType[overload1]$$$mimeType -->
+<h3 class="fn" translate="no" id="mimeType"><span class="type"><a href="../qtcore/qmimetype.html" translate="no">QMimeType</a></span> QMediaFormat::<span class="name">mimeType</span>() const</h3>
+<p>Returns the <a href="https://en.wikipedia.org/wiki/Media_type#Mime.types">MIME type</a> for the file format used in this media format.</p>
+<!-- @@@mimeType -->
+<!-- $$$resolveForEncoding[overload1]$$$resolveForEncodingQMediaFormat::ResolveFlags -->
+<h3 class="fn" translate="no" id="resolveForEncoding"><span class="type">void</span> QMediaFormat::<span class="name">resolveForEncoding</span>(<span class="type"><a href="qmediaformat.html#ResolveFlags-enum" translate="no">QMediaFormat::ResolveFlags</a></span> <i>flags</i>)</h3>
+<p>Resolves the format, based on <i translate="no">flags</i>, to a format that is supported by <a href="qmediarecorder.html" translate="no">QMediaRecorder</a>.</p>
+<p>This method tries to find the best possible match for unspecified settings. Settings that are not supported by the recorder will be modified to the closest match that is supported.</p>
+<p>When resolving, priority is given in the following order:</p>
+<ol class="1" type="1"><li>File format</li>
+<li>Video codec</li>
+<li>Audio codec</li>
+</ol>
+<!-- @@@resolveForEncoding -->
+<!-- $$$setAudioCodec -->
+<h3 class="fn" translate="no" id="setAudioCodec"><span class="type">void</span> QMediaFormat::<span class="name">setAudioCodec</span>(<span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a></span> <i>codec</i>)</h3>
+<p>Sets the audio codec to <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qmediaformat.html#audioCodec" translate="no">audioCodec</a>. </p>
+</div><p><b>See also </b><a href="qmediaformat.html#audioCodec" translate="no">audioCodec</a>() and <a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a>.</p>
+<!-- @@@setAudioCodec -->
+<!-- $$$setVideoCodec -->
+<h3 class="fn" translate="no" id="setVideoCodec"><span class="type">void</span> QMediaFormat::<span class="name">setVideoCodec</span>(<span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a></span> <i>codec</i>)</h3>
+<p>Sets the video codec to <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qmediaformat.html#videoCodec" translate="no">videoCodec</a>. </p>
+</div><p><b>See also </b><a href="qmediaformat.html#videoCodec" translate="no">videoCodec</a>() and <a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a>.</p>
+<!-- @@@setVideoCodec -->
+<!-- $$$supportedAudioCodecs[overload1]$$$supportedAudioCodecsQMediaFormat::ConversionMode -->
+<h3 class="fn" translate="no" id="supportedAudioCodecs"><code class="details extra" translate="no">[invokable]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qmediaformat.html#AudioCodec-enum" translate="no">QMediaFormat::AudioCodec</a></span>&gt; QMediaFormat::<span class="name">supportedAudioCodecs</span>(<span class="type"><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a></span> <i>m</i>)</h3>
+<p>Returns a list of audio codecs for the chosen file format and video codec (<i translate="no">m</i>).</p>
+<p>To get all supported audio codecs, run this query on a default constructed <a href="qmediaformat.html" translate="no">QMediaFormat</a>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p><b>See also </b><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a>.</p>
+<!-- @@@supportedAudioCodecs -->
+<!-- $$$supportedFileFormats[overload1]$$$supportedFileFormatsQMediaFormat::ConversionMode -->
+<h3 class="fn" translate="no" id="supportedFileFormats"><code class="details extra" translate="no">[invokable]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qmediaformat.html#FileFormat-enum" translate="no">QMediaFormat::FileFormat</a></span>&gt; QMediaFormat::<span class="name">supportedFileFormats</span>(<span class="type"><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a></span> <i>m</i>)</h3>
+<p>Returns a list of file formats for the audio and video codec indicated by <i translate="no">m</i>.</p>
+<p>To get all supported file formats, run this query on a default constructed <a href="qmediaformat.html" translate="no">QMediaFormat</a>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p><b>See also </b><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a>.</p>
+<!-- @@@supportedFileFormats -->
+<!-- $$$supportedVideoCodecs[overload1]$$$supportedVideoCodecsQMediaFormat::ConversionMode -->
+<h3 class="fn" translate="no" id="supportedVideoCodecs"><code class="details extra" translate="no">[invokable]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a></span>&gt; QMediaFormat::<span class="name">supportedVideoCodecs</span>(<span class="type"><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a></span> <i>m</i>)</h3>
+<p>Returns a list of video codecs for the chosen file format and audio codec (<i translate="no">m</i>).</p>
+<p>To get all supported video codecs, run this query on a default constructed MediaFormat.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><p><b>See also </b><a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a>.</p>
+<!-- @@@supportedVideoCodecs -->
+<!-- $$$swap[overload1]$$$swapQMediaFormat& -->
+<h3 class="fn" translate="no" id="swap"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QMediaFormat::<span class="name">swap</span>(<span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;<i>other</i>)</h3>
+<p>Swaps the media format with <i translate="no">other</i>.</p>
+<!-- @@@swap -->
+<!-- $$$videoCodec -->
+<h3 class="fn" translate="no" id="videoCodec"><span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a></span> QMediaFormat::<span class="name">videoCodec</span>() const</h3>
+<p>Returns the video codec used in this format.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property videoCodec. </p>
+</div><p><b>See also </b><a href="qmediaformat.html#setVideoCodec" translate="no">setVideoCodec</a>() and <a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a>.</p>
+<!-- @@@videoCodec -->
+<!-- $$$videoCodecDescription[overload1]$$$videoCodecDescriptionQMediaFormat::VideoCodec -->
+<h3 class="fn" translate="no" id="videoCodecDescription"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">videoCodecDescription</span>(<span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a></span> <i>codec</i>)</h3>
+<p>Returns a description for <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@videoCodecDescription -->
+<!-- $$$videoCodecName[overload1]$$$videoCodecNameQMediaFormat::VideoCodec -->
+<h3 class="fn" translate="no" id="videoCodecName"><code class="details extra" translate="no">[static invokable]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QMediaFormat::<span class="name">videoCodecName</span>(<span class="type"><a href="qmediaformat.html#VideoCodec-enum" translate="no">QMediaFormat::VideoCodec</a></span> <i>codec</i>)</h3>
+<p>Returns a string based name for <i translate="no">codec</i>.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@videoCodecName -->
+<!-- $$$operator!=[overload1]$$$operator!=constQMediaFormat& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><span class="type">bool</span> QMediaFormat::<span class="name">operator!=</span>(const <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">other</i> is not equal to the current media format, otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator=[overload1]$$$operator=QMediaFormat&& -->
+<h3 class="fn" translate="no" id="operator-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;QMediaFormat::<span class="name">operator=</span>(<span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;&amp;<i>other</i>)</h3>
+<p>Moves <i translate="no">other</i> into this <a href="qmediaformat.html" translate="no">QMediaFormat</a> objects.</p>
+<!-- @@@operator= -->
+<!-- $$$operator=$$$operator=constQMediaFormat& -->
+<h3 class="fn" translate="no" id="operator-eq-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;QMediaFormat::<span class="name">operator=</span>(const <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;<i>other</i>)</h3>
+<p>Copies <i translate="no">other</i> into this <a href="qmediaformat.html" translate="no">QMediaFormat</a> object.</p>
+<!-- @@@operator= -->
+<!-- $$$operator==[overload1]$$$operator==constQMediaFormat& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><span class="type">bool</span> QMediaFormat::<span class="name">operator==</span>(const <span class="type"><a href="qmediaformat.html#QMediaFormat" translate="no">QMediaFormat</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">other</i> is equal to the current media format, otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qrhi.cpp -->
+  <meta name="description" content="Describes the physical device, adapter, or graphics API implementation that is used by an initialized QRhi.">
+  <title>QRhiDriverInfo Struct | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li><a href="qtguiprivate-module.html" translate="no">QtGuiPrivate</a></li>
+<li>QRhiDriverInfo</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-variables">Public Variables</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QRhiDriverInfo Struct</h1>
+<!-- $$$QRhiDriverInfo-brief -->
+<p>Describes the physical device, adapter, or graphics API implementation that is used by an initialized <a href="qrhi.html" translate="no">QRhi</a>. <a href="#details">More...</a></p>
+<!-- @@@QRhiDriverInfo -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;rhi/qrhi.h&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::GuiPrivate)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui-private</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.6</td></tr>
+</table></div>
+<ul>
+<li><a href="qrhidriverinfo-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qrhidriverinfo.html#DeviceType-enum" translate="no">DeviceType</a></b> { UnknownDevice, IntegratedDevice, DiscreteDevice, ExternalDevice, VirtualDevice, CpuDevice }</td></tr>
+</table></div>
+<h2 id="public-variables">Public Variables</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> quint64 </td><td class="memItemRight bottomAlign"><b><a href="qrhidriverinfo.html#deviceId-var" translate="no">deviceId</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QByteArray </td><td class="memItemRight bottomAlign"><b><a href="qrhidriverinfo.html#deviceName-var" translate="no">deviceName</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRhiDriverInfo::DeviceType </td><td class="memItemRight bottomAlign"><b><a href="qrhidriverinfo.html#deviceType-var" translate="no">deviceType</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> quint64 </td><td class="memItemRight bottomAlign"><b><a href="qrhidriverinfo.html#vendorId-var" translate="no">vendorId</a></b></td></tr>
+</table></div>
+<!-- $$$QRhiDriverInfo-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Graphics APIs offer different levels and kinds of information. The only value that is available across all APIs is the <a href="qrhidriverinfo.html#deviceName-var" translate="no">deviceName</a>, which is a freetext description of the physical device, adapter, or is a combination of the strings reported for <code translate="no">GL_VENDOR</code> + <code translate="no">GL_RENDERER</code> + <code translate="no">GL_VERSION</code>. The <a href="qrhidriverinfo.html#deviceId-var" translate="no">deviceId</a> is always 0 for OpenGL. <a href="qrhidriverinfo.html#vendorId-var" translate="no">vendorId</a> is always 0 for OpenGL and Metal. <a href="qrhidriverinfo.html#deviceType-var" translate="no">deviceType</a> is always <a href="qrhidriverinfo.html#DeviceType-enum" translate="no">UnknownDevice</a> for OpenGL and Direct 3D.</p>
+<div class="admonition note">
+<p><b>Note: </b>This is a RHI API with limited compatibility guarantees, see <a href="qrhi.html" translate="no">QRhi</a> for details.</p>
+</div>
+</div>
+<!-- @@@QRhiDriverInfo -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$DeviceType$$$UnknownDevice$$$IntegratedDevice$$$DiscreteDevice$$$ExternalDevice$$$VirtualDevice$$$CpuDevice -->
+<h3 class="fn" translate="no" id="DeviceType-enum">enum QRhiDriverInfo::<span class="name">DeviceType</span></h3>
+<p>Specifies the graphics device's type, when the information is available.</p>
+<p>In practice this is only applicable with Vulkan and Metal. With Direct 3D 11 and 12, using an adapter with the software flag set leads to the value <code translate="no">CpuDevice</code>. Otherwise, and with OpenGL, the value is always UnknownDevice.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::UnknownDevice</code></td><td class="topAlign tblval"><code translate="no">0</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::IntegratedDevice</code></td><td class="topAlign tblval"><code translate="no">1</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::DiscreteDevice</code></td><td class="topAlign tblval"><code translate="no">2</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::ExternalDevice</code></td><td class="topAlign tblval"><code translate="no">3</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::VirtualDevice</code></td><td class="topAlign tblval"><code translate="no">4</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QRhiDriverInfo::CpuDevice</code></td><td class="topAlign tblval"><code translate="no">5</code></td></tr>
+</table></div>
+<!-- @@@DeviceType -->
+</div>
+<div class="vars">
+<h2>Member Variable Documentation</h2>
+<!-- $$$deviceId -->
+<h3 class="fn" translate="no" id="deviceId-var"><span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span> QRhiDriverInfo::<span class="name">deviceId</span></h3>
+<p><b>See also </b><a href="qrhi.html#driverInfo" translate="no">QRhi::driverInfo</a>().</p>
+<!-- @@@deviceId -->
+<!-- $$$deviceName -->
+<h3 class="fn" translate="no" id="deviceName-var"><span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> QRhiDriverInfo::<span class="name">deviceName</span></h3>
+<p><b>See also </b><a href="qrhi.html#driverInfo" translate="no">QRhi::driverInfo</a>().</p>
+<!-- @@@deviceName -->
+<!-- $$$deviceType -->
+<h3 class="fn" translate="no" id="deviceType-var"><span class="type"><a href="qrhidriverinfo.html#DeviceType-enum" translate="no">QRhiDriverInfo::DeviceType</a></span> QRhiDriverInfo::<span class="name">deviceType</span></h3>
+<p><b>See also </b><a href="qrhi.html#driverInfo" translate="no">QRhi::driverInfo</a>() and <a href="qrhidriverinfo.html#DeviceType-enum" translate="no">QRhiDriverInfo::DeviceType</a>.</p>
+<!-- @@@deviceType -->
+<!-- $$$vendorId -->
+<h3 class="fn" translate="no" id="vendorId-var"><span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span> QRhiDriverInfo::<span class="name">vendorId</span></h3>
+<p><b>See also </b><a href="qrhi.html#driverInfo" translate="no">QRhi::driverInfo</a>().</p>
+<!-- @@@vendorId -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

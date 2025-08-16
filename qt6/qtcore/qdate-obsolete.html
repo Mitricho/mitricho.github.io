@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qdatetime.cpp -->
+  <meta name="description" content="The QDate class provides date functions.">
+  <title>Obsolete Members for QDate | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QDate</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Obsolete Members for QDate</h1>
+<p><b>The following members of class <a href="qdate.html" translate="no">QDate</a> are deprecated.</b> They are provided to keep old source code working. We strongly advise against using them in new code.</p>
+<h2>Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(deprecated in 6.9)</code> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate-obsolete.html#endOfDay-2" translate="no">endOfDay</a></b>(Qt::TimeSpec <i>spec</i>, int <i>offsetSeconds</i> = 0) const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(deprecated in 6.9)</code> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qdate-obsolete.html#startOfDay-2" translate="no">startOfDay</a></b>(Qt::TimeSpec <i>spec</i>, int <i>offsetSeconds</i> = 0) const</td></tr>
+</table></div>
+<h2>Member Function Documentation</h2>
+<!-- $$$endOfDay$$$endOfDayQt::TimeSpecint -->
+<h3 class="fn" translate="no" id="endOfDay-2"><code class="details extra" translate="no">[deprecated in 6.9]</code> <span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">endOfDay</span>(<span class="type"><a href="qt.html#TimeSpec-enum" translate="no">Qt::TimeSpec</a></span> <i>spec</i>, <span class="type">int</span> <i>offsetSeconds</i> = 0) const</h3>
+<p>This function is deprecated since 6.9. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use <code translate="no">endOfDay(const QTimeZone &amp;) instead. Returns the end-moment of the day. When a day ends depends on a how time is described: each day starts and ends earlier for those with higher offsets from UTC and later for those with lower offsets from UTC. The time representation to use can be specified either by a \a spec and \a offsetSeconds (ignored unless \a spec is Qt::OffsetSeconds) or by a time zone. Usually, the end of the day is one millisecond before the midnight, 24:00: however, if a local time transition causes the given date to skip over that moment (e.g. a DST spring-forward skipping over 23:00 and the following hour), the actual latest time in the day is returned. When \a spec is Qt::OffsetFromUTC, \a offsetSeconds gives the implied zone's offset from UTC. As UTC and such zones have no transitions, the end of the day is QTime(23, 59, 59, 999) in these cases. In the rare case of a date that was entirely skipped (this happens when a zone east of the international date-line switches to being west of it), the return shall be invalid. Passing Qt::TimeZone as \a spec (instead of passing a QTimeZone) will also produce an invalid result, as shall dates that end outside the range representable by QDateTime.</code></p>
+<!-- @@@endOfDay -->
+<!-- $$$startOfDay$$$startOfDayQt::TimeSpecint -->
+<h3 class="fn" translate="no" id="startOfDay-2"><code class="details extra" translate="no">[deprecated in 6.9]</code> <span class="type"><a href="qdatetime.html" translate="no">QDateTime</a></span> QDate::<span class="name">startOfDay</span>(<span class="type"><a href="qt.html#TimeSpec-enum" translate="no">Qt::TimeSpec</a></span> <i>spec</i>, <span class="type">int</span> <i>offsetSeconds</i> = 0) const</h3>
+<p>This function is deprecated since 6.9. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use <code translate="no">startOfDay(const QTimeZone &amp;)</code> instead.</p>
+<p>Returns the start-moment of the day.</p>
+<p>When a day starts depends on a how time is described: each day starts and ends earlier for those with higher offsets from UTC and later for those with lower offsets from UTC. The time representation to use can be specified either by a <i translate="no">spec</i> and <i translate="no">offsetSeconds</i> (ignored unless <i translate="no">spec</i> is Qt::OffsetSeconds) or by a time zone.</p>
+<p>Usually, the start of the day is midnight, 00:00: however, if a local time transition causes the given date to skip over that midnight (e.g. a DST spring-forward skipping over the first hour of the day day), the actual earliest time in the day is returned.</p>
+<p>When <i translate="no">spec</i> is <a href="qt.html#TimeSpec-enum" translate="no">Qt::OffsetFromUTC</a>, <i translate="no">offsetSeconds</i> gives an implied zone's offset from UTC. As UTC and such zones have no transitions, the start of the day is <a href="qtime.html" translate="no">QTime</a>(0, 0) in these cases.</p>
+<p>In the rare case of a date that was entirely skipped (this happens when a zone east of the international date-line switches to being west of it), the return shall be invalid. Passing <a href="qt.html#TimeSpec-enum" translate="no">Qt::TimeZone</a> as <i translate="no">spec</i> (instead of passing a <a href="qtimezone.html" translate="no">QTimeZone</a>) will also produce an invalid result, as shall dates that start outside the range representable by <a href="qdatetime.html" translate="no">QDateTime</a>.</p>
+<!-- @@@startOfDay -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

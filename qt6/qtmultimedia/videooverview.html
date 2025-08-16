@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- videooverview.qdoc -->
+  <meta name="description" content="Video playback">
+  <title>Video Overview | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li>Video Overview</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="audiooverview.html" />
+  <link rel="next" href="cameraoverview.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="audiooverview.html">Audio Overview</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="cameraoverview.html">Camera Overview</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#video-features">Video Features</a></li>
+<li class="level1"><a href="#video-implementation-details">Video Implementation Details</a></li>
+<li class="level2"><a href="#playing-video-in-c">Playing Video in C++</a></li>
+<li class="level2"><a href="#playing-video-in-qml">Playing Video in QML</a></li>
+<li class="level2"><a href="#working-with-low-level-video-frames">Working with Low Level Video Frames</a></li>
+<li class="level2"><a href="#recording-video">Recording Video</a></li>
+<li class="level1"><a href="#supported-media-formats">Supported Media Formats</a></li>
+<li class="level2"><a href="#windows">Windows</a></li>
+<li class="level2"><a href="#android">Android</a></li>
+<li class="level2"><a href="#linux">Linux</a></li>
+<li class="level2"><a href="#determining-supported-media-formats-at-runtime">Determining Supported Media Formats at Runtime</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level2"><a href="#c-examples">C++ Examples</a></li>
+<li class="level2"><a href="#qml-examples">QML Examples</a></li>
+<li class="level1"><a href="#reference-documentation">Reference Documentation</a></li>
+<li class="level2"><a href="#c-classes">C++ Classes</a></li>
+<li class="level2"><a href="#qml-types">QML Types</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Video Overview</h1>
+<!-- $$$videooverview.html-description -->
+<div class="descr" id="details">
+<h2 id="video-features">Video Features</h2>
+<p>Qt Multimedia offers both high and low level C++ classes for playing and manipulating video data, and QML types for playback and recording. Some of the classes presented here overlap with what is presented in the <a href="cameraoverview.html">Camera Overview</a> and <a href="audiooverview.html">Audio Overview</a>.</p>
+<h2 id="video-implementation-details">Video Implementation Details</h2>
+<span id="multimedia-playing-video"></span><h3 id="playing-video-in-c">Playing Video in C++</h3>
+<p>You can use the <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> class to decode a video file, and display it using <a href="qvideowidget.html" translate="no">QVideoWidget</a>, <a href="qgraphicsvideoitem.html" translate="no">QGraphicsVideoItem</a>, or a custom class.</p>
+<p>Here's an example of using <a href="qvideowidget.html" translate="no">QVideoWidget</a>:</p>
+<pre class="cpp" translate="no">
+ player <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qmediaplayer.html" translate="no">QMediaPlayer</a></span>;
+ player<span class="operator">-</span><span class="operator">&gt;</span>setSource(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(<span class="string">&quot;http://example.com/myclip1.mp4&quot;</span>));
+
+ videoWidget <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qvideowidget.html" translate="no">QVideoWidget</a></span>;
+ player<span class="operator">-</span><span class="operator">&gt;</span>setVideoOutput(videoWidget);
+
+ videoWidget<span class="operator">-</span><span class="operator">&gt;</span>show();
+ player<span class="operator">-</span><span class="operator">&gt;</span>play();
+</pre>
+<p>And an example with <a href="qgraphicsvideoitem.html" translate="no">QGraphicsVideoItem</a>:</p>
+<pre class="cpp" translate="no">
+ player <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qmediaplayer.html" translate="no">QMediaPlayer</a></span>(<span class="keyword">this</span>);
+
+ <span class="type"><a href="qgraphicsvideoitem.html" translate="no">QGraphicsVideoItem</a></span> <span class="operator">*</span>item <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qgraphicsvideoitem.html" translate="no">QGraphicsVideoItem</a></span>;
+ player<span class="operator">-</span><span class="operator">&gt;</span>setVideoOutput(item);
+ graphicsView<span class="operator">-</span><span class="operator">&gt;</span>scene()<span class="operator">-</span><span class="operator">&gt;</span>addItem(item);
+ graphicsView<span class="operator">-</span><span class="operator">&gt;</span>show();
+
+ player<span class="operator">-</span><span class="operator">&gt;</span>setSource(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(<span class="string">&quot;http://example.com/myclip4.ogv&quot;</span>));
+ player<span class="operator">-</span><span class="operator">&gt;</span>play();
+</pre>
+<h3 id="playing-video-in-qml">Playing Video in QML</h3>
+<p>You can use <a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a> to render content that is provided by either a <a href="qml-qtmultimedia-mediaplayer.html" translate="no">MediaPlayer</a> or a <a href="qml-qtmultimedia-camera.html" translate="no">Camera</a>. The <a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a> is a visual component that can be embedded into a QQuickScene or <a href="../qtquick/qml-qtquick-window.html" translate="no">Window</a>, while all media decoding and playback control is handled by the <a href="qml-qtmultimedia-mediaplayer.html" translate="no">MediaPlayer</a> or <a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a>. A <a href="qml-qtmultimedia-video.html" translate="no">Video</a> element has been provided for convenience. It combines <a href="qml-qtmultimedia-mediaplayer.html" translate="no">MediaPlayer</a>, <a href="qml-qtmultimedia-videooutput.html" translate="no">VideoOutput</a> and <a href="qml-qtmultimedia-audiooutput.html" translate="no">AudioOutput</a> elements in one item.</p>
+<h3 id="working-with-low-level-video-frames">Working with Low Level Video Frames</h3>
+<p>Qt Multimedia offers a number of low level classes to make handling video frames a bit easier. These classes are primarily used when writing code that processes video or camera frames (for example, detecting barcodes, or applying a fancy vignette effect), or needs to display video in a special way that is otherwise unsupported.</p>
+<p>The <a href="qvideoframe.html" translate="no">QVideoFrame</a> class encapsulates a video frame and allows the contents to be mapped into system memory for manipulation or processing. Using your own <a href="qvideosink.html" translate="no">QVideoSink</a> allows you to receive these frames from <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> and <a href="qcamera.html" translate="no">QCamera</a>.</p>
+<h3 id="recording-video">Recording Video</h3>
+<p>The central class for any type of capturing or recording of audio and video is <a href="qmediacapturesession.html" translate="no">QMediaCaptureSession</a> (or the <a href="qml-qtmultimedia-capturesession.html" translate="no">CaptureSession</a> QML type). You can connect a <a href="qcamera.html" translate="no">QCamera</a> (Camera in QML) and a <a href="qmediarecorder.html" translate="no">QMediaRecorder</a> (<a href="qml-qtmultimedia-mediarecorder.html" translate="no">MediaRecorder</a>)to the session and then ask the media recorder to start recording.</p>
+<h2 id="supported-media-formats">Supported Media Formats</h2>
+<p>What media formats are supported ultimately depends on the configuration of the target system.</p>
+<h3 id="windows">Windows</h3>
+<p>By default what is available on a MS Windows target depends on the version of <a href="https://en.wikipedia.org/wiki/Windows_Media_Player">Windows Media Player</a> that was packaged with the OS. See the <a href="https://support.microsoft.com/en-us/topic/file-types-supported-by-windows-media-player-32d9998e-dc8f-af54-7ba1-e996f74375d9">Windows Media Player documentation</a> for official information.</p>
+<p>Independent of Windows Media Player, there are of course numerous codec packs that could be installed. See the <a href="https://www.codecguide.com/guides.htm">codec guide</a> site for some examples.</p>
+<h3 id="android">Android</h3>
+<p>See <a href="https://developer.android.com/guide/topics/media/media-formats">Android supported media formats</a> for this information.</p>
+<h3 id="linux">Linux</h3>
+<p>On Linux this is about installing the correct <a href="https://gstreamer.freedesktop.org/">GStreamer</a> plugins.</p>
+<h4 id="minimum-required-gstreamer-plugins">Minimum Required GStreamer Plugins</h4>
+<ul>
+<li>gstreamer1.0-plugins-base</li>
+<li>gstreamer1.0-plugins-good</li>
+<li>gstreamer1.0-plugins-pulseaudio</li>
+</ul>
+<p>For a Linux desktop target, it is strongly recommended to have <code translate="no">gstreamer1.0-libav</code> for good codec coverage and <code translate="no">gstreamer1.0-vaapi</code> to get hardware acceleration.</p>
+<p>On embedded Linux, the required set of plugins could be somewhat different.</p>
+<h3 id="determining-supported-media-formats-at-runtime">Determining Supported Media Formats at Runtime</h3>
+<p>You can determine what formats are available on a target system at runtime using the static <a href="qmediaformat.html" translate="no">QMediaFormat</a> API.</p>
+<ul>
+<li>Use <a href="qmediaformat.html#isSupported" translate="no">QMediaFormat::isSupported</a>() on a <a href="qmediaformat.html#ConversionMode-enum" translate="no">QMediaFormat::ConversionMode</a> to query a specific format.</li>
+<li>Use <a href="qmediaformat.html#supportedFileFormats" translate="no">QMediaFormat::supportedFileFormats</a>() on a default constructed <a href="qmediaformat.html" translate="no">QMediaFormat</a> to get all the supported file formats.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>There are both C++ and QML examples available.</p>
+<h3 id="c-examples">C++ Examples</h3>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtmultimedia-camera-example.html">Camera Example</a></p></td><td class="tblDescr"><p>Shows how to capture a still image or record video.</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtmultimedia-player-example.html">Media Player Example</a></p></td><td class="tblDescr"><p>Playing audio and video using Qt Widgets.</p></td></tr>
+</table></div>
+<h3 id="qml-examples">QML Examples</h3>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qtmultimedia-video-mediaplayer-example.html">QML Media Player Example</a></p></td><td class="tblDescr"><p>Playing audio and video using the QML MediaPlayer type.</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qtmultimedia-video-recorder-example.html">QML Video Recorder</a></p></td><td class="tblDescr"><p>Recording audio and video using Qt Quick.</p></td></tr>
+</table></div>
+<h2 id="reference-documentation">Reference Documentation</h2>
+<h3 id="c-classes">C++ Classes</h3>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qabstractvideobuffer.html">QAbstractVideoBuffer</a></p></td><td class="tblDescr"><p>Abstraction for video data</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qabstractvideobuffer-mapdata.html">QAbstractVideoBuffer::MapData</a></p></td><td class="tblDescr"><p>QAbstractVideoBuffer::MapData structure describes the mapped plane layout</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qcapturablewindow.html">QCapturableWindow</a></p></td><td class="tblDescr"><p>Used for getting the basic information of a capturable window</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qmediacapturesession.html">QMediaCaptureSession</a></p></td><td class="tblDescr"><p>Allows capturing of audio and video content</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qmediaplayer.html">QMediaPlayer</a></p></td><td class="tblDescr"><p>Allows the playing of a media files</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qmediarecorder.html">QMediaRecorder</a></p></td><td class="tblDescr"><p>Used for encoding and recording a capture session</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qscreencapture.html">QScreenCapture</a></p></td><td class="tblDescr"><p>This class is used for capturing a screen</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qvideoframe.html">QVideoFrame</a></p></td><td class="tblDescr"><p>Represents a frame of video data</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qvideoframeformat.html">QVideoFrameFormat</a></p></td><td class="tblDescr"><p>Specifies the stream format of a video presentation surface</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qvideoframeinput.html">QVideoFrameInput</a></p></td><td class="tblDescr"><p>Used for providing custom video frames to QMediaRecorder or a video output through QMediaCaptureSession</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qvideosink.html">QVideoSink</a></p></td><td class="tblDescr"><p>Represents a generic sink for video data</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qvideowidget.html">QVideoWidget</a></p></td><td class="tblDescr"><p>Widget which presents video produced by a media object</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qwindowcapture.html">QWindowCapture</a></p></td><td class="tblDescr"><p>This class is used for capturing a window</p></td></tr>
+</table></div>
+<h3 id="qml-types">QML Types</h3>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-capturablewindow.html">CapturableWindow</a></p></td><td class="tblDescr"><p>Type is used getting basic of a window that is available for capturing via WindowCapture</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-capturesession.html">CaptureSession</a></p></td><td class="tblDescr"><p>Allows capturing of audio and video content</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-mediaplayer.html">MediaPlayer</a></p></td><td class="tblDescr"><p>Adds media playback to a scene</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-mediarecorder.html">MediaRecorder</a></p></td><td class="tblDescr"><p>For encoding and recording media generated in a CaptureSession</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-screencapture.html">ScreenCapture</a></p></td><td class="tblDescr"><p>This type is used for capturing a screen</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-video.html">Video</a></p></td><td class="tblDescr"><p>A convenience type for showing a specified video</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-videooutput.html">VideoOutput</a></p></td><td class="tblDescr"><p>Render video or camera viewfinder</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtmultimedia-windowcapture.html">WindowCapture</a></p></td><td class="tblDescr"><p>This type is used for capturing a window</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-cameradevice.html">cameraDevice</a></p></td><td class="tblDescr"><p>Describes a camera device</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-cameraformat.html">cameraFormat</a></p></td><td class="tblDescr"><p>Describes a video format supported by a camera device</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-mediametadata.html">mediaMetaData</a></p></td><td class="tblDescr"><p>Provides meta-data for media files</p></td></tr>
+</table></div>
+</div>
+<!-- @@@videooverview.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="audiooverview.html">Audio Overview</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="cameraoverview.html">Camera Overview</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

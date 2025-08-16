@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qcompare.cpp -->
+  <title>Comparison types overview | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Comparison types overview</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="permissions.html" />
+  <link rel="next" href="qtcore-changes-qt6.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="permissions.html">Application Permissions</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtcore-changes-qt6.html">Upgrading from Qt 5</a>
+</p>
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Comparison types overview</h1>
+<!-- $$$comparison-types.html-description -->
+<div class="descr" id="details">
+<div class="admonition note">
+<p><b>Note: </b>Qt's comparison types provide functionality equivalent to their C++20 standard counterparts. The only reason why they exist is to make the functionality available in C++17 builds, too. In a C++20 build, they implicitly convert to and from the <code translate="no">std</code> types, making them fully interchangeable. We therefore recommended that you prefer to use the C++ standard types in your code, if you can use C++20 in your projects already. The Qt comparison types will be removed in Qt 7.</p>
+</div>
+<p>Qt provides several comparison types for a <a href="https://en.cppreference.com/w/cpp/language/operator_comparison#Three-way_comparison">three-way comparison</a>, which are comparable against a <i>zero literal</i>. To use these comparison types, you need to include the <code translate="no">&lt;QtCompare&gt;</code> header. These comparison types are categorized based on their <i>order</i>, which is a mathematical concept used to describe the arrangement or ranking of elements. The following categories are provided:</p>
+<div class="table"><table class="generic" width="100%">
+ <thead><tr class="qt-style"><th >C++ type</th><th >Qt type</th><th >strict</th><th >total</th><th >Example</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="https://en.cppreference.com/w/cpp/utility/compare/strong_ordering">std::strong_ordering</a></td><td ><a href="qt-strong-ordering.html" translate="no">Qt::strong_ordering</a></td><td >yes</td><td >yes</td><td >integral types, case-sensitive strings, <a href="qdate.html" translate="no">QDate</a>, <a href="qtime.html" translate="no">QTime</a></td></tr>
+<tr valign="top" class="even"><td ><a href="https://en.cppreference.com/w/cpp/utility/compare/weak_ordering">std::weak_ordering</a></td><td ><a href="qt-weak-ordering.html" translate="no">Qt::weak_ordering</a></td><td >no</td><td >yes</td><td >case-insensitive strings, unordered associative containers, <a href="qdatetime.html" translate="no">QDateTime</a></td></tr>
+<tr valign="top" class="odd"><td ><a href="https://en.cppreference.com/w/cpp/utility/compare/partial_ordering">std::partial_ordering</a></td><td ><a href="qt-partial-ordering.html" translate="no">Qt::partial_ordering</a></td><td >no</td><td >no</td><td >floating-point types, <a href="qoperatingsystemversion.html" translate="no">QOperatingSystemVersion</a>, <a href="qvariant.html" translate="no">QVariant</a></td></tr>
+</table></div>
+<p>The strongest comparison type, <a href="qt-strong-ordering.html" translate="no">Qt::strong_ordering</a>, represents a strict total order. It requires that any two elements be comparable in a way where equality implies substitutability. In other words, equivalent values cannot be distinguished from each other. A practical example would be the case-sensitive comparison of two strings. For instance, when comparing the values <code translate="no">&quot;Qt&quot;</code> and <code translate="no">&quot;Qt&quot;</code> the result would be <a href="qt-strong-ordering.html#equal-var" translate="no">Qt::strong_ordering::equal</a>. Both values are indistinguishable and all deterministic operations performed on these values would yield identical results.</p>
+<p><a href="qt-weak-ordering.html" translate="no">Qt::weak_ordering</a> represents a total order. While any two values still need to be comparable, equivalent values may be distinguishable. The canonical example here would be the case-insensitive comparison of two strings. For instance, when comparing the values <code translate="no">&quot;Qt&quot;</code> and <code translate="no">&quot;qt&quot;</code> both hold the same letters but with different representations. This comparison would result in <a href="qt-weak-ordering.html#equivalent-var" translate="no">Qt::weak_ordering::equivalent</a>, but not actually <code translate="no">Equal</code>. Another example would be <a href="qdatetime.html" translate="no">QDateTime</a>, which can represent a given instant in time in terms of local time or any other time-zone, including UTC. The different representations are equivalent, even though their <code translate="no">time()</code> and sometimes <code translate="no">date()</code> may differ.</p>
+<p><a href="qt-partial-ordering.html" translate="no">Qt::partial_ordering</a> represents, as the name implies, a partial ordering. It allows for the possibility that two values may not be comparable, resulting in an <a href="qt-partial-ordering.html#unordered-var" translate="no">unordered</a> state. Additionally, equivalent values may still be distinguishable. A practical example would be the comparison of two floating-point values, comparing with NaN (Not-a-Number) would yield an unordered result. Another example is the comparison of two <a href="qoperatingsystemversion.html" translate="no">QOperatingSystemVersion</a> objects. Comparing versions of two different operating systems, such as Android and Windows, would produce an unordered result.</p>
+<p>Utilizing these comparison types enhances the expressiveness of defining relations. Furthermore, they serve as a fundamental component for implementing three-way comparison with C++17.</p>
+</div>
+<p><b>See also </b><a href="qt-strong-ordering.html" translate="no">Qt::strong_ordering</a>, <a href="qt-weak-ordering.html" translate="no">Qt::weak_ordering</a>, and <a href="qt-partial-ordering.html" translate="no">Qt::partial_ordering</a>.</p>
+<!-- @@@comparison-types.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="permissions.html">Application Permissions</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtcore-changes-qt6.html">Upgrading from Qt 5</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

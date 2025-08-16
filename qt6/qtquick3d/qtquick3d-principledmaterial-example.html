@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-principledmaterial.qdoc -->
+  <meta name="description" content="Demonstrates the use of Principled Material.">
+  <title>Qt Quick 3D - Principled Material Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Principled Material Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#usage">Usage</a></li>
+<li class="level1"><a href="#specularglossymaterial">SpecularGlossyMaterial</a></li>
+<li class="level1"><a href="#resource-loader">Resource Loader</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Principled Material Example</h1>
+<!-- $$$principledmaterial-brief -->
+<p>Demonstrates the use of Principled Material.</p>
+<!-- @@@principledmaterial -->
+<!-- $$$principledmaterial-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/principledmaterial-example.png" alt="" /></p><p>This example serves as interactive documentation for the usage of <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>. Each property of <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> comes with some explanation of how it is used as well as a way to experiment with adjusting each property.</p>
+<h4 id="usage">Usage</h4>
+<p>This example is split into two views, the interactive documentation and controls on the left, and the 3D Viewer on the right. The 3D Viewer is interactive allowing the camera to be orbited around the target model. To reset the focus on a particular model, just touch or click the model to focus on. The split between the two views is resizable by dragging bar in between the views.</p>
+<p>The example is separated into multiple sections which group the various features of <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> into manageable chunks. Each section can be accessed by clicking on the tabs at the top of the explanation area.</p>
+<h4 id="specularglossymaterial">SpecularGlossyMaterial</h4>
+<p>In addition to demonstrating the Metalness/Roughness PBR workflow provided by <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> it is possible to switch to using the Specular/Glossy workflow which uses the <a href="qml-qtquick3d-specularglossymaterial.html" translate="no">SpecularGlossyMaterial</a>. This can be done by a switch in the Basics section.</p>
+<h4 id="resource-loader">Resource Loader</h4>
+<p>The more complex nature of this example also gives an opportunity to demonstrate the usage of the <a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a> component. When a model is no longer visible in the scene any resources associated with the model will be released by Qt Quick 3D (assuming none of the resources are used by other models in the scene.) In this example it is possible to hide the curtain model, and by doing so 2 meshes and 2 texture would be released from GPU memory. The next time the curtain is made visible though, these resources would need to be re-uploaded to the GPU. On some hardware this uploading can causes a momentary drop in frame-rate, so to mitigate this a <a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a> component is used inside of the BackgroundCurtain component.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a></span> {
+     <span class="name">meshSources</span>: [
+         <span class="name">frame</span>.<span class="name">source</span>,
+         <span class="name">curtain</span>.<span class="name">source</span>
+     ]
+     <span class="name">textures</span>: [
+         <span class="name">tilePatternTexture</span>,
+         <span class="name">curtainNormalTexture</span>
+     ]
+ }
+
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">id</span>: <span class="name">frame</span>
+     <span class="name">z</span>: -<span class="number">1.95</span>
+     <span class="name">source</span>: <span class="string">&quot;meshes/frame.mesh&quot;</span>
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">frame_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;#ffcccccc&quot;</span>
+         <span class="name">metalness</span>: <span class="number">1</span>
+         <span class="name">roughness</span>: <span class="number">0.259091</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+     <span class="name">materials</span>: [
+         <span class="name">frame_material</span>
+     ]
+ }
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">id</span>: <span class="name">curtain</span>
+     <span class="name">y</span>: <span class="number">3.02413</span>
+     <span class="name">z</span>: <span class="number">2.04922</span>
+     <span class="name">source</span>: <span class="string">&quot;meshes/curtain.mesh&quot;</span>
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">curtain_material</span>
+         <span class="name">baseColorMap</span>: <span class="name">Texture</span> {
+             <span class="name">id</span>: <span class="name">tilePatternTexture</span>
+             <span class="name">source</span>: <span class="string">&quot;maps/tilepattern.png&quot;</span>
+             <span class="name">generateMipmaps</span>: <span class="number">true</span>
+             <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         }
+         <span class="name">opacityChannel</span>: <span class="name">Material</span>.<span class="name">A</span>
+         <span class="name">roughness</span>: <span class="number">0.5</span>
+         <span class="name">normalMap</span>: <span class="name">Texture</span> {
+             <span class="name">id</span>: <span class="name">curtainNormalTexture</span>
+             <span class="name">source</span>: <span class="string">&quot;maps/curtain_normal.jpg&quot;</span>
+             <span class="name">generateMipmaps</span>: <span class="number">true</span>
+             <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+         }
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">alphaMode</span>: <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+     }
+     <span class="name">materials</span>: [
+         <span class="name">curtain_material</span>
+     ]
+ }
+</pre>
+<p>Here both the mesh files and textures are registered with a <a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a>. <a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a> will assure that any registered resources will always be ready for use in GPU memory, so now regardless of the visibility of the BackgroundCurtain, its resources will be preserved.</p>
+<p>The ResouceLoaded can also be used to preload resources, as shown with the <b>point</b> and <b>line</b> meshes under the &quot;Special&quot; tab.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a></span> {
+     <span class="name">meshSources</span>: [
+         <span class="string">&quot;meshes/logo_lines.mesh&quot;</span>,
+         <span class="string">&quot;meshes/logo_points.mesh&quot;</span>
+     ]
+ }
+</pre>
+<p>Here the <a href="../qtcore/qurl.html" translate="no">QUrl</a>'s of the mesh files are listed directly. Resources do not have to be associated with a Model to be used by a <a href="qml-qtquick3d-resourceloader.html" translate="no">ResourceLoader</a>.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/principledmaterial?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@principledmaterial -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

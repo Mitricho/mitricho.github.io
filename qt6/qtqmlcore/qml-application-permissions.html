@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qmlpermissions.qdoc -->
+  <meta name="description" content="Managing application permissions via QML">
+  <title>QML Application Permissions | Qt Qml Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqmlcore-index.html">Qt Qml Core</a></li>
+<li>QML Application Permissions</li>
+<li id="buildversion"><a href="qtqmlcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#usage">Usage</a></li>
+<li class="level2"><a href="#changing-permission-properties">Changing permission properties</a></li>
+<li class="level2"><a href="#interaction-between-permission-items">Interaction between permission items</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QML Application Permissions</h1>
+<!-- $$$qml-application-permissions.html-description -->
+<div class="descr" id="details">
+<p>Many features of today's devices and operating systems can have significant privacy, security, and performance implications if misused. It's therefore increasingly common for platforms to require explicit consent from the user before accessing these features.</p>
+<p>The <a href="qtqmlcore-index.html">Qt Qml Core</a> module exposes the Qt C++ <a href="../qtcore/permissions.html">Application Permissions</a> functionality to QML via a set of permission types that can be used to check or request permission in a cross platform manner.</p>
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-bluetoothpermission.html">BluetoothPermission</a></p></td><td class="tblDescr"><p>Access to the user's Bluetooth peripherals</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-calendarpermission.html">CalendarPermission</a></p></td><td class="tblDescr"><p>Access to the user's calendar</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-camerapermission.html">CameraPermission</a></p></td><td class="tblDescr"><p>Access to the user's camera</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-contactspermission.html">ContactsPermission</a></p></td><td class="tblDescr"><p>Access to the user's contacts</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-locationpermission.html">LocationPermission</a></p></td><td class="tblDescr"><p>Access to the user's location</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtcore-microphonepermission.html">MicrophonePermission</a></p></td><td class="tblDescr"><p>Access to the user's microphone</p></td></tr>
+</table></div>
+<h2 id="usage">Usage</h2>
+<p>To check and request a specific permission in your application, include an instance of the appropriate permission type, and set any of its properties if needed:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtcore-calendarpermission.html" translate="no">CalendarPermission</a></span> {
+     <span class="name">id</span>: <span class="name">calendarPermission</span>
+     <span class="name">accessMode</span>: <span class="name">CalendarPermission</span>.<span class="name">ReadWrite</span>
+ }
+</pre>
+<p>The type can be used to check the current state of the permissions, for example to drive a state based UI:</p>
+<pre class="qml" translate="no">
+ states: [
+     State {
+         name: &quot;waitingForPermission&quot;
+         when: calendarPermission.status == Qt.PermissionStatus.Undetermined
+         PropertyChanges { target: permissionRequestItem; visible: true }
+     },
+     State {
+         name: &quot;permissionDenied&quot;
+         when: calendarPermission.status == Qt.PermissionStatus.Denied
+         PropertyChanges { target: permissionDeniedItem; visible: true }
+     }
+ ]
+</pre>
+<p>In the example above, two permission specific items will be overlaid if the permission status is not granted. The request UI could perhaps look like:</p>
+<pre class="qml" translate="no">
+ <span class="type">Rectangle</span> {
+     <span class="name">id</span>: <span class="name">permissionRequestItem</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">visible</span>: <span class="number">false</span>
+
+     <span class="type">Text</span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;We need your permission to access the calendar.&quot;</span>
+             <span class="operator">+</span> <span class="string">&quot;Please tap this screen to request permission.&quot;</span>)
+
+     }
+
+     <span class="type">MouseArea</span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">onClicked</span>: <span class="name">calendarPermission</span>.<span class="name">request</span>()
+     }
+ }
+</pre>
+<p>With a corresponding denied UI:</p>
+<pre class="qml" translate="no">
+ <span class="type">Rectangle</span> {
+     <span class="name">id</span>: <span class="name">permissionDeniedItem</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">color</span>: <span class="string">&quot;red&quot;</span>
+     <span class="name">visible</span>: <span class="number">false</span>
+     <span class="type">Text</span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;We need your permission to access the calendar,&quot;</span>
+             <span class="operator">+</span> <span class="string">&quot;but permission was not granted. Please resolve.&quot;</span>)
+     }
+ }
+</pre>
+<h3 id="changing-permission-properties">Changing permission properties</h3>
+<p>The properties of a permission can be changed, even after a request has been initiated by calling `request()`. This will update the status, if it changes a result of the new property values, but will not result in an automatic request using the new set of properties.</p>
+<p>For example, if upgrading an already granted calendar permission for access mode <code translate="no">Qt.CalendarPermission.ReadOnly</code> to <code translate="no">Qt.CalendarPermission.ReadWrite</code>, the platform will respond in one of three ways:</p>
+<ul>
+<li>By implicitly granting the extended permission, for example because the platform doesn't distinguish between the two access modes, which will result in no state change.</li>
+<li>By moving the status back to Undetermined, so that the user can be consulted again for access to the now extended permission.</li>
+<li>By moving the status to <code translate="no">Denied</code>, for example if permissions can not be upgraded once initially requested.</li>
+</ul>
+<p>All these states should then move the application's UI into the appropriate state, where the user is informed of the new state, with the possibility of requesting the new permission if possible, or reverting to a less extensive permission.</p>
+<h3 id="interaction-between-permission-items">Interaction between permission items</h3>
+<p>Although the permission state is ultimately tied to the underlying application, each permission item reports its own status independently of all other items, and needs to be independently requested if needed.</p>
+<p>For example, requesting calendar access for one item will not update the status of another <a href="qml-qtcore-calendarpermission.html" translate="no">CalendarPermission</a> item, even if these have the exact same properties.</p>
+</div>
+<!-- @@@qml-application-permissions.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

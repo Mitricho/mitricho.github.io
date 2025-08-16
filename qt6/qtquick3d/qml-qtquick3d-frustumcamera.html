@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dfrustumcamera.cpp -->
+  <meta name="description" content="Defines a PerspectiveCamera with a custom frustum.">
+  <title>FrustumCamera QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>FrustumCamera</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">FrustumCamera QML Type</h1>
+<!-- $$$FrustumCamera-brief -->
+<p>Defines a <a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a> with a custom frustum. <a href="#details">More...</a></p>
+<!-- @@@FrustumCamera -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-frustumcamera-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-frustumcamera.html#bottom-prop" translate="no">bottom</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-frustumcamera.html#left-prop" translate="no">left</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-frustumcamera.html#right-prop" translate="no">right</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-frustumcamera.html#top-prop" translate="no">top</a></b> : real</li>
+</ul>
+<!-- $$$FrustumCamera-description -->
+<h2 id="details">Detailed Description</h2>
+<p>A <a href="qml-qtquick3d-camera.html" translate="no">Camera</a> defines how the content of the 3D scene is projected onto a 2D surface, such as a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. A scene needs at least one <a href="qml-qtquick3d-camera.html" translate="no">Camera</a> in order to visualize its contents.</p>
+<p>It is possible to position and rotate the <a href="qml-qtquick3d-camera.html" translate="no">Camera</a> like any other spatial <a href="qml-qtquick3d-node.html" translate="no">Node</a> in the scene. The <a href="qml-qtquick3d-node.html" translate="no">Node</a>'s location and orientation determines where the <a href="qml-qtquick3d-camera.html" translate="no">Camera</a> is in the scene, and what direction it is facing. The default orientation of the <a href="qml-qtquick3d-camera.html" translate="no">Camera</a> has its forward vector pointing along the negative Z axis and its up vector along the positive Y axis.</p>
+<p>The FrustumCamera type provides a <a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a> where the frustum bounds can be customized. This can be useful for creating asymmetrical frustums.</p>
+<p>The following example creates a FrustumCamera at [0, 0, 100] in the scene. The <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near plane</a> is placed 100 units in front of the camera at the origin. The intersection of the frustum and the near plane is then given by the rectangle that has a bottom left corner at [-5, -5], and a top right corner at [5, 5], and continues until it intersect the <a href="qml-qtquick3d-perspectivecamera.html#clipFar-prop" translate="no">far plane</a>, which is located 1000 units from the camera at [0, 0, -900].</p>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="qml-qtquick3d-perspectivecamera.html#fieldOfViewOrientation-prop" translate="no">vertical field of view</a> angle is a product of the distance between the camera, the <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near plane</a> and the length between the <code translate="no">top</code> and <code translate="no">bottom</code> of the near plane.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>If the top and bottom, or left right, values are asymmetric, the apex of the frustum will be shifted, effectively offsetting the camera from its location.</p>
+</div>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick3d-frustumcamera.html" translate="no">FrustumCamera</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>)
+     <span class="name">clipNear</span>: <span class="number">100</span>
+     <span class="name">clipFar</span>: <span class="number">1000</span>
+     <span class="name">top</span>: <span class="number">5</span>
+     <span class="name">bottom</span>: -<span class="number">5</span>
+     <span class="name">left</span>: -<span class="number">5</span>
+     <span class="name">right</span>: <span class="number">5</span>
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a>, <a href="qml-qtquick3d-orthographiccamera.html" translate="no">OrthographicCamera</a>, and <a href="qml-qtquick3d-customcamera.html" translate="no">CustomCamera</a>.</p>
+<!-- @@@FrustumCamera -->
+<h2>Property Documentation</h2>
+<!-- $$$bottom -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="bottom-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">bottom</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The <code translate="no">bottom</code> value specifies the bottom of the <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near clip plane</a>, relative to the camera's position in local coordinates.</p>
+</div></div><!-- @@@bottom -->
+<br/>
+<!-- $$$left -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="left-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">left</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The <code translate="no">left</code> value specifies the left of the <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near clip plane</a>, relative to the camera's position in local coordinates.</p>
+</div></div><!-- @@@left -->
+<br/>
+<!-- $$$right -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="right-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">right</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The <code translate="no">right</code> value specifies the right of the <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near clip plane</a>, relative to the camera's position in local coordinates.</p>
+</div></div><!-- @@@right -->
+<br/>
+<!-- $$$top -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="top-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">top</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The <code translate="no">top</code> value specifies the top of the <a href="qml-qtquick3d-perspectivecamera.html#clipNear-prop" translate="no">near clip plane</a>, relative to the camera's position in local coordinates.</p>
+</div></div><!-- @@@top -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

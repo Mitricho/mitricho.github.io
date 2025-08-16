@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qaudiobuffer.cpp -->
+  <meta name="description" content="The QAudioBuffer class represents a collection of audio samples with a specific format and sample rate.">
+  <title>QAudioBuffer Class | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-modules.html">C++ Classes</a></li>
+<li><a href="qtmultimedia-module.html" translate="no">QtMultimedia</a></li>
+<li>QAudioBuffer</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QAudioBuffer Class</h1>
+<!-- $$$QAudioBuffer-brief -->
+<p>The QAudioBuffer class represents a collection of audio samples with a specific format and sample rate. <a href="#details">More...</a></p>
+<!-- @@@QAudioBuffer -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QAudioBuffer&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Multimedia)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Multimedia)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += multimedia</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qaudiobuffer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#F32M-typedef" translate="no">F32M</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#F32S-typedef" translate="no">F32S</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#S16M-typedef" translate="no">S16M</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#S16S-typedef" translate="no">S16S</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#S32M-typedef" translate="no">S32M</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#S32S-typedef" translate="no">S32S</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#U8M-typedef" translate="no">U8M</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#U8S-typedef" translate="no">U8S</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#QAudioBuffer-3" translate="no">QAudioBuffer</a></b>(const QByteArray &amp;<i>data</i>, const QAudioFormat &amp;<i>format</i>, qint64 <i>startTime</i> = -1)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#QAudioBuffer-4" translate="no">QAudioBuffer</a></b>(int <i>numFrames</i>, const QAudioFormat &amp;<i>format</i>, qint64 <i>startTime</i> = -1)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#QAudioBuffer-2" translate="no">QAudioBuffer</a></b>(const QAudioBuffer &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#QAudioBuffer-1" translate="no">QAudioBuffer</a></b>(QAudioBuffer &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#dtor.QAudioBuffer" translate="no">~QAudioBuffer</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#byteCount" translate="no">byteCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const T *</td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#constData" translate="no">constData</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> T *</td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#data" translate="no">data</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> const T *</td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#data-1" translate="no">data</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#detach" translate="no">detach</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#duration" translate="no">duration</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QAudioFormat </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#format" translate="no">format</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#frameCount" translate="no">frameCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qsizetype </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#sampleCount" translate="no">sampleCount</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qint64 </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#startTime" translate="no">startTime</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#swap" translate="no">swap</a></b>(QAudioBuffer &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QAudioBuffer &amp;</td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#operator-eq" translate="no">operator=</a></b>(QAudioBuffer &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QAudioBuffer &amp;</td><td class="memItemRight bottomAlign"><b><a href="qaudiobuffer.html#operator-eq-1" translate="no">operator=</a></b>(const QAudioBuffer &amp;<i>other</i>)</td></tr>
+</table></div>
+<!-- $$$QAudioBuffer-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QAudioBuffer is used by the <a href="qaudiodecoder.html" translate="no">QAudioDecoder</a> class to hand decoded audio data over to the application. An audio buffer contains data in a certain <a href="qaudioformat.html" translate="no">QAudioFormat</a> that can be queried using <a href="qaudiobuffer.html#format" translate="no">format</a>(). It is also tagged with timing and duration information.</p>
+<p>To access the data stored inside the buffer, use the <a href="qaudiobuffer.html#data" translate="no">data</a>() or <a href="qaudiobuffer.html#constData" translate="no">constData</a>() methods.</p>
+<p>Audio buffers are explicitly shared, in most cases, you should call <a href="qaudiobuffer.html#detach" translate="no">detach</a>() before modifying the data.</p>
+</div>
+<!-- @@@QAudioBuffer -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$F32M -->
+<h3 class="fn" translate="no" id="F32M-typedef">QAudioBuffer::<span class="name">F32M</span></h3>
+<p>This is a predefined specialization for a 32 bit float mono sample.</p>
+<!-- @@@F32M -->
+<!-- $$$F32S -->
+<h3 class="fn" translate="no" id="F32S-typedef">QAudioBuffer::<span class="name">F32S</span></h3>
+<p>This is a predifined specialization for a 32 bit float stereo sample.</p>
+<!-- @@@F32S -->
+<!-- $$$S16M -->
+<h3 class="fn" translate="no" id="S16M-typedef">QAudioBuffer::<span class="name">S16M</span></h3>
+<p>This is a predefined specialization for a signed 16 bit mono sample. i</p>
+<!-- @@@S16M -->
+<!-- $$$S16S -->
+<h3 class="fn" translate="no" id="S16S-typedef">QAudioBuffer::<span class="name">S16S</span></h3>
+<p>This is a predefined specialization for a signed stereo 16 bit sample. Each channel is a <i>signed short</i>.</p>
+<!-- @@@S16S -->
+<!-- $$$S32M -->
+<h3 class="fn" translate="no" id="S32M-typedef">QAudioBuffer::<span class="name">S32M</span></h3>
+<p>This is a predefined specialization for a signed 32 bit mono sample.</p>
+<!-- @@@S32M -->
+<!-- $$$S32S -->
+<h3 class="fn" translate="no" id="S32S-typedef">QAudioBuffer::<span class="name">S32S</span></h3>
+<p>This is a predifined specialization for a siged 32 bit stereo sample.</p>
+<!-- @@@S32S -->
+<!-- $$$U8M -->
+<h3 class="fn" translate="no" id="U8M-typedef">QAudioBuffer::<span class="name">U8M</span></h3>
+<p>This is a predefined specialization for an unsigned 8 bit mono sample.</p>
+<!-- @@@U8M -->
+<!-- $$$U8S -->
+<h3 class="fn" translate="no" id="U8S-typedef">QAudioBuffer::<span class="name">U8S</span></h3>
+<p>This is a predifined specialization for an unsiged 8 bit stereo sample.</p>
+<!-- @@@U8S -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QAudioBuffer[overload1]$$$QAudioBuffer -->
+<h3 class="fn" translate="no" id="QAudioBuffer"><code class="details extra" translate="no">[noexcept]</code> QAudioBuffer::<span class="name">QAudioBuffer</span>()</h3>
+<p>Create a new, empty, invalid buffer.</p>
+<!-- @@@QAudioBuffer -->
+<!-- $$$QAudioBuffer$$$QAudioBufferconstQByteArray&constQAudioFormat&qint64 -->
+<h3 class="fn" translate="no" id="QAudioBuffer-3">QAudioBuffer::<span class="name">QAudioBuffer</span>(const <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> &amp;<i>data</i>, const <span class="type"><a href="qaudioformat.html" translate="no">QAudioFormat</a></span> &amp;<i>format</i>, <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> <i>startTime</i> = -1)</h3>
+<p>Creates a new audio buffer from the supplied <i translate="no">data</i>, in the given <i translate="no">format</i>. The format will determine how the number and sizes of the samples are interpreted from the <i translate="no">data</i>.</p>
+<p>If the supplied <i translate="no">data</i> is not an integer multiple of the calculated frame size, the excess data will not be used.</p>
+<p>This audio buffer will copy the contents of <i translate="no">data</i>.</p>
+<p><i translate="no">startTime</i> (in microseconds) indicates when this buffer starts in the stream. If this buffer is not part of a stream, set it to -1.</p>
+<!-- @@@QAudioBuffer -->
+<!-- $$$QAudioBuffer$$$QAudioBufferintconstQAudioFormat&qint64 -->
+<h3 class="fn" translate="no" id="QAudioBuffer-4">QAudioBuffer::<span class="name">QAudioBuffer</span>(<span class="type">int</span> <i>numFrames</i>, const <span class="type"><a href="qaudioformat.html" translate="no">QAudioFormat</a></span> &amp;<i>format</i>, <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> <i>startTime</i> = -1)</h3>
+<p>Creates a new audio buffer with space for <i translate="no">numFrames</i> frames of the given <i translate="no">format</i>. The individual samples will be initialized to the default for the format.</p>
+<p><i translate="no">startTime</i> (in microseconds) indicates when this buffer starts in the stream. If this buffer is not part of a stream, set it to -1.</p>
+<!-- @@@QAudioBuffer -->
+<!-- $$$QAudioBuffer$$$QAudioBufferconstQAudioBuffer& -->
+<h3 class="fn" translate="no" id="QAudioBuffer-2"><code class="details extra" translate="no">[noexcept]</code> QAudioBuffer::<span class="name">QAudioBuffer</span>(const <span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;<i>other</i>)</h3>
+<p>Creates a new audio buffer from <i translate="no">other</i>. Audio buffers are explicitly shared, you should call <a href="qaudiobuffer.html#detach" translate="no">detach</a>() on the buffer to make a copy that can then be modified.</p>
+<!-- @@@QAudioBuffer -->
+<!-- $$$QAudioBuffer$$$QAudioBufferQAudioBuffer&& -->
+<h3 class="fn" translate="no" id="QAudioBuffer-1"><code class="details extra" translate="no">[noexcept]</code> QAudioBuffer::<span class="name">QAudioBuffer</span>(<span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;&amp;<i>other</i>)</h3>
+<p>Constructs a QAudioBuffer by moving from <i translate="no">other</i>.</p>
+<!-- @@@QAudioBuffer -->
+<!-- $$$~QAudioBuffer[overload1]$$$~QAudioBuffer -->
+<h3 class="fn" translate="no" id="dtor.QAudioBuffer"><code class="details extra" translate="no">[noexcept]</code> QAudioBuffer::<span class="name">~QAudioBuffer</span>()</h3>
+<p>Destroys this audio buffer.</p>
+<!-- @@@~QAudioBuffer -->
+<!-- $$$byteCount[overload1]$$$byteCount -->
+<h3 class="fn" translate="no" id="byteCount"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#qsizetype-typedef" translate="no">qsizetype</a></span> QAudioBuffer::<span class="name">byteCount</span>() const</h3>
+<p>Returns the size of this buffer, in bytes.</p>
+<!-- @@@byteCount -->
+<!-- $$$constData[overload1]$$$constData -->
+<h3 class="fn" translate="no" id="constData">template &lt;typename T&gt; const <span class="type">T</span> *QAudioBuffer::<span class="name">constData</span>() const</h3>
+<p>Returns a pointer to this buffer's data. You can only read it.</p>
+<p>This method is preferred over the const version of <a href="qaudiobuffer.html#data" translate="no">data</a>() to prevent unnecessary copying.</p>
+<p>Note that there is no checking done on the format of the audio buffer - this is simply a convenience function.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// With a 16bit sample buffer:</span>
+ <span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> <span class="operator">*</span>data <span class="operator">=</span> buffer<span class="operator">-</span><span class="operator">&gt;</span>constData<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span>();
+</pre>
+<!-- @@@constData -->
+<!-- $$$data[overload1]$$$data -->
+<h3 class="fn" translate="no" id="data">template &lt;typename T&gt; <span class="type">T</span> *QAudioBuffer::<span class="name">data</span>()</h3>
+<p>Returns a pointer to this buffer's data. You can modify the data through the returned pointer.</p>
+<p>Since <a href="qaudiobuffer.html" translate="no">QAudioBuffer</a> objects are explicitly shared, you should usually call <a href="qaudiobuffer.html#detach" translate="no">detach</a>() before modifying the data through this function.</p>
+<p>Note that there is no checking done on the format of the audio buffer - this is simply a convenience function.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// With a 16bit sample buffer:</span>
+ <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> <span class="operator">*</span>data <span class="operator">=</span> buffer<span class="operator">-</span><span class="operator">&gt;</span>data<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span>(); <span class="comment">// May cause deep copy</span>
+</pre>
+<!-- @@@data -->
+<!-- $$$data$$$data -->
+<h3 class="fn" translate="no" id="data-1">template &lt;typename T&gt; const <span class="type">T</span> *QAudioBuffer::<span class="name">data</span>() const</h3>
+<p>Returns a pointer to this buffer's data. You can only read it.</p>
+<p>You should use the <a href="qaudiobuffer.html#constData" translate="no">constData</a>() function rather than this to prevent accidental deep copying.</p>
+<p>Note that there is no checking done on the format of the audio buffer - this is simply a convenience function.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// With a 16bit sample const buffer:</span>
+ <span class="keyword">const</span> <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> <span class="operator">*</span>data <span class="operator">=</span> buffer<span class="operator">-</span><span class="operator">&gt;</span>data<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span><span class="operator">&gt;</span>();
+</pre>
+<!-- @@@data -->
+<!-- $$$detach[overload1]$$$detach -->
+<h3 class="fn" translate="no" id="detach"><span class="type">void</span> QAudioBuffer::<span class="name">detach</span>()</h3>
+<p>Detaches this audio buffers from other copies that might share data with it.</p>
+<!-- @@@detach -->
+<!-- $$$duration[overload1]$$$duration -->
+<h3 class="fn" translate="no" id="duration"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> QAudioBuffer::<span class="name">duration</span>() const</h3>
+<p>Returns the duration of audio in this buffer, in microseconds.</p>
+<p>This depends on the <a href="qaudiobuffer.html#format" translate="no">format</a>(), and the <a href="qaudiobuffer.html#frameCount" translate="no">frameCount</a>().</p>
+<!-- @@@duration -->
+<!-- $$$format[overload1]$$$format -->
+<h3 class="fn" translate="no" id="format"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qaudioformat.html" translate="no">QAudioFormat</a></span> QAudioBuffer::<span class="name">format</span>() const</h3>
+<p>Returns the <a href="qaudioformat.html" translate="no">format</a> of this buffer.</p>
+<p>Several properties of this format influence how the <a href="qaudiobuffer.html#duration" translate="no">duration</a>() or <a href="qaudiobuffer.html#byteCount" translate="no">byteCount</a>() are calculated from the <a href="qaudiobuffer.html#frameCount" translate="no">frameCount</a>().</p>
+<!-- @@@format -->
+<!-- $$$frameCount[overload1]$$$frameCount -->
+<h3 class="fn" translate="no" id="frameCount"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#qsizetype-typedef" translate="no">qsizetype</a></span> QAudioBuffer::<span class="name">frameCount</span>() const</h3>
+<p>Returns the number of complete audio frames in this buffer.</p>
+<p>An audio frame is an interleaved set of one sample per channel for the same instant in time.</p>
+<!-- @@@frameCount -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QAudioBuffer::<span class="name">isValid</span>() const</h3>
+<p>Returns true if this is a valid buffer. A valid buffer has more than zero frames in it and a valid format.</p>
+<!-- @@@isValid -->
+<!-- $$$sampleCount[overload1]$$$sampleCount -->
+<h3 class="fn" translate="no" id="sampleCount"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#qsizetype-typedef" translate="no">qsizetype</a></span> QAudioBuffer::<span class="name">sampleCount</span>() const</h3>
+<p>Returns the number of samples in this buffer.</p>
+<p>If the format of this buffer has multiple channels, then this count includes all channels. This means that a stereo buffer with 1000 samples in total will have 500 left samples and 500 right samples (interleaved), and this function will return 1000.</p>
+<p><b>See also </b><a href="qaudiobuffer.html#frameCount" translate="no">frameCount</a>().</p>
+<!-- @@@sampleCount -->
+<!-- $$$startTime[overload1]$$$startTime -->
+<h3 class="fn" translate="no" id="startTime"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> QAudioBuffer::<span class="name">startTime</span>() const</h3>
+<p>Returns the time in a stream that this buffer starts at (in microseconds).</p>
+<p>If this buffer is not part of a stream, this will return -1.</p>
+<!-- @@@startTime -->
+<!-- $$$swap[overload1]$$$swapQAudioBuffer& -->
+<h3 class="fn" translate="no" id="swap"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QAudioBuffer::<span class="name">swap</span>(<span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;<i>other</i>)</h3>
+<p>Swaps the audio buffer with <i translate="no">other</i>.</p>
+<!-- @@@swap -->
+<!-- $$$operator=[overload1]$$$operator=QAudioBuffer&& -->
+<h3 class="fn" translate="no" id="operator-eq"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;QAudioBuffer::<span class="name">operator=</span>(<span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;&amp;<i>other</i>)</h3>
+<p>Moves <i translate="no">other</i> into this <a href="qaudiobuffer.html" translate="no">QAudioBuffer</a>.</p>
+<!-- @@@operator= -->
+<!-- $$$operator=$$$operator=constQAudioBuffer& -->
+<h3 class="fn" translate="no" id="operator-eq-1"><span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;QAudioBuffer::<span class="name">operator=</span>(const <span class="type"><a href="qaudiobuffer.html#QAudioBuffer" translate="no">QAudioBuffer</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns the <i translate="no">other</i> buffer to this.</p>
+<!-- @@@operator= -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- colorpalette-example.qdoc -->
+  <meta name="description" content="Example of how to create a RESTful API server using the QHttpServer.">
+  <title>RESTful API Server | Qt HTTP Server | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qthttpserver-index.html">Qt HTTP Server</a></li>
+<li><a href="qthttpserver-examples.html">Qt HTTP Server Examples</a></li>
+<li>RESTful API Server</li>
+<li id="buildversion"><a href="qthttpserver-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">RESTful API Server</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2022 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ <span class="preprocessor">#ifndef APIBEHAVIOR_H</span>
+ <span class="preprocessor">#define APIBEHAVIOR_H</span>
+
+ <span class="preprocessor">#include &quot;types.h&quot;</span>
+ <span class="preprocessor">#include &quot;utils.h&quot;</span>
+
+ <span class="preprocessor">#include &lt;QtHttpServer/QHttpServer&gt;</span>
+ <span class="preprocessor">#include &lt;QtConcurrent/qtconcurrentrun.h&gt;</span>
+
+ <span class="preprocessor">#include &lt;optional&gt;</span>
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">,</span> <span class="keyword">typename</span> <span class="operator">=</span> <span class="type">void</span><span class="operator">&gt;</span>
+ <span class="keyword">class</span> CrudApi
+ {
+ };
+
+ <span class="keyword">template</span><span class="operator">&lt;</span><span class="keyword">typename</span> T<span class="operator">&gt;</span>
+ <span class="keyword">class</span> CrudApi<span class="operator">&lt;</span>T<span class="operator">,</span>
+               std<span class="operator">::</span>enable_if_t<span class="operator">&lt;</span>std<span class="operator">::</span>conjunction_v<span class="operator">&lt;</span>std<span class="operator">::</span>is_base_of<span class="operator">&lt;</span>Jsonable<span class="operator">,</span> T<span class="operator">&gt;</span><span class="operator">,</span>
+                                                   std<span class="operator">::</span>is_base_of<span class="operator">&lt;</span>Updatable<span class="operator">,</span> T<span class="operator">&gt;</span><span class="operator">&gt;</span><span class="operator">&gt;</span><span class="operator">&gt;</span>
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> CrudApi(<span class="keyword">const</span> IdMap<span class="operator">&lt;</span>T<span class="operator">&gt;</span> <span class="operator">&amp;</span>data<span class="operator">,</span> std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>FromJsonFactory<span class="operator">&lt;</span>T<span class="operator">&gt;</span><span class="operator">&gt;</span> factory)
+         : data(data)<span class="operator">,</span> factory(std<span class="operator">::</span>move(factory))
+     {
+     }
+
+     <span class="type"><a href="../qtcore/qfuture.html" translate="no">QFuture</a></span><span class="operator">&lt;</span><span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span><span class="operator">&gt;</span> getPaginatedList(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request) <span class="keyword">const</span>
+     {
+         <span class="keyword">using</span> PaginatorType <span class="operator">=</span> Paginator<span class="operator">&lt;</span>IdMap<span class="operator">&lt;</span>T<span class="operator">&gt;</span><span class="operator">&gt;</span>;
+         std<span class="operator">::</span>optional<span class="operator">&lt;</span>qsizetype<span class="operator">&gt;</span> maybePage;
+         std<span class="operator">::</span>optional<span class="operator">&lt;</span>qsizetype<span class="operator">&gt;</span> maybePerPage;
+         std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span><span class="operator">&gt;</span> maybeDelay;
+         <span class="keyword">if</span> (request<span class="operator">.</span>query()<span class="operator">.</span>hasQueryItem(<span class="string">&quot;page&quot;</span>))
+             maybePage <span class="operator">=</span> request<span class="operator">.</span>query()<span class="operator">.</span>queryItemValue(<span class="string">&quot;page&quot;</span>)<span class="operator">.</span>toLongLong();
+         <span class="keyword">if</span> (request<span class="operator">.</span>query()<span class="operator">.</span>hasQueryItem(<span class="string">&quot;per_page&quot;</span>))
+             maybePerPage <span class="operator">=</span> request<span class="operator">.</span>query()<span class="operator">.</span>queryItemValue(<span class="string">&quot;per_page&quot;</span>)<span class="operator">.</span>toLongLong();
+         <span class="keyword">if</span> (request<span class="operator">.</span>query()<span class="operator">.</span>hasQueryItem(<span class="string">&quot;delay&quot;</span>))
+             maybeDelay <span class="operator">=</span> request<span class="operator">.</span>query()<span class="operator">.</span>queryItemValue(<span class="string">&quot;delay&quot;</span>)<span class="operator">.</span>toLongLong();
+
+         <span class="keyword">if</span> ((maybePage <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">*</span>maybePage <span class="operator">&lt;</span> <span class="number">1</span>) <span class="operator">|</span><span class="operator">|</span> (maybePerPage <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">*</span>maybePerPage <span class="operator">&lt;</span> <span class="number">1</span>)) {
+             <span class="keyword">return</span> <span class="type">QtConcurrent</span><span class="operator">::</span>run(<span class="operator">[</span><span class="operator">]</span>() {
+                 <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+             });
+         }
+
+         PaginatorType paginator(data<span class="operator">,</span> maybePage <span class="operator">?</span> <span class="operator">*</span>maybePage : PaginatorType<span class="operator">::</span>defaultPage<span class="operator">,</span>
+                                 maybePerPage <span class="operator">?</span> <span class="operator">*</span>maybePerPage : PaginatorType<span class="operator">::</span>defaultPageSize);
+
+         <span class="keyword">return</span> <span class="type">QtConcurrent</span><span class="operator">::</span>run(<span class="operator">[</span>paginator <span class="operator">=</span> std<span class="operator">::</span>move(paginator)<span class="operator">,</span> maybeDelay<span class="operator">]</span>() {
+             <span class="keyword">if</span> (maybeDelay)
+                 <span class="type"><a href="../qtcore/qthread.html" translate="no">QThread</a></span><span class="operator">::</span>sleep(<span class="operator">*</span>maybeDelay);
+             <span class="keyword">return</span> paginator<span class="operator">.</span>isValid()
+                     <span class="operator">?</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(paginator<span class="operator">.</span>toJson())
+                     : <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NoContent);
+         });
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> getItem(<span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> itemId) <span class="keyword">const</span>
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> item <span class="operator">=</span> data<span class="operator">.</span>find(itemId);
+         <span class="keyword">return</span> item <span class="operator">!</span><span class="operator">=</span> data<span class="operator">.</span>end() <span class="operator">?</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(item<span class="operator">-</span><span class="operator">&gt;</span>toJson())
+                                   : <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NotFound);
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> postItem(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span><span class="operator">&gt;</span> json <span class="operator">=</span> byteArrayToJsonObject(request<span class="operator">.</span>body());
+         <span class="keyword">if</span> (<span class="operator">!</span>json)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">const</span> std<span class="operator">::</span>optional<span class="operator">&lt;</span>T<span class="operator">&gt;</span> item <span class="operator">=</span> factory<span class="operator">-</span><span class="operator">&gt;</span>fromJson(<span class="operator">*</span>json);
+         <span class="keyword">if</span> (<span class="operator">!</span>item)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+         <span class="keyword">if</span> (data<span class="operator">.</span>contains(item<span class="operator">-</span><span class="operator">&gt;</span>id))
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>AlreadyReported);
+
+         <span class="keyword">const</span> <span class="keyword">auto</span> entry <span class="operator">=</span> data<span class="operator">.</span>insert(item<span class="operator">-</span><span class="operator">&gt;</span>id<span class="operator">,</span> <span class="operator">*</span>item);
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(entry<span class="operator">-</span><span class="operator">&gt;</span>toJson()<span class="operator">,</span> <span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>Created);
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> updateItem(<span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> itemId<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span><span class="operator">&gt;</span> json <span class="operator">=</span> byteArrayToJsonObject(request<span class="operator">.</span>body());
+         <span class="keyword">if</span> (<span class="operator">!</span>json)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">auto</span> item <span class="operator">=</span> data<span class="operator">.</span>find(itemId);
+         <span class="keyword">if</span> (item <span class="operator">=</span><span class="operator">=</span> data<span class="operator">.</span>end())
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NoContent);
+         <span class="keyword">if</span> (<span class="operator">!</span>item<span class="operator">-</span><span class="operator">&gt;</span>update(<span class="operator">*</span>json))
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(item<span class="operator">-</span><span class="operator">&gt;</span>toJson());
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> updateItemFields(<span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> itemId<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qjsonobject.html" translate="no">QJsonObject</a></span><span class="operator">&gt;</span> json <span class="operator">=</span> byteArrayToJsonObject(request<span class="operator">.</span>body());
+         <span class="keyword">if</span> (<span class="operator">!</span>json)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">auto</span> item <span class="operator">=</span> data<span class="operator">.</span>find(itemId);
+         <span class="keyword">if</span> (item <span class="operator">=</span><span class="operator">=</span> data<span class="operator">.</span>end())
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NoContent);
+         item<span class="operator">-</span><span class="operator">&gt;</span>updateFields(<span class="operator">*</span>json);
+
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(item<span class="operator">-</span><span class="operator">&gt;</span>toJson());
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> deleteItem(<span class="type"><a href="../qtcore/qttypes.html#qint64-typedef" translate="no">qint64</a></span> itemId)
+     {
+         <span class="keyword">if</span> (<span class="operator">!</span>data<span class="operator">.</span>remove(itemId))
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NoContent);
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>Ok);
+     }
+
+ <span class="keyword">private</span>:
+     IdMap<span class="operator">&lt;</span>T<span class="operator">&gt;</span> data;
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>FromJsonFactory<span class="operator">&lt;</span>T<span class="operator">&gt;</span><span class="operator">&gt;</span> factory;
+ };
+
+ <span class="keyword">class</span> SessionApi
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> SessionApi(<span class="keyword">const</span> IdMap<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span> <span class="operator">&amp;</span>sessions<span class="operator">,</span>
+                         std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>FromJsonFactory<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span><span class="operator">&gt;</span> factory)
+         : sessions(sessions)<span class="operator">,</span> factory(std<span class="operator">::</span>move(factory))
+     {
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> registerSession(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> json <span class="operator">=</span> byteArrayToJsonObject(request<span class="operator">.</span>body());
+         <span class="keyword">if</span> (<span class="operator">!</span>json)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+         <span class="keyword">const</span> <span class="keyword">auto</span> item <span class="operator">=</span> factory<span class="operator">-</span><span class="operator">&gt;</span>fromJson(<span class="operator">*</span>json);
+         <span class="keyword">if</span> (<span class="operator">!</span>item)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">const</span> <span class="keyword">auto</span> session <span class="operator">=</span> sessions<span class="operator">.</span>insert(item<span class="operator">-</span><span class="operator">&gt;</span>id<span class="operator">,</span> <span class="operator">*</span>item);
+         session<span class="operator">-</span><span class="operator">&gt;</span>startSession();
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(session<span class="operator">-</span><span class="operator">&gt;</span>toJson());
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> login(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> json <span class="operator">=</span> byteArrayToJsonObject(request<span class="operator">.</span>body());
+
+         <span class="keyword">if</span> (<span class="operator">!</span>json <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">-</span><span class="operator">&gt;</span>contains(<span class="string">&quot;email&quot;</span>) <span class="operator">|</span><span class="operator">|</span> <span class="operator">!</span>json<span class="operator">-</span><span class="operator">&gt;</span>contains(<span class="string">&quot;password&quot;</span>))
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">auto</span> maybeSession <span class="operator">=</span> std<span class="operator">::</span>find_if(
+                 sessions<span class="operator">.</span>begin()<span class="operator">,</span> sessions<span class="operator">.</span>end()<span class="operator">,</span>
+                 <span class="operator">[</span>email <span class="operator">=</span> json<span class="operator">-</span><span class="operator">&gt;</span>value(<span class="string">&quot;email&quot;</span>)<span class="operator">.</span>toString()<span class="operator">,</span>
+                  password <span class="operator">=</span> json<span class="operator">-</span><span class="operator">&gt;</span>value(<span class="string">&quot;password&quot;</span>)<span class="operator">.</span>toString()<span class="operator">]</span>(<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>it) {
+                     <span class="keyword">return</span> it<span class="operator">.</span>password <span class="operator">=</span><span class="operator">=</span> password <span class="operator">&amp;</span><span class="operator">&amp;</span> it<span class="operator">.</span>email <span class="operator">=</span><span class="operator">=</span> email;
+                 });
+         <span class="keyword">if</span> (maybeSession <span class="operator">=</span><span class="operator">=</span> sessions<span class="operator">.</span>end()) {
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>NotFound);
+         }
+         maybeSession<span class="operator">-</span><span class="operator">&gt;</span>startSession();
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(maybeSession<span class="operator">-</span><span class="operator">&gt;</span>toJson());
+     }
+
+     <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span> logout(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request)
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> maybeToken <span class="operator">=</span> getTokenFromRequest(request);
+         <span class="keyword">if</span> (<span class="operator">!</span>maybeToken)
+             <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>BadRequest);
+
+         <span class="keyword">auto</span> maybeSession <span class="operator">=</span> std<span class="operator">::</span>find(sessions<span class="operator">.</span>begin()<span class="operator">,</span> sessions<span class="operator">.</span>end()<span class="operator">,</span> <span class="operator">*</span>maybeToken);
+         <span class="keyword">if</span> (maybeSession <span class="operator">!</span><span class="operator">=</span> sessions<span class="operator">.</span>end())
+             maybeSession<span class="operator">-</span><span class="operator">&gt;</span>endSession();
+         <span class="keyword">return</span> <span class="type"><a href="qhttpserverresponse.html" translate="no">QHttpServerResponse</a></span>(<span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span><span class="operator">::</span>StatusCode<span class="operator">::</span>Ok);
+     }
+
+     <span class="type">bool</span> authorize(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request) <span class="keyword">const</span>
+     {
+         <span class="keyword">const</span> <span class="keyword">auto</span> maybeToken <span class="operator">=</span> getTokenFromRequest(request);
+         <span class="keyword">if</span> (maybeToken) {
+             <span class="keyword">const</span> <span class="keyword">auto</span> maybeSession <span class="operator">=</span> std<span class="operator">::</span>find(sessions<span class="operator">.</span>begin()<span class="operator">,</span> sessions<span class="operator">.</span>end()<span class="operator">,</span> <span class="operator">*</span>maybeToken);
+             <span class="keyword">return</span> maybeSession <span class="operator">!</span><span class="operator">=</span> sessions<span class="operator">.</span>end() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">*</span>maybeSession <span class="operator">=</span><span class="operator">=</span> <span class="operator">*</span>maybeToken;
+         }
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+     }
+
+ <span class="keyword">private</span>:
+     IdMap<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span> sessions;
+     std<span class="operator">::</span>unique_ptr<span class="operator">&lt;</span>FromJsonFactory<span class="operator">&lt;</span>SessionEntry<span class="operator">&gt;</span><span class="operator">&gt;</span> factory;
+ };
+
+ <span class="preprocessor">#endif // APIBEHAVIOR_H</span>
+</pre>

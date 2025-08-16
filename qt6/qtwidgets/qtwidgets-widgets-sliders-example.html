@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- sliders.qdoc -->
+  <meta name="description" content="The Sliders example shows how to use the different types of sliders available in Qt: QSlider, QScrollBar and QDial.">
+  <title>Sliders Example | Qt Widgets | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwidgets-index.html">Qt Widgets</a></li>
+<li><a href="examples-widgets.html">Qt Widgets Examples</a></li>
+<li>Sliders Example</li>
+<li id="buildversion"><a href="qtwidgets-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#window-class-definition">Window Class Definition</a></li>
+<li class="level1"><a href="#window-class-implementation">Window Class Implementation</a></li>
+<li class="level1"><a href="#slidersgroup-class-definition">SlidersGroup Class Definition</a></li>
+<li class="level1"><a href="#slidersgroup-class-implementation">SlidersGroup Class Implementation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Sliders Example</h1>
+<!-- $$$widgets/sliders-brief -->
+<p>The Sliders example shows how to use the different types of sliders available in Qt: <a href="qslider.html" translate="no">QSlider</a>, <a href="qscrollbar.html" translate="no">QScrollBar</a> and <a href="qdial.html" translate="no">QDial</a>.</p>
+<!-- @@@widgets/sliders -->
+<!-- $$$widgets/sliders-description -->
+<div class="descr" id="details">
+<p>Qt provides three types of slider-like widgets: <a href="qslider.html" translate="no">QSlider</a>, <a href="qscrollbar.html" translate="no">QScrollBar</a> and <a href="qdial.html" translate="no">QDial</a>. They all inherit most of their functionality from <a href="qabstractslider.html" translate="no">QAbstractSlider</a>, and can in theory replace each other in an application since the differences only concern their look and feel. This example shows what they look like, how they work and how their behavior and appearance can be manipulated through their properties.</p>
+<p>The example also demonstrates how signals and slots can be used to synchronize the behavior of two or more widgets, and how to override <a href="qwidget.html#resizeEvent" translate="no">resizeEvent</a>() to implement a responsive layout.</p>
+<div class="border"><p class="centerAlign"><img src="images/sliders-example.png" alt="" /></p></div><p class="figCaption">Screenshot of the Sliders example</p>
+<p>The Sliders example consists of two classes:</p>
+<ul>
+<li><code translate="no">SlidersGroup</code> is a custom widget. It combines a <a href="qslider.html" translate="no">QSlider</a>, a <a href="qscrollbar.html" translate="no">QScrollBar</a> and a <a href="qdial.html" translate="no">QDial</a>.</li>
+<li><code translate="no">Window</code> is the main widget combining a <a href="qgroupbox.html" translate="no">QGroupBox</a> and a SlidersGroup. The <a href="qgroupbox.html" translate="no">QGroupBox</a> contains several widgets that control the behavior of the slider-like widgets.</li>
+</ul>
+<p>First we will review the <code translate="no">Window</code> class, then we will take a look at the <code translate="no">SlidersGroup</code> class.</p>
+<h4 id="window-class-definition">Window Class Definition</h4>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Window : <span class="keyword">public</span> <span class="type"><a href="qwidget.html" translate="no">QWidget</a></span>
+ {
+     Q_OBJECT
+
+ <span class="keyword">public</span>:
+     Window(<span class="type"><a href="qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+ <span class="keyword">private</span>:
+     <span class="type">void</span> createControls(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>title);
+     <span class="type">void</span> resizeEvent(<span class="type"><a href="../qtgui/qresizeevent.html" translate="no">QResizeEvent</a></span> <span class="operator">*</span>e);
+
+     SlidersGroup <span class="operator">*</span>slidersGroup;
+
+     <span class="type"><a href="qgroupbox.html" translate="no">QGroupBox</a></span> <span class="operator">*</span>controlsGroup;
+     <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span> <span class="operator">*</span>minimumLabel;
+     <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span> <span class="operator">*</span>maximumLabel;
+     <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span> <span class="operator">*</span>valueLabel;
+     <span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span> <span class="operator">*</span>invertedAppearance;
+     <span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span> <span class="operator">*</span>invertedKeyBindings;
+     <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span> <span class="operator">*</span>minimumSpinBox;
+     <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span> <span class="operator">*</span>maximumSpinBox;
+     <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span> <span class="operator">*</span>valueSpinBox;
+     <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span> <span class="operator">*</span>layout;
+ };
+</pre>
+<p>The <code translate="no">Window</code> class inherits from <a href="qwidget.html" translate="no">QWidget</a>. It displays the slider widgets and allows the user to set their minimum, maximum and current values and to customize their appearance, key bindings and orientation. We use a private <code translate="no">createControls()</code> function to create the widgets that provide these controlling mechanisms and to connect them to the slider widgets.</p>
+<h4 id="window-class-implementation">Window Class Implementation</h4>
+<pre class="cpp" translate="no">
+ Window<span class="operator">::</span>Window(<span class="type"><a href="qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="qwidget.html" translate="no">QWidget</a></span>(parent)
+ {
+     slidersGroup <span class="operator">=</span> <span class="keyword">new</span> SlidersGroup(tr(<span class="string">&quot;Sliders&quot;</span>));
+
+     createControls(tr(<span class="string">&quot;Controls&quot;</span>));
+</pre>
+<p>In the constructor we first create the <code translate="no">SlidersGroup</code> widget that displays the slider widgets. With <code translate="no">createControls()</code> we create the controlling widgets, and connect those to to the sliders.</p>
+<pre class="cpp" translate="no">
+     layout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span>(<span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>LeftToRight);
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(controlsGroup);
+     layout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(slidersGroup);
+     setLayout(layout);
+
+     minimumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="number">0</span>);
+     maximumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="number">20</span>);
+     valueSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setValue(<span class="number">5</span>);
+
+     setWindowTitle(tr(<span class="string">&quot;Sliders&quot;</span>));
+ }
+</pre>
+<p>We put the groups of control widgets and the sliders in a horizontal layout before we initialize the minimum, maximum and current values. The initialization of the current value will propagate to the slider widgets through the connection we made between <code translate="no">valueSpinBox</code> and the <code translate="no">SlidersGroup</code> widgets. The minimum and maximum values propagate through the connections we created with <code translate="no">createControls()</code>.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Window<span class="operator">::</span>createControls(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>title)
+ {
+     controlsGroup <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qgroupbox.html" translate="no">QGroupBox</a></span>(title);
+
+     minimumLabel <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span>(tr(<span class="string">&quot;Minimum value:&quot;</span>));
+     maximumLabel <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span>(tr(<span class="string">&quot;Maximum value:&quot;</span>));
+     valueLabel <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qlabel.html" translate="no">QLabel</a></span>(tr(<span class="string">&quot;Current value:&quot;</span>));
+
+     invertedAppearance <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span>(tr(<span class="string">&quot;Inverted appearance&quot;</span>));
+     invertedKeyBindings <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span>(tr(<span class="string">&quot;Inverted key bindings&quot;</span>));
+</pre>
+<p>In the private <code translate="no">createControls()</code> function, we let a <a href="qgroupbox.html" translate="no">QGroupBox</a> (<code translate="no">controlsGroup</code>) display the control widgets. A group box can provide a frame, a title and a keyboard shortcut, and displays various other widgets inside itself. The group of control widgets is composed by two checkboxes, and three spin boxes with labels.</p>
+<p>After creating the labels, we create the two checkboxes. Checkboxes are typically used to represent features in an application that can be enabled or disabled. When <code translate="no">invertedAppearance</code> is enabled, the slider values are inverted. The table below shows the appearance for the different slider-like widgets:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th ></th><th  colspan="2"><a href="qslider.html" translate="no">QSlider</a></th><th  colspan="2"><a href="qscrollbar.html" translate="no">QScrollBar</a></th><th  colspan="2"><a href="qdial.html" translate="no">QDial</a></th></tr>
+<tr class="qt-style"><th ></th><th >Normal</th><th >Inverted</th><th >Normal</th><th >Inverted</th><th >Normal</th><th >Inverted</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="../qtcore/qt.html#Orientation-enum" translate="no">Qt::Horizontal</a></td><td >Left to right</td><td >Right to left</td><td >Left to right</td><td >Right to left</td><td >Clockwise</td><td >Counterclockwise</td></tr>
+<tr valign="top" class="even"><td ><a href="../qtcore/qt.html#Orientation-enum" translate="no">Qt::Vertical</a></td><td >Bottom to top</td><td >Top to bottom</td><td >Top to bottom</td><td >Bottom to top</td><td >Clockwise</td><td >Counterclockwise</td></tr>
+</table></div>
+<p>It is common to invert the appearance of a vertical <a href="qslider.html" translate="no">QSlider</a>. A vertical slider that controls volume, for example, will typically go from bottom to top (the non-inverted appearance), whereas a vertical slider that controls the position of an object on screen might go from top to bottom, because screen coordinates go from top to bottom.</p>
+<p>When the <code translate="no">invertedKeyBindings</code> option is enabled (corresponding to the <a href="qabstractslider.html#invertedControls-prop" translate="no">QAbstractSlider::invertedControls</a> property), the slider's wheel and key events are inverted. The normal key bindings mean that scrolling the mouse wheel &quot;up&quot; or using keys like page up will increase the slider's current value towards its maximum. Inverted, the same wheel and key events will move the value toward the slider's minimum. This can be useful if the <i>appearance</i> of a slider is inverted: Some users might expect the keys to still work the same way on the value, whereas others might expect <b translate="no">PageUp</b> to mean &quot;up&quot; on the screen.</p>
+<p>Note that for horizontal and vertical scroll bars, the key bindings are inverted by default: <b translate="no">PageDown</b> increases the current value, and <b translate="no">PageUp</b> decreases it.</p>
+<pre class="cpp" translate="no">
+     minimumSpinBox <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span>;
+     minimumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setRange(<span class="operator">-</span><span class="number">100</span><span class="operator">,</span> <span class="number">100</span>);
+     minimumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setSingleStep(<span class="number">1</span>);
+
+     maximumSpinBox <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span>;
+     maximumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setRange(<span class="operator">-</span><span class="number">100</span><span class="operator">,</span> <span class="number">100</span>);
+     maximumSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setSingleStep(<span class="number">1</span>);
+
+     valueSpinBox <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span>;
+     valueSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setRange(<span class="operator">-</span><span class="number">100</span><span class="operator">,</span> <span class="number">100</span>);
+     valueSpinBox<span class="operator">-</span><span class="operator">&gt;</span>setSingleStep(<span class="number">1</span>);
+</pre>
+<p>Then we create the spin boxes. <a href="qspinbox.html" translate="no">QSpinBox</a> allows the user to choose a value by clicking the up and down buttons or pressing the <b translate="no">Up</b> and <b translate="no">Down</b> keys on the keyboard to modify the value currently displayed. The user can also type in the value manually. The spin boxes control the minimum, maximum and current values for the <a href="qslider.html" translate="no">QSlider</a>, <a href="qscrollbar.html" translate="no">QScrollBar</a>, and <a href="qdial.html" translate="no">QDial</a> widgets.</p>
+<pre class="cpp" translate="no">
+     connect(slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>valueChanged<span class="operator">,</span>
+             valueSpinBox<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span><span class="operator">::</span>setValue);
+     connect(valueSpinBox<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span>
+             slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>setValue);
+     connect(minimumSpinBox<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span>
+             slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>setMinimum);
+     connect(maximumSpinBox<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qspinbox.html" translate="no">QSpinBox</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span>
+             slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>setMaximum);
+     connect(invertedAppearance<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span><span class="operator">::</span>toggled<span class="operator">,</span>
+             slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>invertAppearance);
+     connect(invertedKeyBindings<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcheckbox.html" translate="no">QCheckBox</a></span><span class="operator">::</span>toggled<span class="operator">,</span>
+             slidersGroup<span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>invertKeyBindings);
+
+     <span class="type"><a href="qgridlayout.html" translate="no">QGridLayout</a></span> <span class="operator">*</span>controlsLayout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qgridlayout.html" translate="no">QGridLayout</a></span>;
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(minimumLabel<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">0</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(maximumLabel<span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(valueLabel<span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">0</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(minimumSpinBox<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">1</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(maximumSpinBox<span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">1</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(valueSpinBox<span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">1</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(invertedAppearance<span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="number">2</span>);
+     controlsLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(invertedKeyBindings<span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">2</span>);
+     controlsGroup<span class="operator">-</span><span class="operator">&gt;</span>setLayout(controlsLayout);
+
+ }
+</pre>
+<p>Then we connect the <code translate="no">slidersGroup</code> and the <code translate="no">valueSpinBox</code> to each other, so that the slider widgets and the control widget will behave synchronized when the current value of one of them changes. The <code translate="no">valueChanged()</code> signal is emitted with the new value as argument. The <code translate="no">setValue()</code> slot sets the current value of the widget to the new value, and emits <code translate="no">valueChanged()</code> if the new value is different from the old one.</p>
+<p>We synchronize the behavior of the control widgets and the slider widgets through their signals and slots. We connect each control widget to both the horizontal and vertical group of slider widgets. We also connect <code translate="no">orientationCombo</code> to the <a href="qstackedwidget.html" translate="no">QStackedWidget</a>, so that the correct &quot;page&quot; is shown. Finally, we lay out the control widgets in a <a href="qgridlayout.html" translate="no">QGridLayout</a> within the <code translate="no">controlsGroup</code> group box.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Window<span class="operator">::</span>resizeEvent(<span class="type"><a href="../qtgui/qresizeevent.html" translate="no">QResizeEvent</a></span> <span class="operator">*</span>)
+ {
+     <span class="keyword">if</span> (width() <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">|</span><span class="operator">|</span> height() <span class="operator">=</span><span class="operator">=</span> <span class="number">0</span>)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">const</span> <span class="type">double</span> aspectRatio <span class="operator">=</span> <span class="type">double</span>(width()) <span class="operator">/</span> <span class="type">double</span>(height());
+
+     <span class="keyword">if</span> (aspectRatio <span class="operator">&lt;</span> <span class="number">1.0</span>) {
+         layout<span class="operator">-</span><span class="operator">&gt;</span>setDirection(<span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>TopToBottom);
+         slidersGroup<span class="operator">-</span><span class="operator">&gt;</span>setOrientation(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Horizontal);
+     } <span class="keyword">else</span> <span class="keyword">if</span> (aspectRatio <span class="operator">&gt;</span> <span class="number">1.0</span>) {
+         layout<span class="operator">-</span><span class="operator">&gt;</span>setDirection(<span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>LeftToRight);
+         slidersGroup<span class="operator">-</span><span class="operator">&gt;</span>setOrientation(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Vertical);
+     }
+ }
+</pre>
+<p>Lastly, we override resizeEvent() from <a href="qwidget.html" translate="no">QWidget</a>. We guard against dividing by zero, and otherwise compute the aspect ratio of the widget. If the window has a portrait format, then we set the layout to organize the groups of control widgets and sliders vertically, and we give the sliders a horizontal orientation. If the window has a landscape format, then we change the layout to show the sliders and controlling widgets side by side, and give the sliders a vertical orientation.</p>
+<h4 id="slidersgroup-class-definition">SlidersGroup Class Definition</h4>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> SlidersGroup : <span class="keyword">public</span> <span class="type"><a href="qgroupbox.html" translate="no">QGroupBox</a></span>
+ {
+     Q_OBJECT
+
+ <span class="keyword">public</span>:
+     SlidersGroup(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="type"><a href="qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> valueChanged(<span class="type">int</span> value);
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> setValue(<span class="type">int</span> value);
+     <span class="type">void</span> setMinimum(<span class="type">int</span> value);
+     <span class="type">void</span> setMaximum(<span class="type">int</span> value);
+     <span class="type">void</span> invertAppearance(<span class="type">bool</span> invert);
+     <span class="type">void</span> invertKeyBindings(<span class="type">bool</span> invert);
+     <span class="type">void</span> setOrientation(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Orientation orientation);
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qslider.html" translate="no">QSlider</a></span> <span class="operator">*</span>slider;
+     <span class="type"><a href="qscrollbar.html" translate="no">QScrollBar</a></span> <span class="operator">*</span>scrollBar;
+     <span class="type"><a href="qdial.html" translate="no">QDial</a></span> <span class="operator">*</span>dial;
+     <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span> <span class="operator">*</span>slidersLayout;
+ };
+</pre>
+<p>The <code translate="no">SlidersGroup</code> class inherits from <a href="qgroupbox.html" translate="no">QGroupBox</a>. It provides a frame and a title, and contains a <a href="qslider.html" translate="no">QSlider</a>, a <a href="qscrollbar.html" translate="no">QScrollBar</a> and a <a href="qdial.html" translate="no">QDial</a>.</p>
+<p>We provide a <code translate="no">valueChanged()</code> signal and a public <code translate="no">setValue()</code> slot with equivalent functionality to the ones in <a href="qabstractslider.html" translate="no">QAbstractSlider</a> and <a href="qspinbox.html" translate="no">QSpinBox</a>. In addition, we implement several other public slots to set the minimum and maximum value, and invert the slider widgets' appearance as well as key bindings, and set the orientation.</p>
+<h4 id="slidersgroup-class-implementation">SlidersGroup Class Implementation</h4>
+<pre class="cpp" translate="no">
+ SlidersGroup<span class="operator">::</span>SlidersGroup(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>title<span class="operator">,</span> <span class="type"><a href="qwidget.html" translate="no">QWidget</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="qgroupbox.html" translate="no">QGroupBox</a></span>(title<span class="operator">,</span> parent)
+ {
+     slider <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qslider.html" translate="no">QSlider</a></span>;
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setFocusPolicy(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>StrongFocus);
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setTickPosition(<span class="type"><a href="qslider.html" translate="no">QSlider</a></span><span class="operator">::</span>TicksBothSides);
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setTickInterval(<span class="number">10</span>);
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setSingleStep(<span class="number">1</span>);
+
+     scrollBar <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qscrollbar.html" translate="no">QScrollBar</a></span>;
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setFocusPolicy(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>StrongFocus);
+
+     dial <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qdial.html" translate="no">QDial</a></span>;
+     dial<span class="operator">-</span><span class="operator">&gt;</span>setFocusPolicy(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>StrongFocus);
+</pre>
+<p>First we create the slider-like widgets with the appropriate properties. In particular we set the focus policy for each widget. <a href="../qtcore/qt.html#FocusPolicy-enum" translate="no">Qt::FocusPolicy</a> is an enum type that defines the various policies a widget can have with respect to acquiring keyboard focus. The <a href="../qtcore/qt.html#FocusPolicy-enum" translate="no">Qt::StrongFocus</a> policy means that the widget accepts focus by both tabbing and clicking.</p>
+<pre class="cpp" translate="no">
+     connect(slider<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qslider.html" translate="no">QSlider</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> scrollBar<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qscrollbar.html" translate="no">QScrollBar</a></span><span class="operator">::</span>setValue);
+     connect(scrollBar<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qscrollbar.html" translate="no">QScrollBar</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> dial<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qdial.html" translate="no">QDial</a></span><span class="operator">::</span>setValue);
+     connect(dial<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qdial.html" translate="no">QDial</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> slider<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qslider.html" translate="no">QSlider</a></span><span class="operator">::</span>setValue);
+     connect(dial<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qdial.html" translate="no">QDial</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>SlidersGroup<span class="operator">::</span>valueChanged);
+</pre>
+<p>Then we connect the widgets with each other, so that they will stay synchronized when the current value of one of them changes.</p>
+<p>We connect <code translate="no">dial</code>'s <code translate="no">valueChanged()</code> signal to the <code translate="no">SlidersGroup</code>'s <code translate="no">valueChanged()</code> signal, to notify the other widgets in the application (i.e., the control widgets) of the changed value.</p>
+<pre class="cpp" translate="no">
+
+     slidersLayout <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span>(<span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>LeftToRight);
+     slidersLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(slider);
+     slidersLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(scrollBar);
+     slidersLayout<span class="operator">-</span><span class="operator">&gt;</span>addWidget(dial);
+     setLayout(slidersLayout);
+ }
+</pre>
+<p>Finally, we create the layout for the slider widgets within the group box. We start with a horizontal arrangement of the sliders.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>setValue(<span class="type">int</span> value)
+ {
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setValue(value);
+ }
+</pre>
+<p>The <code translate="no">setValue()</code> slot sets the value of the <a href="qslider.html" translate="no">QSlider</a>. We don't need to explicitly call <a href="qabstractslider.html#value-prop" translate="no">setValue</a>() on the <a href="qscrollbar.html" translate="no">QScrollBar</a> and <a href="qdial.html" translate="no">QDial</a> widgets, since <a href="qslider.html" translate="no">QSlider</a> will emit the <a href="qabstractslider.html#valueChanged" translate="no">valueChanged</a>() signal when its value changes, triggering a domino effect.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>setMinimum(<span class="type">int</span> value)
+ {
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setMinimum(value);
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setMinimum(value);
+     dial<span class="operator">-</span><span class="operator">&gt;</span>setMinimum(value);
+ }
+
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>setMaximum(<span class="type">int</span> value)
+ {
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setMaximum(value);
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setMaximum(value);
+     dial<span class="operator">-</span><span class="operator">&gt;</span>setMaximum(value);
+ }
+</pre>
+<p>The <code translate="no">setMinimum()</code> and <code translate="no">setMaximum()</code> slots are used by the <code translate="no">Window</code> class to set the range of the <a href="qslider.html" translate="no">QSlider</a>, <a href="qscrollbar.html" translate="no">QScrollBar</a>, and <a href="qdial.html" translate="no">QDial</a> widgets.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>invertAppearance(<span class="type">bool</span> invert)
+ {
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setInvertedAppearance(invert);
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setInvertedAppearance(invert);
+     dial<span class="operator">-</span><span class="operator">&gt;</span>setInvertedAppearance(invert);
+ }
+
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>invertKeyBindings(<span class="type">bool</span> invert)
+ {
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setInvertedControls(invert);
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setInvertedControls(invert);
+     dial<span class="operator">-</span><span class="operator">&gt;</span>setInvertedControls(invert);
+ }
+</pre>
+<p>The <code translate="no">invertAppearance()</code> and <code translate="no">invertKeyBindings()</code> slots control the child widgets' <a href="qabstractslider.html#invertedAppearance-prop" translate="no">invertedAppearance</a> and <a href="qabstractslider.html#invertedControls-prop" translate="no">invertedControls</a> properties.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> SlidersGroup<span class="operator">::</span>setOrientation(<span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Orientation orientation)
+ {
+     slidersLayout<span class="operator">-</span><span class="operator">&gt;</span>setDirection(orientation <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Horizontal
+                                 <span class="operator">?</span> <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>TopToBottom
+                                 : <span class="type"><a href="qboxlayout.html" translate="no">QBoxLayout</a></span><span class="operator">::</span>LeftToRight);
+     scrollBar<span class="operator">-</span><span class="operator">&gt;</span>setOrientation(orientation);
+     slider<span class="operator">-</span><span class="operator">&gt;</span>setOrientation(orientation);
+ }
+</pre>
+<p>The setOrientation() slot controls the direction of the layout and the orientation of the sliders. In a horizontal group, the sliders have a horizontal orientation, and are laid out on top of each other. In a vertical group, the sliders have a vertical orientation, and are laid out next to each other.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/widgets/widgets/sliders?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@widgets/sliders -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

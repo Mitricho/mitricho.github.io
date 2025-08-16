@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qjniarray.qdoc -->
+  <meta name="description" content="The QJniArray class is a template class that represents an array in Java.">
+  <title>QJniArray Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QJniArray</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QJniArray Class</h1>
+<span class="small-subtitle" translate="no">template &lt;typename T&gt; class QJniArray</span>
+<!-- $$$QJniArray-brief -->
+<p>The QJniArray class is a template class that represents an array in Java. <a href="#details">More...</a></p>
+<!-- @@@QJniArray -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QJniArray&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.8</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qjniarraybase.html" translate="no">QJniArrayBase</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qjniarray-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#const_iterator-typedef" translate="no">const_iterator</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#const_reverse_iterator-typedef" translate="no">const_reverse_iterator</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-1" translate="no">QJniArray</a></b>(Container &amp;&amp;<i>container</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-2" translate="no">QJniArray</a></b>(QJniArray&lt;Other&gt; &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-3" translate="no">QJniArray</a></b>(QJniArrayBase::size_type <i>size</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-4" translate="no">QJniArray</a></b>(QJniObject &amp;&amp;<i>object</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-5" translate="no">QJniArray</a></b>(const QJniArray&lt;Other&gt; &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-6" translate="no">QJniArray</a></b>(const QJniObject &amp;<i>object</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-7" translate="no">QJniArray</a></b>(jarray <i>array</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#QJniArray-8" translate="no">QJniArray</a></b>(std::initializer_list&lt;T&gt; &amp;<i>list</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#dtor.QJniArray" translate="no">~QJniArray</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> auto </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#arrayObject" translate="no">arrayObject</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reference </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#at" translate="no">at</a></b>(QJniArrayBase::size_type <i>i</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#begin" translate="no">begin</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#begin-1" translate="no">begin</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#cbegin" translate="no">cbegin</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#cend" translate="no">cend</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#constBegin" translate="no">constBegin</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#constEnd" translate="no">constEnd</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#crbegin" translate="no">crbegin</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#crend" translate="no">crend</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#end" translate="no">end</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#end-1" translate="no">end</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#rbegin" translate="no">rbegin</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#rbegin-1" translate="no">rbegin</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#rend" translate="no">rend</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reverse_iterator </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#rend-1" translate="no">rend</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Container </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#toContainer" translate="no">toContainer</a></b>(Container &amp;&amp;<i>container</i> = {}) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt; &amp;</td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#operator-eq" translate="no">operator=</a></b>(QJniArray&lt;Other&gt; &amp;&amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt; &amp;</td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#operator-eq-1" translate="no">operator=</a></b>(const QJniArray&lt;Other&gt; &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> QJniArray&lt;T&gt;::reference </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#operator-5b-5d" translate="no">operator[]</a></b>(QJniArrayBase::size_type <i>i</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QJniArray&lt;T&gt;::const_reference </td><td class="memItemRight bottomAlign"><b><a href="qjniarray.html#operator-5b-5d-1" translate="no">operator[]</a></b>(QJniArrayBase::size_type <i>i</i>) const</td></tr>
+</table></div>
+<!-- $$$QJniArray-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The QJniArray template makes it easy to work with Java methods that return or take a Java array.</p>
+<div class="admonition note">
+<p><b>Note: </b><a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-10.html">Java arrays</a> can hold primitive types and objects. The array itself can be treated like a Java Object, and the JNI framework provides explicit APIs to work with such arrays. In addition, the Java class library provides container types such as <code translate="no">List</code> or <code translate="no">ArrayList</code>. Objects of those types can not be represented by a QJniArray. Instead, use <a href="qjniobject.html" translate="no">QJniObject</a> to call the class-specific member functions.</p>
+</div>
+<p>To create a QJniArray instance, either construct it from a corresponding C++ container:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> intList;
+ <span class="keyword">const</span> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span> intArray <span class="operator">=</span> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>(intList);
+</pre>
+<p>or from an initializer list:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span> intArray{<span class="number">1</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">3</span>};
+</pre>
+<p>QJniArray will create a new Java array and copy the C++-side data into it.</p>
+<p>When calling functions that return an array via <a href="qjniobject.html#callMethod" translate="no">QJniObject::callMethod</a>, such as <code translate="no">char[] toCharArray()</code> in the Java <code translate="no">String</code> class, specify the return type as a C array (<code translate="no">jchar[]</code> in the following):</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="keyword">auto</span> charArray <span class="operator">=</span> stringObject<span class="operator">.</span>callMethod<span class="operator">&lt;</span>jchar<span class="operator">[</span><span class="operator">]</span><span class="operator">&gt;</span>(<span class="string">&quot;toCharArray&quot;</span>);
+</pre>
+<p>The <code translate="no">charArray</code> variable will be of type <code translate="no">QJniArray&lt;jchar&gt;</code>, and hold a new global reference to the <code translate="no">jcharArray</code> JNI object.</p>
+<p>Note that the arrays in the code snippets above are all const. Accessing elements in a const array is considerably more efficient than operating on a mutable array.</p>
+<p>A QJniArray can also be constructed from an existing <code translate="no">jarray</code> or <a href="qjniobject.html" translate="no">QJniObject</a>. However, note that no type checking is performed to verify that the <code translate="no">jarray</code> or <a href="qjniobject.html" translate="no">QJniObject</a> indeed represents an array holding elements of the specified type, and accessing a mismatching QJniArray results in undefined behavior.</p>
+<p>The data in a QJniArray can either be accessed element by element using <a href="qjniarray.html#at" translate="no">at</a>() or <a href="qjniarray.html#operator-5b-5d" translate="no">operator[]</a>(), or iterated over.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>value : array)
+     process(value);
+</pre>
+<p>To copy the entire array into a C++ side Qt container, use the <a href="qjniarray.html#toContainer" translate="no">toContainer</a>() function.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="keyword">auto</span> bytes <span class="operator">=</span> object<span class="operator">.</span>callMethod<span class="operator">&lt;</span>jbyte<span class="operator">[</span><span class="operator">]</span><span class="operator">&gt;</span>(<span class="string">&quot;getBytes&quot;</span>);
+ <span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span> data <span class="operator">=</span> bytes<span class="operator">.</span>toContainer();
+</pre>
+<p>which happens implicitly in</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="keyword">auto</span> data <span class="operator">=</span> object<span class="operator">.</span>callMethod<span class="operator">&lt;</span><span class="type"><a href="qbytearray.html" translate="no">QByteArray</a></span><span class="operator">&gt;</span>(<span class="string">&quot;getBytes&quot;</span>);
+</pre>
+<p>The return type of <a href="qjniarray.html#toContainer" translate="no">toContainer</a>() depends on the type that QJniArray has been instantiated with. For <code translate="no">QJniArray&lt;T&gt;</code> this will typically be <code translate="no">QList&lt;T&gt;</code>, with the following exceptions:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Specialization</th><th >C++ type</th></tr></thead>
+<tr valign="top" class="odd"><td >QJniArray&lt;jbyte&gt;</td><td ><a href="qbytearray.html" translate="no">QByteArray</a></td></tr>
+<tr valign="top" class="even"><td >QJniArray&lt;char&gt;</td><td ><a href="qbytearray.html" translate="no">QByteArray</a></td></tr>
+<tr valign="top" class="odd"><td >QJniArray&lt;jstring&gt;</td><td ><a href="qstringlist.html" translate="no">QStringList</a></td></tr>
+<tr valign="top" class="even"><td >QJniArray&lt;<a href="qstring.html" translate="no">QString</a>&gt;</td><td ><a href="qstringlist.html" translate="no">QStringList</a></td></tr>
+</table></div>
+<p>An array of a fixed size can also be created without any data, and can then be populated element by element using <a href="qjniarray.html#operator-5b-5d" translate="no">operator[]</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span><span class="operator">&lt;</span>jint<span class="operator">&gt;</span> intArray(size);
+ <span class="keyword">for</span> (<span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>; i <span class="operator">&lt;</span> size; <span class="operator">+</span><span class="operator">+</span>i)
+     intArray<span class="operator">[</span>i<span class="operator">]</span> <span class="operator">=</span> i;
+</pre>
+<p>or a mutable iterator:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span><span class="operator">&lt;</span><span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">&gt;</span> strings(size);
+ <span class="type">int</span> i <span class="operator">=</span> <span class="number">0</span>;
+ <span class="keyword">for</span> (<span class="keyword">auto</span> string : strings) <span class="comment">// note: not 'auto &amp;string'</span>
+     string <span class="operator">=</span> u<span class="string">&quot;Row %1&quot;</span>_s<span class="operator">.</span>arg(i<span class="operator">+</span><span class="operator">+</span>);
+</pre>
+<p>As in Java, the size of an array can not be changed, but the array variable can be assigned to a different array.</p>
+<div class="admonition note">
+<p><b>Note: </b>Java arrays are limited to 32 bits, and the <code translate="no">size_type</code> member type of QJniArray is <code translate="no">jsize</code>, which is a 32bit integer type. Trying to construct a QJniArray from a C++ container that holds more than 2^32 elements will cause a runtime assertion.</p>
+</div>
+</div>
+<!-- @@@QJniArray -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$const_iterator -->
+<h3 class="fn" translate="no" id="const_iterator-typedef"><code class="details extra" translate="no">[alias]</code> QJniArray::<span class="name">const_iterator</span></h3>
+<p>A random-access, const iterator for <a href="qjniarray.html" translate="no">QJniArray</a>.</p>
+<!-- @@@const_iterator -->
+<!-- $$$const_reverse_iterator -->
+<h3 class="fn" translate="no" id="const_reverse_iterator-typedef"><code class="details extra" translate="no">[alias]</code> QJniArray::<span class="name">const_reverse_iterator</span></h3>
+<p>A reverse iterator for the <a href="qjniarray.html" translate="no">QJniArray</a>, synonym for <code translate="no">std::reverse_iterator&lt;const_iterator&gt;</code>.</p>
+<!-- @@@const_reverse_iterator -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="begin"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::iterator</span> QJniArray::<span class="name">begin</span>()</h3><h3 class="fn fngroupitem" translate="no" id="begin-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">begin</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="cbegin"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">cbegin</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="constBegin"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">constBegin</span>() const</h3></div>
+<p>Returns an <a href="containers.html#stl-style-iterators">STL-style const iterator</a> pointing to the first item in the array.</p>
+<p>If the array is <a href="qjniarraybase.html#isValid" translate="no">invalid</a>, then this will return the same iterator as the corresponding <a href="qjniarray.html#end" translate="no">end</a>() function.</p>
+<p><b>See also </b><a href="qjniarray.html#end" translate="no">end</a>() and <a href="qjniarray.html#rbegin" translate="no">rbegin</a>().</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="end"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::iterator</span> QJniArray::<span class="name">end</span>()</h3><h3 class="fn fngroupitem" translate="no" id="cend"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">cend</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="constEnd"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">constEnd</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="end-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_iterator</span> QJniArray::<span class="name">end</span>() const</h3></div>
+<p>Returns an <a href="containers.html#stl-style-iterators">STL-style iterator</a> pointing just after the last item in the list.</p>
+<p><b>See also </b><a href="qjniarray.html#begin" translate="no">begin</a>() and <a href="qjniarray.html#rend" translate="no">rend</a>().</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="rbegin"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::reverse_iterator</span> QJniArray::<span class="name">rbegin</span>()</h3><h3 class="fn fngroupitem" translate="no" id="crbegin"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reverse_iterator</span> QJniArray::<span class="name">crbegin</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="rbegin-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reverse_iterator</span> QJniArray::<span class="name">rbegin</span>() const</h3></div>
+<p>Returns an <a href="containers.html#stl-style-iterators">STL-style reverse iterator</a> pointing to the first item in the array, in reverse order.</p>
+<p>If the array is <a href="qjniarraybase.html#isValid" translate="no">invalid</a>, then this will return the same iterator as the corresponding <a href="qjniarray.html#rend" translate="no">rend</a>() function.</p>
+<p><b>See also </b><a href="qjniarray.html#rend" translate="no">rend</a>() and <a href="qjniarray.html#begin" translate="no">begin</a>().</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="rend"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::reverse_iterator</span> QJniArray::<span class="name">rend</span>()</h3><h3 class="fn fngroupitem" translate="no" id="crend"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reverse_iterator</span> QJniArray::<span class="name">crend</span>() const</h3><h3 class="fn fngroupitem" translate="no" id="rend-1"><code class="details extra" translate="no">[noexcept]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reverse_iterator</span> QJniArray::<span class="name">rend</span>() const</h3></div>
+<p>Returns an <a href="containers.html#stl-style-iterators">STL-style reverse iterator</a> pointing just after the last item in the list, in reverse order.</p>
+<p><b>See also </b><a href="qjniarray.html#rbegin" translate="no">rbegin</a>() and <a href="qjniarray.html#end" translate="no">end</a>().</p>
+<!-- @@@ -->
+<!-- $$$ -->
+<div class="fngroup">
+<h3 class="fn fngroupitem" translate="no" id="at"><span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reference</span> QJniArray::<span class="name">at</span>(<span class="type"><a href="qjniarraybase.html#size_type-typedef" translate="no">QJniArrayBase::size_type</a></span> <i>i</i>) const</h3><h3 class="fn fngroupitem" translate="no" id="operator-5b-5d-1"><span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::const_reference</span> QJniArray::<span class="name">operator[]</span>(<span class="type"><a href="qjniarraybase.html#size_type-typedef" translate="no">QJniArrayBase::size_type</a></span> <i>i</i>) const</h3></div>
+<p>Returns the value at position <i translate="no">i</i> in the wrapped Java array.</p>
+<p><i translate="no">i</i> must be a valid index position in the list (i.e., 0 &lt;= <i translate="no">i</i> &lt; <a href="qjniarraybase.html#size" translate="no">size</a>()).</p>
+<p><b>See also </b><a href="qjniarraybase.html#size" translate="no">size</a>().</p>
+<!-- @@@ -->
+<!-- $$$QJniArray[overload1]$$$QJniArray -->
+<h3 class="fn" translate="no" id="QJniArray">QJniArray::<span class="name">QJniArray</span>()</h3>
+<p>Default constructor of QJniArray. This does not create a Java-side array, and the instance will be invalid.</p>
+<p><b>See also </b><a href="qjniarraybase.html#isValid" translate="no">isValid</a>.</p>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayContainer&& -->
+<h3 class="fn" translate="no" id="QJniArray-1"><code class="details extra" translate="no">[explicit]</code> template &lt;typename Container, QJniArrayBase::if_compatible_source_container&lt;Container&gt; = true&gt; QJniArray::<span class="name">QJniArray</span>(<span class="type">Container</span> &amp;&amp;<i>container</i>)</h3>
+<p>Constructs a QJniArray that wraps a newly-created Java array for elements of type <code translate="no">Container::value_type</code>, and populates the Java array with the data from <i translate="no">container</i>.</p>
+<h4 id="constraints">Constraints</h4>
+<p>Participates in overload resolution only if <code translate="no">Container</code> is a container that stores elements of a <a href="qjniobject.html#jni-types" translate="no">JNI type</a> or equivalent C++ type, and provides a forward iterator.</p>
+<p>The specialization of the constructed QJniArray depends on the value type of the <i translate="no">container</i>. For a <code translate="no">Container&lt;T&gt;</code> (such as e.g. <code translate="no">QList&lt;T&gt;</code>) it will typically be <code translate="no">QJniArray&lt;T&gt;</code>, with the following exceptions:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Container</th><th >Specialization</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qbytearray.html" translate="no">QByteArray</a></td><td >QJniArray&lt;jbyte&gt;</td></tr>
+<tr valign="top" class="even"><td ><a href="qstringlist.html" translate="no">QStringList</a></td><td >QJniArray&lt;jstring&gt;</td></tr>
+<thead><tr class="qt-style"><th >Container::value_type</th><th >Specialization</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qjniobject.html" translate="no">QJniObject</a></td><td >QJniArray&lt;jobject&gt;</td></tr>
+</table></div>
+<p><b>See also </b><a href="qjniarraybase.html#fromContainer" translate="no">QJniArrayBase::fromContainer</a>() and <a href="qjniarray.html#toContainer" translate="no">toContainer</a>().</p>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayQJniArray<Other>&& -->
+<h3 class="fn" translate="no" id="QJniArray-2"><code class="details extra" translate="no">[noexcept]</code> template &lt;typename Other, QJniArrayBase::if_convertible&lt;Other, T&gt; = true&gt; QJniArray::<span class="name">QJniArray</span>(<span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">Other</span>&gt; &amp;&amp;<i>other</i>)</h3>
+<p>Constructs a QJniArray by moving from <i translate="no">other</i>. The <i translate="no">other</i> array becomes <a href="qjniarraybase.html#isValid" translate="no">invalid</a>.</p>
+<h4 id="constraints">Constraints</h4>
+<p>Participates in overload resolution only if the element type <code translate="no">Other</code> of <i translate="no">other</i> is convertible to the element type <code translate="no">T</code> of the QJniArray being constructed. However, no actual conversion takes place.</p>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayQJniArrayBase::size_type -->
+<h3 class="fn" translate="no" id="QJniArray-3"><code class="details extra" translate="no">[explicit, since 6.9]</code> QJniArray::<span class="name">QJniArray</span>(<span class="type"><a href="qjniarraybase.html#size_type-typedef" translate="no">QJniArrayBase::size_type</a></span> <i>size</i>)</h3>
+<p>Constructs an empty QJniArray of size <i translate="no">size</i>. The elements in the array do not get initialized.</p>
+<p>This function was introduced in Qt 6.9.</p>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayQJniObject&& -->
+<h3 class="fn" translate="no" id="QJniArray-4"><code class="details extra" translate="no">[explicit noexcept]</code> QJniArray::<span class="name">QJniArray</span>(<span class="type"><a href="qjniobject.html" translate="no">QJniObject</a></span> &amp;&amp;<i>object</i>)</h3>
+<p>Constructs a QJniArray by moving from <i translate="no">object</i>. The <a href="qjniobject.html" translate="no">QJniObject</a> becomes <a href="qjniobject.html#isValid" translate="no">invalid</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor does not perform any validation of whether the Java-side object is an array of the correct type. Accessing a mismatching QJniArray results in undefined behavior.</p>
+</div>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayconstQJniArray<Other>& -->
+<h3 class="fn" translate="no" id="QJniArray-5">template &lt;typename Other, QJniArrayBase::if_convertible&lt;Other, T&gt; = true&gt; QJniArray::<span class="name">QJniArray</span>(const <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">Other</span>&gt; &amp;<i>other</i>)</h3>
+<p>Constructs a QJniArray by copying <i translate="no">other</i>. Both QJniArray objects will reference the same Java array object.</p>
+<h4 id="constraints">Constraints</h4>
+<p>Participates in overload resolution only if the element type <code translate="no">Other</code> of <i translate="no">other</i> is convertible to the element type <code translate="no">T</code> of the QJniArray being constructed. However, no actual conversion takes place.</p>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayconstQJniObject& -->
+<h3 class="fn" translate="no" id="QJniArray-6"><code class="details extra" translate="no">[explicit]</code> QJniArray::<span class="name">QJniArray</span>(const <span class="type"><a href="qjniobject.html" translate="no">QJniObject</a></span> &amp;<i>object</i>)</h3>
+<p>Constructs a QJniArray that wraps the same Java array as <i translate="no">object</i>, creating a new global reference. To construct a QJniArray from an existing local reference, use a <a href="qjniobject.html" translate="no">QJniObject</a> constructed via <a href="qjniobject.html#fromLocalRef" translate="no">fromLocalRef</a>().</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor does not perform any validation of whether the Java-side object is an array of the correct type. Accessing a mismatching QJniArray results in undefined behavior.</p>
+</div>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArrayjarray -->
+<h3 class="fn" translate="no" id="QJniArray-7"><code class="details extra" translate="no">[explicit]</code> QJniArray::<span class="name">QJniArray</span>(<span class="type">jarray</span> <i>array</i>)</h3>
+<p>Constructs a QJniArray that wraps the Java-side array <i translate="no">array</i>, creating a new global reference to <i translate="no">array</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This constructor does not perform any validation of whether the Java-side object is an array of the correct type. Accessing a mismatching QJniArray results in undefined behavior.</p>
+</div>
+<!-- @@@QJniArray -->
+<!-- $$$QJniArray$$$QJniArraystd::initializer_list<T>& -->
+<h3 class="fn" translate="no" id="QJniArray-8"><code class="details extra" translate="no">[default]</code> QJniArray::<span class="name">QJniArray</span>(<span class="type">std::initializer_list</span>&lt;<span class="type">T</span>&gt; &amp;<i>list</i>)</h3>
+<p>Constructs a QJniArray that wraps a newly-created Java array for elements of type <code translate="no">T</code>, and populates the Java array with the data from <i translate="no">list</i>.</p>
+<p><b>See also </b><a href="qjniarraybase.html#fromContainer" translate="no">QJniArrayBase::fromContainer</a>() and <a href="qjniarray.html#toContainer" translate="no">toContainer</a>().</p>
+<!-- @@@QJniArray -->
+<!-- $$$~QJniArray[overload1]$$$~QJniArray -->
+<h3 class="fn" translate="no" id="dtor.QJniArray">QJniArray::<span class="name">~QJniArray</span>()</h3>
+<p>Destroys the <a href="qjniarray.html" translate="no">QJniArray</a> object and releases any references held to the wrapped Java array.</p>
+<!-- @@@~QJniArray -->
+<!-- $$$arrayObject[overload1]$$$arrayObject -->
+<h3 class="fn" translate="no" id="arrayObject"><span class="type">auto</span> QJniArray::<span class="name">arrayObject</span>() const</h3>
+<p>Returns the wrapped Java object as the suitable <code translate="no">jarray</code> type that matches the element type <code translate="no">T</code> of this <a href="qjniarray.html" translate="no">QJniArray</a> object.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >T</th><th >jarray type</th></tr></thead>
+<tr valign="top" class="odd"><td >jbyte</td><td >jbyteArray</td></tr>
+<tr valign="top" class="even"><td >jchar</td><td >jcharArray</td></tr>
+<tr valign="top" class="odd"><td >...</td><td >...</td></tr>
+<tr valign="top" class="even"><td >jobject</td><td >jobjectArray</td></tr>
+<tr valign="top" class="odd"><td ><a href="qjniobject.html" translate="no">QJniObject</a></td><td >jobjectArray</td></tr>
+<tr valign="top" class="even"><td ><a href="qtjnitypes.html#Q_DECLARE_JNI_CLASS" translate="no">Q_DECLARE_JNI_CLASS</a></td><td >jobjectArray</td></tr>
+</table></div>
+<!-- @@@arrayObject -->
+<!-- $$$toContainer[overload1]$$$toContainerContainer&& -->
+<h3 class="fn" translate="no" id="toContainer">template &lt;typename Container = QJniArrayBase::ToContainerType&lt;T&gt;, QJniArrayBase::if_compatible_target_container&lt;T, Container&gt; = true&gt; <span class="type">Container</span> QJniArray::<span class="name">toContainer</span>(<span class="type">Container</span> &amp;&amp;<i>container</i> = {}) const</h3>
+<p>Returns a container populated with the data in the wrapped Java array.</p>
+<p>If no <i translate="no">container</i> is provided, then the type of the container returned depends on the element type of this <a href="qjniarray.html" translate="no">QJniArray</a>. For <code translate="no">QJniArray&lt;T&gt;</code> this will typically be <code translate="no">QList&lt;T&gt;</code>, with the following exceptions:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Specialization</th><th >C++ type</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qjniarray.html" translate="no">QJniArray</a>&lt;jbyte&gt;</td><td ><a href="qbytearray.html" translate="no">QByteArray</a></td></tr>
+<tr valign="top" class="even"><td ><a href="qjniarray.html" translate="no">QJniArray</a>&lt;char&gt;</td><td ><a href="qbytearray.html" translate="no">QByteArray</a></td></tr>
+<tr valign="top" class="odd"><td ><a href="qjniarray.html" translate="no">QJniArray</a>&lt;jstring&gt;</td><td ><a href="qstringlist.html" translate="no">QStringList</a></td></tr>
+<tr valign="top" class="even"><td ><a href="qjniarray.html" translate="no">QJniArray</a>&lt;<a href="qstring.html" translate="no">QString</a>&gt;</td><td ><a href="qstringlist.html" translate="no">QStringList</a></td></tr>
+</table></div>
+<p>If you pass in a named container (an lvalue) for <i translate="no">container</i>, then that container is filled, and a reference to it is returned. If you pass in a temporary container (an rvalue, incl. the default argument), then that container is filled, and returned by value.</p>
+<p>This function returns immediately if the array is <a href="qjniarraybase.html#isValid" translate="no">invalid</a>.</p>
+<p><b>See also </b><a href="qjniarraybase.html#fromContainer" translate="no">QJniArrayBase::fromContainer</a>().</p>
+<!-- @@@toContainer -->
+<!-- $$$operator=[overload1]$$$operator=QJniArray<Other>&& -->
+<h3 class="fn" translate="no" id="operator-eq"><code class="details extra" translate="no">[noexcept]</code> template &lt;typename Other, QJniArrayBase::if_convertible&lt;Other, T&gt; = true&gt; <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt; &amp;QJniArray::<span class="name">operator=</span>(<span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">Other</span>&gt; &amp;&amp;<i>other</i>)</h3>
+<p>Moves <i translate="no">other</i> into this <a href="qjniarray.html" translate="no">QJniArray</a>, and returns a reference to this. The <i translate="no">other</i> array becomes <a href="qjniarraybase.html#isValid" translate="no">invalid</a>.</p>
+<h4 id="constraints">Constraints</h4>
+<p>Participates in overload resolution only if the element type <code translate="no">Other</code> of <i translate="no">other</i> is convertible to the element type <code translate="no">T</code> of this <a href="qjniarray.html" translate="no">QJniArray</a>. However, no actual conversion takes place.</p>
+<!-- @@@operator= -->
+<!-- $$$operator=$$$operator=constQJniArray<Other>& -->
+<h3 class="fn" translate="no" id="operator-eq-1">template &lt;typename Other, QJniArrayBase::if_convertible&lt;Other, T&gt; = true&gt; <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt; &amp;QJniArray::<span class="name">operator=</span>(const <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">Other</span>&gt; &amp;<i>other</i>)</h3>
+<p>Assigns <i translate="no">other</i> to this <a href="qjniarray.html" translate="no">QJniArray</a>, and returns a reference to this. Both <a href="qjniarray.html" translate="no">QJniArray</a> objects will reference the same Java array object.</p>
+<h4 id="constraints">Constraints</h4>
+<p>Participates in overload resolution only if the element type <code translate="no">Other</code> of <i translate="no">other</i> is convertible to the element type <code translate="no">T</code> of this <a href="qjniarray.html" translate="no">QJniArray</a>. However, no actual conversion takes place.</p>
+<!-- @@@operator= -->
+<!-- $$$operator[][overload1]$$$operator[]QJniArrayBase::size_type -->
+<h3 class="fn" translate="no" id="operator-5b-5d"><code class="details extra" translate="no">[since 6.9]</code> <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span>&lt;<span class="type">T</span>&gt;<span class="type">::reference</span> QJniArray::<span class="name">operator[]</span>(<span class="type"><a href="qjniarraybase.html#size_type-typedef" translate="no">QJniArrayBase::size_type</a></span> <i>i</i>)</h3>
+<p>Returns a reference object for value at position <i translate="no">i</i> in the wrapped Java array.</p>
+<p><i translate="no">i</i> must be a valid index position in the list (i.e., 0 &lt;= <i translate="no">i</i> &lt; <a href="qjniarraybase.html#size" translate="no">size</a>()).</p>
+<p>The returned reference object holds the value at position <i translate="no">i</i>, and in most cases will convert implicitly to the value. Assigning to the returned reference will overwrite the entry in the Java array. However, calling mutating member functions on the object will not modify the entry in the array. To call member function on the result of this operator, dereference the reference object:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qjniarray.html#QJniArray" translate="no">QJniArray</a></span><span class="operator">&lt;</span><span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">&gt;</span> strings <span class="operator">=</span> object<span class="operator">.</span>callMethod<span class="operator">&lt;</span><span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">[</span><span class="operator">]</span><span class="operator">&gt;</span>(<span class="string">&quot;getStrings&quot;</span>);
+ <span class="keyword">if</span> (<span class="operator">!</span>strings<span class="operator">.</span>isEmpty()) {
+     <span class="keyword">if</span> (<span class="operator">!</span>(<span class="operator">*</span>array<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>)<span class="operator">.</span>isEmpty()) {
+         <span class="comment">// ...</span>
+     }
+ }
+</pre>
+<p>However, if modifying the value in the array itself is not intended, make the array const, or use <a href="qjniarray.html#at" translate="no">at</a>() instead.</p>
+<p>This function was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qjniarray.html#at" translate="no">at</a>() and <a href="qjniarraybase.html#size" translate="no">size</a>().</p>
+<!-- @@@operator[] -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

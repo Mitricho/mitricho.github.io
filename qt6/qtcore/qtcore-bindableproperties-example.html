@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- bindableproperties.qdoc -->
+  <meta name="description" content="Demonstrates how the usage of bindable properties can simplify your C++ code.">
+  <title>Bindable Properties | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Bindable Properties</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#modeling-subscription-system-with-signal-slot-approach">Modeling Subscription System with Signal/Slot Approach</a></li>
+<li class="level1"><a href="#modeling-subscription-system-with-bindbable-properties">Modeling Subscription System with Bindbable Properties</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Bindable Properties</h1>
+<!-- $$$bindableproperties-brief -->
+<p>Demonstrates how the usage of bindable properties can simplify your C++ code.</p>
+<!-- @@@bindableproperties -->
+<!-- $$$bindableproperties-description -->
+<div class="descr" id="details">
+<p>In this example we will demonstrate two approaches for expressing the relationships between different objects depending on each other: signal/slot connection-based and bindable property-based. For this purpose we will consider a subscription service model to calculate the cost of the subscription.</p>
+<p class="centerAlign"><img src="images/bindable_properties_example.png" alt="" /></p><h4 id="modeling-subscription-system-with-signal-slot-approach">Modeling Subscription System with Signal/Slot Approach</h4>
+<p>Let's first consider the usual pre-Qt 6 implementation. To model the subscription service the <code translate="no">Subscription</code> class is used:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Subscription : <span class="keyword">public</span> <span class="type"><a href="qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+ <span class="keyword">public</span>:
+     <span class="keyword">enum</span> Duration { Monthly <span class="operator">=</span> <span class="number">1</span><span class="operator">,</span> Quarterly <span class="operator">=</span> <span class="number">3</span><span class="operator">,</span> Yearly <span class="operator">=</span> <span class="number">12</span> };
+
+     Subscription(User <span class="operator">*</span>user);
+
+     <span class="type">void</span> calculatePrice();
+     <span class="type">int</span> price() <span class="keyword">const</span> { <span class="keyword">return</span> m_price; }
+
+     Duration duration() <span class="keyword">const</span> { <span class="keyword">return</span> m_duration; }
+     <span class="type">void</span> setDuration(Duration newDuration);
+
+     <span class="type">bool</span> isValid() <span class="keyword">const</span> { <span class="keyword">return</span> m_isValid; }
+     <span class="type">void</span> updateValidity();
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> priceChanged();
+     <span class="type">void</span> durationChanged();
+     <span class="type">void</span> isValidChanged();
+
+ <span class="keyword">private</span>:
+     <span class="type">double</span> calculateDiscount() <span class="keyword">const</span>;
+     <span class="type">int</span> basePrice() <span class="keyword">const</span>;
+
+     <span class="type"><a href="qpointer.html" translate="no">QPointer</a></span><span class="operator">&lt;</span>User<span class="operator">&gt;</span> m_user;
+     Duration m_duration <span class="operator">=</span> Monthly;
+     <span class="type">int</span> m_price <span class="operator">=</span> <span class="number">0</span>;
+     <span class="type">bool</span> m_isValid <span class="operator">=</span> <span class="keyword">false</span>;
+ };
+</pre>
+<p>It stores the information about the subscription and provides corresponding getters, setters, and notifier signals for informing the listeners about the subscription information changes. It also keeps a pointer to an instance of the <code translate="no">User</code> class.</p>
+<p>The price of the subscription is calculated based on the duration of the subscription:</p>
+<pre class="cpp" translate="no">
+ <span class="type">double</span> Subscription<span class="operator">::</span>calculateDiscount() <span class="keyword">const</span>
+ {
+     <span class="keyword">switch</span> (m_duration) {
+     <span class="keyword">case</span> Monthly:
+         <span class="keyword">return</span> <span class="number">1</span>;
+     <span class="keyword">case</span> Quarterly:
+         <span class="keyword">return</span> <span class="number">0.9</span>;
+     <span class="keyword">case</span> Yearly:
+         <span class="keyword">return</span> <span class="number">0.6</span>;
+     }
+     Q_ASSERT(<span class="keyword">false</span>);
+     <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span>;
+ }
+</pre>
+<p>And user's location:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> Subscription<span class="operator">::</span>basePrice() <span class="keyword">const</span>
+ {
+     <span class="keyword">if</span> (m_user<span class="operator">-</span><span class="operator">&gt;</span>country() <span class="operator">=</span><span class="operator">=</span> User<span class="operator">::</span>Country<span class="operator">::</span>AnyTerritory)
+         <span class="keyword">return</span> <span class="number">0</span>;
+
+     <span class="keyword">return</span> (m_user<span class="operator">-</span><span class="operator">&gt;</span>country() <span class="operator">=</span><span class="operator">=</span> User<span class="operator">::</span>Country<span class="operator">::</span>Norway) <span class="operator">?</span> <span class="number">100</span> : <span class="number">80</span>;
+ }
+</pre>
+<p>When the price changes, the <code translate="no">priceChanged()</code> signal is emitted, to notify the listeners about the change:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Subscription<span class="operator">::</span>calculatePrice()
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> oldPrice <span class="operator">=</span> m_price;
+
+     m_price <span class="operator">=</span> <a href="qtnumeric.html#qRound" translate="no">qRound</a>(calculateDiscount() <span class="operator">*</span> <span class="type">int</span>(m_duration) <span class="operator">*</span> basePrice());
+     <span class="keyword">if</span> (m_price <span class="operator">!</span><span class="operator">=</span> oldPrice)
+         <span class="keyword">emit</span> priceChanged();
+ }
+</pre>
+<p>Similarly, when the duration of the subscription changes, the <code translate="no">durationChanged()</code> signal is emitted.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Subscription<span class="operator">::</span>setDuration(Duration newDuration)
+ {
+     <span class="keyword">if</span> (newDuration <span class="operator">!</span><span class="operator">=</span> m_duration) {
+         m_duration <span class="operator">=</span> newDuration;
+         calculatePrice();
+         <span class="keyword">emit</span> durationChanged();
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Both methods need to check if the data is actually changed and only then emit the signals. <code translate="no">setDuration()</code> also needs to recalculate the price when the duration has changed.</p>
+</div>
+<p>The <code translate="no">Subscription</code> is not valid unless the user has a valid country and age, so the validity is updated in the following way:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Subscription<span class="operator">::</span>updateValidity()
+ {
+     <span class="type">bool</span> isValid <span class="operator">=</span> m_isValid;
+     m_isValid <span class="operator">=</span> m_user<span class="operator">-</span><span class="operator">&gt;</span>country() <span class="operator">!</span><span class="operator">=</span> User<span class="operator">::</span>Country<span class="operator">::</span>AnyTerritory <span class="operator">&amp;</span><span class="operator">&amp;</span> m_user<span class="operator">-</span><span class="operator">&gt;</span>age() <span class="operator">&gt;</span> <span class="number">12</span>;
+
+     <span class="keyword">if</span> (m_isValid <span class="operator">!</span><span class="operator">=</span> isValid)
+         <span class="keyword">emit</span> isValidChanged();
+ }
+</pre>
+<p>The <code translate="no">User</code> class is simple: it stores country and age of the user and provides the corresponding getters, setters, and notifier signals:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> User : <span class="keyword">public</span> <span class="type"><a href="qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+
+ <span class="keyword">public</span>:
+     <span class="keyword">using</span> Country <span class="operator">=</span> <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>Territory;
+
+ <span class="keyword">public</span>:
+     Country country() <span class="keyword">const</span> { <span class="keyword">return</span> m_country; }
+     <span class="type">void</span> setCountry(Country country);
+
+     <span class="type">int</span> age() <span class="keyword">const</span> { <span class="keyword">return</span> m_age; }
+     <span class="type">void</span> setAge(<span class="type">int</span> age);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> countryChanged();
+     <span class="type">void</span> ageChanged();
+
+ <span class="keyword">private</span>:
+     Country m_country { <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>AnyTerritory };
+     <span class="type">int</span> m_age { <span class="number">0</span> };
+ };
+
+ <span class="type">void</span> User<span class="operator">::</span>setCountry(Country country)
+ {
+     <span class="keyword">if</span> (m_country <span class="operator">!</span><span class="operator">=</span> country) {
+         m_country <span class="operator">=</span> country;
+         <span class="keyword">emit</span> countryChanged();
+     }
+ }
+
+ <span class="type">void</span> User<span class="operator">::</span>setAge(<span class="type">int</span> age)
+ {
+     <span class="keyword">if</span> (m_age <span class="operator">!</span><span class="operator">=</span> age) {
+         m_age <span class="operator">=</span> age;
+         <span class="keyword">emit</span> ageChanged();
+     }
+ }
+</pre>
+<p>In the <code translate="no">main()</code> function we initialize instances of <code translate="no">User</code> and <code translate="no">Subscription</code>:</p>
+<pre class="cpp" translate="no">
+     User user;
+     Subscription subscription(<span class="operator">&amp;</span>user);
+</pre>
+<p>And do the proper signal-slot connections to update the <code translate="no">user</code> and <code translate="no">subscription</code> data when UI elements change. That is straightforward, so we will skip this part.</p>
+<p>Next, we connect to <code translate="no">Subscription::priceChanged()</code> to update the price in the UI when the price changes.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>subscription<span class="operator">,</span> <span class="operator">&amp;</span>Subscription<span class="operator">::</span>priceChanged<span class="operator">,</span> priceDisplay<span class="operator">,</span> <span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span> lc{<span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>AnyLanguage<span class="operator">,</span> user<span class="operator">.</span>country()};
+         priceDisplay<span class="operator">-</span><span class="operator">&gt;</span>setText(lc<span class="operator">.</span>toCurrencyString(subscription<span class="operator">.</span>price() <span class="operator">/</span> subscription<span class="operator">.</span>duration()));
+     });
+</pre>
+<p>We also connect to <code translate="no">Subscription::isValidChanged()</code> to disable the price display if the subscription isn't valid.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>subscription<span class="operator">,</span> <span class="operator">&amp;</span>Subscription<span class="operator">::</span>isValidChanged<span class="operator">,</span> priceDisplay<span class="operator">,</span> <span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         priceDisplay<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(subscription<span class="operator">.</span>isValid());
+     });
+</pre>
+<p>Because the subscription price and validity also depend on the user's country and age, we also need to connect to the <code translate="no">User::countryChanged()</code> and <code translate="no">User::ageChanged()</code> signals and update <code translate="no">subscription</code> accordingly.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>user<span class="operator">,</span> <span class="operator">&amp;</span>User<span class="operator">::</span>countryChanged<span class="operator">,</span> <span class="operator">&amp;</span>subscription<span class="operator">,</span> <span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         subscription<span class="operator">.</span>calculatePrice();
+         subscription<span class="operator">.</span>updateValidity();
+     });
+
+     <span class="type"><a href="qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>user<span class="operator">,</span> <span class="operator">&amp;</span>User<span class="operator">::</span>ageChanged<span class="operator">,</span> <span class="operator">&amp;</span>subscription<span class="operator">,</span> <span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         subscription<span class="operator">.</span>updateValidity();
+     });
+</pre>
+<p>This works, but there are some problems:</p>
+<ul>
+<li>There's a lot of boilerplate code for the signal-slot connections in order to properly track changes to both <code translate="no">user</code> and <code translate="no">subscription</code>. If any of the dependencies of the price changes, we need to remember to emit the corresponding notifier signals, recalculate the price, and update it in the UI.</li>
+<li>If more dependencies for price calculation are added in the future, we'll need to add more signal-slot connections and make sure all the dependencies are properly updated whenever any of them changes. The overall complexity will grow, and the code will become harder to maintain.</li>
+<li>The <code translate="no">Subscription</code> and <code translate="no">User</code> classes depend on the metaobject system to be able to use the signal/slot mechanism.</li>
+</ul>
+<p>Can we do better?</p>
+<h4 id="modeling-subscription-system-with-bindbable-properties">Modeling Subscription System with Bindbable Properties</h4>
+<p>Now let's see how the <a href="bindableproperties.html">Qt Bindable Properties</a> can help to solve the same problem. First, let's have a look at the <code translate="no">BindableSubscription</code> class, which is similar to the <code translate="no">Subscription</code> class, but is implemented using bindable properties:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BindableSubscription
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">enum</span> Duration { Monthly <span class="operator">=</span> <span class="number">1</span><span class="operator">,</span> Quarterly <span class="operator">=</span> <span class="number">3</span><span class="operator">,</span> Yearly <span class="operator">=</span> <span class="number">12</span> };
+
+     BindableSubscription(BindableUser <span class="operator">*</span>user);
+     BindableSubscription(<span class="keyword">const</span> BindableSubscription <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+
+     <span class="type">int</span> price() <span class="keyword">const</span> { <span class="keyword">return</span> m_price; }
+     <span class="type"><a href="qbindable.html" translate="no">QBindable</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> bindablePrice() { <span class="keyword">return</span> <span class="operator">&amp;</span>m_price; }
+
+     Duration duration() <span class="keyword">const</span> { <span class="keyword">return</span> m_duration; }
+     <span class="type">void</span> setDuration(Duration newDuration);
+     <span class="type"><a href="qbindable.html" translate="no">QBindable</a></span><span class="operator">&lt;</span>Duration<span class="operator">&gt;</span> bindableDuration() { <span class="keyword">return</span> <span class="operator">&amp;</span>m_duration; }
+
+     <span class="type">bool</span> isValid() <span class="keyword">const</span> { <span class="keyword">return</span> m_isValid; }
+     <span class="type"><a href="qbindable.html" translate="no">QBindable</a></span><span class="operator">&lt;</span><span class="type">bool</span><span class="operator">&gt;</span> bindableIsValid() { <span class="keyword">return</span> <span class="operator">&amp;</span>m_isValid; }
+
+ <span class="keyword">private</span>:
+     <span class="type">double</span> calculateDiscount() <span class="keyword">const</span>;
+     <span class="type">int</span> basePrice() <span class="keyword">const</span>;
+
+     BindableUser <span class="operator">*</span>m_user;
+     <span class="type"><a href="qproperty.html" translate="no">QProperty</a></span><span class="operator">&lt;</span>Duration<span class="operator">&gt;</span> m_duration { Monthly };
+     <span class="type"><a href="qproperty.html" translate="no">QProperty</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> m_price { <span class="number">0</span> };
+     <span class="type"><a href="qproperty.html" translate="no">QProperty</a></span><span class="operator">&lt;</span><span class="type">bool</span><span class="operator">&gt;</span> m_isValid { <span class="keyword">false</span> };
+ };
+</pre>
+<p>The first difference we can notice, is that the data fields are now wrapped inside <a href="qproperty.html" translate="no">QProperty</a> classes, and the notifier signals (and as a consequence the dependency from the metaobject system) are gone, and new methods returning a <a href="qbindable.html" translate="no">QBindable</a> for each <a href="qproperty.html" translate="no">QProperty</a> are added instead. The <code translate="no">calculatePrice()</code> and <code translate="no">updateValidty()</code> methods are also removed. We'll see below why they aren't needed anymore.</p>
+<p>The <code translate="no">BindableUser</code> class differs from the <code translate="no">User</code> class in a similar way:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> BindableUser
+ {
+ <span class="keyword">public</span>:
+     <span class="keyword">using</span> Country <span class="operator">=</span> <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>Territory;
+
+ <span class="keyword">public</span>:
+     BindableUser() <span class="operator">=</span> <span class="keyword">default</span>;
+     BindableUser(<span class="keyword">const</span> BindableUser <span class="operator">&amp;</span>) <span class="operator">=</span> <span class="keyword">delete</span>;
+
+     Country country() <span class="keyword">const</span> { <span class="keyword">return</span> m_country; }
+     <span class="type">void</span> setCountry(Country country);
+     <span class="type"><a href="qbindable.html" translate="no">QBindable</a></span><span class="operator">&lt;</span>Country<span class="operator">&gt;</span> bindableCountry() { <span class="keyword">return</span> <span class="operator">&amp;</span>m_country; }
+
+     <span class="type">int</span> age() <span class="keyword">const</span> { <span class="keyword">return</span> m_age; }
+     <span class="type">void</span> setAge(<span class="type">int</span> age);
+     <span class="type"><a href="qbindable.html" translate="no">QBindable</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> bindableAge() { <span class="keyword">return</span> <span class="operator">&amp;</span>m_age; }
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qproperty.html" translate="no">QProperty</a></span><span class="operator">&lt;</span>Country<span class="operator">&gt;</span> m_country { <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>AnyTerritory };
+     <span class="type"><a href="qproperty.html" translate="no">QProperty</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> m_age { <span class="number">0</span> };
+ };
+</pre>
+<p>The second difference is in the implementation of these classes. First of all, the dependencies between <code translate="no">subscription</code> and <code translate="no">user</code> are now tracked via binding expressions:</p>
+<pre class="cpp" translate="no">
+ BindableSubscription<span class="operator">::</span>BindableSubscription(BindableUser <span class="operator">*</span>user) : m_user(user)
+ {
+     Q_ASSERT(user);
+
+     m_price<span class="operator">.</span>setBinding(
+             <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> { <span class="keyword">return</span> <a href="qtnumeric.html#qRound" translate="no">qRound</a>(calculateDiscount() <span class="operator">*</span> <span class="type">int</span>(m_duration) <span class="operator">*</span> basePrice()); });
+
+     m_isValid<span class="operator">.</span>setBinding(<span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> {
+         <span class="keyword">return</span> m_user<span class="operator">-</span><span class="operator">&gt;</span>country() <span class="operator">!</span><span class="operator">=</span> BindableUser<span class="operator">::</span>Country<span class="operator">::</span>AnyCountry <span class="operator">&amp;</span><span class="operator">&amp;</span> m_user<span class="operator">-</span><span class="operator">&gt;</span>age() <span class="operator">&gt;</span> <span class="number">12</span>;
+     });
+ }
+</pre>
+<p>Behind the scenes the bindable properties track the dependency changes and update the property's value whenever a change is detected. So if, for example, user's country or age is changed, subscription's price and validity will be updated automatically.</p>
+<p>Another difference is that the setters are now trivial:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> BindableSubscription<span class="operator">::</span>setDuration(Duration newDuration)
+ {
+     m_duration <span class="operator">=</span> newDuration;
+ }
+
+ <span class="type">void</span> BindableUser<span class="operator">::</span>setCountry(Country country)
+ {
+     m_country <span class="operator">=</span> country;
+ }
+
+ <span class="type">void</span> BindableUser<span class="operator">::</span>setAge(<span class="type">int</span> age)
+ {
+     m_age <span class="operator">=</span> age;
+ }
+</pre>
+<p>There's no need to check inside the setters if the property's value has actually changed, <a href="qproperty.html" translate="no">QProperty</a> already does that. The dependent properties will be notified about the change only if the value has actually changed.</p>
+<p>The code for updating the information about the price in the UI is also simplified:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">auto</span> priceChangeHandler <span class="operator">=</span> subscription<span class="operator">.</span>bindablePrice()<span class="operator">.</span>subscribe(<span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         <span class="type"><a href="qlocale.html" translate="no">QLocale</a></span> lc{<span class="type"><a href="qlocale.html" translate="no">QLocale</a></span><span class="operator">::</span>AnyLanguage<span class="operator">,</span> user<span class="operator">.</span>country()};
+         priceDisplay<span class="operator">-</span><span class="operator">&gt;</span>setText(lc<span class="operator">.</span>toCurrencyString(subscription<span class="operator">.</span>price() <span class="operator">/</span> subscription<span class="operator">.</span>duration()));
+     });
+
+     <span class="keyword">auto</span> priceValidHandler <span class="operator">=</span> subscription<span class="operator">.</span>bindableIsValid()<span class="operator">.</span>subscribe(<span class="operator">[</span><span class="operator">&amp;</span><span class="operator">]</span> {
+         priceDisplay<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(subscription<span class="operator">.</span>isValid());
+     });
+</pre>
+<p>We subscribe to changes via <code translate="no">bindablePrice()</code> and <code translate="no">bindableIsValid()</code> and update the price display accordingly when any of these properties changes the value. The subscriptions will stay alive as long as the corresponding handlers are alive.</p>
+<p>Also note that the copy constructors of both <code translate="no">BindableSubscription</code> and <code translate="no">BindableUser</code> are disabled, since it's not defined what should happen with their bindings when copying.</p>
+<p>As you can see, the code became much simpler, and the problems mentioned above are solved:</p>
+<ul>
+<li>The boilerplate code for the signal-slot connections is removed, the dependencies are now tracked automatically.</li>
+<li>The code is easier to maintain. Adding more dependencies in the future will only require adding the corresponding bindable properties and setting the binding expressions that reflect the relationships between each other.</li>
+<li>The <code translate="no">Subscription</code> and <code translate="no">User</code> classes don't depend on the metaobject system anymore. Of course, you can still expose them to the metaobject system and add <a href="qobject.html#Q_PROPERTY" translate="no">Q_PROPERTY</a>s if you need, and have the advantages of bindable properties both in <code translate="no">C++</code> and <code translate="no">QML</code> code. You can use the <a href="qobjectbindableproperty.html" translate="no">QObjectBindableProperty</a> class for that.</li>
+</ul>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/corelib/bindableproperties?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@bindableproperties -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

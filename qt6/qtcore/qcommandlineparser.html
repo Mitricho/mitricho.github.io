@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qcommandlineparser.cpp -->
+  <meta name="description" content="The QCommandLineParser class provides a means for handling the command line options.">
+  <title>QCommandLineParser Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QCommandLineParser</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#how-to-use-qcommandlineparser-in-complex-applications">How to Use QCommandLineParser in Complex Applications</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QCommandLineParser Class</h1>
+<!-- $$$QCommandLineParser-brief -->
+<p>The QCommandLineParser class provides a means for handling the command line options. <a href="#details">More...</a></p>
+<!-- @@@QCommandLineParser -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QCommandLineParser&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qcommandlineparser-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> enum class </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#MessageType-enum" translate="no">MessageType</a></b> { Information, Error }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#OptionsAfterPositionalArgumentsMode-enum" translate="no">OptionsAfterPositionalArgumentsMode</a></b> { ParseAsOptions, ParseAsPositionalArguments }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#SingleDashWordOptionMode-enum" translate="no">SingleDashWordOptionMode</a></b> { ParseAsCompactedShortOptions, ParseAsLongOptions }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#dtor.QCommandLineParser" translate="no">~QCommandLineParser</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCommandLineOption </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#addHelpOption" translate="no">addHelpOption</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#addOption" translate="no">addOption</a></b>(const QCommandLineOption &amp;<i>option</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#addOptions" translate="no">addOptions</a></b>(const QList&lt;QCommandLineOption&gt; &amp;<i>options</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#addPositionalArgument" translate="no">addPositionalArgument</a></b>(const QString &amp;<i>name</i>, const QString &amp;<i>description</i>, const QString &amp;<i>syntax</i> = QString())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QCommandLineOption </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#addVersionOption" translate="no">addVersionOption</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#applicationDescription" translate="no">applicationDescription</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#clearPositionalArguments" translate="no">clearPositionalArguments</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#errorText" translate="no">errorText</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#helpText" translate="no">helpText</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#isSet" translate="no">isSet</a></b>(const QString &amp;<i>name</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#isSet-1" translate="no">isSet</a></b>(const QCommandLineOption &amp;<i>option</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#optionNames" translate="no">optionNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#parse" translate="no">parse</a></b>(const QStringList &amp;<i>arguments</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#positionalArguments" translate="no">positionalArguments</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#process" translate="no">process</a></b>(const QStringList &amp;<i>arguments</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#process-1" translate="no">process</a></b>(const QCoreApplication &amp;<i>app</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#setApplicationDescription" translate="no">setApplicationDescription</a></b>(const QString &amp;<i>description</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#setOptionsAfterPositionalArgumentsMode" translate="no">setOptionsAfterPositionalArgumentsMode</a></b>(QCommandLineParser::OptionsAfterPositionalArgumentsMode <i>parsingMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#setSingleDashWordOptionMode" translate="no">setSingleDashWordOptionMode</a></b>(QCommandLineParser::SingleDashWordOptionMode <i>singleDashWordOptionMode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#showHelp" translate="no">showHelp</a></b>(int <i>exitCode</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#showVersion" translate="no">showVersion</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#unknownOptionNames" translate="no">unknownOptionNames</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#value" translate="no">value</a></b>(const QString &amp;<i>optionName</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#value-1" translate="no">value</a></b>(const QCommandLineOption &amp;<i>option</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#values" translate="no">values</a></b>(const QString &amp;<i>optionName</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QStringList </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#values-1" translate="no">values</a></b>(const QCommandLineOption &amp;<i>option</i>) const</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qcommandlineparser.html#showMessageAndExit" translate="no">showMessageAndExit</a></b>(QCommandLineParser::MessageType <i>type</i>, const QString &amp;<i>message</i>, int <i>exitCode</i> = 0)</td></tr>
+</table></div>
+<!-- $$$QCommandLineParser-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="qcoreapplication.html" translate="no">QCoreApplication</a> provides the command-line arguments as a simple list of strings. QCommandLineParser provides the ability to define a set of options, parse the command-line arguments, and store which options have actually been used, as well as option values.</p>
+<p>Any argument that isn't an option (i.e. doesn't start with a <code translate="no">-</code>) is stored as a &quot;positional argument&quot;.</p>
+<p>The parser handles short names, long names, more than one name for the same option, and option values.</p>
+<p>Options on the command line are recognized as starting with one or two <code translate="no">-</code> characters, followed by the option name. The option <code translate="no">-</code> (single dash alone) is a special case, often meaning standard input, and is not treated as an option. The parser will treat everything after the option <code translate="no">--</code> (double dash) as positional arguments.</p>
+<p>Short options are single letters. The option <code translate="no">v</code> would be specified by passing <code translate="no">-v</code> on the command line. In the default parsing mode, short options can be written in a compact form, for instance <code translate="no">-abc</code> is equivalent to <code translate="no">-a -b -c</code>. The parsing mode can be changed to <a href="qcommandlineparser.html#SingleDashWordOptionMode-enum" translate="no">ParseAsLongOptions</a>, in which case <code translate="no">-abc</code> will be parsed as the long option <code translate="no">abc</code>.</p>
+<p>Long options are more than one letter long and cannot be compacted together. The long option <code translate="no">verbose</code> would be passed as <code translate="no">--verbose</code> or <code translate="no">-verbose</code>.</p>
+<p>Passing values to options can be done by using the assignment operator (<code translate="no">-v=value</code>, <code translate="no">--verbose=value</code>), or with a space (<code translate="no">-v value</code>, <code translate="no">--verbose value</code>). This works even if the the value starts with a <code translate="no">-</code>.</p>
+<p>The parser does not support optional values - if an option is set to require a value, one must be present. If such an option is placed last and has no value, the option will be treated as if it had not been specified.</p>
+<p>The parser does not automatically support negating or disabling long options by using the format <code translate="no">--disable-option</code> or <code translate="no">--no-option</code>. However, it is possible to handle this case explicitly by making an option with <code translate="no">no-option</code> as one of its names, and handling the option explicitly.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationName(<span class="string">&quot;my-copy-program&quot;</span>);
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationVersion(<span class="string">&quot;1.0&quot;</span>);
+
+     <span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> parser;
+     parser<span class="operator">.</span>setApplicationDescription(<span class="string">&quot;Test helper&quot;</span>);
+     parser<span class="operator">.</span>addHelpOption();
+     parser<span class="operator">.</span>addVersionOption();
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;source&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Source file to copy.&quot;</span>));
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;destination&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Destination directory.&quot;</span>));
+
+     <span class="comment">// A boolean option with a single name (-p)</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> showProgressOption(<span class="string">&quot;p&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Show progress during copy&quot;</span>));
+     parser<span class="operator">.</span>addOption(showProgressOption);
+
+     <span class="comment">// A boolean option with multiple names (-f, --force)</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> forceOption(<span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;f&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;force&quot;</span><span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Overwrite existing files.&quot;</span>));
+     parser<span class="operator">.</span>addOption(forceOption);
+
+     <span class="comment">// An option with a value</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> targetDirectoryOption(<span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;t&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;target-directory&quot;</span><span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Copy all source files into &lt;directory&gt;.&quot;</span>)<span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;directory&quot;</span>));
+     parser<span class="operator">.</span>addOption(targetDirectoryOption);
+
+     <span class="comment">// Process the actual command line arguments given by the user</span>
+     parser<span class="operator">.</span>process(app);
+
+     <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> args <span class="operator">=</span> parser<span class="operator">.</span>positionalArguments();
+     <span class="comment">// source is args.at(0), destination is args.at(1)</span>
+
+     <span class="type">bool</span> showProgress <span class="operator">=</span> parser<span class="operator">.</span>isSet(showProgressOption);
+     <span class="type">bool</span> force <span class="operator">=</span> parser<span class="operator">.</span>isSet(forceOption);
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> targetDir <span class="operator">=</span> parser<span class="operator">.</span>value(targetDirectoryOption);
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>The three <a href="qcommandlineparser.html#addOption" translate="no">addOption</a>() calls in the above example can be made more compact by using <a href="qcommandlineparser.html#addOptions" translate="no">addOptions</a>():</p>
+<pre class="cpp" translate="no">
+     parser<span class="operator">.</span>addOptions({
+         <span class="comment">// A boolean option with a single name (-p)</span>
+         {<span class="string">&quot;p&quot;</span><span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Show progress during copy&quot;</span>)}<span class="operator">,</span>
+         <span class="comment">// A boolean option with multiple names (-f, --force)</span>
+         {{<span class="string">&quot;f&quot;</span><span class="operator">,</span> <span class="string">&quot;force&quot;</span>}<span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Overwrite existing files.&quot;</span>)}<span class="operator">,</span>
+         <span class="comment">// An option with a value</span>
+         {{<span class="string">&quot;t&quot;</span><span class="operator">,</span> <span class="string">&quot;target-directory&quot;</span>}<span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Copy all source files into &lt;directory&gt;.&quot;</span>)<span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;directory&quot;</span>)}<span class="operator">,</span>
+     });
+</pre>
+<p>Known limitation: the parsing of Qt options inside <a href="qcoreapplication.html" translate="no">QCoreApplication</a> and subclasses happens before QCommandLineParser exists, so it can't take it into account. This means any option value that looks like a builtin Qt option will be treated by <a href="qcoreapplication.html" translate="no">QCoreApplication</a> as a builtin Qt option. Example: <code translate="no">--profile -reverse</code> will lead to <a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a> seeing the -reverse option set, and removing it from <a href="qcoreapplication.html#arguments" translate="no">QCoreApplication::arguments</a>() before QCommandLineParser defines the <code translate="no">profile</code> option and parses the command line.</p>
+<h4 id="how-to-use-qcommandlineparser-in-complex-applications">How to Use QCommandLineParser in Complex Applications</h4>
+<p>In practice, additional error checking needs to be performed on the positional arguments and option values. For example, ranges of numbers should be checked.</p>
+<p>It is then advisable to introduce a function to do the command line parsing which takes a struct or class receiving the option values returning an object representing the result. The dnslookup example of the <a href="../qtnetwork/qtnetwork-module.html" translate="no">QtNetwork</a> module illustrates this:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">struct</span> DnsQuery
+ {
+     DnsQuery() : type(<span class="type"><a href="../qtnetwork/qdnslookup.html" translate="no">QDnsLookup</a></span><span class="operator">::</span>A) {}
+
+     <span class="type"><a href="../qtnetwork/qdnslookup.html" translate="no">QDnsLookup</a></span><span class="operator">::</span>Type type;
+     <span class="type"><a href="../qtnetwork/qhostaddress.html" translate="no">QHostAddress</a></span> nameServer;
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> name;
+ };
+
+ <span class="keyword">struct</span> CommandLineParseResult
+ {
+     <span class="keyword">enum</span> <span class="keyword">class</span> Status {
+         Ok<span class="operator">,</span>
+         Error<span class="operator">,</span>
+         VersionRequested<span class="operator">,</span>
+         HelpRequested
+     };
+     Status statusCode <span class="operator">=</span> Status<span class="operator">::</span>Ok;
+     std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="qstring.html" translate="no">QString</a></span><span class="operator">&gt;</span> errorString <span class="operator">=</span> std<span class="operator">::</span>nullopt;
+ };
+
+ CommandLineParseResult parseCommandLine(<span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> <span class="operator">&amp;</span>parser<span class="operator">,</span> DnsQuery <span class="operator">*</span>query)
+ {
+     <span class="keyword">using</span> Status <span class="operator">=</span> CommandLineParseResult<span class="operator">::</span>Status;
+
+     parser<span class="operator">.</span>setSingleDashWordOptionMode(<span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span><span class="operator">::</span>ParseAsLongOptions);
+     <span class="keyword">const</span> <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> nameServerOption(<span class="string">&quot;n&quot;</span><span class="operator">,</span> <span class="string">&quot;The name server to use.&quot;</span><span class="operator">,</span> <span class="string">&quot;nameserver&quot;</span>);
+     parser<span class="operator">.</span>addOption(nameServerOption);
+     <span class="keyword">const</span> <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> typeOption(<span class="string">&quot;t&quot;</span><span class="operator">,</span> <span class="string">&quot;The lookup type.&quot;</span><span class="operator">,</span> <span class="string">&quot;type&quot;</span>);
+     parser<span class="operator">.</span>addOption(typeOption);
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;name&quot;</span><span class="operator">,</span> <span class="string">&quot;The name to look up.&quot;</span>);
+     <span class="keyword">const</span> <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> helpOption <span class="operator">=</span> parser<span class="operator">.</span>addHelpOption();
+     <span class="keyword">const</span> <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> versionOption <span class="operator">=</span> parser<span class="operator">.</span>addVersionOption();
+
+     <span class="keyword">if</span> (<span class="operator">!</span>parser<span class="operator">.</span>parse(<span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>arguments()))
+         <span class="keyword">return</span> { Status<span class="operator">::</span>Error<span class="operator">,</span> parser<span class="operator">.</span>errorText() };
+
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(versionOption))
+         <span class="keyword">return</span> { Status<span class="operator">::</span>VersionRequested };
+
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(helpOption))
+         <span class="keyword">return</span> { Status<span class="operator">::</span>HelpRequested };
+
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(nameServerOption)) {
+         <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> nameserver <span class="operator">=</span> parser<span class="operator">.</span>value(nameServerOption);
+         query<span class="operator">-</span><span class="operator">&gt;</span>nameServer <span class="operator">=</span> <span class="type"><a href="../qtnetwork/qhostaddress.html" translate="no">QHostAddress</a></span>(nameserver);
+         <span class="keyword">if</span> (query<span class="operator">-</span><span class="operator">&gt;</span>nameServer<span class="operator">.</span>isNull()
+             <span class="operator">|</span><span class="operator">|</span> query<span class="operator">-</span><span class="operator">&gt;</span>nameServer<span class="operator">.</span>protocol() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtnetwork/qabstractsocket.html" translate="no">QAbstractSocket</a></span><span class="operator">::</span>UnknownNetworkLayerProtocol) {
+             <span class="keyword">return</span> { Status<span class="operator">::</span>Error<span class="operator">,</span>
+                      u<span class="string">&quot;Bad nameserver address: %1&quot;</span>_s<span class="operator">.</span>arg(nameserver) };
+         }
+     }
+
+     <span class="keyword">if</span> (parser<span class="operator">.</span>isSet(typeOption)) {
+         <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> typeParameter <span class="operator">=</span> parser<span class="operator">.</span>value(typeOption);
+         <span class="keyword">if</span> (std<span class="operator">::</span>optional<span class="operator">&lt;</span><span class="type"><a href="../qtnetwork/qdnslookup.html" translate="no">QDnsLookup</a></span><span class="operator">::</span>Type<span class="operator">&gt;</span> type <span class="operator">=</span> typeFromParameter(typeParameter))
+             query<span class="operator">-</span><span class="operator">&gt;</span>type <span class="operator">=</span> <span class="operator">*</span>type;
+         <span class="keyword">else</span>
+             <span class="keyword">return</span> { Status<span class="operator">::</span>Error<span class="operator">,</span> u<span class="string">&quot;Bad record type: %1&quot;</span>_s<span class="operator">.</span>arg(typeParameter) };
+     }
+
+     <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> positionalArguments <span class="operator">=</span> parser<span class="operator">.</span>positionalArguments();
+     <span class="keyword">if</span> (positionalArguments<span class="operator">.</span>isEmpty())
+         <span class="keyword">return</span> { Status<span class="operator">::</span>Error<span class="operator">,</span> u<span class="string">&quot;Argument 'name' missing.&quot;</span>_s };
+     <span class="keyword">if</span> (positionalArguments<span class="operator">.</span>size() <span class="operator">&gt;</span> <span class="number">1</span>)
+         <span class="keyword">return</span> { Status<span class="operator">::</span>Error<span class="operator">,</span> u<span class="string">&quot;Several 'name' arguments specified.&quot;</span>_s };
+     query<span class="operator">-</span><span class="operator">&gt;</span>name <span class="operator">=</span> positionalArguments<span class="operator">.</span>first();
+
+     <span class="keyword">return</span> { Status<span class="operator">::</span>Ok };
+ }
+</pre>
+<p>In the main function, help should be printed to the standard output if the help option was passed and the application should return the exit code 0.</p>
+<p>If an error was detected, the error message should be printed to the standard error output and the application should return an exit code other than 0.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationVersion(QT_VERSION_STR);
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationName(<span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;QDnsLookupExample&quot;</span><span class="operator">,</span>
+                                                                      <span class="string">&quot;DNS Lookup Example&quot;</span>));
+     <span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> parser;
+     parser<span class="operator">.</span>setApplicationDescription(<span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;QDnsLookupExample&quot;</span><span class="operator">,</span>
+                                                                  <span class="string">&quot;An example demonstrating the &quot;</span>
+                                                                  <span class="string">&quot;class QDnsLookup.&quot;</span>));
+     DnsQuery query;
+     <span class="keyword">using</span> Status <span class="operator">=</span> CommandLineParseResult<span class="operator">::</span>Status;
+     CommandLineParseResult parseResult <span class="operator">=</span> parseCommandLine(parser<span class="operator">,</span> <span class="operator">&amp;</span>query);
+     <span class="keyword">switch</span> (parseResult<span class="operator">.</span>statusCode) {
+     <span class="keyword">case</span> Status<span class="operator">::</span>Ok:
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> Status<span class="operator">::</span>Error:
+         std<span class="operator">::</span>fputs(<a href="qstring.html#qPrintable" translate="no">qPrintable</a>(parseResult<span class="operator">.</span>errorString<span class="operator">.</span>value_or(u<span class="string">&quot;Unknown error occurred&quot;</span>_s))<span class="operator">,</span>
+                    stderr);
+         std<span class="operator">::</span>fputs(<span class="string">&quot;\n\n&quot;</span><span class="operator">,</span> stderr);
+         std<span class="operator">::</span>fputs(<a href="qstring.html#qPrintable" translate="no">qPrintable</a>(parser<span class="operator">.</span>helpText())<span class="operator">,</span> stderr);
+         <span class="keyword">return</span> <span class="number">1</span>;
+     <span class="keyword">case</span> Status<span class="operator">::</span>VersionRequested:
+         parser<span class="operator">.</span>showVersion();
+         Q_UNREACHABLE_RETURN(<span class="number">0</span>);
+     <span class="keyword">case</span> Status<span class="operator">::</span>HelpRequested:
+         parser<span class="operator">.</span>showHelp();
+         Q_UNREACHABLE_RETURN(<span class="number">0</span>);
+     }
+</pre>
+<p>A special case to consider here are GUI applications on Windows and mobile platforms. These applications may not use the standard output or error channels since the output is either discarded or not accessible.</p>
+<p>On Windows, QCommandLineParser uses message boxes to display usage information and errors if no console window can be obtained. These message boxes can be omitted by setting the <code translate="no">QT_COMMAND_LINE_PARSER_NO_GUI_MESSAGE_BOXES</code> environment variable.</p>
+<p>For other platforms, it is recommended to display help texts and error messages using a <a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a>. To preserve the formatting of the help text, rich text with <code translate="no">&lt;pre&gt;</code> elements should be used:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">switch</span> (parseResult<span class="operator">.</span>statusCode) {
+ <span class="keyword">case</span> Status<span class="operator">::</span>Ok:
+     <span class="keyword">break</span>;
+ <span class="keyword">case</span> Status<span class="operator">::</span>Error: {
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> errorMessage <span class="operator">=</span> parseResult<span class="operator">.</span>errorString<span class="operator">.</span>value_or(u<span class="string">&quot;Unknown error occurred&quot;</span>_qs);
+     <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>warning(<span class="number">0</span><span class="operator">,</span> <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span><span class="operator">::</span>applicationDisplayName()<span class="operator">,</span>
+                          <span class="string">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;h2&gt;&quot;</span> <span class="operator">+</span> errorMessage <span class="operator">+</span> <span class="string">&quot;&lt;/h2&gt;&lt;pre&gt;&quot;</span>
+                          <span class="operator">+</span> parser<span class="operator">.</span>helpText() <span class="operator">+</span> <span class="string">&quot;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);
+     <span class="keyword">return</span> <span class="number">1</span>;
+ }
+ <span class="keyword">case</span> Status<span class="operator">::</span>VersionRequested:
+     <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>information(<span class="number">0</span><span class="operator">,</span> <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span><span class="operator">::</span>applicationDisplayName()<span class="operator">,</span>
+                              <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span><span class="operator">::</span>applicationDisplayName() <span class="operator">+</span> <span class="char">' '</span>
+                              <span class="operator">+</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>applicationVersion());
+     <span class="keyword">return</span> <span class="number">0</span>;
+ <span class="keyword">case</span> Status<span class="operator">::</span>HelpRequested:
+     <span class="type"><a href="../qtwidgets/qmessagebox.html" translate="no">QMessageBox</a></span><span class="operator">::</span>warning(<span class="number">0</span><span class="operator">,</span> <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span><span class="operator">::</span>applicationDisplayName()<span class="operator">,</span>
+                          <span class="string">&quot;&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;pre&gt;&quot;</span>
+                          <span class="operator">+</span> parser<span class="operator">.</span>helpText() <span class="operator">+</span> <span class="string">&quot;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);
+     <span class="keyword">return</span> <span class="number">0</span>;
+ }
+</pre>
+<p>However, this does not apply to the dnslookup example, because it is a console application.</p>
+</div>
+<p><b>See also </b><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a> and <a href="qcoreapplication.html" translate="no">QCoreApplication</a>.</p>
+<!-- @@@QCommandLineParser -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$MessageType$$$Information$$$Error -->
+<h3 class="fn" translate="no" id="MessageType-enum"><code class="details extra" translate="no">[since 6.9]</code> enum class QCommandLineParser::<span class="name">MessageType</span></h3>
+<p>The enum is used to specify the type of the message and how it will be shown to the users.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::MessageType::Information</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">Used to show information messages. The message will be printed to <code translate="no">stdout</code>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::MessageType::Error</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">Used to show error messages. The message will be printed to <code translate="no">stderr</code>.</td></tr>
+</table></div>
+<p>This enum was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#showMessageAndExit" translate="no">showMessageAndExit</a>().</p>
+<!-- @@@MessageType -->
+<!-- $$$OptionsAfterPositionalArgumentsMode$$$ParseAsOptions$$$ParseAsPositionalArguments -->
+<h3 class="fn" translate="no" id="OptionsAfterPositionalArgumentsMode-enum">enum QCommandLineParser::<span class="name">OptionsAfterPositionalArgumentsMode</span></h3>
+<p>This enum describes the way the parser interprets options that occur after positional arguments.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::ParseAsOptions</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign"><code translate="no">application argument --opt -t</code> is interpreted as setting the options <code translate="no">opt</code> and <code translate="no">t</code>, just like <code translate="no">application --opt -t argument</code> would do. This is the default parsing mode. In order to specify that <code translate="no">--opt</code> and <code translate="no">-t</code> are positional arguments instead, the user can use <code translate="no">--</code>, as in <code translate="no">application argument -- --opt -t</code>.</td></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::ParseAsPositionalArguments</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign"><code translate="no">application argument --opt</code> is interpreted as having two positional arguments, <code translate="no">argument</code> and <code translate="no">--opt</code>. This mode is useful for executables that aim to launch other executables (e.g. wrappers, debugging tools, etc.) or that support internal commands followed by options for the command. <code translate="no">argument</code> is the name of the command, and all options occurring after it can be collected and parsed by another command line parser, possibly in another executable.</td></tr>
+</table></div>
+<p><b>See also </b><a href="qcommandlineparser.html#setOptionsAfterPositionalArgumentsMode" translate="no">setOptionsAfterPositionalArgumentsMode</a>().</p>
+<!-- @@@OptionsAfterPositionalArgumentsMode -->
+<!-- $$$SingleDashWordOptionMode$$$ParseAsCompactedShortOptions$$$ParseAsLongOptions -->
+<h3 class="fn" translate="no" id="SingleDashWordOptionMode-enum">enum QCommandLineParser::<span class="name">SingleDashWordOptionMode</span></h3>
+<p>This enum describes the way the parser interprets command-line options that use a single dash followed by multiple letters, as <code translate="no">-abc</code>.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::ParseAsCompactedShortOptions</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign"><code translate="no">-abc</code> is interpreted as <code translate="no">-a -b -c</code>, i.e. as three short options that have been compacted on the command-line, if none of the options take a value. If <code translate="no">a</code> takes a value, then it is interpreted as <code translate="no">-a bc</code>, i.e. the short option <code translate="no">a</code> followed by the value <code translate="no">bc</code>. This is typically used in tools that behave like compilers, in order to handle options such as <code translate="no">-DDEFINE=VALUE</code> or <code translate="no">-I/include/path</code>. This is the default parsing mode. New applications are recommended to use this mode.</td></tr>
+<tr><td class="topAlign"><code translate="no">QCommandLineParser::ParseAsLongOptions</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign"><code translate="no">-abc</code> is interpreted as <code translate="no">--abc</code>, i.e. as the long option named <code translate="no">abc</code>. This is how Qt's own tools (uic, rcc...) have always been parsing arguments. This mode should be used for preserving compatibility in applications that were parsing arguments in such a way. There is an exception if the <code translate="no">a</code> option has the <a href="qcommandlineoption.html#Flag-enum" translate="no">QCommandLineOption::ShortOptionStyle</a> flag set, in which case it is still interpreted as <code translate="no">-a bc</code>.</td></tr>
+</table></div>
+<p><b>See also </b><a href="qcommandlineparser.html#setSingleDashWordOptionMode" translate="no">setSingleDashWordOptionMode</a>().</p>
+<!-- @@@SingleDashWordOptionMode -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QCommandLineParser[overload1]$$$QCommandLineParser -->
+<h3 class="fn" translate="no" id="QCommandLineParser">QCommandLineParser::<span class="name">QCommandLineParser</span>()</h3>
+<p>Constructs a command line parser object.</p>
+<!-- @@@QCommandLineParser -->
+<!-- $$$~QCommandLineParser[overload1]$$$~QCommandLineParser -->
+<h3 class="fn" translate="no" id="dtor.QCommandLineParser"><code class="details extra" translate="no">[noexcept]</code> QCommandLineParser::<span class="name">~QCommandLineParser</span>()</h3>
+<p>Destroys the command line parser object.</p>
+<!-- @@@~QCommandLineParser -->
+<!-- $$$addHelpOption[overload1]$$$addHelpOption -->
+<h3 class="fn" translate="no" id="addHelpOption"><span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> QCommandLineParser::<span class="name">addHelpOption</span>()</h3>
+<p>Adds help options to the command-line parser.</p>
+<p>The options specified for this command-line are described by <code translate="no">-h</code> or <code translate="no">--help</code>. On Windows, the alternative <code translate="no">-?</code> is also supported. The option <code translate="no">--help-all</code> extends that to include generic Qt options, not defined by this command, in the output.</p>
+<p>These options are handled automatically by <a href="qcommandlineparser.html" translate="no">QCommandLineParser</a>.</p>
+<p>Remember to use <a href="qcommandlineparser.html#setApplicationDescription" translate="no">setApplicationDescription</a>() to set the application description, which will be displayed when this option is used.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationName(<span class="string">&quot;my-copy-program&quot;</span>);
+     <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>setApplicationVersion(<span class="string">&quot;1.0&quot;</span>);
+
+     <span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> parser;
+     parser<span class="operator">.</span>setApplicationDescription(<span class="string">&quot;Test helper&quot;</span>);
+     parser<span class="operator">.</span>addHelpOption();
+     parser<span class="operator">.</span>addVersionOption();
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;source&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Source file to copy.&quot;</span>));
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;destination&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Destination directory.&quot;</span>));
+
+     <span class="comment">// A boolean option with a single name (-p)</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> showProgressOption(<span class="string">&quot;p&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Show progress during copy&quot;</span>));
+     parser<span class="operator">.</span>addOption(showProgressOption);
+
+     <span class="comment">// A boolean option with multiple names (-f, --force)</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> forceOption(<span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;f&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;force&quot;</span><span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Overwrite existing files.&quot;</span>));
+     parser<span class="operator">.</span>addOption(forceOption);
+
+     <span class="comment">// An option with a value</span>
+     <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> targetDirectoryOption(<span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;t&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;target-directory&quot;</span><span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Copy all source files into &lt;directory&gt;.&quot;</span>)<span class="operator">,</span>
+             <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;directory&quot;</span>));
+     parser<span class="operator">.</span>addOption(targetDirectoryOption);
+
+     <span class="comment">// Process the actual command line arguments given by the user</span>
+     parser<span class="operator">.</span>process(app);
+
+     <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> args <span class="operator">=</span> parser<span class="operator">.</span>positionalArguments();
+     <span class="comment">// source is args.at(0), destination is args.at(1)</span>
+
+     <span class="type">bool</span> showProgress <span class="operator">=</span> parser<span class="operator">.</span>isSet(showProgressOption);
+     <span class="type">bool</span> force <span class="operator">=</span> parser<span class="operator">.</span>isSet(forceOption);
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> targetDir <span class="operator">=</span> parser<span class="operator">.</span>value(targetDirectoryOption);
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>Returns the option instance, which can be used to call <a href="qcommandlineparser.html#isSet" translate="no">isSet</a>().</p>
+<!-- @@@addHelpOption -->
+<!-- $$$addOption[overload1]$$$addOptionconstQCommandLineOption& -->
+<h3 class="fn" translate="no" id="addOption"><span class="type">bool</span> QCommandLineParser::<span class="name">addOption</span>(const <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> &amp;<i>option</i>)</h3>
+<p>Adds the option <i translate="no">option</i> to look for while parsing.</p>
+<p>Returns <code translate="no">true</code> if adding the option was successful; otherwise returns <code translate="no">false</code>.</p>
+<p>Adding the option fails if there is no name attached to the option, or the option has a name that clashes with an option name added before.</p>
+<!-- @@@addOption -->
+<!-- $$$addOptions[overload1]$$$addOptionsconstQList<QCommandLineOption>& -->
+<h3 class="fn" translate="no" id="addOptions"><span class="type">bool</span> QCommandLineParser::<span class="name">addOptions</span>(const <span class="type"><a href="qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span>&gt; &amp;<i>options</i>)</h3>
+<p>Adds the options to look for while parsing. The options are specified by the parameter <i translate="no">options</i>.</p>
+<p>Returns <code translate="no">true</code> if adding all of the options was successful; otherwise returns <code translate="no">false</code>.</p>
+<p>See the documentation for <a href="qcommandlineparser.html#addOption" translate="no">addOption</a>() for when this function may fail.</p>
+<!-- @@@addOptions -->
+<!-- $$$addPositionalArgument[overload1]$$$addPositionalArgumentconstQString&constQString&constQString& -->
+<h3 class="fn" translate="no" id="addPositionalArgument"><span class="type">void</span> QCommandLineParser::<span class="name">addPositionalArgument</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>description</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>syntax</i> = QString())</h3>
+<p>Defines an additional argument to the application, for the benefit of the help text.</p>
+<p>The argument <i translate="no">name</i> and <i translate="no">description</i> will appear under the <code translate="no">Arguments:</code> section of the help. If <i translate="no">syntax</i> is specified, it will be appended to the Usage line, otherwise the <i translate="no">name</i> will be appended.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// Usage: image-editor file</span>
+ <span class="comment">//</span>
+ <span class="comment">// Arguments:</span>
+ <span class="comment">//   file                  The file to open.</span>
+ parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;file&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;The file to open.&quot;</span>));
+
+ <span class="comment">// Usage: web-browser [urls...]</span>
+ <span class="comment">//</span>
+ <span class="comment">// Arguments:</span>
+ <span class="comment">//   urls                URLs to open, optionally.</span>
+ parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;urls&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;URLs to open, optionally.&quot;</span>)<span class="operator">,</span> <span class="string">&quot;[urls...]&quot;</span>);
+
+ <span class="comment">// Usage: cp source destination</span>
+ <span class="comment">//</span>
+ <span class="comment">// Arguments:</span>
+ <span class="comment">//   source                Source file to copy.</span>
+ <span class="comment">//   destination           Destination directory.</span>
+ parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;source&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Source file to copy.&quot;</span>));
+ parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;destination&quot;</span><span class="operator">,</span> <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>translate(<span class="string">&quot;main&quot;</span><span class="operator">,</span> <span class="string">&quot;Destination directory.&quot;</span>));
+</pre>
+<p><b>See also </b><a href="qcommandlineparser.html#addHelpOption" translate="no">addHelpOption</a>() and <a href="qcommandlineparser.html#helpText" translate="no">helpText</a>().</p>
+<!-- @@@addPositionalArgument -->
+<!-- $$$addVersionOption[overload1]$$$addVersionOption -->
+<h3 class="fn" translate="no" id="addVersionOption"><span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> QCommandLineParser::<span class="name">addVersionOption</span>()</h3>
+<p>Adds the <code translate="no">-v</code> / <code translate="no">--version</code> option, which displays the version string of the application.</p>
+<p>This option is handled automatically by <a href="qcommandlineparser.html" translate="no">QCommandLineParser</a>.</p>
+<p>You can set the actual version string by using <a href="qcoreapplication.html#applicationVersion-prop" translate="no">QCoreApplication::setApplicationVersion</a>().</p>
+<p>Returns the option instance, which can be used to call <a href="qcommandlineparser.html#isSet" translate="no">isSet</a>().</p>
+<!-- @@@addVersionOption -->
+<!-- $$$applicationDescription[overload1]$$$applicationDescription -->
+<h3 class="fn" translate="no" id="applicationDescription"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QCommandLineParser::<span class="name">applicationDescription</span>() const</h3>
+<p>Returns the application description set in <a href="qcommandlineparser.html#setApplicationDescription" translate="no">setApplicationDescription</a>().</p>
+<p><b>See also </b><a href="qcommandlineparser.html#setApplicationDescription" translate="no">setApplicationDescription</a>().</p>
+<!-- @@@applicationDescription -->
+<!-- $$$clearPositionalArguments[overload1]$$$clearPositionalArguments -->
+<h3 class="fn" translate="no" id="clearPositionalArguments"><span class="type">void</span> QCommandLineParser::<span class="name">clearPositionalArguments</span>()</h3>
+<p>Clears the definitions of additional arguments from the help text.</p>
+<p>This is only needed for the special case of tools which support multiple commands with different options. Once the actual command has been identified, the options for this command can be defined, and the help text for the command can be adjusted accordingly.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+ <span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> parser;
+
+ parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;command&quot;</span><span class="operator">,</span> <span class="string">&quot;The command to execute.&quot;</span>);
+
+ <span class="comment">// Call parse() to find out the positional arguments.</span>
+ parser<span class="operator">.</span>parse(<span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span><span class="operator">::</span>arguments());
+
+ <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> args <span class="operator">=</span> parser<span class="operator">.</span>positionalArguments();
+ <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> command <span class="operator">=</span> args<span class="operator">.</span>isEmpty() <span class="operator">?</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span>() : args<span class="operator">.</span>first();
+ <span class="keyword">if</span> (command <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;resize&quot;</span>) {
+     parser<span class="operator">.</span>clearPositionalArguments();
+     parser<span class="operator">.</span>addPositionalArgument(<span class="string">&quot;resize&quot;</span><span class="operator">,</span> <span class="string">&quot;Resize the object to a new size.&quot;</span><span class="operator">,</span> <span class="string">&quot;resize [resize_options]&quot;</span>);
+     parser<span class="operator">.</span>addOption(<span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span>(<span class="string">&quot;size&quot;</span><span class="operator">,</span> <span class="string">&quot;New size.&quot;</span><span class="operator">,</span> <span class="string">&quot;new_size&quot;</span>));
+     parser<span class="operator">.</span>process(app);
+     <span class="comment">// ...</span>
+ }
+
+ <span class="comment">/*
+ This code results in context-dependent help:
+
+ $ tool --help
+ Usage: tool command
+
+ Arguments:
+   command  The command to execute.
+
+ $ tool resize --help
+ Usage: tool resize [resize_options]
+
+ Options:
+   --size &lt;size&gt;  New size.
+
+ Arguments:
+   resize         Resize the object to a new size.
+ */</span>
+</pre>
+<!-- @@@clearPositionalArguments -->
+<!-- $$$errorText[overload1]$$$errorText -->
+<h3 class="fn" translate="no" id="errorText"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QCommandLineParser::<span class="name">errorText</span>() const</h3>
+<p>Returns a translated error text for the user. This should only be called when <a href="qcommandlineparser.html#parse" translate="no">parse</a>() returns <code translate="no">false</code>.</p>
+<!-- @@@errorText -->
+<!-- $$$helpText[overload1]$$$helpText -->
+<h3 class="fn" translate="no" id="helpText"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QCommandLineParser::<span class="name">helpText</span>() const</h3>
+<p>Returns a string containing the complete help information.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#showHelp" translate="no">showHelp</a>().</p>
+<!-- @@@helpText -->
+<!-- $$$isSet[overload1]$$$isSetconstQString& -->
+<h3 class="fn" translate="no" id="isSet"><span class="type">bool</span> QCommandLineParser::<span class="name">isSet</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>name</i>) const</h3>
+<p>Checks whether the option <i translate="no">name</i> was passed to the application.</p>
+<p>Returns <code translate="no">true</code> if the option <i translate="no">name</i> was set, false otherwise.</p>
+<p>The name provided can be any long or short name of any option that was added with <a href="qcommandlineparser.html#addOption" translate="no">addOption</a>(). All the options names are treated as being equivalent. If the name is not recognized or that option was not present, false is returned.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type">bool</span> verbose <span class="operator">=</span> parser<span class="operator">.</span>isSet(<span class="string">&quot;verbose&quot;</span>);
+</pre>
+<!-- @@@isSet -->
+<!-- $$$isSet$$$isSetconstQCommandLineOption& -->
+<h3 class="fn" translate="no" id="isSet-1"><span class="type">bool</span> QCommandLineParser::<span class="name">isSet</span>(const <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> &amp;<i>option</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Checks whether the <i translate="no">option</i> was passed to the application.</p>
+<p>Returns <code translate="no">true</code> if the <i translate="no">option</i> was set, false otherwise.</p>
+<p>This is the recommended way to check for options with no values.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> app(argc<span class="operator">,</span> argv);
+ <span class="type"><a href="qcommandlineparser.html#QCommandLineParser" translate="no">QCommandLineParser</a></span> parser;
+ <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> verboseOption(<span class="string">&quot;verbose&quot;</span>);
+ parser<span class="operator">.</span>addOption(verboseOption);
+ parser<span class="operator">.</span>process(app);
+ <span class="type">bool</span> verbose <span class="operator">=</span> parser<span class="operator">.</span>isSet(verboseOption);
+</pre>
+<!-- @@@isSet -->
+<!-- $$$optionNames[overload1]$$$optionNames -->
+<h3 class="fn" translate="no" id="optionNames"><span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QCommandLineParser::<span class="name">optionNames</span>() const</h3>
+<p>Returns a list of option names that were found.</p>
+<p>This returns a list of all the recognized option names found by the parser, in the order in which they were found. For any long options that were in the form {&ndash;option=value}, the value part will have been dropped.</p>
+<p>The names in this list do not include the preceding dash characters. Names may appear more than once in this list if they were encountered more than once by the parser.</p>
+<p>Any entry in the list can be used with <a href="qcommandlineparser.html#value" translate="no">value</a>() or with <a href="qcommandlineparser.html#values" translate="no">values</a>() to get any relevant option values.</p>
+<!-- @@@optionNames -->
+<!-- $$$parse[overload1]$$$parseconstQStringList& -->
+<h3 class="fn" translate="no" id="parse"><span class="type">bool</span> QCommandLineParser::<span class="name">parse</span>(const <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> &amp;<i>arguments</i>)</h3>
+<p>Parses the command line <i translate="no">arguments</i>.</p>
+<p>Most programs don't need to call this, a simple call to <a href="qcommandlineparser.html#process" translate="no">process</a>() is enough.</p>
+<p>parse() is more low-level, and only does the parsing. The application will have to take care of the error handling, using <a href="qcommandlineparser.html#errorText" translate="no">errorText</a>() if parse() returns <code translate="no">false</code>. This can be useful for instance to show a graphical error message in graphical programs.</p>
+<p>Calling parse() instead of <a href="qcommandlineparser.html#process" translate="no">process</a>() can also be useful in order to ignore unknown options temporarily, because more option definitions will be provided later on (depending on one of the arguments), before calling <a href="qcommandlineparser.html#process" translate="no">process</a>().</p>
+<p>Don't forget that <i translate="no">arguments</i> must start with the name of the executable (ignored, though).</p>
+<p>Returns <code translate="no">false</code> in case of a parse error (unknown option or missing value); returns <code translate="no">true</code> otherwise.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#process" translate="no">process</a>().</p>
+<!-- @@@parse -->
+<!-- $$$positionalArguments[overload1]$$$positionalArguments -->
+<h3 class="fn" translate="no" id="positionalArguments"><span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QCommandLineParser::<span class="name">positionalArguments</span>() const</h3>
+<p>Returns a list of positional arguments.</p>
+<p>These are all of the arguments that were not recognized as part of an option.</p>
+<!-- @@@positionalArguments -->
+<!-- $$$process[overload1]$$$processconstQStringList& -->
+<h3 class="fn" translate="no" id="process"><span class="type">void</span> QCommandLineParser::<span class="name">process</span>(const <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> &amp;<i>arguments</i>)</h3>
+<p>Processes the command line <i translate="no">arguments</i>.</p>
+<p>In addition to parsing the options (like <a href="qcommandlineparser.html#parse" translate="no">parse</a>()), this function also handles the builtin options and handles errors.</p>
+<p>The builtin options are <code translate="no">--version</code> if <a href="qcommandlineparser.html#addVersionOption" translate="no">addVersionOption</a> was called and <code translate="no">--help</code> / <code translate="no">--help-all</code> if <a href="qcommandlineparser.html#addHelpOption" translate="no">addHelpOption</a> was called.</p>
+<p>When invoking one of these options, or when an error happens (for instance an unknown option was passed), the current process will then stop, using the exit() function.</p>
+<p><b>See also </b><a href="qcoreapplication.html#arguments" translate="no">QCoreApplication::arguments</a>() and <a href="qcommandlineparser.html#parse" translate="no">parse</a>().</p>
+<!-- @@@process -->
+<!-- $$$process$$$processconstQCoreApplication& -->
+<h3 class="fn" translate="no" id="process-1"><span class="type">void</span> QCommandLineParser::<span class="name">process</span>(const <span class="type"><a href="qcoreapplication.html" translate="no">QCoreApplication</a></span> &amp;<i>app</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>The command line is obtained from the <a href="qcoreapplication.html" translate="no">QCoreApplication</a> instance <i translate="no">app</i>.</p>
+<!-- @@@process -->
+<!-- $$$setApplicationDescription[overload1]$$$setApplicationDescriptionconstQString& -->
+<h3 class="fn" translate="no" id="setApplicationDescription"><span class="type">void</span> QCommandLineParser::<span class="name">setApplicationDescription</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>description</i>)</h3>
+<p>Sets the application <i translate="no">description</i> shown by <a href="qcommandlineparser.html#helpText" translate="no">helpText</a>().</p>
+<p><b>See also </b><a href="qcommandlineparser.html#applicationDescription" translate="no">applicationDescription</a>().</p>
+<!-- @@@setApplicationDescription -->
+<!-- $$$setOptionsAfterPositionalArgumentsMode[overload1]$$$setOptionsAfterPositionalArgumentsModeQCommandLineParser::OptionsAfterPositionalArgumentsMode -->
+<h3 class="fn" translate="no" id="setOptionsAfterPositionalArgumentsMode"><span class="type">void</span> QCommandLineParser::<span class="name">setOptionsAfterPositionalArgumentsMode</span>(<span class="type"><a href="qcommandlineparser.html#OptionsAfterPositionalArgumentsMode-enum" translate="no">QCommandLineParser::OptionsAfterPositionalArgumentsMode</a></span> <i>parsingMode</i>)</h3>
+<p>Sets the parsing mode to <i translate="no">parsingMode</i>. This must be called before <a href="qcommandlineparser.html#process" translate="no">process</a>() or <a href="qcommandlineparser.html#parse" translate="no">parse</a>().</p>
+<!-- @@@setOptionsAfterPositionalArgumentsMode -->
+<!-- $$$setSingleDashWordOptionMode[overload1]$$$setSingleDashWordOptionModeQCommandLineParser::SingleDashWordOptionMode -->
+<h3 class="fn" translate="no" id="setSingleDashWordOptionMode"><span class="type">void</span> QCommandLineParser::<span class="name">setSingleDashWordOptionMode</span>(<span class="type"><a href="qcommandlineparser.html#SingleDashWordOptionMode-enum" translate="no">QCommandLineParser::SingleDashWordOptionMode</a></span> <i>singleDashWordOptionMode</i>)</h3>
+<p>Sets the parsing mode to <i translate="no">singleDashWordOptionMode</i>. This must be called before <a href="qcommandlineparser.html#process" translate="no">process</a>() or <a href="qcommandlineparser.html#parse" translate="no">parse</a>().</p>
+<!-- @@@setSingleDashWordOptionMode -->
+<!-- $$$showHelp[overload1]$$$showHelpint -->
+<h3 class="fn" translate="no" id="showHelp"><span class="type">void</span> QCommandLineParser::<span class="name">showHelp</span>(<span class="type">int</span> <i>exitCode</i> = 0)</h3>
+<p>Displays the help information, and exits the application. This is automatically triggered by the &ndash;help option, but can also be used to display the help when the user is not invoking the application correctly. The exit code is set to <i translate="no">exitCode</i>. It should be set to 0 if the user requested to see the help, and to any other value in case of an error.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#helpText" translate="no">helpText</a>() and <a href="qcommandlineparser.html#showMessageAndExit" translate="no">showMessageAndExit</a>().</p>
+<!-- @@@showHelp -->
+<!-- $$$showMessageAndExit[overload1]$$$showMessageAndExitQCommandLineParser::MessageTypeconstQString&int -->
+<h3 class="fn" translate="no" id="showMessageAndExit"><code class="details extra" translate="no">[static, since 6.9]</code> <span class="type">void</span> QCommandLineParser::<span class="name">showMessageAndExit</span>(<span class="type"><a href="qcommandlineparser.html#MessageType-enum" translate="no">QCommandLineParser::MessageType</a></span> <i>type</i>, const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>message</i>, <span class="type">int</span> <i>exitCode</i> = 0)</h3>
+<p>Displays a <i translate="no">message</i>, and exits the application with the given <i translate="no">exitCode</i>.</p>
+<p>The <i translate="no">message</i> will usually be printed directly to <code translate="no">stdout</code> or <code translate="no">stderr</code> according to the given <i translate="no">type</i>, or the message may be shown in a message box under Windows when necessary, with an information icon or error icon according to the given <i translate="no">type</i> (set the <code translate="no">QT_COMMAND_LINE_PARSER_NO_GUI_MESSAGE_BOXES</code> environment variable if you don't want the message box).</p>
+<p>It's the same message display method used by <a href="qcommandlineparser.html#showHelp" translate="no">showHelp</a>, <a href="qcommandlineparser.html#showVersion" translate="no">showVersion</a> and the builtin options (<code translate="no">--version</code> if <a href="qcommandlineparser.html#addVersionOption" translate="no">addVersionOption</a> was called and <code translate="no">--help</code> / <code translate="no">--help-all</code> if <a href="qcommandlineparser.html#addHelpOption" translate="no">addHelpOption</a> was called).</p>
+<p>This function was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#addVersionOption" translate="no">addVersionOption</a>(), <a href="qcommandlineparser.html#showHelp" translate="no">showHelp</a>(), <a href="qcommandlineparser.html#showVersion" translate="no">showVersion</a>(), and <a href="qcommandlineparser.html#MessageType-enum" translate="no">QCommandLineParser::MessageType</a>.</p>
+<!-- @@@showMessageAndExit -->
+<!-- $$$showVersion[overload1]$$$showVersion -->
+<h3 class="fn" translate="no" id="showVersion"><span class="type">void</span> QCommandLineParser::<span class="name">showVersion</span>()</h3>
+<p>Displays the version information from <a href="qcoreapplication.html#applicationVersion-prop" translate="no">QCoreApplication::applicationVersion</a>(), and exits the application. This is automatically triggered by the &ndash;version option, but can also be used to display the version when not using <a href="qcommandlineparser.html#process" translate="no">process</a>(). The exit code is set to EXIT_SUCCESS (0).</p>
+<p><b>See also </b><a href="qcommandlineparser.html#addVersionOption" translate="no">addVersionOption</a>().</p>
+<!-- @@@showVersion -->
+<!-- $$$unknownOptionNames[overload1]$$$unknownOptionNames -->
+<h3 class="fn" translate="no" id="unknownOptionNames"><span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QCommandLineParser::<span class="name">unknownOptionNames</span>() const</h3>
+<p>Returns a list of unknown option names.</p>
+<p>This list will include both long an short name options that were not recognized. For any long options that were in the form {&ndash;option=value}, the value part will have been dropped and only the long name is added.</p>
+<p>The names in this list do not include the preceding dash characters. Names may appear more than once in this list if they were encountered more than once by the parser.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#optionNames" translate="no">optionNames</a>().</p>
+<!-- @@@unknownOptionNames -->
+<!-- $$$value[overload1]$$$valueconstQString& -->
+<h3 class="fn" translate="no" id="value"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QCommandLineParser::<span class="name">value</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>optionName</i>) const</h3>
+<p>Returns the option value found for the given option name <i translate="no">optionName</i>, or an empty string if not found.</p>
+<p>The name provided can be any long or short name of any option that was added with <a href="qcommandlineparser.html#addOption" translate="no">addOption</a>(). All the option names are treated as being equivalent. If the name is not recognized or that option was not present, an empty string is returned.</p>
+<p>For options found by the parser, the last value found for that option is returned. If the option wasn't specified on the command line, the default value is returned.</p>
+<p>If the option does not take a value, a warning is printed, and an empty string is returned.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#values" translate="no">values</a>(), <a href="qcommandlineoption.html#setDefaultValue" translate="no">QCommandLineOption::setDefaultValue</a>(), and <a href="qcommandlineoption.html#setDefaultValues" translate="no">QCommandLineOption::setDefaultValues</a>().</p>
+<!-- @@@value -->
+<!-- $$$value$$$valueconstQCommandLineOption& -->
+<h3 class="fn" translate="no" id="value-1"><span class="type"><a href="qstring.html" translate="no">QString</a></span> QCommandLineParser::<span class="name">value</span>(const <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> &amp;<i>option</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns the option value found for the given <i translate="no">option</i>, or an empty string if not found.</p>
+<p>For options found by the parser, the last value found for that option is returned. If the option wasn't specified on the command line, the default value is returned.</p>
+<p>An empty string is returned if the option does not take a value.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#values" translate="no">values</a>(), <a href="qcommandlineoption.html#setDefaultValue" translate="no">QCommandLineOption::setDefaultValue</a>(), and <a href="qcommandlineoption.html#setDefaultValues" translate="no">QCommandLineOption::setDefaultValues</a>().</p>
+<!-- @@@value -->
+<!-- $$$values[overload1]$$$valuesconstQString& -->
+<h3 class="fn" translate="no" id="values"><span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QCommandLineParser::<span class="name">values</span>(const <span class="type"><a href="qstring.html" translate="no">QString</a></span> &amp;<i>optionName</i>) const</h3>
+<p>Returns a list of option values found for the given option name <i translate="no">optionName</i>, or an empty list if not found.</p>
+<p>The name provided can be any long or short name of any option that was added with <a href="qcommandlineparser.html#addOption" translate="no">addOption</a>(). All the options names are treated as being equivalent. If the name is not recognized or that option was not present, an empty list is returned.</p>
+<p>For options found by the parser, the list will contain an entry for each time the option was encountered by the parser. If the option wasn't specified on the command line, the default values are returned.</p>
+<p>An empty list is returned if the option does not take a value.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#value" translate="no">value</a>(), <a href="qcommandlineoption.html#setDefaultValue" translate="no">QCommandLineOption::setDefaultValue</a>(), and <a href="qcommandlineoption.html#setDefaultValues" translate="no">QCommandLineOption::setDefaultValues</a>().</p>
+<!-- @@@values -->
+<!-- $$$values$$$valuesconstQCommandLineOption& -->
+<h3 class="fn" translate="no" id="values-1"><span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> QCommandLineParser::<span class="name">values</span>(const <span class="type"><a href="qcommandlineoption.html" translate="no">QCommandLineOption</a></span> &amp;<i>option</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a list of option values found for the given <i translate="no">option</i>, or an empty list if not found.</p>
+<p>For options found by the parser, the list will contain an entry for each time the option was encountered by the parser. If the option wasn't specified on the command line, the default values are returned.</p>
+<p>An empty list is returned if the option does not take a value.</p>
+<p><b>See also </b><a href="qcommandlineparser.html#value" translate="no">value</a>(), <a href="qcommandlineoption.html#setDefaultValue" translate="no">QCommandLineOption::setDefaultValue</a>(), and <a href="qcommandlineoption.html#setDefaultValues" translate="no">QCommandLineOption::setDefaultValues</a>().</p>
+<!-- @@@values -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

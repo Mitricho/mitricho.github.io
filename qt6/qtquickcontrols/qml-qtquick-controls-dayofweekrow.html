@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickdayofweekrow.cpp -->
+  <meta name="description" content="A row of names for the days in a week.">
+  <title>DayOfWeekRow QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>DayOfWeekRow</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">DayOfWeekRow QML Type</h1>
+<!-- $$$DayOfWeekRow-brief -->
+<p>A row of names for the days in a week. <a href="#details">More...</a></p>
+<!-- @@@DayOfWeekRow -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-control.html" translate="no">Control</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-dayofweekrow-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-dayofweekrow.html#delegate-prop" translate="no">delegate</a></b> : Component</li>
+</ul>
+<!-- $$$DayOfWeekRow-description -->
+<h2 id="details">Detailed Description</h2>
+<p>DayOfWeekRow presents day of week names in a row. The names of the days are ordered and formatted using the specified <a href="qml-qtquick-controls-control.html#locale-prop" translate="no">locale</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-dayofweekrow.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-dayofweekrow.html" translate="no">DayOfWeekRow</a></span> {
+     <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>(<span class="string">&quot;en_US&quot;</span>)
+ }
+</pre>
+<p>DayOfWeekRow can be used as a standalone control, but it is most often used in conjunction with <a href="qml-qtquick-controls-monthgrid.html" translate="no">MonthGrid</a>. Regardless of the use case, positioning of the row is left to the user.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-dayofweekrow-layout.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-layouts-columnlayout.html" translate="no">ColumnLayout</a></span> {
+     <span class="type"><a href="qml-qtquick-controls-dayofweekrow.html" translate="no">DayOfWeekRow</a></span> {
+         <span class="name">locale</span>: <span class="name">grid</span>.<span class="name">locale</span>
+         <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-monthgrid.html" translate="no">MonthGrid</a></span> {
+         <span class="name">id</span>: <span class="name">grid</span>
+         <span class="name">month</span>: <span class="name">Calendar</span>.<span class="name">December</span>
+         <span class="name">year</span>: <span class="number">2015</span>
+         <span class="name">locale</span>: <span class="name">Qt</span>.<span class="name">locale</span>(<span class="string">&quot;en_US&quot;</span>)
+         <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+     }
+ }
+</pre>
+<p>The visual appearance of DayOfWeekRow can be changed by implementing a <a href="qml-qtquick-controls-dayofweekrow.html#delegate-prop" translate="no">custom delegate</a>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-monthgrid.html" translate="no">MonthGrid</a> and <a href="qml-qtquick-controls-weeknumbercolumn.html" translate="no">WeekNumberColumn</a>.</p>
+<!-- @@@DayOfWeekRow -->
+<h2>Property Documentation</h2>
+<!-- $$$delegate -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="delegate-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">delegate</span> : <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the item delegate that visualizes each day of the week.</p>
+<p>In addition to the <code translate="no">index</code> property, a list of model data roles are available in the context of each delegate:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><b>model.day</b> : int</td><td >The day of week (<a href="../qtcore/qt.html#DayOfWeek-enum" translate="no">Qt::DayOfWeek</a>)</td></tr>
+<tr valign="top" class="even"><td ><b>model.longName</b> : string</td><td >The long version of the day name; for example, &quot;Monday&quot; (<a href="../qtcore/qlocale.html#FormatType-enum" translate="no">QLocale::LongFormat</a>)</td></tr>
+<tr valign="top" class="odd"><td ><b>model.shortName</b> : string</td><td >The short version of the day name; for example, &quot;Mon&quot; (<a href="../qtcore/qlocale.html#FormatType-enum" translate="no">QLocale::ShortFormat</a>)</td></tr>
+<tr valign="top" class="even"><td ><b>model.narrowName</b> : string</td><td >A special version of the day name for use when space is limited. For example, &quot;M&quot; (<a href="../qtcore/qlocale.html#FormatType-enum" translate="no">QLocale::NarrowFormat</a>)</td></tr>
+</table></div>
+<p>The following snippet presents the default implementation of the item delegate. It can be used as a starting point for implementing custom delegates.</p>
+<pre class="qml" translate="no">
+ <span class="name">delegate</span>: <span class="name">Text</span> {
+     <span class="name">text</span>: <span class="name">shortName</span>
+     <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+     <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+     <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+
+     required property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">shortName</span>
+ }
+</pre>
+</div></div><!-- @@@delegate -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

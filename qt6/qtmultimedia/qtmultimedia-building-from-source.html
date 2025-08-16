@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtmultimedia-building-from-source.qdoc -->
+  <meta name="description" content="This document describes how to build Qt Multimedia with full feature support from source code.">
+  <title>Building Qt Multimedia from sources | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li>Building Qt Multimedia from sources</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtmultimedia-wasm.html" />
+  <link rel="next" href="qtmultimedia-building-ffmpeg.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtmultimedia-wasm.html">Platform Notes - WebAssembly</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg.html">Building FFmpeg</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#building-from-source">Building from source</a></li>
+<li class="level1"><a href="#platform-notes">Platform Notes</a></li>
+<li class="level2"><a href="#linux">Linux</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Building Qt Multimedia from sources</h1>
+<!-- $$$qtmultimedia-building-from-source.html-description -->
+<div class="descr" id="details">
+<p>This page describes the process of configuring and building <a href="qtmultimedia-index.html">Qt Multimedia</a>. This description assumes familiarity with Building Qt Sources which specifies build requirements for your platform, as well as an overview of Qt Configure Options. For platform-specific considerations related to the Qt Multimedia module, see <a href="qtmultimedia-building-from-source.html#platform-notes">Platform Notes</a> below.</p>
+<h2 id="building-from-source">Building from source</h2>
+<p>Building Qt Multimedia with full feature support depends on <a href="https://ffmpeg.org/">FFmpeg</a> headers and libraries on most platforms. It is possible to build Qt Multimedia without the Qt Multimedia FFmpeg media backend, but this is only recommended when building for platforms where the FFmpeg backend is not supported.</p>
+<p>FFmpeg development libraries required to build Qt Multimedia can be built from sources or downloaded as binary packages. Qt Multimedia can use either static linking or dynamic linking to FFmpeg libraries. We recommend using the same major version of FFmpeg that is listed in FFmpeg as the default backend. For information on how to build the FFmpeg development libraries, see <a href="qtmultimedia-building-ffmpeg.html">Building FFmpeg from source</a>.</p>
+<p>To build Qt Multimedia with FFmpeg support, specify the <code translate="no">-ffmpeg-dir</code> option on the configure command line when building Qt.</p>
+<pre class="cpp plain" translate="no">
+ qt-source/configure -ffmpeg-dir &lt;FFMPEG_DIR&gt;
+</pre>
+<p>Here, <code translate="no">&lt;FFMPEG_DIR&gt;</code> is the directory containing the FFmpeg include, lib, and bin directories. To build Qt Multimedia without FFmpeg, omit the <code translate="no">&lt;FFMPEG_DIR&gt;</code> variable and specify the <code translate="no">-no-feature-ffmpeg</code> configure option.</p>
+<p>If you prefer not to build all Qt's submodules, you can reduce configure and build times using the <code translate="no">-submodules</code> configure option. This will configure a build that only builds Qt Multimedia and its dependencies.</p>
+<pre class="cpp plain" translate="no">
+ qt-source/configure -submodules qtmultimedia -ffmpeg-dir &lt;FFMPEG_DIR&gt;
+</pre>
+<p>If you configure Qt Multimedia against FFmpeg built with shared libraries (dynamic linking), the FFmpeg shared libraries must be in the module loader's search path to run tests or use examples.</p>
+<div class="admonition note">
+<p><b>Note: </b>Qt Multimedia requires the FFmpeg avformat, avcodec, swresample, swscale, and avutil libraries during runtime to be able to use the FFmpeg media backend. If one or more of these dynamic libraries are not found during application startup, the FFmpeg media backend will fail to load, and the system will attempt to load the native backend. Qt Multimedia doesn't support as many features on native backends.</p>
+</div>
+<p>If you don't already have these libraries in the <code translate="no">path</code>, specify the <code translate="no">-ffmpeg-deploy</code> configure option. With this option enabled, the necessary FFmpeg binaries will be copied to Qt's install directory during the build and install steps:</p>
+<pre class="cpp plain" translate="no">
+ qt-source/configure -submodules qtmultimedia -ffmpeg-dir &lt;FFMPEG_DIR&gt; -ffmpeg-deploy
+</pre>
+<p>After configuring Qt Multimedia, carefully review the configure summary (found in the config.summary file). You can verify that FFmpeg is found under the &quot;Plugin&quot; section. Then follow the regular build and install steps described in Building Qt Sources.</p>
+<h2 id="platform-notes">Platform Notes</h2>
+<h3 id="linux">Linux</h3>
+<ul>
+<li>When configuring Qt Multimedia with FFmpeg enabled, the pulseaudio development package is required. Without this package, FFmpeg will not be recognized.</li>
+<li>When using a version of FFmpeg that is built with VAAPI support, we recommend building Qt Multimedia with VAAPI support as well to make hardware texture conversion possible. To configure Qt Multimedia with VAAPI support, VAAPI developer libraries must be installed on your system. Review the config.summary file to verify that VAAPI support is enabled under the &quot;Hardware acceleration and features&quot; section.</li>
+<li>When configuring Qt Multimedia with the GStreamer backend, GStreamer v1.20 is the minimum requirement. However, we recommend using the latest stable GStreamer upstream release if possible.</li>
+</ul>
+</div>
+<!-- @@@qtmultimedia-building-from-source.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtmultimedia-wasm.html">Platform Notes - WebAssembly</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg.html">Building FFmpeg</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

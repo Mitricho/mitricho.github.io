@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickpackage.cpp -->
+  <meta name="description" content="Specifies a collection of named items.">
+  <title>Package QML Type | Qt 6.9</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QtQml.Models</a></li>
+<li>Package</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#attached-properties">Attached Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Package QML Type</h1>
+<!-- $$$Package-brief -->
+<p>Specifies a collection of named items. <a href="#details">More...</a></p>
+<!-- @@@Package -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQml.Models</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtqml-models-package-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="attached-properties">Attached Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-package.html#name-attached-prop" translate="no">name</a></b> : string</li>
+</ul>
+<!-- $$$Package-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The Package type is used in conjunction with <a href="qml-qtqml-models-delegatemodel.html" translate="no">DelegateModel</a> to enable delegates with a shared context to be provided to multiple views.</p>
+<p>Any item within a Package may be assigned a name via the <a href="qml-qtqml-models-package.html#name-attached-prop" translate="no">Package.name</a> attached property.</p>
+<p>The example below creates a Package containing two named items; <i>list</i> and <i>grid</i>. The third item in the package (the <a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a>) is parented to whichever delegate it should appear in. This allows an item to move between views.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtqml-models-package.html" translate="no">Package</a></span> {
+     <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">id</span>: <span class="name">listDelegate</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">25</span>; <span class="name">text</span>: <span class="string">'Empty'</span>; <span class="name">Package</span>.name: <span class="string">'list'</span> }
+     <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">id</span>: <span class="name">gridDelegate</span>; <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>; <span class="name">height</span>: <span class="number">50</span>; <span class="name">text</span>: <span class="string">'Empty'</span>; <span class="name">Package</span>.name: <span class="string">'grid'</span> }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">id</span>: <span class="name">wrapper</span>
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="number">25</span>
+         <span class="name">color</span>: <span class="string">'lightsteelblue'</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> { <span class="name">text</span>: <span class="name">display</span>; <span class="name">anchors</span>.centerIn: <span class="name">parent</span> }
+         <span class="name">state</span>: <span class="name">root</span>.<span class="name">upTo</span> <span class="operator">&gt;</span> <span class="name">index</span> ? <span class="string">'inGrid'</span> : <span class="string">'inList'</span>
+         <span class="name">states</span>: [
+             <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+                 <span class="name">name</span>: <span class="string">'inList'</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-parentchange.html" translate="no">ParentChange</a></span> { <span class="name">target</span>: <span class="name">wrapper</span>; <span class="name">parent</span>: <span class="name">listDelegate</span> }
+             },
+             <span class="type"><a href="../qtquick/qml-qtquick-state.html" translate="no">State</a></span> {
+                 <span class="name">name</span>: <span class="string">'inGrid'</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-parentchange.html" translate="no">ParentChange</a></span> {
+                     <span class="name">target</span>: <span class="name">wrapper</span>; <span class="name">parent</span>: <span class="name">gridDelegate</span>
+                     <span class="name">x</span>: <span class="number">0</span>; <span class="name">y</span>: <span class="number">0</span>; <span class="name">width</span>: <span class="name">gridDelegate</span>.<span class="name">width</span>; <span class="name">height</span>: <span class="name">gridDelegate</span>.<span class="name">height</span>
+                 }
+             }
+         ]
+
+         <span class="name">transitions</span>: [
+             <span class="type"><a href="../qtquick/qml-qtquick-transition.html" translate="no">Transition</a></span> {
+                 <span class="type"><a href="../qtquick/qml-qtquick-parentanimation.html" translate="no">ParentAnimation</a></span> {
+                     <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">properties</span>: <span class="string">'x,y,width,height'</span>; <span class="name">duration</span>: <span class="number">300</span> }
+                 }
+             }
+         ]
+     }
+ }
+</pre>
+<p>These named items are used as the delegates by the two views who reference the special <a href="qml-qtqml-models-delegatemodel.html#parts-prop" translate="no">DelegateModel::parts</a> property to select a model which provides the chosen delegate.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtqml-models-delegatemodel.html" translate="no">DelegateModel</a></span> {
+     <span class="name">id</span>: <span class="name">visualModel</span>
+     <span class="name">delegate</span>: <span class="name">Delegate</span> {}
+     <span class="name">model</span>: <span class="name">myModel</span>
+ }
+
+ <span class="type"><a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a></span> {
+     <span class="name">id</span>: <span class="name">lv</span>
+     <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">2</span>
+     <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+
+     <span class="name">model</span>: <span class="name">visualModel</span>.<span class="name">parts</span>.<span class="name">list</span>
+ }
+ <span class="type"><a href="../qtquick/qml-qtquick-gridview.html" translate="no">GridView</a></span> {
+     <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">2</span>
+     <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span><span class="operator">/</span><span class="number">2</span>
+     <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+     <span class="name">cellWidth</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+     <span class="name">cellHeight</span>: <span class="number">50</span>
+     <span class="name">model</span>: <span class="name">visualModel</span>.<span class="name">parts</span>.<span class="name">grid</span>
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Package is part of <a href="../qtqml/qtqml-qmlmodule.html" translate="no">QtQml</a>.Models since version 2.14 and part of <a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a> since version 2.0. Importing Package via <a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a> is deprecated since Qt 5.14.</p>
+</div>
+<p><b>See also </b><a href="../qtquick/qtquick-views-example.html">Qt Quick Examples - Views</a> and <a href="../qtqml/qtqml-index.html">Qt Qml</a>.</p>
+<!-- @@@Package -->
+<h2>Attached Property Documentation</h2>
+<!-- $$$name -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="name-attached-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">Package.name</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This attached property holds the name of an item within a Package.</p>
+</div></div><!-- @@@name -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

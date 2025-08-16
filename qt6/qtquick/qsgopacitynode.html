@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qsgnode.cpp -->
+  <meta name="description" content="The QSGOpacityNode class is used to change opacity of nodes.">
+  <title>QSGOpacityNode Class | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-module.html" translate="no">C++ Classes</a></li>
+<li>QSGOpacityNode</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QSGOpacityNode Class</h1>
+<!-- $$$QSGOpacityNode-brief -->
+<p>The QSGOpacityNode class is used to change opacity of nodes. <a href="#details">More...</a></p>
+<!-- @@@QSGOpacityNode -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QSGOpacityNode&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Quick)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Quick)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += quick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qsgnode.html" translate="no">QSGNode</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qsgopacitynode-members.html">List of all members, including inherited members</a></li>
+<li>QSGOpacityNode is part of <a href="qtquick-scenegraph-nodes.html">Qt Quick Scene Graph Node classes</a>.</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsgopacitynode.html#QSGOpacityNode" translate="no">QSGOpacityNode</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qsgopacitynode.html#dtor.QSGOpacityNode" translate="no">~QSGOpacityNode</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qsgopacitynode.html#opacity" translate="no">opacity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsgopacitynode.html#setOpacity" translate="no">setOpacity</a></b>(qreal <i>opacity</i>)</td></tr>
+</table></div>
+<!-- $$$QSGOpacityNode-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Opacity applies to its subtree and can be nested. Multiple opacity nodes will be accumulated by multiplying their opacity. The accumulation happens as part of the rendering.</p>
+<p>When nested opacity gets below a certain threshold, the subtree might be marked as blocked, causing <a href="qsgnode.html#isSubtreeBlocked" translate="no">isSubtreeBlocked</a>() to return true. This is done for performance reasons.</p>
+<div class="admonition note">
+<p><b>Note: </b>All classes with QSG prefix should be used solely on the scene graph's rendering thread. See <a href="qtquick-visualcanvas-scenegraph.html#scene-graph-and-rendering">Scene Graph and Rendering</a> for more information.</p>
+</div>
+</div>
+<!-- @@@QSGOpacityNode -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QSGOpacityNode[overload1]$$$QSGOpacityNode -->
+<h3 class="fn" translate="no" id="QSGOpacityNode">QSGOpacityNode::<span class="name">QSGOpacityNode</span>()</h3>
+<p>Constructs an opacity node with a default opacity of 1.</p>
+<p>Opacity accumulates downwards in the scene graph so a node with two QSGOpacityNode instances above it, both with opacity of 0.5, will have effective opacity of 0.25.</p>
+<p>The default opacity of nodes is 1.</p>
+<!-- @@@QSGOpacityNode -->
+<!-- $$$~QSGOpacityNode[overload1]$$$~QSGOpacityNode -->
+<h3 class="fn" translate="no" id="dtor.QSGOpacityNode"><code class="details extra" translate="no">[override virtual noexcept]</code> QSGOpacityNode::<span class="name">~QSGOpacityNode</span>()</h3>
+<p>Deletes the opacity node.</p>
+<!-- @@@~QSGOpacityNode -->
+<!-- $$$opacity[overload1]$$$opacity -->
+<h3 class="fn" translate="no" id="opacity"><span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> QSGOpacityNode::<span class="name">opacity</span>() const</h3>
+<p>Returns this opacity node's opacity.</p>
+<p><b>See also </b><a href="qsgopacitynode.html#setOpacity" translate="no">setOpacity</a>().</p>
+<!-- @@@opacity -->
+<!-- $$$setOpacity[overload1]$$$setOpacityqreal -->
+<h3 class="fn" translate="no" id="setOpacity"><span class="type">void</span> QSGOpacityNode::<span class="name">setOpacity</span>(<span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> <i>opacity</i>)</h3>
+<p>Sets the opacity of this node to <i translate="no">opacity</i>.</p>
+<p>Before rendering the graph, the renderer will do an update pass over the subtree to propagate the opacity to its children.</p>
+<p>The value will be bounded to the range 0 to 1.</p>
+<p><b>See also </b><a href="qsgopacitynode.html#opacity" translate="no">opacity</a>().</p>
+<!-- @@@setOpacity -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

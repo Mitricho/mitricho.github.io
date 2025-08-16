@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dparticlesystem.cpp -->
+  <meta name="description" content="A system which includes particle, emitter, and affector types.">
+  <title>ParticleSystem3D QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-particles3d-qmlmodule.html" translate="no">QtQuick3D.Particles3D</a></li>
+<li>ParticleSystem3D</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ParticleSystem3D QML Type</h1>
+<!-- $$$ParticleSystem3D-brief -->
+<p>A system which includes particle, emitter, and affector types. <a href="#details">More...</a></p>
+<!-- @@@ParticleSystem3D -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Particles3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.2</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-particles3d-particlesystem3d-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#logging-prop" translate="no">logging</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#loggingData-prop" translate="no">loggingData</a></b> : ParticleSystem3DLogging</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#paused-prop" translate="no">paused</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#running-prop" translate="no">running</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#seed-prop" translate="no">seed</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#startTime-prop" translate="no">startTime</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#time-prop" translate="no">time</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#useRandomSeed-prop" translate="no">useRandomSeed</a></b> : bool</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#reset-method" translate="no">reset</a></b>()</li>
+</ul>
+<!-- $$$ParticleSystem3D-description -->
+<h2 id="details">Detailed Description</h2>
+<p>This element is the root of the particle system, which handles the system timing and groups all the other related elements like particles, emitters, and affectors together. To group the system elements, they either need to be direct children of the ParticleSystem3D like this:</p>
+<pre class="qml" translate="no">
+ ParticleSystem3D {
+     ParticleEmitter3D {
+         ...
+     }
+     SpriteParticle3D {
+         ...
+     }
+ }
+</pre>
+<p>Or if the system elements are not direct children, they need to use <code translate="no">system</code> property to point which ParticleSystem3D they belong to. Like this:</p>
+<pre class="qml" translate="no">
+ ParticleSystem3D {
+     id: psystem
+ }
+ ParticleEmitter3D {
+     system: psystem
+     ...
+ }
+ SpriteParticle3D {
+     system: psystem
+     ...
+ }
+</pre>
+<!-- @@@ParticleSystem3D -->
+<h2>Property Documentation</h2>
+<!-- $$$logging -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="logging-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">logging</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Set this to true to collect <a href="qml-qtquick3d-particles3d-particlesystem3d.html#loggingData-prop" translate="no">loggingData</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property has some performance impact, so it should not be enabled in releases.</p>
+</div>
+<p>The default value is <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#loggingData-prop" translate="no">loggingData</a>.</p>
+</div></div><!-- @@@logging -->
+<br/>
+<!-- $$$loggingData -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="loggingData-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">loggingData</span> : <span class="type"><a href="qml-qtquick3d-particles3d-particlesystem3dlogging.html" translate="no">ParticleSystem3DLogging</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property contains logging data which can be useful when developing and optimizing the particle effects.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property contains correct data only when <a href="qml-qtquick3d-particles3d-particlesystem3d.html#logging-prop" translate="no">logging</a> is set to <code translate="no">true</code> and particle system is running.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#logging-prop" translate="no">logging</a>.</p>
+</div></div><!-- @@@loggingData -->
+<br/>
+<!-- $$$paused -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="paused-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">paused</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines if system is currently paused. If paused is set to <code translate="no">true</code>, the particle system will not advance the simulation. When paused is set to <code translate="no">false</code> again, the simulation will resume from the same point where it was paused.</p>
+<p>The default value is <code translate="no">false</code>.</p>
+</div></div><!-- @@@paused -->
+<br/>
+<!-- $$$running -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="running-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">running</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines if system is currently running. If running is set to <code translate="no">false</code>, the particle system will stop the simulation. All particles will be destroyed when the system is set to running again.</p>
+<p>Running should be set to <code translate="no">false</code> when manually modifying/animating the <a href="qml-qtquick3d-particles3d-particlesystem3d.html#time-prop" translate="no">time</a> property.</p>
+<p>The default value is <code translate="no">true</code>.</p>
+</div></div><!-- @@@running -->
+<br/>
+<!-- $$$seed -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="seed-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">seed</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the seed value used for particles randomization. With the same seed, particles effect will be identical on every run. This is useful when deterministic behavior is desired over random behavior.</p>
+<p>The default value is <code translate="no">0</code> when <a href="qml-qtquick3d-particles3d-particlesystem3d.html#useRandomSeed-prop" translate="no">useRandomSeed</a> is set to <code translate="no">false</code>, and something in between <code translate="no">1..INT32_MAX</code> when <a href="qml-qtquick3d-particles3d-particlesystem3d.html#useRandomSeed-prop" translate="no">useRandomSeed</a> is set to <code translate="no">true</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property should not be modified during the particle animations.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#useRandomSeed-prop" translate="no">useRandomSeed</a>.</p>
+</div></div><!-- @@@seed -->
+<br/>
+<!-- $$$startTime -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="startTime-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">startTime</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines time in milliseconds where the system starts. This can be useful to warm up the system so that a set of particles has already been emitted. If for example startTime is set to 2000 and system <a href="qml-qtquick3d-particles3d-particlesystem3d.html#time-prop" translate="no">time</a> is animating from 0 to 1000, actually animation shows particles from 2000 to 3000ms.</p>
+<p>The default value is <code translate="no">0</code>.</p>
+</div></div><!-- @@@startTime -->
+<br/>
+<!-- $$$time -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="time-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">time</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines time in milliseconds for the system.</p>
+<div class="admonition note">
+<p><b>Note: </b>When modifying the time property, <a href="qml-qtquick3d-particles3d-particlesystem3d.html#running-prop" translate="no">running</a> should usually be set to <code translate="no">false</code>.</p>
+</div>
+<p>Here is an example how to manually animate the system for 3 seconds, in a loop, at half speed:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-particles3d-particlesystem3d.html" translate="no">ParticleSystem3D</a></span> {
+     <span class="name">running</span>: <span class="number">false</span>
+     NumberAnimation on <span class="name">time</span> {
+         <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+         <span class="name">from</span>: <span class="number">0</span>
+         <span class="name">to</span>: <span class="number">3000</span>
+         <span class="name">duration</span>: <span class="number">6000</span>
+     }
+ }
+</pre>
+</div></div><!-- @@@time -->
+<br/>
+<!-- $$$useRandomSeed -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="useRandomSeed-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">useRandomSeed</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines if particle system seed should be random or user defined. When <code translate="no">true</code>, a new random value for <a href="qml-qtquick3d-particles3d-particlesystem3d.html#seed-prop" translate="no">seed</a> is generated every time particle system is restarted.</p>
+<p>The default value is <code translate="no">true</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property should not be modified during the particle animations.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick3d-particles3d-particlesystem3d.html#seed-prop" translate="no">seed</a>.</p>
+</div></div><!-- @@@useRandomSeed -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$reset[overload1]$$$reset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="reset-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">reset</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This method resets the internal state of the particle system to it's initial state. This can be used when <a href="qml-qtquick3d-particles3d-particlesystem3d.html#running-prop" translate="no">running</a> property is <code translate="no">false</code> to reset the system. The <a href="qml-qtquick3d-particles3d-particlesystem3d.html#running-prop" translate="no">running</a> is <code translate="no">true</code> this method does not need to be called as the system is managing the internal state, but when it is <code translate="no">false</code> the system needs to be told when the system should be reset.</p>
+</div></div><!-- @@@reset -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

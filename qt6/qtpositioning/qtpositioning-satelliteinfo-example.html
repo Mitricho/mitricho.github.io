@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- satelliteinfo.qdoc -->
+  <meta name="description" content="The Satellite Info example shows the available satellites using Sky View, Table View, or RSSI View and the user's current position. It is implemented with Qt Positioning and Qt Quick.">
+  <title>Satellite Info | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li><a href="qtpositioning-examples.html">Qt Positioning Examples</a></li>
+<li>Satellite Info</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#ui-overview">UI Overview</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#retrieving-current-position">Retrieving Current Position</a></li>
+<li class="level1"><a href="#retrieving-satellite-information">Retrieving Satellite Information</a></li>
+<li class="level1"><a href="#using-custom-c-models">Using Custom C++ Models</a></li>
+<li class="level2"><a href="#satellite-model">Satellite Model</a></li>
+<li class="level2"><a href="#proxy-model">Proxy Model</a></li>
+<li class="level1"><a href="#qml-module-registration">QML Module Registration</a></li>
+<li class="level2"><a href="#cmake-build">CMake Build</a></li>
+<li class="level2"><a href="#qmake-build">qmake Build</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Satellite Info</h1>
+<!-- $$$satelliteinfo-brief -->
+<p>The Satellite Info example shows the available satellites using Sky View, Table View, or RSSI View and the user's current position. It is implemented with <a href="qtpositioning-index.html">Qt Positioning</a> and <a href="../qtquick/qtquick-index.html">Qt Quick</a>.</p>
+<!-- @@@satelliteinfo -->
+<!-- $$$satelliteinfo-description -->
+<div class="descr" id="details">
+<p>This example demonstrates the usage of <a href="qtpositioning-qmlmodule.html" translate="no">Qt Positioning QML API</a>:</p>
+<ul>
+<li><a href="qml-qtpositioning-positionsource.html" translate="no">PositionSource</a></li>
+<li><a href="qml-qtpositioning-satellitesource.html" translate="no">SatelliteSource</a></li>
+</ul>
+<p>The example also shows how to use a custom <code translate="no">C++</code> model together with a custom proxy model from <code translate="no">QML</code>.</p>
+<h4 id="ui-overview">UI Overview</h4>
+<p>The example shows satellite information in three different tabs. The data is taken from the <a href="qml-qtpositioning-satellitesource.html#satellitesInView-prop" translate="no">SatelliteSource::satellitesInView</a> and <a href="qml-qtpositioning-satellitesource.html#satellitesInUse-prop" translate="no">SatelliteSource::satellitesInUse</a> properties.</p>
+<p class="centerAlign"><img src="images/skyview_tableview.webp" alt="" /></p><p>The <i>Sky View</i> tab shows the relative satellite positions using the <code translate="no">Azimuth</code> and <code translate="no">Elevation</code> <a href="qml-geosatelliteinfo.html#attribute-method" translate="no">attributes</a>. Clicking on an individual satellite object opens a popup with the <a href="qml-geosatelliteinfo.html#satelliteIdentifier-prop" translate="no">satellite identifier</a>, its azimuth and elevation.</p>
+<p>The <i>Table View</i> tab shows the list of all detected satellites, and allows to apply sorting and filtering to the list.</p>
+<p class="centerAlign"><img src="images/rssiview_settings.webp" alt="" /></p><p>The <i>RSSI View</i> tab shows the signal strength of satellites in view using the <a href="qml-geosatelliteinfo.html#signalStrength-prop" translate="no">signalStrength</a> property. The numbers below the bars represent the individual <a href="qml-geosatelliteinfo.html#satelliteIdentifier-prop" translate="no">satellite identifiers</a>.</p>
+<p>The <i>Sky View</i> and <i>RSSI View</i> tabs also show the current latitude and longitude. They use <a href="qml-qtpositioning-positionsource.html#position-prop" translate="no">PositionSource::position</a> property to extract this information.</p>
+<p>The <i>Status</i> block on top of the tabs shows the current mode or the last error.</p>
+<p>The <i>Settings</i> menu allows to switch the application color mode and show the help information.</p>
+<p>The application operates in three different modes:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Application mode</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >Running</td><td >The application continuously queries the system for satellite and position updates. When new data is available it will be displayed.</td></tr>
+<tr valign="top" class="even"><td >Stopped</td><td >The application stops updating the satellite and position information.</td></tr>
+<tr valign="top" class="odd"><td >Single</td><td >The application makes a single satellite and position update request.</td></tr>
+</table></div>
+<p>The application automatically switches into a simulation mode if the platform does not provide satellite or position information. The simulation mode uses an <a href="position-plugin-nmea.html">NMEA plugin</a> with pre-recorded NMEA data.</p>
+<div class="admonition note">
+<p><b>Note: </b>Apple does not provide any APIs to retrieve satellite information, so on <code translate="no">macOS</code> and <code translate="no">iOS</code> the satellite information will always be taken from pre-recorded data. These API limitations do not affect positioning information, so current position can be displayed correctly.</p>
+</div>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="retrieving-current-position">Retrieving Current Position</h4>
+<p>The current position is retrieved from the <a href="qml-qtpositioning-positionsource.html" translate="no">PositionSource</a> QML object. The <code translate="no">onPositionChanged</code> handler is used to receive position updates. The string representations of latitude and longitude are extracted from the <a href="qml-qtpositioning-position.html#coordinate-prop" translate="no">coordinate</a> property.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtpositioning-positionsource.html" translate="no">PositionSource</a></span> {
+     <span class="name">id</span>: <span class="name">positionSource</span>
+     <span class="name">name</span>: <span class="name">root</span>.<span class="name">simulation</span> ? <span class="string">&quot;nmea&quot;</span> : <span class="string">&quot;&quot;</span>
+     <span class="name">onPositionChanged</span>: {
+         let posData = <span class="name">position</span>.<span class="name">coordinate</span>.<span class="name">toString</span>().<span class="name">split</span>(<span class="string">&quot;, &quot;</span>)
+         <span class="name">positionBox</span>.<span class="name">latitudeString</span> <span class="operator">=</span> <span class="name">posData</span>[<span class="number">0</span>]
+         <span class="name">positionBox</span>.<span class="name">longitudeString</span> <span class="operator">=</span> <span class="name">posData</span>[<span class="number">1</span>]
+     }
+ }
+</pre>
+<h4 id="retrieving-satellite-information">Retrieving Satellite Information</h4>
+<p>Similarly to the position, the current satellite information is retrieved from the <a href="qml-qtpositioning-satellitesource.html" translate="no">SatelliteSource</a> QML object. The <code translate="no">onSatellitesInViewChanged</code> and <code translate="no">onSatellitesInUseChanged</code> handlers are used to get the updated satellites in view and satellites in use respectively. In this example, the data is then forwarded to the <code translate="no">C++</code> model, which is later used in all views.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtpositioning-satellitesource.html" translate="no">SatelliteSource</a></span> {
+     <span class="name">id</span>: <span class="name">satelliteSource</span>
+     <span class="name">name</span>: <span class="name">root</span>.<span class="name">simulation</span> ? <span class="string">&quot;nmea&quot;</span> : <span class="string">&quot;&quot;</span>
+     <span class="name">onSatellitesInViewChanged</span>: <span class="name">root</span>.<span class="name">satellitesModel</span>.<span class="name">updateSatellitesInView</span>(<span class="name">satellitesInView</span>)
+     <span class="name">onSatellitesInUseChanged</span>: <span class="name">root</span>.<span class="name">satellitesModel</span>.<span class="name">updateSatellitesInUse</span>(<span class="name">satellitesInUse</span>)
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The example shows both the QML Positioning API, and the integration of C++ model to QML. That is the reason why the satellite information is first retrieved in <code translate="no">QML</code>, then forwarded to <code translate="no">C++</code>, and then back to <code translate="no">QML</code> to be used in the model. In practice, if the application is supposed to use complex <code translate="no">C++</code> models, consider directly using the <a href="qgeosatelliteinfosource.html" translate="no">QGeoSatelliteInfoSource</a> class from <code translate="no">C++</code>.</p>
+</div>
+<h4 id="using-custom-c-models">Using Custom C++ Models</h4>
+<p>The example makes use of two custom models - <code translate="no">SatelliteModel</code> and <code translate="no">SortFilterModel</code>.</p>
+<h5 id="satellite-model">Satellite Model</h5>
+<p>The <code translate="no">SatelliteModel</code> class is derived from <a href="../qtcore/qabstractlistmodel.html" translate="no">QAbstractListModel</a> and reimplements the <a href="../qtcore/qabstractitemmodel.html#rowCount" translate="no">rowCount</a>(), <a href="../qtcore/qabstractitemmodel.html#data" translate="no">data</a>(), and <a href="../qtcore/qabstractitemmodel.html#roleNames" translate="no">roleNames</a>() methods to represent the satellite information. Using <a href="../qtcore/qabstractlistmodel.html" translate="no">QAbstractListModel</a> as a base class allows to easily use the model with the <code translate="no">QML</code> <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a> and <a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a> types. A custom <code translate="no">size</code> property is used only in the <i>RSSI View</i> tab to dynamically calculate the width of the tab bars.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> SatelliteModel : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qabstractlistmodel.html" translate="no">QAbstractListModel</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">int</span> size READ rowCount NOTIFY sizeChanged)
+     QML_ELEMENT
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> SatelliteModel(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     <span class="type">int</span> rowCount(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> <span class="operator">&amp;</span>parent <span class="operator">=</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span>()) <span class="keyword">const</span> override;
+     <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> data(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> <span class="operator">&amp;</span>index<span class="operator">,</span> <span class="type">int</span> role <span class="operator">=</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>DisplayRole) <span class="keyword">const</span> override;
+     <span class="type"><a href="qhash-qtpositioning-proxy.html" translate="no">QHash</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span><span class="operator">&gt;</span> roleNames() <span class="keyword">const</span> override;
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> updateSatellitesInView(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qgeosatelliteinfo.html" translate="no">QGeoSatelliteInfo</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>inView);
+     <span class="type">void</span> updateSatellitesInUse(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qgeosatelliteinfo.html" translate="no">QGeoSatelliteInfo</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>inUse);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> sizeChanged();
+ };
+</pre>
+<p>The <code translate="no">roleNames()</code> method is used to map the model's roles to the property names which can be used to access the model data from <code translate="no">QML</code>. For example, the <code translate="no">id</code> name is used to extract the satellite identifier, and the <code translate="no">rssi</code> name is used to get the signal strength.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qhash-qtpositioning-proxy.html" translate="no">QHash</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span><span class="operator">&gt;</span> SatelliteModel<span class="operator">::</span>roleNames() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> {
+         {Roles<span class="operator">::</span>IdRole<span class="operator">,</span> <span class="string">&quot;id&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>RssiRole<span class="operator">,</span> <span class="string">&quot;rssi&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>AzimuthRole<span class="operator">,</span> <span class="string">&quot;azimuth&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>ElevationRole<span class="operator">,</span> <span class="string">&quot;elevation&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>SystemRole<span class="operator">,</span> <span class="string">&quot;system&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>SystemIdRole<span class="operator">,</span> <span class="string">&quot;systemId&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>InUseRole<span class="operator">,</span> <span class="string">&quot;inUse&quot;</span>}<span class="operator">,</span>
+         {Roles<span class="operator">::</span>VisibleNameRole<span class="operator">,</span> <span class="string">&quot;name&quot;</span>}
+     };
+ }
+</pre>
+<p>On the <code translate="no">QML</code> side, we can use these names to get the actual values. For example, the implementation of <i>RSSI View</i> uses the <code translate="no">rssi</code>, <code translate="no">inUse</code>, and <code translate="no">id</code> role names to draw the bars that represent individual satellites:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+     <span class="name">id</span>: <span class="name">repeater</span>
+     <span class="name">model</span>: <span class="name">root</span>.<span class="name">satellitesModel</span>
+     <span class="name">delegate</span>: <span class="name">Rectangle</span> {
+         required property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">modelData</span>
+         <span class="name">height</span>: <span class="name">rect</span>.<span class="name">height</span>
+         <span class="name">width</span>: <span class="name">view</span>.<span class="name">singleWidth</span>
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="type">SemiRoundedRectangle</span> {
+             <span class="name">anchors</span>.bottom: <span class="name">satId</span>.<span class="name">top</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: (<span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">satId</span>.<span class="name">height</span>)
+                     <span class="operator">*</span> <span class="name">Math</span>.<span class="name">min</span>(<span class="name">parent</span>.<span class="name">modelData</span>.<span class="name">rssi</span>, <span class="name">rect</span>.<span class="name">maxVisibleLevel</span>)
+                     <span class="operator">/</span> <span class="name">rect</span>.<span class="name">maxVisibleLevel</span>
+             <span class="name">color</span>: <span class="name">parent</span>.<span class="name">modelData</span>.<span class="name">inUse</span> ? <span class="name">root</span>.<span class="name">inUseColor</span> : <span class="name">root</span>.<span class="name">inViewColor</span>
+         }
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+             <span class="name">id</span>: <span class="name">satId</span>
+             <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>
+             <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+             <span class="name">text</span>: <span class="name">parent</span>.<span class="name">modelData</span>.<span class="name">id</span>
+             <span class="name">color</span>: <span class="name">Theme</span>.<span class="name">textSecondaryColor</span>
+             <span class="name">font</span>.pixelSize: <span class="name">Theme</span>.<span class="name">smallFontSize</span>
+             <span class="name">font</span>.weight: <span class="name">Theme</span>.<span class="name">fontLightWeight</span>
+         }
+     }
+ }
+</pre>
+<h5 id="proxy-model">Proxy Model</h5>
+<p>The <code translate="no">SortFilterModel</code> class is used to provide custom sorting and filtering of the satellite objects shown in the <i>Table View</i> tab.</p>
+<p>The model is derived from <a href="../qtcore/qsortfilterproxymodel.html" translate="no">QSortFilterProxyModel</a> and reimplements the <a href="../qtcore/qsortfilterproxymodel.html#filterAcceptsRow" translate="no">filterAcceptsRow</a>() and <a href="../qtcore/qsortfilterproxymodel.html#lessThan" translate="no">lessThan</a>() methods to provide filtering and sorting. The model also exposes several <code translate="no">slots</code> to tune the filtering and sorting behavior.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> SortFilterModel : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qsortfilterproxymodel.html" translate="no">QSortFilterProxyModel</a></span>
+ {
+     Q_OBJECT
+     QML_ELEMENT
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> SortFilterModel(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> updateFilterString(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>str);
+     <span class="type">void</span> updateShowInView(<span class="type">bool</span> show);
+     <span class="type">void</span> updateShowInUse(<span class="type">bool</span> show);
+     <span class="type">void</span> updateSelectedSystems(<span class="type">int</span> id<span class="operator">,</span> <span class="type">bool</span> show);
+     <span class="type">void</span> updateSortRoles(<span class="type">int</span> role<span class="operator">,</span> <span class="type">bool</span> use);
+
+ <span class="keyword">protected</span>:
+     <span class="type">bool</span> filterAcceptsRow(<span class="type">int</span> row<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> <span class="operator">&amp;</span>parent) <span class="keyword">const</span> override;
+     <span class="type">bool</span> lessThan(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> <span class="operator">&amp;</span>left<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qmodelindex.html" translate="no">QModelIndex</a></span> <span class="operator">&amp;</span>right) <span class="keyword">const</span> override;
+ };
+</pre>
+<p>These slots can be called from both <code translate="no">C++</code> and <code translate="no">QML</code>. For example, the <i>Satellite Identifier</i> delegate uses the <code translate="no">updateSelectedSystems()</code> slot to show or hide the information about satellites belonging to certain satellite systems. Likewise, the <i>Satellite Status</i> delegates use the <code translate="no">updateShowInView()</code> and <code translate="no">updateShowInUse()</code> slots to filter the satellites with a specific status.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+     <span class="name">model</span>: <span class="name">root</span>.<span class="name">satelliteSystemModel</span>
+     <span class="name">delegate</span>: <span class="name">CheckElement</span> {
+         required property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">modelData</span>
+         <span class="name">text</span>: <span class="name">modelData</span>.<span class="name">name</span>
+         <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignRight</span>
+         <span class="name">onCheckedChanged</span>: {
+             <span class="name">root</span>.<span class="name">sortFilterModel</span>.<span class="name">updateSelectedSystems</span>(<span class="name">modelData</span>.<span class="name">id</span>, <span class="name">checked</span>)
+         }
+     }
+ }
+     ...
+ <span class="type">CheckElement</span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;In View&quot;</span>)
+     <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignRight</span>
+     <span class="name">onCheckedChanged</span>: <span class="name">root</span>.<span class="name">sortFilterModel</span>.<span class="name">updateShowInView</span>(<span class="name">checked</span>)
+ }
+ <span class="type">CheckElement</span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;In Use&quot;</span>)
+     <span class="name">Layout</span>.alignment: <span class="name">Qt</span>.<span class="name">AlignRight</span>
+     <span class="name">onCheckedChanged</span>: <span class="name">root</span>.<span class="name">sortFilterModel</span>.<span class="name">updateShowInUse</span>(<span class="name">checked</span>)
+ }
+</pre>
+<h4 id="qml-module-registration">QML Module Registration</h4>
+<h5 id="cmake-build">CMake Build</h5>
+<p>For a CMake-based build, we need to add the following to the <code translate="no">CMakeLists.txt</code>:</p>
+<pre class="cpp" translate="no">
+ qt_add_qml_module(satelliteinfo
+     URI SatelliteInformation
+     VERSION 1.0
+     SOURCES
+         roles.h
+         satellitemodel.cpp satellitemodel.h
+         sortfiltermodel.cpp sortfiltermodel.h
+     QML_FILES
+         ApplicationScreen.qml
+         Button.qml
+         Header.qml
+         HelpPopup.qml
+         LegendBox.qml
+         Main.qml
+         RssiView.qml
+         PageButton.qml
+         PermissionsScreen.qml
+         PositionBox.qml
+         SatelliteView.qml
+         SettingsView.qml
+         SkyView.qml
+         Theme.qml
+         ViewSwitch.qml
+     RESOURCES
+         icons/checkbox.svg
+         icons/checkbox_blank.svg
+         icons/darkmode.svg
+         icons/filter.svg
+         icons/help.svg
+         icons/lightmode.svg
+         icons/place.svg
+         icons/qtlogo_green.png
+         icons/qtlogo_white.png
+         icons/rssiview.svg
+         icons/satellite_small.png
+         icons/satellite1.png
+         icons/satellite2.png
+         icons/search.svg
+         icons/settings.svg
+         icons/skyview.svg
+         icons/sort.svg
+         icons/tableview.svg
+ )
+</pre>
+<h5 id="qmake-build">qmake Build</h5>
+<p>For a qmake build, we need to modify the <code translate="no">satelliteinfo.pro</code> file in the following way:</p>
+<pre class="cpp" translate="no">
+ CONFIG += qmltypes
+ QML_IMPORT_NAME = SatelliteInformation
+ QML_IMPORT_MAJOR_VERSION = 1
+
+ qml_resources.files = \
+     qmldir \
+     ApplicationScreen.qml \
+     Button.qml \
+     Header.qml \
+     HelpPopup.qml \
+     LegendBox.qml \
+     Main.qml \
+     RssiView.qml \
+     PageButton.qml \
+     PermissionsScreen.qml \
+     PositionBox.qml \
+     SatelliteView.qml \
+     SettingsView.qml \
+     SkyView.qml \
+     Theme.qml \
+     ViewSwitch.qml
+
+ qml_resources.prefix = /qt/qml/SatelliteInformation
+
+ RESOURCES += qml_resources
+
+ icon_resources.files = \
+     icons/checkbox.svg \
+     icons/checkbox_blank.svg \
+     icons/darkmode.svg \
+     icons/filter.svg \
+     icons/help.svg \
+     icons/lightmode.svg \
+     icons/place.svg \
+     icons/qtlogo_green.png \
+     icons/qtlogo_white.png \
+     icons/rssiview.svg \
+     icons/satellite_small.png \
+     icons/satellite1.png \
+     icons/satellite2.png \
+     icons/search.svg \
+     icons/settings.svg \
+     icons/skyview.svg \
+     icons/sort.svg \
+     icons/tableview.svg
+
+ icon_resources.prefix = /qt/qml/SatelliteInformation
+
+ RESOURCES += icon_resources
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtpositioning.git/tree/examples/positioning/satelliteinfo?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@satelliteinfo -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- simplecoapclient.qdoc -->
+  <meta name="description" content="Creating an application that communicates with a CoAP server.">
+  <title>Simple CoAP Client | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Simple CoAP Client</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#setting-up-a-coap-server">Setting Up a CoAP Server</a></li>
+<li class="level2"><a href="#using-the-docker-based-test-server">Using the Docker-based Test Server</a></li>
+<li class="level1"><a href="#creating-a-client">Creating a Client</a></li>
+<li class="level1"><a href="#sending-requests">Sending Requests</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Simple CoAP Client</h1>
+<!-- $$$simplecoapclient-brief -->
+<p>Creating an application that communicates with a CoAP server.</p>
+<!-- @@@simplecoapclient -->
+<!-- $$$simplecoapclient-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/simplecoapclient.webp" alt="" /></p><p><i>Simple CoAP Client</i> demonstrates how to create a minimalistic CoAP client application to send and receive CoAP messages.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="setting-up-a-coap-server">Setting Up a CoAP Server</h4>
+<p>To use the application, you need to specify a CoAP server. You have the following options:</p>
+<ul>
+<li>Use the CoAP test server located at <code translate="no">coap://coap.me</code>.</li>
+<li>Create a CoAP server using <a href="https://github.com/obgm/libcoap">libcoap</a>, <a href="https://github.com/keith-cullen/FreeCoAP">FreeCoAP</a> or any other CoAP server implementation.</li>
+<li>Use the <a href="https://github.com/eclipse/californium/">Californium</a> plugtest server, which supports most of the CoAP features. You can build it manually or use a ready Docker image, which builds and starts the plugtest server. The steps for using the docker-based server are described below.</li>
+</ul>
+<h5 id="using-the-docker-based-test-server">Using the Docker-based Test Server</h5>
+<p>The following command pulls the docker container for the CoAP server from the Docker Hub and starts it:</p>
+<pre class="cpp plain" translate="no">
+ docker run --name coap-test-server -d --rm -p 5683:5683/udp -p 5684:5684/udp tqtc/coap-californium-test-server:3.8.0
+</pre>
+<p>To find out the IP address of the docker container, first retrieve the container ID by running <code translate="no">docker ps</code>, which will output something like:</p>
+<pre class="cpp plain" translate="no">
+ $ docker ps
+ CONTAINER ID        IMAGE
+ 5e46502df88f        tqtc/coap-californium-test-server:3.8.0
+</pre>
+<p>Then you can obtain the IP address with the following command:</p>
+<pre class="cpp plain" translate="no">
+ docker inspect &lt;container_id&gt; | grep IPAddress
+</pre>
+<p>For example:</p>
+<pre class="cpp plain" translate="no">
+ $ docker inspect 5e46502df88f | grep IPAddress
+ ...
+ &quot;IPAddress&quot;: &quot;172.17.0.2&quot;,
+ ...
+</pre>
+<p>The CoAP test server will be reachable by the retrieved IP address on ports <i>5683</i> (non-secure) and <i>5684</i> (secure).</p>
+<p>To terminate the docker container after usage, use the following command:</p>
+<pre class="cpp plain" translate="no">
+ docker stop &lt;container_id&gt;
+</pre>
+<p>The <code translate="no">&lt;container_id&gt;</code> here is the same as retrieved by the <code translate="no">docker ps</code> command.</p>
+<h4 id="creating-a-client">Creating a Client</h4>
+<p>The first step is to create a CoAP client using the <a href="qcoapclient.html" translate="no">QCoapClient</a> class. Then we need to connect its signals, to get notified when a CoAP reply is received or a request has failed:</p>
+<pre class="cpp" translate="no">
+ MainWindow<span class="operator">::</span>MainWindow(<span class="type">QWidget</span> <span class="operator">*</span>parent) :
+     <span class="type">QMainWindow</span>(parent)<span class="operator">,</span>
+     ui(<span class="keyword">new</span> Ui<span class="operator">::</span>MainWindow)
+ {
+     m_client <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qcoapclient.html" translate="no">QCoapClient</a></span>(<span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>SecurityMode<span class="operator">::</span>NoSecurity<span class="operator">,</span> <span class="keyword">this</span>);
+     connect(m_client<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapclient.html" translate="no">QCoapClient</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>onFinished);
+     connect(m_client<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapclient.html" translate="no">QCoapClient</a></span><span class="operator">::</span>error<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>onError);
+     ...
+</pre>
+<h4 id="sending-requests">Sending Requests</h4>
+<p>We use the <a href="qcoaprequest.html" translate="no">QCoapRequest</a> class to create CoAP requests. This class provides methods for constructing CoAP frames.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>on_runButton_clicked()
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> msgType <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>msgTypeCheckBox<span class="operator">-</span><span class="operator">&gt;</span>isChecked() <span class="operator">?</span> <span class="type"><a href="qcoapmessage.html" translate="no">QCoapMessage</a></span><span class="operator">::</span>Type<span class="operator">::</span>Confirmable
+                                                           : <span class="type"><a href="qcoapmessage.html" translate="no">QCoapMessage</a></span><span class="operator">::</span>Type<span class="operator">::</span>NonConfirmable;
+     <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> url;
+     url<span class="operator">.</span>setHost(tryToResolveHostName(ui<span class="operator">-</span><span class="operator">&gt;</span>hostComboBox<span class="operator">-</span><span class="operator">&gt;</span>currentText()));
+     url<span class="operator">.</span>setPort(ui<span class="operator">-</span><span class="operator">&gt;</span>portSpinBox<span class="operator">-</span><span class="operator">&gt;</span>value());
+     url<span class="operator">.</span>setPath(ui<span class="operator">-</span><span class="operator">&gt;</span>resourceComboBox<span class="operator">-</span><span class="operator">&gt;</span>currentText());
+
+     <span class="type"><a href="qcoaprequest.html" translate="no">QCoapRequest</a></span> request(url<span class="operator">,</span> msgType);
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>option : std<span class="operator">::</span>as_const(m_options))
+         request<span class="operator">.</span>addOption(option);
+     ...
+</pre>
+<p>In this example, we set the URL, as well as the message type and add options to the request. It is also possible to set the payload, message ID, token, and so on, but we are using the default values here. Note that by default, the message ID and token are generated randomly.</p>
+<p>Based on the selected request method, we send a <code translate="no">GET</code>, <code translate="no">PUT</code>, <code translate="no">POST</code> or <code translate="no">DELETE</code> request to the server:</p>
+<pre class="cpp" translate="no">
+     ...
+     <span class="keyword">switch</span> (method) {
+     <span class="keyword">case</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Method<span class="operator">::</span>Get:
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>get(request);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Method<span class="operator">::</span>Put:
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>put(request<span class="operator">,</span> m_currentData);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Method<span class="operator">::</span>Post:
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>post(request<span class="operator">,</span> m_currentData);
+         <span class="keyword">break</span>;
+     <span class="keyword">case</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Method<span class="operator">::</span>Delete:
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>deleteResource(request);
+         <span class="keyword">break</span>;
+     <span class="keyword">default</span>:
+         <span class="keyword">break</span>;
+     }
+     ...
+</pre>
+<p>For <code translate="no">PUT</code> and <code translate="no">POST</code> requests we also add <code translate="no">m_currentData</code> as a payload for the request.</p>
+<p>For browsing the contents of the server and discovering the resources available on it, a <i>discovery</i> request is used:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>on_discoverButton_clicked()
+ {
+     ...
+     <span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> <span class="operator">*</span>discoverReply <span class="operator">=</span>
+             m_client<span class="operator">-</span><span class="operator">&gt;</span>discover(url<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>discoveryPathEdit<span class="operator">-</span><span class="operator">&gt;</span>text());
+     <span class="keyword">if</span> (discoverReply) {
+         connect(discoverReply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span><span class="operator">::</span>discovered<span class="operator">,</span>
+                 <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>onDiscovered);
+     ...
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>Instead of <a href="qcoapreply.html" translate="no">QCoapReply</a> class, we use the <a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a> to keep the reply for a discovery request. It has the <a href="qcoapresourcediscoveryreply.html#discovered" translate="no">QCoapResourceDiscoveryReply::discovered</a> signal, which returns the list of QCoapResources that has been discovered.</p>
+</div>
+<p>If there are <i>observable</i> resources on the server (meaning that they have the resource type <code translate="no">obs</code>), we can subscribe to updates on that resource by running an <i>observe</i> request:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>on_observeButton_clicked()
+ {
+     ...
+     <span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> <span class="operator">*</span>observeReply <span class="operator">=</span> m_client<span class="operator">-</span><span class="operator">&gt;</span>observe(url);
+     ...
+     connect(observeReply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span><span class="operator">::</span>notified<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>onNotified);
+     ...
+</pre>
+<p>The client can unsubscribe from the resource observation by handling the <code translate="no">clicked()</code> signal of the <code translate="no">cancelObserveButton</code>:</p>
+<pre class="cpp" translate="no">
+     ...
+     connect(ui<span class="operator">-</span><span class="operator">&gt;</span>cancelObserveButton<span class="operator">,</span> <span class="operator">&amp;</span><span class="type">QPushButton</span><span class="operator">::</span>clicked<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> url<span class="operator">]</span>() {
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>cancelObserve(url);
+         ui<span class="operator">-</span><span class="operator">&gt;</span>cancelObserveButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     });
+</pre>
+<p>The responses coming from the server are displayed in the UI:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>addMessage(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>message<span class="operator">,</span> <span class="type">bool</span> isError)
+ {
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> content <span class="operator">=</span> <span class="string">&quot;--------------- %1 ---------------\n%2\n\n&quot;</span>_L1
+                                 <span class="operator">.</span>arg(<span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">.</span>toString()<span class="operator">,</span> message);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>textEdit<span class="operator">-</span><span class="operator">&gt;</span>setTextColor(isError <span class="operator">?</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>red : <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>black);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>textEdit<span class="operator">-</span><span class="operator">&gt;</span>insertPlainText(content);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>textEdit<span class="operator">-</span><span class="operator">&gt;</span>ensureCursorVisible();
+ }
+
+ <span class="type">void</span> MainWindow<span class="operator">::</span>onFinished(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> <span class="operator">*</span>reply)
+ {
+     <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>errorReceived() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error<span class="operator">::</span>Ok)
+         addMessage(reply<span class="operator">-</span><span class="operator">&gt;</span>message()<span class="operator">.</span>payload());
+ }
+
+ <span class="keyword">static</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> errorMessage(<span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error errorCode)
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> error <span class="operator">=</span> <span class="type"><a href="../qtcore/qmetaenum.html" translate="no">QMetaEnum</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error<span class="operator">&gt;</span>()<span class="operator">.</span>valueToKey(<span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span>(errorCode));
+     <span class="keyword">return</span> MainWindow<span class="operator">::</span>tr(<span class="string">&quot;Request failed with error: %1\n&quot;</span>)<span class="operator">.</span>arg(error);
+ }
+
+ <span class="type">void</span> MainWindow<span class="operator">::</span>onError(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> <span class="operator">*</span>reply<span class="operator">,</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error error)
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> errorCode <span class="operator">=</span> reply <span class="operator">?</span> reply<span class="operator">-</span><span class="operator">&gt;</span>errorReceived() : error;
+     addMessage(errorMessage(errorCode)<span class="operator">,</span> <span class="keyword">true</span>);
+ }
+
+ <span class="type">void</span> MainWindow<span class="operator">::</span>onDiscovered(<span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> <span class="operator">*</span>reply<span class="operator">,</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span><span class="operator">&gt;</span> resources)
+ {
+     <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>errorReceived() <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error<span class="operator">::</span>Ok)
+         <span class="keyword">return</span>;
+
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> message;
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>resource : std<span class="operator">::</span>as_const(resources)) {
+         ui<span class="operator">-</span><span class="operator">&gt;</span>resourceComboBox<span class="operator">-</span><span class="operator">&gt;</span>addItem(resource<span class="operator">.</span>path());
+         message <span class="operator">+</span><span class="operator">=</span> tr(<span class="string">&quot;Discovered resource: \&quot;%1\&quot; on path %2\n&quot;</span>)
+                         <span class="operator">.</span>arg(resource<span class="operator">.</span>title()<span class="operator">,</span> resource<span class="operator">.</span>path());
+     }
+     addMessage(message);
+ }
+
+ <span class="type">void</span> MainWindow<span class="operator">::</span>onNotified(<span class="type"><a href="qcoapreply.html" translate="no">QCoapReply</a></span> <span class="operator">*</span>reply<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qcoapmessage.html" translate="no">QCoapMessage</a></span> <span class="operator">&amp;</span>message)
+ {
+     <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>errorReceived() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>Error<span class="operator">::</span>Ok) {
+         addMessage(tr(<span class="string">&quot;Received observe notification with payload: %1&quot;</span>)
+                         <span class="operator">.</span>arg(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>fromUtf8(message<span class="operator">.</span>payload())));
+     }
+ }
+
+ <span class="keyword">static</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> tryToResolveHostName(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> hostName)
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> hostInfo <span class="operator">=</span> <span class="type"><a href="../qtnetwork/qhostinfo.html" translate="no">QHostInfo</a></span><span class="operator">::</span>fromName(hostName);
+     <span class="keyword">if</span> (<span class="operator">!</span>hostInfo<span class="operator">.</span>addresses()<span class="operator">.</span>empty())
+         <span class="keyword">return</span> hostInfo<span class="operator">.</span>addresses()<span class="operator">.</span>first()<span class="operator">.</span>toString();
+
+     <span class="keyword">return</span> hostName;
+ }
+</pre>
+<p>Files:</p>
+<ul>
+<li><a href="qtcoap-simplecoapclient-cmakelists-txt.html" translate="no">simplecoapclient/CMakeLists.txt</a></li>
+<li><a href="qtcoap-simplecoapclient-main-cpp.html" translate="no">simplecoapclient/main.cpp</a></li>
+<li><a href="qtcoap-simplecoapclient-mainwindow-cpp.html" translate="no">simplecoapclient/mainwindow.cpp</a></li>
+<li><a href="qtcoap-simplecoapclient-mainwindow-h.html" translate="no">simplecoapclient/mainwindow.h</a></li>
+<li><a href="qtcoap-simplecoapclient-mainwindow-ui.html" translate="no">simplecoapclient/mainwindow.ui</a></li>
+<li><a href="qtcoap-simplecoapclient-optiondialog-cpp.html" translate="no">simplecoapclient/optiondialog.cpp</a></li>
+<li><a href="qtcoap-simplecoapclient-optiondialog-h.html" translate="no">simplecoapclient/optiondialog.h</a></li>
+<li><a href="qtcoap-simplecoapclient-optiondialog-ui.html" translate="no">simplecoapclient/optiondialog.ui</a></li>
+<li><a href="qtcoap-simplecoapclient-simplecoapclient-pro.html" translate="no">simplecoapclient/simplecoapclient.pro</a></li>
+</ul>
+</div>
+<!-- @@@simplecoapclient -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

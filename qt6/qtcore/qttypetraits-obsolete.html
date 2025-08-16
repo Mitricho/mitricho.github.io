@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qttypetraits.qdoc -->
+  <meta name="description" content="Functionality for type traits and transformations.">
+  <title>Obsolete Members for &lt;QtTypeTraits&gt; | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Obsolete Members for &lt;QtTypeTraits&gt;</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Obsolete Members for &lt;QtTypeTraits&gt;</h1>
+<p><b>The following members of class <a href="qttypetraits.html" translate="no">&lt;QtTypeTraits&gt;</a> are deprecated.</b> They are provided to keep old source code working. We strongly advise against using them in new code.</p>
+<h2>Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(deprecated in 6.6)</code> typename std::add_const&lt;T&gt;::type &amp;</td><td class="memItemRight bottomAlign"><b><a href="qttypetraits-obsolete.html#qAsConst" translate="no">qAsConst</a></b>(T &amp;<i>t</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(deprecated in 6.6)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qttypetraits-obsolete.html#qAsConst-1" translate="no">qAsConst</a></b>(const T &amp;&amp;<i>t</i>)</td></tr>
+</table></div>
+<h2>Function Documentation</h2>
+<!-- $$$qAsConst[overload1]$$$qAsConstT& -->
+<h3 class="fn" translate="no" id="qAsConst"><code class="details extra" translate="no">[constexpr noexcept, deprecated in 6.6]</code> template &lt;typename T&gt; <span class="type">typename</span> <span class="type">std::add_const</span>&lt;<span class="type">T</span>&gt;<span class="type">::type</span> &amp;<span class="name">qAsConst</span>(<span class="type">T</span> &amp;<i>t</i>)</h3>
+<p>This function is deprecated since 6.6. We strongly advise against using it in new code.</p>
+<p>Use std::as_const() instead.</p>
+<p>Returns <i translate="no">t</i> cast to <code translate="no">const T</code>.</p>
+<p>This function is a Qt implementation of C++17's std::as_const(), a cast function like std::move(). But while std::move() turns lvalues into rvalues, this function turns non-const lvalues into const lvalues. Like std::as_const(), it doesn't work on rvalues, because it cannot be efficiently implemented for rvalues without leaving dangling references.</p>
+<p>Its main use in Qt is to prevent implicitly-shared Qt containers from detaching:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstring.html" translate="no">QString</a></span> s <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : s) <span class="comment">// detaches 's' (performs a deep-copy if 's' was shared)</span>
+         process(ch);
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : qAsConst(s)) <span class="comment">// ok, no detach attempt</span>
+         process(ch);
+</pre>
+<p>Of course, in this case, you could (and probably should) have declared <code translate="no">s</code> as <code translate="no">const</code> in the first place:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">const</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> s <span class="operator">=</span> <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>;
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : s) <span class="comment">// ok, no detach attempt on const objects</span>
+         process(ch);
+</pre>
+<p>but often that is not easily possible.</p>
+<p>It is important to note that qAsConst() does not copy its argument, it just performs a <code translate="no">const_cast&lt;const T&amp;&gt;(t)</code>. This is also the reason why it is designed to fail for rvalues: The returned reference would go stale too soon. So while this works (but detaches the returned object):</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : funcReturningQString())
+         process(ch); <span class="comment">// OK, the returned object is kept alive for the loop's duration</span>
+</pre>
+<p>this would not:</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : qAsConst(funcReturningQString()))
+         process(ch); <span class="comment">// ERROR: ch is copied from deleted memory</span>
+</pre>
+<p>To prevent this construct from compiling (and failing at runtime), qAsConst() has a second, deleted, overload which binds to rvalues.</p>
+<div class="admonition note">
+<p><b>Note: </b>You can make the qAsConst() function unavailable by defining the <a href="qttypetraits.html#QT_NO_QASCONST" translate="no">QT_NO_QASCONST</a> macro.</p>
+</div>
+<!-- @@@qAsConst -->
+<!-- $$$qAsConst$$$qAsConstconstT&& -->
+<h3 class="fn" translate="no" id="qAsConst-1"><code class="details extra" translate="no">[deprecated in 6.6]</code> template &lt;typename T&gt; <span class="type">void</span> <span class="name">qAsConst</span>(const <span class="type">T</span> &amp;&amp;<i>t</i>)</h3>
+<p>This function is deprecated since 6.6. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>This overload is deleted to prevent a dangling reference in code like</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">for</span> (<span class="type"><a href="qchar.html" translate="no">QChar</a></span> ch : <a href="qttypetraits-obsolete.html#qAsConst" translate="no">qAsConst</a>(funcReturningQString()))
+         process(ch); <span class="comment">// ERROR: ch is copied from deleted memory</span>
+</pre>
+<!-- @@@qAsConst -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

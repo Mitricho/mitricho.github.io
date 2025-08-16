@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qqmlscriptstring.cpp -->
+  <meta name="description" content="The QQmlScriptString class encapsulates a script and its context.">
+  <title>QQmlScriptString Class | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qtqml-module.html" translate="no">C++ Classes</a></li>
+<li>QQmlScriptString</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QQmlScriptString Class</h1>
+<!-- $$$QQmlScriptString-brief -->
+<p>The QQmlScriptString class encapsulates a script and its context. <a href="#details">More...</a></p>
+<!-- @@@QQmlScriptString -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QQmlScriptString&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Qml)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Qml)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += qml</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qqmlscriptstring-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#QQmlScriptString-1" translate="no">QQmlScriptString</a></b>(const QQmlScriptString &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#booleanLiteral" translate="no">booleanLiteral</a></b>(bool *<i>ok</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#isEmpty" translate="no">isEmpty</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#isNullLiteral" translate="no">isNullLiteral</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#isUndefinedLiteral" translate="no">isUndefinedLiteral</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qreal </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#numberLiteral" translate="no">numberLiteral</a></b>(bool *<i>ok</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#stringLiteral" translate="no">stringLiteral</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#operator-not-eq" translate="no">operator!=</a></b>(const QQmlScriptString &amp;<i>other</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQmlScriptString &amp;</td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#operator-eq" translate="no">operator=</a></b>(const QQmlScriptString &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qqmlscriptstring.html#operator-eq-eq" translate="no">operator==</a></b>(const QQmlScriptString &amp;<i>other</i>) const</td></tr>
+</table></div>
+<!-- $$$QQmlScriptString-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QQmlScriptString is used to create <a href="../qtcore/qobject.html" translate="no">QObject</a> properties that accept a script &quot;assignment&quot; from QML.</p>
+<p>Normally, the following QML would result in a binding being established for the <code translate="no">script</code> property; i.e. <code translate="no">script</code> would be assigned the value obtained from running <code translate="no">myObj.value = Math.max(myValue, 100)</code></p>
+<pre class="qml" translate="no">
+ <span class="type">MyType</span> {
+     <span class="name">script</span>: <span class="name">myObj</span>.<span class="name">value</span> <span class="operator">=</span> <span class="name">Math</span>.<span class="name">max</span>(<span class="name">myValue</span>, <span class="number">100</span>)
+ }
+</pre>
+<p>If instead the property had a type of QQmlScriptString, the script itself &ndash; <i>myObj.value = Math.max(myValue, 100)</i> &ndash; would be passed to the <code translate="no">script</code> property and the class could choose how to handle it. Typically, the class will evaluate the script at some later time using a <a href="qqmlexpression.html" translate="no">QQmlExpression</a>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qqmlexpression.html" translate="no">QQmlExpression</a></span> expr(scriptString);
+ expr<span class="operator">.</span>evaluate();
+</pre>
+</div>
+<p><b>See also </b><a href="qqmlexpression.html" translate="no">QQmlExpression</a>.</p>
+<!-- @@@QQmlScriptString -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QQmlScriptString[overload1]$$$QQmlScriptString -->
+<h3 class="fn" translate="no" id="QQmlScriptString">QQmlScriptString::<span class="name">QQmlScriptString</span>()</h3>
+<p>Constructs an empty instance.</p>
+<!-- @@@QQmlScriptString -->
+<!-- $$$QQmlScriptString$$$QQmlScriptStringconstQQmlScriptString& -->
+<h3 class="fn" translate="no" id="QQmlScriptString-1">QQmlScriptString::<span class="name">QQmlScriptString</span>(const <span class="type"><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></span> &amp;<i>other</i>)</h3>
+<p>Copies <i translate="no">other</i>.</p>
+<!-- @@@QQmlScriptString -->
+<!-- $$$booleanLiteral[overload1]$$$booleanLiteralbool* -->
+<h3 class="fn" translate="no" id="booleanLiteral"><span class="type">bool</span> QQmlScriptString::<span class="name">booleanLiteral</span>(<span class="type">bool</span> *<i>ok</i>) const</h3>
+<p>If the content of the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is a boolean literal, returns the boolean value and sets <i translate="no">ok</i> to true. Otherwise returns false and sets <i translate="no">ok</i> to false.</p>
+<!-- @@@booleanLiteral -->
+<!-- $$$isEmpty[overload1]$$$isEmpty -->
+<h3 class="fn" translate="no" id="isEmpty"><span class="type">bool</span> QQmlScriptString::<span class="name">isEmpty</span>() const</h3>
+<p>Returns whether the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is empty.</p>
+<!-- @@@isEmpty -->
+<!-- $$$isNullLiteral[overload1]$$$isNullLiteral -->
+<h3 class="fn" translate="no" id="isNullLiteral"><span class="type">bool</span> QQmlScriptString::<span class="name">isNullLiteral</span>() const</h3>
+<p>Returns whether the content of the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is the <code translate="no">null</code> literal.</p>
+<!-- @@@isNullLiteral -->
+<!-- $$$isUndefinedLiteral[overload1]$$$isUndefinedLiteral -->
+<h3 class="fn" translate="no" id="isUndefinedLiteral"><span class="type">bool</span> QQmlScriptString::<span class="name">isUndefinedLiteral</span>() const</h3>
+<p>Returns whether the content of the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is the <code translate="no">undefined</code> literal.</p>
+<!-- @@@isUndefinedLiteral -->
+<!-- $$$numberLiteral[overload1]$$$numberLiteralbool* -->
+<h3 class="fn" translate="no" id="numberLiteral"><span class="type"><a href="../qtcore/qttypes.html#qreal-typedef" translate="no">qreal</a></span> QQmlScriptString::<span class="name">numberLiteral</span>(<span class="type">bool</span> *<i>ok</i>) const</h3>
+<p>If the content of the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is a number literal, returns that number and sets <i translate="no">ok</i> to true. Otherwise returns 0.0 and sets <i translate="no">ok</i> to false.</p>
+<!-- @@@numberLiteral -->
+<!-- $$$stringLiteral[overload1]$$$stringLiteral -->
+<h3 class="fn" translate="no" id="stringLiteral"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QQmlScriptString::<span class="name">stringLiteral</span>() const</h3>
+<p>If the content of the <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> is a string literal, returns that string. Otherwise returns a null <a href="../qtcore/qstring.html" translate="no">QString</a>.</p>
+<!-- @@@stringLiteral -->
+<!-- $$$operator!=[overload1]$$$operator!=constQQmlScriptString& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><span class="type">bool</span> QQmlScriptString::<span class="name">operator!=</span>(const <span class="type"><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if this and the <i translate="no">other</i> <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> objects are different.</p>
+<p><b>See also </b><a href="qqmlscriptstring.html#operator-eq-eq" translate="no">operator==</a>().</p>
+<!-- @@@operator!= -->
+<!-- $$$operator=[overload1]$$$operator=constQQmlScriptString& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></span> &amp;QQmlScriptString::<span class="name">operator=</span>(const <span class="type"><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns <i translate="no">other</i> to this.</p>
+<!-- @@@operator= -->
+<!-- $$$operator==[overload1]$$$operator==constQQmlScriptString& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><span class="type">bool</span> QQmlScriptString::<span class="name">operator==</span>(const <span class="type"><a href="qqmlscriptstring.html#QQmlScriptString" translate="no">QQmlScriptString</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if this and the <i translate="no">other</i> <a href="qqmlscriptstring.html" translate="no">QQmlScriptString</a> objects are equal.</p>
+<p><b>See also </b><a href="qqmlscriptstring.html#operator-not-eq" translate="no">operator!=</a>().</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

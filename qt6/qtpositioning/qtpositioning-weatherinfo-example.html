@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- weatherinfo.qdoc -->
+  <meta name="description" content="The Weather Info example shows how to use the user's current position to retrieve local content from a web service in a C++ plugin for Qt Quick, using Qt Positioning.">
+  <title>Weather Info | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li><a href="qtpositioning-examples.html">Qt Positioning Examples</a></li>
+<li>Weather Info</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#weather-data-providers">Weather Data Providers</a></li>
+<li class="level1"><a href="#application-data-models">Application Data Models</a></li>
+<li class="level1"><a href="#expose-custom-models-to-qml">Expose Custom Models to QML</a></li>
+<li class="level2"><a href="#cmake-build">CMake Build</a></li>
+<li class="level2"><a href="#qmake-build">qmake Build</a></li>
+<li class="level1"><a href="#instantiate-the-models-in-qml">Instantiate the Models in QML</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Weather Info</h1>
+<!-- $$$weatherinfo-brief -->
+<p>The Weather Info example shows how to use the user's current position to retrieve local content from a web service in a C++ plugin for <a href="../qtquick/qtquick-index.html">Qt Quick</a>, using <a href="qtpositioning-index.html">Qt Positioning</a>.</p>
+<!-- @@@weatherinfo -->
+<!-- $$$weatherinfo-description -->
+<div class="descr" id="details">
+<p>Key <a href="qtpositioning-index.html">Qt Positioning</a> classes used in this example:</p>
+<ul>
+<li><a href="qgeopositioninfo.html" translate="no">QGeoPositionInfo</a></li>
+<li><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></li>
+</ul>
+<p class="centerAlign"><img src="images/example-weatherinfo.png" alt="" /></p><h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="weather-data-providers">Weather Data Providers</h4>
+<p>The example uses several unrelated weather data providers:</p>
+<ul>
+<li><a href="http://www.openweathermap.org">OpenWeather</a></li>
+<li><a href="https://www.weatherapi.com/">WeatherAPI.com</a></li>
+<li><a href="https://open-meteo.com/">Open-Meteo</a></li>
+</ul>
+<p>The provider to be used is selected automatically at runtime and can be changed if the selected provider is not available. However, it can't be specified manually.</p>
+<div class="admonition note">
+<p><b>Note: </b>Free plans are used for all providers, which implies certain limitations on the amount of weather requests. If the limits are exceeded, the providers become temporary unavailable. When all providers are unavailable, the application would not be able to show any weather information. In this case it is required to wait until at least one of the providers becomes available again.</p>
+</div>
+<h4 id="application-data-models">Application Data Models</h4>
+<p>The key part of this example is the application's data model, contained in the <code translate="no">WeatherData</code> and <code translate="no">AppModel</code> classes. <code translate="no">WeatherData</code> represents the weather information taken from the HTTP service. It is a simple data class, but we use <a href="../qtcore/qobject.html#Q_PROPERTY" translate="no">Q_PROPERTY</a> to expose it nicely to QML later. It also uses <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ANONYMOUS" translate="no">QML_ANONYMOUS</a> macro, which makes it recognized in QML.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> WeatherData : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> dayOfWeek
+                READ dayOfWeek WRITE setDayOfWeek
+                NOTIFY dataChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> weatherIcon
+                READ weatherIcon WRITE setWeatherIcon
+                NOTIFY dataChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> weatherDescription
+                READ weatherDescription WRITE setWeatherDescription
+                NOTIFY dataChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> temperature
+                READ temperature WRITE setTemperature
+                NOTIFY dataChanged)
+     QML_ANONYMOUS
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> WeatherData(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+     WeatherData(<span class="keyword">const</span> WeatherData <span class="operator">&amp;</span>other);
+     WeatherData(<span class="keyword">const</span> WeatherInfo <span class="operator">&amp;</span>other);
+
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> dayOfWeek() <span class="keyword">const</span>;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> weatherIcon() <span class="keyword">const</span>;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> weatherDescription() <span class="keyword">const</span>;
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> temperature() <span class="keyword">const</span>;
+
+     <span class="type">void</span> setDayOfWeek(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+     <span class="type">void</span> setWeatherIcon(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+     <span class="type">void</span> setWeatherDescription(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+     <span class="type">void</span> setTemperature(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> dataChanged();
+ };
+</pre>
+<p><code translate="no">AppModel</code> models the state of the entire application. At startup, we get the platform's default position source using <a href="qgeopositioninfosource.html#createDefaultSource" translate="no">QGeoPositionInfoSource::createDefaultSource</a>().</p>
+<pre class="cpp" translate="no">
+ AppModel<span class="operator">::</span>AppModel(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent) :
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(parent)<span class="operator">,</span>
+         d(<span class="keyword">new</span> AppModelPrivate)
+ {
+     d<span class="operator">-</span><span class="operator">&gt;</span>src <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>createDefaultSource(<span class="keyword">this</span>);
+
+     <span class="keyword">if</span> (d<span class="operator">-</span><span class="operator">&gt;</span>src) {
+         d<span class="operator">-</span><span class="operator">&gt;</span>useGps <span class="operator">=</span> <span class="keyword">true</span>;
+         connect(d<span class="operator">-</span><span class="operator">&gt;</span>src<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>positionUpdated<span class="operator">,</span>
+                 <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>AppModel<span class="operator">::</span>positionUpdated);
+         connect(d<span class="operator">-</span><span class="operator">&gt;</span>src<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>errorOccurred<span class="operator">,</span>
+                 <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>AppModel<span class="operator">::</span>positionError);
+ <span class="preprocessor">#if QT_CONFIG(permissions)</span>
+         <span class="type"><a href="../qtcore/qlocationpermission.html" translate="no">QLocationPermission</a></span> permission;
+         permission<span class="operator">.</span>setAccuracy(<span class="type"><a href="../qtcore/qlocationpermission.html" translate="no">QLocationPermission</a></span><span class="operator">::</span>Precise);
+         permission<span class="operator">.</span>setAvailability(<span class="type"><a href="../qtcore/qlocationpermission.html" translate="no">QLocationPermission</a></span><span class="operator">::</span>WhenInUse);
+
+         <span class="keyword">switch</span> (qApp<span class="operator">-</span><span class="operator">&gt;</span>checkPermission(permission)) {
+         <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Undetermined:
+             qApp<span class="operator">-</span><span class="operator">&gt;</span>requestPermission(permission<span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span> (<span class="keyword">const</span> <span class="type"><a href="../qtcore/qpermission.html" translate="no">QPermission</a></span><span class="operator">&amp;</span> permission) {
+                 <span class="keyword">if</span> (permission<span class="operator">.</span>status() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Granted)
+                     d<span class="operator">-</span><span class="operator">&gt;</span>src<span class="operator">-</span><span class="operator">&gt;</span>startUpdates();
+                 <span class="keyword">else</span>
+                     positionError(<span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>AccessError);
+             });
+             <span class="keyword">break</span>;
+         <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Denied:
+             <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Location permission is denied&quot;</span>);
+             positionError(<span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>AccessError);
+             <span class="keyword">break</span>;
+         <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Granted:
+             d<span class="operator">-</span><span class="operator">&gt;</span>src<span class="operator">-</span><span class="operator">&gt;</span>startUpdates();
+             <span class="keyword">break</span>;
+         }
+ <span class="preprocessor">#else</span>
+         d<span class="operator">-</span><span class="operator">&gt;</span>src<span class="operator">-</span><span class="operator">&gt;</span>startUpdates();
+ <span class="preprocessor">#endif</span>
+     } <span class="keyword">else</span> {
+         d<span class="operator">-</span><span class="operator">&gt;</span>useGps <span class="operator">=</span> <span class="keyword">false</span>;
+         d<span class="operator">-</span><span class="operator">&gt;</span>city <span class="operator">=</span> <span class="string">&quot;Brisbane&quot;</span>;
+         <span class="keyword">emit</span> cityChanged();
+         requestWeatherByCity();
+     }
+
+     <span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span> <span class="operator">*</span>refreshTimer <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span>(<span class="keyword">this</span>);
+     connect(refreshTimer<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span><span class="operator">::</span>timeout<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>AppModel<span class="operator">::</span>refreshWeather);
+     <span class="keyword">using</span> <span class="keyword">namespace</span> std<span class="operator">::</span>chrono;
+     refreshTimer<span class="operator">-</span><span class="operator">&gt;</span>start(<span class="number">60s</span>);
+ }
+</pre>
+<p>If no default source is available, we take a static position and fetch weather for that. If, however, we do have a position source, we connect its <a href="qgeopositioninfosource.html#positionUpdated" translate="no">positionUpdated</a>() signal to a slot on the <code translate="no">AppModel</code> and call <a href="qgeopositioninfosource.html#startUpdates" translate="no">startUpdates</a>(), which begins regular updates of device position.</p>
+<p>When a position update is received, we use the longitude and latitude of the returned coordinate to retrieve weather data for the specified location.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> AppModel<span class="operator">::</span>positionUpdated(<span class="type"><a href="qgeopositioninfo.html" translate="no">QGeoPositionInfo</a></span> gpsPos)
+ {
+     d<span class="operator">-</span><span class="operator">&gt;</span>coord <span class="operator">=</span> gpsPos<span class="operator">.</span>coordinate();
+
+     <span class="keyword">if</span> (<span class="operator">!</span>d<span class="operator">-</span><span class="operator">&gt;</span>useGps)
+         <span class="keyword">return</span>;
+
+     requestWeatherByCoordinates();
+ }
+</pre>
+<p>To inform the UI about this process, the <code translate="no">cityChanged()</code> signal is emitted when a new city is used, and the <code translate="no">weatherChanged()</code> signal whenever a weather update occurs.</p>
+<p>The model also uses <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> macro, which makes it available in QML.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> AppModel : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">bool</span> ready
+                READ ready
+                NOTIFY readyChanged)
+     Q_PROPERTY(<span class="type">bool</span> hasSource
+                READ hasSource
+                NOTIFY readyChanged)
+     Q_PROPERTY(<span class="type">bool</span> hasValidCity
+                READ hasValidCity
+                NOTIFY cityChanged)
+     Q_PROPERTY(<span class="type">bool</span> hasValidWeather
+                READ hasValidWeather
+                NOTIFY weatherChanged)
+     Q_PROPERTY(<span class="type">bool</span> useGps
+                READ useGps WRITE setUseGps
+                NOTIFY useGpsChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> city
+                READ city WRITE setCity
+                NOTIFY cityChanged)
+     Q_PROPERTY(WeatherData <span class="operator">*</span>weather
+                READ weather
+                NOTIFY weatherChanged)
+     Q_PROPERTY(<span class="type"><a href="../qtqml/qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>WeatherData<span class="operator">&gt;</span> forecast
+                READ forecast
+                NOTIFY weatherChanged)
+     QML_ELEMENT
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> AppModel(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+     <span class="operator">~</span>AppModel();
+
+     <span class="type">bool</span> ready() <span class="keyword">const</span>;
+     <span class="type">bool</span> hasSource() <span class="keyword">const</span>;
+     <span class="type">bool</span> useGps() <span class="keyword">const</span>;
+     <span class="type">bool</span> hasValidCity() <span class="keyword">const</span>;
+     <span class="type">bool</span> hasValidWeather() <span class="keyword">const</span>;
+     <span class="type">void</span> setUseGps(<span class="type">bool</span> value);
+
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> city() <span class="keyword">const</span>;
+     <span class="type">void</span> setCity(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>value);
+
+     WeatherData <span class="operator">*</span>weather() <span class="keyword">const</span>;
+     <span class="type"><a href="../qtqml/qqmllistproperty.html" translate="no">QQmlListProperty</a></span><span class="operator">&lt;</span>WeatherData<span class="operator">&gt;</span> forecast() <span class="keyword">const</span>;
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     Q_INVOKABLE <span class="type">void</span> refreshWeather();
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> readyChanged();
+     <span class="type">void</span> useGpsChanged();
+     <span class="type">void</span> cityChanged();
+     <span class="type">void</span> weatherChanged();
+ };
+</pre>
+<p>We use a <a href="../qtqml/qqmllistproperty.html" translate="no">QQmlListProperty</a> for the weather forecast information, which contains the weather forecast for the next days (the number of days is provider-specific). This makes it easy to access the forecast from QML.</p>
+<h4 id="expose-custom-models-to-qml">Expose Custom Models to QML</h4>
+<p>To expose the models to the QML UI layer, we use the <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> and <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ANONYMOUS" translate="no">QML_ANONYMOUS</a> macros. See the <a href="../qtqml/qqmlengine.html" translate="no">QQmlEngine</a> class description for more details on these macros.</p>
+<p>To make the types available in QML, we need to update our build accordingly.</p>
+<h5 id="cmake-build">CMake Build</h5>
+<p>For a CMake-based build, we need to add the following to the <code translate="no">CMakeLists.txt</code>:</p>
+<pre class="cpp" translate="no">
+ qt_add_qml_module(weatherinfo
+     URI Weather
+     VERSION 1.0
+     SOURCES
+         appmodel.cpp appmodel.h
+         openmeteobackend.cpp openmeteobackend.h
+         openweathermapbackend.cpp openweathermapbackend.h
+         providerbackend.cpp providerbackend.h
+         weatherapibackend.cpp weatherapibackend.h
+     QML_FILES
+         BigForecastIcon.qml
+         ForecastIcon.qml
+         WeatherIcon.qml
+         WeatherInfo.qml
+     RESOURCES
+         icons/weather-few-clouds.svg
+         icons/weather-fog.svg
+         icons/weather-haze.svg
+         icons/weather-icy.svg
+         icons/weather-overcast.svg
+         icons/weather-showers.svg
+         icons/weather-sleet.svg
+         icons/weather-snow.svg
+         icons/weather-storm.svg
+         icons/weather-sunny-very-few-clouds.svg
+         icons/weather-sunny.svg
+         icons/weather-thundershower.svg
+         icons/weather-showers-scattered.svg
+         icons/waypoint.svg
+ )
+</pre>
+<h5 id="qmake-build">qmake Build</h5>
+<p>For a qmake build, we need to modify the <code translate="no">weatherinfo.pro</code> file in the following way:</p>
+<pre class="cpp" translate="no">
+ CONFIG += qmltypes
+ QML_IMPORT_NAME = Weather
+ QML_IMPORT_MAJOR_VERSION = 1
+
+ qml_resources.files = \
+     qmldir \
+     BigForecastIcon.qml \
+     ForecastIcon.qml \
+     WeatherIcon.qml \
+     WeatherInfo.qml \
+     icons/weather-few-clouds.svg \
+     icons/weather-fog.svg \
+     icons/weather-haze.svg \
+     icons/weather-icy.svg \
+     icons/weather-overcast.svg \
+     icons/weather-showers.svg \
+     icons/weather-showers-scattered.svg \
+     icons/weather-sleet.svg \
+     icons/weather-snow.svg \
+     icons/weather-storm.svg \
+     icons/weather-sunny-very-few-clouds.svg \
+     icons/weather-sunny.svg \
+     icons/weather-thundershower.svg \
+     icons/waypoint.svg
+
+ qml_resources.prefix = /qt/qml/Weather
+
+ RESOURCES += qml_resources
+</pre>
+<h4 id="instantiate-the-models-in-qml">Instantiate the Models in QML</h4>
+<p>Finally, in the actual QML, we instantiate the <code translate="no">AppModel</code>:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-window.html" translate="no">Window</a></span> {
+     <span class="name">id</span>: <span class="name">window</span>
+     <span class="type">AppModel</span> {
+         <span class="name">id</span>: <span class="name">appModel</span>
+         <span class="name">onReadyChanged</span>: {
+             <span class="keyword">if</span> (<span class="name">appModel</span>.<span class="name">ready</span>)
+                 <span class="name">statesItem</span>.<span class="name">state</span> <span class="operator">=</span> <span class="string">&quot;ready&quot;</span>
+             <span class="keyword">else</span>
+                 <span class="name">statesItem</span>.<span class="name">state</span> <span class="operator">=</span> <span class="string">&quot;loading&quot;</span>
+         }
+     }
+ }
+</pre>
+<p>Once the model is instantiated like this, we can use its properties elsewhere in the QML document:</p>
+<pre class="qml" translate="no">
+     <span class="type">BigForecastIcon</span> {
+         <span class="name">id</span>: <span class="name">current</span>
+         <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+         <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+
+         <span class="name">weatherIcon</span>: (<span class="name">appModel</span>.<span class="name">hasValidWeather</span>
+                       ? <span class="name">appModel</span>.<span class="name">weather</span>.<span class="name">weatherIcon</span>
+                       : <span class="string">&quot;sunny&quot;</span>)
+     }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtpositioning.git/tree/examples/positioning/weatherinfo?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@weatherinfo -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

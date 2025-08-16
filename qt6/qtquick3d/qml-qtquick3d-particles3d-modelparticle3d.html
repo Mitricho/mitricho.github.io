@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dparticlemodelparticle.cpp -->
+  <meta name="description" content="Particle using a Qt Quick 3D Model.">
+  <title>ModelParticle3D QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-particles3d-qmlmodule.html" translate="no">QtQuick3D.Particles3D</a></li>
+<li>ModelParticle3D</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ModelParticle3D QML Type</h1>
+<!-- $$$ModelParticle3D-brief -->
+<p>Particle using a Qt Quick 3D Model. <a href="#details">More...</a></p>
+<!-- @@@ModelParticle3D -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Particles3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.2</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-particles3d-particle3d.html" translate="no">Particle3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-particles3d-modelparticle3d-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelparticle3d.html#delegate-prop" translate="no">delegate</a></b> : Component</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-particles3d-modelparticle3d.html#instanceTable-prop" translate="no">instanceTable</a></b> : Instancing</li>
+</ul>
+<!-- $$$ModelParticle3D-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The ModelParticle3D is a logical particle element that creates particles from a Qt Quick 3D <a href="qml-qtquick3d-model.html" translate="no">Model</a> component.</p>
+<!-- @@@ModelParticle3D -->
+<h2>Property Documentation</h2>
+<!-- $$$delegate -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="delegate-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">delegate</span> : <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The delegate provides a template defining each object instantiated by the particle.</p>
+<p>For example, to allocate 200 red cube particles:</p>
+<pre class="qml" translate="no">
+ Component {
+     id: particleComponent
+     Model {
+         source: &quot;#Cube&quot;
+         scale: Qt.vector3d(0.2, 0.2, 0.2)
+         materials: DefaultMaterial { }
+     }
+ }
+
+ ModelParticle3D {
+     id: particleRed
+     delegate: particleComponent
+     maxAmount: 200
+     color: &quot;#ff0000&quot;
+ }
+</pre>
+</div></div><!-- @@@delegate -->
+<br/>
+<!-- $$$instanceTable -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="instanceTable-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">instanceTable</span> : <span class="type"><a href="qml-qtquick3d-instancing.html" translate="no">Instancing</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The instanceTable provides access to the <a href="qml-qtquick3d-instancing.html" translate="no">Instancing</a> table of the model particle. <a href="qml-qtquick3d-particles3d-modelparticle3d.html" translate="no">ModelParticle3D</a> uses an internal instance table to implement efficient rendering. This table can be applied to the <a href="qml-qtquick3d-model.html#instancing-prop" translate="no">instancing</a> property of models that are not part of the particle system.</p>
+<p>It is also possible to use this feature to provide an instancing table without showing any particles. This is done by omitting the <a href="qml-qtquick3d-particles3d-modelparticle3d.html#delegate-prop" translate="no">delegate</a> property. For example:</p>
+<pre class="qml" translate="no">
+ ParticleSystem3D {
+     id: psystem
+     ModelParticle3D {
+         id: particleRed
+         maxAmount: 200
+         color: &quot;#ff0000&quot;
+         colorVariation: Qt.vector4d(0.5,0.5,0.5,0.5)
+     }
+
+     ParticleEmitter3D {
+         particle: particleRed
+         velocity: VectorDirection3D {
+             direction: Qt.vector3d(-20, 200, 0)
+             directionVariation: Qt.vector3d(20, 20, 20)
+         }
+         particleScale: 0.2
+         emitRate: 20
+         lifeSpan: 2000
+     }
+ }
+
+ Model {
+     source: &quot;#Sphere&quot;
+     instancing: particleRed.instanceTable
+     materials: PrincipledMaterial {
+         baseColor: &quot;yellow&quot;
+     }
+ }
+</pre>
+</div></div><!-- @@@instanceTable -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

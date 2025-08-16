@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qrhi.cpp -->
+  <meta name="description" content="Represents an onscreen (swapchain) or offscreen (texture) render target.">
+  <title>QRhiRenderTarget Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li><a href="qtguiprivate-module.html" translate="no">QtGuiPrivate</a></li>
+<li>QRhiRenderTarget</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QRhiRenderTarget Class</h1>
+<!-- $$$QRhiRenderTarget-brief -->
+<p>Represents an onscreen (swapchain) or offscreen (texture) render target. <a href="#details">More...</a></p>
+<!-- @@@QRhiRenderTarget -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;rhi/qrhi.h&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::GuiPrivate)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui-private</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.6</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qrhiresource.html" translate="no">QRhiResource</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qrhiswapchainrendertarget.html" translate="no">QRhiSwapChainRenderTarget</a> and <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qrhirendertarget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual float </td><td class="memItemRight bottomAlign"><b><a href="qrhirendertarget.html#devicePixelRatio" translate="no">devicePixelRatio</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSize </td><td class="memItemRight bottomAlign"><b><a href="qrhirendertarget.html#pixelSize" translate="no">pixelSize</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QRhiRenderPassDescriptor *</td><td class="memItemRight bottomAlign"><b><a href="qrhirendertarget.html#renderPassDescriptor" translate="no">renderPassDescriptor</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual int </td><td class="memItemRight bottomAlign"><b><a href="qrhirendertarget.html#sampleCount" translate="no">sampleCount</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qrhirendertarget.html#setRenderPassDescriptor" translate="no">setRenderPassDescriptor</a></b>(QRhiRenderPassDescriptor *<i>desc</i>)</td></tr>
+</table></div>
+<!-- $$$QRhiRenderTarget-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Applications do not create an instance of this class directly. Rather, it is the subclass <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a> that is instantiable by clients of the API via <a href="qrhi.html#newTextureRenderTarget" translate="no">newTextureRenderTarget</a>(). The other subclass is <a href="qrhiswapchainrendertarget.html" translate="no">QRhiSwapChainRenderTarget</a>, which is the type <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a> returns when calling <a href="qrhiswapchain.html#currentFrameRenderTarget" translate="no">currentFrameRenderTarget</a>().</p>
+<div class="admonition note">
+<p><b>Note: </b>This is a RHI API with limited compatibility guarantees, see <a href="qrhi.html" translate="no">QRhi</a> for details.</p>
+</div>
+</div>
+<p><b>See also </b><a href="qrhiswapchainrendertarget.html" translate="no">QRhiSwapChainRenderTarget</a> and <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a>.</p>
+<!-- @@@QRhiRenderTarget -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$devicePixelRatio[overload1]$$$devicePixelRatio -->
+<h3 class="fn" translate="no" id="devicePixelRatio"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">float</span> QRhiRenderTarget::<span class="name">devicePixelRatio</span>() const</h3>
+<p>Returns the device pixel ratio. For <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a> this is always 1. For targets retrieved from a <a href="qrhiswapchain.html" translate="no">QRhiSwapChain</a> the value reflects the <a href="qwindow.html#devicePixelRatio" translate="no">device pixel ratio</a> of the targeted <a href="qwindow.html" translate="no">QWindow</a>.</p>
+<!-- @@@devicePixelRatio -->
+<!-- $$$pixelSize[overload1]$$$pixelSize -->
+<h3 class="fn" translate="no" id="pixelSize"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span> QRhiRenderTarget::<span class="name">pixelSize</span>() const</h3>
+<p>Returns the size in pixels.</p>
+<p>Valid only after create() has been called successfully. Until then the result is a default-constructed <a href="../qtcore/qsize.html" translate="no">QSize</a>.</p>
+<p>With <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a> the returned size is the size of the associated attachments at the time of create(), in practice the size of the first color attachment, or the depth/stencil buffer if there are no color attachments. If the associated textures or renderbuffers are resized and rebuilt afterwards, then pixelSize() performs an implicit call to create() in order to rebuild the underlying data structures. This implicit check is similar to what <a href="qrhicommandbuffer.html#beginPass" translate="no">QRhiCommandBuffer::beginPass</a>() does, and ensures that the returned size is always up-to-date.</p>
+<!-- @@@pixelSize -->
+<!-- $$$renderPassDescriptor[overload1]$$$renderPassDescriptor -->
+<h3 class="fn" translate="no" id="renderPassDescriptor"><span class="type"><a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a></span> *QRhiRenderTarget::<span class="name">renderPassDescriptor</span>() const</h3>
+<p>Returns the associated <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a>.</p>
+<p><b>See also </b><a href="qrhirendertarget.html#setRenderPassDescriptor" translate="no">setRenderPassDescriptor</a>().</p>
+<!-- @@@renderPassDescriptor -->
+<!-- $$$sampleCount[overload1]$$$sampleCount -->
+<h3 class="fn" translate="no" id="sampleCount"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">int</span> QRhiRenderTarget::<span class="name">sampleCount</span>() const</h3>
+<p>Returns the sample count or 1 if multisample antialiasing is not relevant for this render target.</p>
+<!-- @@@sampleCount -->
+<!-- $$$setRenderPassDescriptor[overload1]$$$setRenderPassDescriptorQRhiRenderPassDescriptor* -->
+<h3 class="fn" translate="no" id="setRenderPassDescriptor"><span class="type">void</span> QRhiRenderTarget::<span class="name">setRenderPassDescriptor</span>(<span class="type"><a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a></span> *<i>desc</i>)</h3>
+<p>Sets the <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> <i translate="no">desc</i> for use with this render target.</p>
+<p><b>See also </b><a href="qrhirendertarget.html#renderPassDescriptor" translate="no">renderPassDescriptor</a>().</p>
+<!-- @@@setRenderPassDescriptor -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickrendercontrol.cpp -->
+  <meta name="description" content="The QQuickRenderControl class provides a mechanism for rendering the Qt Quick scenegraph onto an offscreen render target in a fully application-controlled manner.">
+  <title>QQuickRenderControl Class | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-module.html" translate="no">C++ Classes</a></li>
+<li>QQuickRenderControl</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QQuickRenderControl Class</h1>
+<!-- $$$QQuickRenderControl-brief -->
+<p>The QQuickRenderControl class provides a mechanism for rendering the Qt Quick scenegraph onto an offscreen render target in a fully application-controlled manner. <a href="#details">More...</a></p>
+<!-- @@@QQuickRenderControl -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QQuickRenderControl&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Quick)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Quick)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += quick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qquickrendercontrol-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#QQuickRenderControl" translate="no">QQuickRenderControl</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#dtor.QQuickRenderControl" translate="no">~QQuickRenderControl</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> QRhiCommandBuffer *</td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#commandBuffer" translate="no">commandBuffer</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#initialize" translate="no">initialize</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#invalidate" translate="no">invalidate</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#polishItems" translate="no">polishItems</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#prepareThread" translate="no">prepareThread</a></b>(QThread *<i>targetThread</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#render" translate="no">render</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QWindow *</td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#renderWindow" translate="no">renderWindow</a></b>(QPoint *<i>offset</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> QRhi *</td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#rhi" translate="no">rhi</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> int </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#samples" translate="no">samples</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#setSamples" translate="no">setSamples</a></b>(int <i>sampleCount</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#sync" translate="no">sync</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> QQuickWindow *</td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#window" translate="no">window</a></b>() const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#renderRequested" translate="no">renderRequested</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#sceneChanged" translate="no">sceneChanged</a></b>()</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QWindow *</td><td class="memItemRight bottomAlign"><b><a href="qquickrendercontrol.html#renderWindowFor" translate="no">renderWindowFor</a></b>(QQuickWindow *<i>win</i>, QPoint *<i>offset</i> = nullptr)</td></tr>
+</table></div>
+<!-- $$$QQuickRenderControl-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p><a href="qquickwindow.html" translate="no">QQuickWindow</a> and <a href="qquickview.html" translate="no">QQuickView</a> and their associated internal render loops render the Qt Quick scene onto a native window. In some cases, for example when integrating with 3rd party OpenGL, Vulkan, Metal, or Direct 3D renderers, it can be useful to get the scene into a texture that can then be used in arbitrary ways by the external rendering engine. Such a mechanism is also essential when integrating with a VR framework. QQuickRenderControl makes this possible in a hardware accelerated manner, unlike the performance-wise limited alternative of using <a href="qquickwindow.html#grabWindow" translate="no">QQuickWindow::grabWindow</a>()</p>
+<p>When using a QQuickRenderControl, the <a href="qquickwindow.html" translate="no">QQuickWindow</a> must not be <a href="../qtgui/qwindow.html#show" translate="no">shown</a> (it will not be visible on-screen) and there will not be an underlying native window for it. Instead, the <a href="qquickwindow.html" translate="no">QQuickWindow</a> instance is associated with the render control object, using the overload of the <a href="qquickwindow.html" translate="no">QQuickWindow</a> constructor, and a texture or image object specified via <a href="qquickwindow.html#setRenderTarget" translate="no">QQuickWindow::setRenderTarget</a>(). The <a href="qquickwindow.html" translate="no">QQuickWindow</a> object is still essential, because it represents the Qt Quick scene and provides the bulk of the scene management and event delivery mechanisms. It does not however act as a real on-screen window from the windowing system's perspective.</p>
+<p>Management of the graphics devices, contexts, image and texture objects is up to the application. The device or context that will be used by Qt Quick must be created before calling <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>(). The creation of the texture object can be deferred, see below. Qt 5.4 introduces the ability for <a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a> to adopt existing native contexts. Together with QQuickRenderControl this makes it possible to create a <a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a> that shares with an external rendering engine's existing context. This new <a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a> can then be used to render the Qt Quick scene into a texture that is accessible by the other engine's context too. For Vulkan, Metal, and Direct 3D there are no Qt-provided wrappers for device objects, so existing ones can be passed as-is via <a href="qquickwindow.html#setGraphicsDevice" translate="no">QQuickWindow::setGraphicsDevice</a>().</p>
+<p>Loading and instantiation of the QML components happen by using a <a href="../qtqml/qqmlengine.html" translate="no">QQmlEngine</a>. Once the root object is created, it will need to be parented to the <a href="qquickwindow.html" translate="no">QQuickWindow</a>'s contentItem().</p>
+<p>Applications will usually have to connect to 4 important signals:</p>
+<ul>
+<li><a href="qquickwindow.html#sceneGraphInitialized" translate="no">QQuickWindow::sceneGraphInitialized</a>() Emitted at some point after calling <a href="qquickrendercontrol.html#initialize" translate="no">QQuickRenderControl::initialize</a>(). Upon this signal, the application is expected to create its framebuffer object and associate it with the <a href="qquickwindow.html" translate="no">QQuickWindow</a>.</li>
+<li><a href="qquickwindow.html#sceneGraphInvalidated" translate="no">QQuickWindow::sceneGraphInvalidated</a>() When the scenegraph resources are released, the framebuffer object can be destroyed too.</li>
+<li><a href="qquickrendercontrol.html#renderRequested" translate="no">QQuickRenderControl::renderRequested</a>() Indicates that the scene has to be rendered by calling <a href="qquickrendercontrol.html#render" translate="no">render</a>(). After making the context current, applications are expected to call <a href="qquickrendercontrol.html#render" translate="no">render</a>().</li>
+<li><a href="qquickrendercontrol.html#sceneChanged" translate="no">QQuickRenderControl::sceneChanged</a>() Indicates that the scene has changed meaning that, before rendering, polishing and synchronizing is also necessary.</li>
+</ul>
+<p>To send events, for example mouse or keyboard events, to the scene, use <a href="../qtcore/qcoreapplication.html#sendEvent" translate="no">QCoreApplication::sendEvent</a>() with the <a href="qquickwindow.html" translate="no">QQuickWindow</a> instance as the receiver.</p>
+<p>For key events it may be also necessary to set the focus manually on the desired item. In practice this involves calling <a href="qquickitem.html#forceActiveFocus" translate="no">forceActiveFocus</a>() on the desired item, for example the scene's root item, once it is associated with the scene (the <a href="qquickwindow.html" translate="no">QQuickWindow</a>).</p>
+<div class="admonition note">
+<p><b>Note: </b>In general QQuickRenderControl is supported in combination with all Qt Quick backends. However, some functionality, in particular grab(), may not be available in all cases.</p>
+</div>
+</div>
+<!-- @@@QQuickRenderControl -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QQuickRenderControl[overload1]$$$QQuickRenderControlQObject* -->
+<h3 class="fn" translate="no" id="QQuickRenderControl"><code class="details extra" translate="no">[explicit]</code> QQuickRenderControl::<span class="name">QQuickRenderControl</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a QQuickRenderControl object, with parent object <i translate="no">parent</i>.</p>
+<!-- @@@QQuickRenderControl -->
+<!-- $$$~QQuickRenderControl[overload1]$$$~QQuickRenderControl -->
+<h3 class="fn" translate="no" id="dtor.QQuickRenderControl"><code class="details extra" translate="no">[override virtual noexcept]</code> QQuickRenderControl::<span class="name">~QQuickRenderControl</span>()</h3>
+<p>Destroys the instance. Releases all scenegraph resources.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#invalidate" translate="no">invalidate</a>().</p>
+<!-- @@@~QQuickRenderControl -->
+<!-- $$$beginFrame[overload1]$$$beginFrame -->
+<h3 class="fn" translate="no" id="beginFrame"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">void</span> QQuickRenderControl::<span class="name">beginFrame</span>()</h3>
+<p>Specifies the start of a graphics frame. Calls to <a href="qquickrendercontrol.html#sync" translate="no">sync</a>() or <a href="qquickrendercontrol.html#render" translate="no">render</a>() must be enclosed by calls to beginFrame() and <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>().</p>
+<p>Unlike the earlier OpenGL-only world of Qt 5, rendering with other graphics APIs requires more well-defined points of starting and ending a frame. When manually driving the rendering loop via <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a>, it now falls to the user of <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> to specify these points.</p>
+<p>A typical update step, including initialization of rendering into an existing texture, could look like the following. The example snippet assumes Direct3D 11 but the same concepts apply other graphics APIs as well.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">if</span> (<span class="operator">!</span>m_quickInitialized) {
+     m_quickWindow<span class="operator">-</span><span class="operator">&gt;</span>setGraphicsDevice(<span class="type"><a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a></span><span class="operator">::</span>fromDeviceAndContext(m_engine<span class="operator">-</span><span class="operator">&gt;</span>device()<span class="operator">,</span> m_engine<span class="operator">-</span><span class="operator">&gt;</span>context()));
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>initialize())
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Failed to initialize redirected Qt Quick rendering&quot;</span>);
+
+     m_quickWindow<span class="operator">-</span><span class="operator">&gt;</span>setRenderTarget(<span class="type"><a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a></span><span class="operator">::</span>fromNativeTexture({ <span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span>(m_res<span class="operator">.</span>texture)<span class="operator">,</span> <span class="number">0</span> }<span class="operator">,</span>
+                                                                          <span class="type"><a href="../qtcore/qsize.html" translate="no">QSize</a></span>(QML_WIDTH<span class="operator">,</span> QML_HEIGHT)<span class="operator">,</span>
+                                                                          SAMPLE_COUNT));
+
+     m_quickInitialized <span class="operator">=</span> <span class="keyword">true</span>;
+ }
+
+ m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>polishItems();
+
+ m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>beginFrame();
+ m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>sync();
+ m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>render();
+ m_renderControl<span class="operator">-</span><span class="operator">&gt;</span>endFrame(); <span class="comment">// Qt Quick's rendering commands are submitted to the device context here</span>
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>This function does not need to be, and must not be, called when using the <code translate="no">software</code> adaptation of Qt Quick.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Internally beginFrame() and <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>() invoke <a href="../qtgui/qrhi.html#beginOffscreenFrame" translate="no">beginOffscreenFrame</a>() and <a href="../qtgui/qrhi.html#endOffscreenFrame" translate="no">endOffscreenFrame</a>(), respectively. This implies that there must not be a frame (neither offscreen, nor swapchain-based) being recorded on the <a href="../qtgui/qrhi.html" translate="no">QRhi</a> when this function is called.</p>
+</div>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>(), <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>(), <a href="qquickrendercontrol.html#sync" translate="no">sync</a>(), <a href="qquickrendercontrol.html#render" translate="no">render</a>(), <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a>, and <a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a>.</p>
+<!-- @@@beginFrame -->
+<!-- $$$commandBuffer[overload1]$$$commandBuffer -->
+<h3 class="fn" translate="no" id="commandBuffer"><code class="details extra" translate="no">[since 6.6]</code> <span class="type"><a href="../qtgui/qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a></span> *QQuickRenderControl::<span class="name">commandBuffer</span>() const</h3>
+<p>Returns the current command buffer.</p>
+<p>Once <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>() is called, a <a href="../qtgui/qrhicommandbuffer.html" translate="no">QRhiCommandBuffer</a> is set up automatically. That is the command buffer Qt Quick scenegraph uses, but in some cases applications may also want to query it, for example to issue resource updates (for example, a texture readback).</p>
+<p>The returned command buffer reference should only be used between <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>() and <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>(). There are specific exceptions, for example calling <a href="../qtgui/qrhicommandbuffer.html#lastCompletedGpuTime" translate="no">lastCompletedGpuTime</a>() on the command buffer right after <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>(), but before the next <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>(), is valid.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function is not applicable and returns null when using the <code translate="no">software</code> adaptation of Qt Quick.</p>
+</div>
+<p>This function was introduced in Qt 6.6.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#rhi" translate="no">rhi</a>(), <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>(), and <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>().</p>
+<!-- @@@commandBuffer -->
+<!-- $$$endFrame[overload1]$$$endFrame -->
+<h3 class="fn" translate="no" id="endFrame"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">void</span> QQuickRenderControl::<span class="name">endFrame</span>()</h3>
+<p>Specifies the end of a graphics frame. Calls to <a href="qquickrendercontrol.html#sync" translate="no">sync</a>() or <a href="qquickrendercontrol.html#render" translate="no">render</a>() must be enclosed by calls to <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>() and endFrame().</p>
+<p>When this function is called, any graphics commands enqueued by the scenegraph are submitted to the context or command queue, whichever is applicable.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function does not need to be, and must not be, called when using the <code translate="no">software</code> adaptation of Qt Quick.</p>
+</div>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>(), <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>(), <a href="qquickrendercontrol.html#sync" translate="no">sync</a>(), <a href="qquickrendercontrol.html#render" translate="no">render</a>(), <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a>, and <a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a>.</p>
+<!-- @@@endFrame -->
+<!-- $$$initialize[overload1]$$$initialize -->
+<h3 class="fn" translate="no" id="initialize"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">bool</span> QQuickRenderControl::<span class="name">initialize</span>()</h3>
+<p>Initializes the scene graph resources. When using a graphics API, such as Vulkan, Metal, OpenGL, or Direct3D, for Qt Quick rendering, <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> will set up an appropriate rendering engine when this function is called. This rendering infrastructure exists as long as the <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> exists.</p>
+<p>To control what graphics API Qt Quick uses, call <a href="qquickwindow.html#setGraphicsApi" translate="no">QQuickWindow::setGraphicsApi</a>() with one of the <a href="qsgrendererinterface.html" translate="no">QSGRendererInterface</a>:GraphicsApi constants. That must be done before calling this function.</p>
+<p>To prevent the scenegraph from creating its own device and context objects, specify an appropriate <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a>, wrapping existing graphics objects, by calling <a href="qquickwindow.html#setGraphicsDevice" translate="no">QQuickWindow::setGraphicsDevice</a>().</p>
+<p>To configure which device extensions to enable (for example, for Vulkan), call <a href="qquickwindow.html#setGraphicsConfiguration" translate="no">QQuickWindow::setGraphicsConfiguration</a>() before this function.</p>
+<div class="admonition note">
+<p><b>Note: </b>When using Vulkan, <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> does not create a <a href="../qtgui/qvulkaninstance.html" translate="no">QVulkanInstance</a> automatically. Rather, it is the application's responsibility to create a suitable <a href="../qtgui/qvulkaninstance.html" translate="no">QVulkanInstance</a> and <a href="../qtgui/qwindow.html#setVulkanInstance" translate="no">associate it</a> with the <a href="qquickwindow.html" translate="no">QQuickWindow</a>. Before initializing the <a href="../qtgui/qvulkaninstance.html" translate="no">QVulkanInstance</a>, it is strongly encouraged to query the list of Qt Quick's desired instance extensions by calling the static function <a href="qquickgraphicsconfiguration.html#preferredInstanceExtensions" translate="no">QQuickGraphicsConfiguration::preferredInstanceExtensions</a>() and to pass the returned list to <a href="../qtgui/qvulkaninstance.html#setExtensions" translate="no">QVulkanInstance::setExtensions</a>().</p>
+</div>
+<p>Returns <code translate="no">true</code> on success, <code translate="no">false</code> otherwise.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function does not need to be, and must not be, called when using the <code translate="no">software</code> adaptation of Qt Quick.</p>
+</div>
+<p>With the default Qt Quick adaptation this function creates a new <a href="../qtgui/qrhi.html" translate="no">QRhi</a> object, similarly to what would happen with an on-screen <a href="qquickwindow.html" translate="no">QQuickWindow</a> when <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> was not used. To make this new <a href="../qtgui/qrhi.html" translate="no">QRhi</a> object adopt some existing device or context resource (e.g. use an existing <a href="../qtgui/qopenglcontext.html" translate="no">QOpenGLContext</a> instead of creating a new one), use <a href="qquickwindow.html#setGraphicsDevice" translate="no">QQuickWindow::setGraphicsDevice</a>() as mentioned above. When the application wants to make the Qt Quick rendering use an already existing <a href="../qtgui/qrhi.html" translate="no">QRhi</a> object, that is possible as well via <a href="qquickgraphicsdevice.html#fromRhi" translate="no">QQuickGraphicsDevice::fromRhi</a>(). When such a <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a>, referencing an already existing <a href="../qtgui/qrhi.html" translate="no">QRhi</a>, is set, there will be no new, dedicated <a href="../qtgui/qrhi.html" translate="no">QRhi</a> object created in initialize().</p>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a>, <a href="qquickgraphicsdevice.html" translate="no">QQuickGraphicsDevice</a>, and <a href="qquickgraphicsconfiguration.html#preferredInstanceExtensions" translate="no">QQuickGraphicsConfiguration::preferredInstanceExtensions</a>().</p>
+<!-- @@@initialize -->
+<!-- $$$invalidate[overload1]$$$invalidate -->
+<h3 class="fn" translate="no" id="invalidate"><span class="type">void</span> QQuickRenderControl::<span class="name">invalidate</span>()</h3>
+<p>Stop rendering and release resources.</p>
+<p>This is the equivalent of the cleanup operations that happen with a real <a href="qquickwindow.html" translate="no">QQuickWindow</a> when the window becomes hidden.</p>
+<p>This function is called from the destructor. Therefore there will typically be no need to call it directly.</p>
+<p>Once invalidate() has been called, it is possible to reuse the <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> instance by calling <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>() again.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function does not take QQuickWindow::persistentSceneGraph() or QQuickWindow::persistentGraphics() into account. This means that context-specific resources are always released.</p>
+</div>
+<!-- @@@invalidate -->
+<!-- $$$polishItems[overload1]$$$polishItems -->
+<h3 class="fn" translate="no" id="polishItems"><span class="type">void</span> QQuickRenderControl::<span class="name">polishItems</span>()</h3>
+<p>This function should be called as late as possible before <a href="qquickrendercontrol.html#sync" translate="no">sync</a>(). In a threaded scenario, rendering can happen in parallel with this function.</p>
+<!-- @@@polishItems -->
+<!-- $$$prepareThread[overload1]$$$prepareThreadQThread* -->
+<h3 class="fn" translate="no" id="prepareThread"><span class="type">void</span> QQuickRenderControl::<span class="name">prepareThread</span>(<span class="type"><a href="../qtcore/qthread.html" translate="no">QThread</a></span> *<i>targetThread</i>)</h3>
+<p>Prepares rendering the Qt Quick scene outside the GUI thread.</p>
+<p><i translate="no">targetThread</i> specifies the thread on which synchronization and rendering will happen. There is no need to call this function in a single threaded scenario.</p>
+<!-- @@@prepareThread -->
+<!-- $$$render[overload1]$$$render -->
+<h3 class="fn" translate="no" id="render"><span class="type">void</span> QQuickRenderControl::<span class="name">render</span>()</h3>
+<p>Renders the scenegraph using the current context.</p>
+<!-- @@@render -->
+<!-- $$$renderRequested[overload1]$$$renderRequested -->
+<h3 class="fn" translate="no" id="renderRequested"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QQuickRenderControl::<span class="name">renderRequested</span>()</h3>
+<p>This signal is emitted when the scene graph needs to be rendered. It is not necessary to call <a href="qquickrendercontrol.html#sync" translate="no">sync</a>().</p>
+<div class="admonition note">
+<p><b>Note: </b>Avoid triggering rendering directly when this signal is emitted. Instead, prefer deferring it by using a timer for example. This will lead to better performance.</p>
+</div>
+<!-- @@@renderRequested -->
+<!-- $$$renderWindow[overload1]$$$renderWindowQPoint* -->
+<h3 class="fn" translate="no" id="renderWindow"><code class="details extra" translate="no">[virtual]</code> <span class="type"><a href="../qtgui/qwindow.html" translate="no">QWindow</a></span> *QQuickRenderControl::<span class="name">renderWindow</span>(<span class="type"><a href="../qtcore/qpoint.html" translate="no">QPoint</a></span> *<i>offset</i>)</h3>
+<p>Reimplemented in subclasses to return the real window this render control is rendering into.</p>
+<p>If <i translate="no">offset</i> is non-null, it is set to the offset of the control inside the window.</p>
+<div class="admonition note">
+<p><b>Note: </b>While not mandatory, reimplementing this function becomes essential for supporting multiple screens with different device pixel ratios and properly positioning popup windows opened from QML. Therefore providing it in subclasses is highly recommended.</p>
+</div>
+<!-- @@@renderWindow -->
+<!-- $$$renderWindowFor[overload1]$$$renderWindowForQQuickWindow*QPoint* -->
+<h3 class="fn" translate="no" id="renderWindowFor"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="../qtgui/qwindow.html" translate="no">QWindow</a></span> *QQuickRenderControl::<span class="name">renderWindowFor</span>(<span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span> *<i>win</i>, <span class="type"><a href="../qtcore/qpoint.html" translate="no">QPoint</a></span> *<i>offset</i> = nullptr)</h3>
+<p>Returns the real window that <i translate="no">win</i> is being rendered to, if any.</p>
+<p>If <i translate="no">offset</i> is non-null, it is set to the offset of the rendering inside its window.</p>
+<!-- @@@renderWindowFor -->
+<!-- $$$rhi[overload1]$$$rhi -->
+<h3 class="fn" translate="no" id="rhi"><code class="details extra" translate="no">[since 6.6]</code> <span class="type"><a href="../qtgui/qrhi.html" translate="no">QRhi</a></span> *QQuickRenderControl::<span class="name">rhi</span>() const</h3>
+<p>Returns the <a href="../qtgui/qrhi.html" translate="no">QRhi</a> this <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> is associated with.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="../qtgui/qrhi.html" translate="no">QRhi</a> exists only when <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>() has successfully completed. Before that the return value is null.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>This function is not applicable and returns null when using the <code translate="no">software</code> adaptation of Qt Quick.</p>
+</div>
+<p>This function was introduced in Qt 6.6.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#commandBuffer" translate="no">commandBuffer</a>(), <a href="qquickrendercontrol.html#beginFrame" translate="no">beginFrame</a>(), and <a href="qquickrendercontrol.html#endFrame" translate="no">endFrame</a>().</p>
+<!-- @@@rhi -->
+<!-- $$$samples[overload1]$$$samples -->
+<h3 class="fn" translate="no" id="samples"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">int</span> QQuickRenderControl::<span class="name">samples</span>() const</h3>
+<p>Returns the current sample count. 1 or 0 means no multisampling.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#setSamples" translate="no">setSamples</a>().</p>
+<!-- @@@samples -->
+<!-- $$$sceneChanged[overload1]$$$sceneChanged -->
+<h3 class="fn" translate="no" id="sceneChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QQuickRenderControl::<span class="name">sceneChanged</span>()</h3>
+<p>This signal is emitted when the scene graph is updated, meaning that <a href="qquickrendercontrol.html#polishItems" translate="no">polishItems</a>() and <a href="qquickrendercontrol.html#sync" translate="no">sync</a>() needs to be called. If <a href="qquickrendercontrol.html#sync" translate="no">sync</a>() returns true, then <a href="qquickrendercontrol.html#render" translate="no">render</a>() needs to be called.</p>
+<div class="admonition note">
+<p><b>Note: </b>Avoid triggering polishing, synchronization and rendering directly when this signal is emitted. Instead, prefer deferring it by using a timer for example. This will lead to better performance.</p>
+</div>
+<!-- @@@sceneChanged -->
+<!-- $$$setSamples[overload1]$$$setSamplesint -->
+<h3 class="fn" translate="no" id="setSamples"><code class="details extra" translate="no">[since 6.0]</code> <span class="type">void</span> QQuickRenderControl::<span class="name">setSamples</span>(<span class="type">int</span> <i>sampleCount</i>)</h3>
+<p>Sets the number of samples to use for multisampling. When <i translate="no">sampleCount</i> is 0 or 1, multisampling is disabled.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function is always used in combination with a multisample render target, which means <i translate="no">sampleCount</i> must match the sample count passed to QQuickRenderTarget::fromNativeTexture(), which in turn must match the sample count of the native texture.</p>
+</div>
+<p>This function was introduced in Qt 6.0.</p>
+<p><b>See also </b><a href="qquickrendercontrol.html#samples" translate="no">samples</a>(), <a href="qquickrendercontrol.html#initialize" translate="no">initialize</a>(), and <a href="qquickrendertarget.html" translate="no">QQuickRenderTarget</a>.</p>
+<!-- @@@setSamples -->
+<!-- $$$sync[overload1]$$$sync -->
+<h3 class="fn" translate="no" id="sync"><span class="type">bool</span> QQuickRenderControl::<span class="name">sync</span>()</h3>
+<p>This function is used to synchronize the QML scene with the rendering scene graph.</p>
+<p>If a dedicated render thread is used, the GUI thread should be blocked for the duration of this call.</p>
+<p>Returns <i>true</i> if the synchronization changed the scene graph.</p>
+<!-- @@@sync -->
+<!-- $$$window[overload1]$$$window -->
+<h3 class="fn" translate="no" id="window"><code class="details extra" translate="no">[since 6.0]</code> <span class="type"><a href="qquickwindow.html" translate="no">QQuickWindow</a></span> *QQuickRenderControl::<span class="name">window</span>() const</h3>
+<p>Returns the <a href="qquickwindow.html" translate="no">QQuickWindow</a> this <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> is associated with.</p>
+<div class="admonition note">
+<p><b>Note: </b>A <a href="qquickrendercontrol.html" translate="no">QQuickRenderControl</a> gets associated with a <a href="qquickwindow.html" translate="no">QQuickWindow</a> when constructing the <a href="qquickwindow.html" translate="no">QQuickWindow</a>. The return value from this function is null before that point.</p>
+</div>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@window -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

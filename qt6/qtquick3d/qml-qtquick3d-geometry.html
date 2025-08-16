@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dgeometry.cpp -->
+  <meta name="description" content="Base type for custom geometry.">
+  <title>Geometry QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Geometry</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Geometry QML Type</h1>
+<!-- $$$Geometry-brief -->
+<p>Base type for custom geometry. <a href="#details">More...</a></p>
+<!-- @@@Geometry -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> In C++:</td><td class="memItemRight bottomAlign"> <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-object3d.html" translate="no">Object3D</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-helpers-conegeometry.html" translate="no">ConeGeometry</a>, <a href="qml-qtquick3d-helpers-cuboidgeometry.html" translate="no">CuboidGeometry</a>, <a href="qml-qtquick3d-helpers-cylindergeometry.html" translate="no">CylinderGeometry</a>, <a href="qml-qtquick3d-helpers-extrudedtextgeometry.html" translate="no">ExtrudedTextGeometry</a>, <a href="qml-qtquick3d-helpers-gridgeometry.html" translate="no">GridGeometry</a>, <a href="qml-qtquick3d-helpers-heightfieldgeometry.html" translate="no">HeightFieldGeometry</a>, <a href="qml-qtquick3d-helpers-planegeometry.html" translate="no">PlaneGeometry</a>, <a href="qml-qtquick3d-helpers-proceduralmesh.html" translate="no">ProceduralMesh</a>, <a href="qml-qtquick3d-helpers-spheregeometry.html" translate="no">SphereGeometry</a>, and <a href="qml-qtquick3d-helpers-torusgeometry.html" translate="no">TorusGeometry</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-geometry-members.html">List of all members, including inherited members</a></li>
+</ul>
+<!-- $$$Geometry-description -->
+<h2 id="details">Detailed Description</h2>
+<p>Custom geometry allows using application-generated vertex and index data, that can possibly change dynamically as well. To use custom geometry, do not assign a <code translate="no">.mesh</code> file as the <a href="qml-qtquick3d-model.html#source-prop" translate="no">source</a> to a Model. Instead, set its <a href="qml-qtquick3d-model.html#geometry-prop" translate="no">geometry</a> property to reference a Geometry object.</p>
+<p>A typical way of implementing custom geometry is by creating a <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> subclass in C++ and registering the new type for use with QML.</p>
+<p>It is also possible to use the built-in custom geometry provider <a href="qml-qtquick3d-helpers-gridgeometry.html" translate="no">GridGeometry</a> in the <code translate="no">Helpers</code> module. The following is an example of <a href="qml-qtquick3d-helpers-gridgeometry.html" translate="no">GridGeometry</a>. Any application-provided Geometry subclass can be taken into use in the same manner.</p>
+<pre class="cpp" translate="no">
+ import QtQuick3D.Helpers
+
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">geometry</span>: <span class="name">GridGeometry</span> {
+     }
+     <span class="name">materials</span>: [
+         <span class="type"><a href="qml-qtquick3d-defaultmaterial.html" translate="no">DefaultMaterial</a></span> {
+             <span class="name">diffuseColor</span>: <span class="string">&quot;white&quot;</span>
+             <span class="name">lighting</span>: <span class="name">DefaultMaterial</span>.<span class="name">NoLighting</span>
+         }
+     ]
+ }
+</pre>
+<p><b>See also </b><a href="qtquick3d-customgeometry-example.html">Qt Quick 3D - Custom Geometry Example</a>, <a href="qml-qtquick3d-model.html" translate="no">Model</a>, and <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a>.</p>
+<!-- @@@Geometry -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

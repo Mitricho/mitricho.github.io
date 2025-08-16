@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cmake-macros.qdoc -->
+  <meta name="description" content="Add targets to update and transform Qt Linguist .ts files into .qm files.">
+  <title>qt_add_translations | Qt Linguist Manual</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtlinguist-index.html">Qt Linguist Manual</a></li>
+<li><a href="cmake-commands-qtlinguisttools.html">CMake Commands in Qt6 LinguistTools</a></li>
+<li>qt_add_translations</li>
+<li id="buildversion"><a href="qtlinguist-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#synopsis">Synopsis</a></li>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#sources-and-include-directories">Sources and Include Directories</a></li>
+<li class="level1"><a href="#automatic-determination-of-ts-file-paths">Automatic Determination of .ts File Paths</a></li>
+<li class="level1"><a href="#plural-forms">Plural Forms</a></li>
+<li class="level1"><a href="#options">Options</a></li>
+<li class="level1"><a href="#location-of-generated-qm-files">Location of generated .qm files</a></li>
+<li class="level1"><a href="#embedding-generated-qm-files-in-resources">Embedding Generated .qm Files in Resources</a></li>
+<li class="level1"><a href="#qt-add-translations-before-qt-6-7"><code translate="no">qt_add_translations</code> before Qt 6.7</a></li>
+<li class="level1"><a href="#merging-qt-provided-translations">Merging Qt-provided translations</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level2"><a href="#excluding-directories-targets-and-sources">Excluding directories, targets, and sources</a></li>
+<li class="level2"><a href="#explicit-specification-of-source-targets">Explicit specification of source targets</a></li>
+<li class="level2"><a href="#custom-resource-prefix">Custom resource prefix</a></li>
+<li class="level2"><a href="#installing-qm-files">Installing .qm files</a></li>
+<li class="level2"><a href="#influencing-the-names-of-the-ts-files">Influencing the names of the .ts files</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">qt_add_translations</h1>
+<!-- $$$qtlinguist-cmake-qt-add-translations.html-description -->
+<div class="descr" id="details">
+<p>Add targets to update and transform Qt Linguist .ts files into .qm files.</p>
+<p>The command is defined in the <code translate="no">LinguistTools</code> component of the <code translate="no">Qt6</code> package. Load the package with:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+</pre>
+<p>This command was introduced in Qt 6.2.</p>
+<h2 id="synopsis">Synopsis</h2>
+<p>Since Qt 6.7:</p>
+<pre class="cpp plain" translate="no">
+ qt_add_translations([target]
+                     [TARGETS target1 [target2...]]
+                     [SOURCE_TARGETS target1 [target2...]]
+                     [TS_FILE_BASE name]
+                     [TS_FILES file1.ts [file2.ts ...]]
+                     [PLURALS_TS_FILE file.ts]
+                     [NO_GENERATE_PLURALS_TS_FILE]
+                     [RESOURCE_PREFIX prefix]
+                     [OUTPUT_TARGETS variable-name]
+                     [TS_FILES_OUTPUT_VARIABLE variable-name]    # since 6.8
+                     [TS_OUTPUT_DIRECTORY directory]             # since 6.9
+                     [QM_FILES_OUTPUT_VARIABLE variable-name]
+                     [QM_OUTPUT_DIRECTORY directory]             # since 6.9
+                     [SOURCES source1.cpp [sources2.cpp ...]]
+                     [INCLUDE_DIRECTORIES directory1 [directory2 ...]]
+                     [LUPDATE_TARGET target-name]
+                     [LUPDATE_OPTIONS ...]
+                     [LRELEASE_TARGET target-name]
+                     [LRELEASE_OPTIONS ...]
+                     [MERGE_QT_TRANSLATIONS]
+                     [QT_TRANSLATION_CATALOGS catalog1 [catalog2 ...]]
+                     [IMMEDIATE_CALL])
+</pre>
+<p>Since Qt 6.2 (deprecated):</p>
+<pre class="cpp plain" translate="no">
+ qt_add_translations(target TS_FILES file1.ts [file2.ts ...]
+                     [RESOURCE_PREFIX prefix]
+                     [OUTPUT_TARGETS variable-name]
+                     [QM_FILES_OUTPUT_VARIABLE variable-name]
+                     [SOURCES source1.cpp [sources2.cpp ...]]
+                     [INCLUDE_DIRECTORIES directory1 [directory2 ...]]
+                     [LUPDATE_OPTIONS ...]
+                     [LRELEASE_OPTIONS ...])
+</pre>
+<p>If versionless commands are disabled, use <code translate="no">qt6_add_translations()</code> instead. It supports the same set of arguments as this command.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Calling <code translate="no">qt_add_translations</code> in a directory scope different than the target directory scope requires at least CMake version 3.18.</p>
+</div>
+<h2 id="description">Description</h2>
+<p>Creates targets for updating Qt Linguist <code translate="no">.ts</code> files and for transforming them into <code translate="no">.qm</code> files. This function is a convenience wrapper around <a href="qtlinguist-cmake-qt-add-lupdate.html">qt_add_lupdate</a> and <a href="qtlinguist-cmake-qt-add-lrelease.html">qt_add_lrelease</a> and aims to offer the most common usage of both functions with one call.</p>
+<p>The parameter <code translate="no">TARGETS</code> specifies a list of targets that intend to load the generated <code translate="no">.qm</code> files at run time. If there's only one such target, you may directly pass the target's name as the first argument.</p>
+<p>The parameter <code translate="no">SOURCE_TARGETS</code> specifies a list of executable or library targets that contain sources with translatable strings. From the sources of these targets, <code translate="no">.ts</code> files will be created.</p>
+<p>If <code translate="no">SOURCE_TARGETS</code> is not given, targets are automatically gathered by calling <a href="qtlinguist-cmake-qt-collect-targets-for-translation.html">qt_collect_translation_source_targets</a> at the end of the directory scope of <code translate="no">PROJECT_SOURCE_DIR</code>. This functionality requires CMake 3.19 or newer. This functionality can be turned off with the argument <code translate="no">IMMEDIATE_CALL</code>.</p>
+<p>This function will create the target <code translate="no">update_translations</code> that scans all source files with <code translate="no">lupdate</code> and creates and updates the <code translate="no">.ts</code> files.</p>
+<p>This function will create the target <code translate="no">release_translations</code> that generates the <code translate="no">.qm</code> files from the <code translate="no">.ts</code> files. This target is built by default.</p>
+<p>The <code translate="no">.ts</code> files may be specified with the argument <code translate="no">TS_FILES</code>, but it's more convenient to let <code translate="no">qt_add_translations</code> figure out the file paths automatically. See <a href="qtlinguist-cmake-qt-add-translations.html#automatic-determination-of-ts-file-paths">Automatic Determination of .ts File Paths</a> for details.</p>
+<h2 id="sources-and-include-directories">Sources and Include Directories</h2>
+<p>With <code translate="no">SOURCES</code> you can explicitly specify additional source files that contain translatable strings.</p>
+<p>You can use <code translate="no">INCLUDE_DIRECTORIES</code> to explicitly specify include directories for those source files.</p>
+<h2 id="automatic-determination-of-ts-file-paths">Automatic Determination of .ts File Paths</h2>
+<p>The paths of the <code translate="no">.ts</code> files that are used as input for <code translate="no">qt_add_translations</code> can be automatically determined if <a href="../qtcore/cmake-variable-qt-i18n-languages.html">QT_I18N_TRANSLATED_LANGUAGES</a> has been set. This variable can be conveniently set with <a href="../qtcore/qt-standard-project-setup.html">qt_standard_project_setup</a>.</p>
+<p>The following project setup is usually enough:</p>
+<pre class="cpp" translate="no">
+ project(myproject)
+ cmake_minimum_required(VERSION 3.19)
+ find_package(Qt6 COMPONENTS Core LinguistTools)
+ qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de fr)
+
+ add_subdirectory(libs)
+ add_subdirectory(apps)
+
+ qt_add_translations(TARGETS myapp)
+</pre>
+<p>This will create the files <code translate="no">myproject_de.ts</code> and <code translate="no">myproject_fr.ts</code> in the project's source directory.</p>
+<p>By default, the <code translate="no">.ts</code> files are created in <code translate="no">CMAKE_CURRENT_SOURCE_DIR</code>. You can change the location by passing a different directory with the <code translate="no">TS_OUTPUT_DIRECTORY</code> argument.</p>
+<p>By default, the <code translate="no">.ts</code> file names are constructed from <code translate="no">PROJECT_NAME</code>. You can specify a different base name with the <code translate="no">TS_FILE_BASE</code> argument.</p>
+<div class="admonition note">
+<p><b>Note: </b><code translate="no">TS_OUTPUT_DIRECTORY</code> and <code translate="no">TS_FILE_BASE</code> have no effect for explicitly specified <code translate="no">.ts</code> files.</p>
+</div>
+<p>Since Qt 6.8, you can specify the <code translate="no">TS_FILES_OUTPUT_VARIABLE</code> argument to store the automatically determined <code translate="no">.ts</code> file paths in a variable.</p>
+<p>Before Qt 6.9, the argument <code translate="no">TS_OUTPUT_DIRECTORY</code> was called <code translate="no">TS_FILE_DIR</code>. That name is still an alias for <code translate="no">TS_OUTPUT_DIRECTORY</code> to keep older project files working.</p>
+<h2 id="plural-forms">Plural Forms</h2>
+<p><a href="../qtcore/cmake-variable-qt-i18n-native-language.html">QT_I18N_SOURCE_LANGUAGE</a> specifies the language in which the source code strings are written. For handling plural forms correctly, create an additional <code translate="no">.ts</code> file for that language that only contains translatable strings for plural forms. See Handle Plural Forms for details.</p>
+<p>With <code translate="no">PLURALS_TS_FILE</code> you can specify the <code translate="no">.ts</code> file for the source language. This file will only contain plural forms.</p>
+<p>A plurals-only <code translate="no">.ts</code> is automatically generated unless the option <code translate="no">NO_GENERATE_PLURALS_TS_FILE</code> is specified.</p>
+<p>For example,</p>
+<pre class="cpp plain" translate="no">
+ project(myapp)
+ qt_standard_project_setup(
+     I18N_SOURCE_LANGUAGE en         # optional - this is the default
+     I18N_TRANSLATED_LANGUAGES de
+ )
+ qt_add_executable(myapp ...)
+ ...
+ qt_add_translations(myapp)
+</pre>
+<p>creates the full translation file <code translate="no">myapp_de.ts</code> and the plurals-only file <code translate="no">myapp_en.ts</code>.</p>
+<p>If you need a full translation of the source language, add it to <a href="../qtcore/cmake-variable-qt-i18n-languages.html">QT_I18N_TRANSLATED_LANGUAGES</a></p>
+<p>For example,</p>
+<pre class="cpp plain" translate="no">
+ project(myapp)
+ qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en de)
+ qt_add_executable(myapp ...)
+ ...
+ qt_add_translations(myapp)
+</pre>
+<p>creates the full translation files</p>
+<ul>
+<li><code translate="no">myapp_en.ts</code></li>
+<li><code translate="no">myapp_de.ts</code></li>
+</ul>
+<h2 id="options">Options</h2>
+<p>You can specify the name of the custom target that calls lupdate with the <code translate="no">LUPDATE_TARGET</code> option. Likewise, <code translate="no">LRELEASE_TARGET</code> controls the name of the custom target that drives the call to <code translate="no">lrelease</code>.</p>
+<p>You can set additional options for <a href="linguist-lupdate.html#lupdate">lupdate</a> and <a href="linguist-lrelease.html#lrelease">lrelease</a> with <code translate="no">LUPDATE_OPTIONS</code> and <code translate="no">LRELEASE_OPTIONS</code>. You can find possible options in the <a href="linguist-lupdate.html#lupdate-options">lupdate options</a> and <a href="linguist-lrelease.html#lrelease-options">lrelease options</a>.</p>
+<p>For example, to use <a href="linguist-id-based-i18n.html">ID based translations</a>, you need to pass <code translate="no">LRELEASE_OPTIONS -idbased</code> to <code translate="no">qt_add_translations</code>.</p>
+<h2 id="location-of-generated-qm-files">Location of generated .qm files</h2>
+<p>By default, the <code translate="no">.qm</code> files will be placed in the current build directory (<code translate="no">CMAKE_CURRENT_BINARY_DIR</code>). Since Qt 6.9 you can use the <code translate="no">QM_OUTPUT_DIRECTORY</code> argument to generate the <code translate="no">.qm</code> files in a different directory. Relative paths are considered to be below <code translate="no">CMAKE_CURRENT_BINARY_DIR</code>.</p>
+<p>For example, with the following code, the <code translate="no">.qm</code> files are generated in a <code translate="no">translations</code> directory below the current build directory.</p>
+<pre class="cpp" translate="no">
+ qt_add_translations(app QM_OUTPUT_DIRECTORY translations)
+</pre>
+<p>For more fine-grained control, you can specify the output directory of individual <code translate="no">.qm</code> files by setting the source file property <code translate="no">OUTPUT_LOCATION</code> on the corresponding <code translate="no">.ts</code> file. This must happen before calling <code translate="no">qt_add_translations</code>.</p>
+<p>The <code translate="no">OUTPUT_LOCATION</code> source file property overrides the directory passed via <code translate="no">QM_OUTPUT_DIRECTORY</code>.</p>
+<p>For example, with the following code, the <code translate="no">.qm</code> files are generated in a <code translate="no">translations</code> directory below the current build directory.</p>
+<pre class="cpp" translate="no">
+ set_source_files_properties(app_en.ts app_de.ts
+     PROPERTIES OUTPUT_LOCATION &quot;${CMAKE_CURRENT_BINARY_DIR}/translations&quot;)
+ qt_add_translations(app)
+</pre>
+<h2 id="embedding-generated-qm-files-in-resources">Embedding Generated .qm Files in Resources</h2>
+<p>By default, the generated <code translate="no">.qm</code> files are embedded in a Qt resource that will be linked into the targets passed with <code translate="no">TARGETS</code>. The files in the resource are accessible under the resource prefix <code translate="no">&quot;/i18n&quot;</code>.</p>
+<p>You can set the resource prefix with <code translate="no">RESOURCE_PREFIX</code>.</p>
+<p>In a static Qt build, when a resource target is created, additional targets can be created. You can instruct <code translate="no">qt_add_translations</code> to store these targets in a variable, by passing <code translate="no">OUTPUT_TARGETS &lt;variable-name&gt;</code>.</p>
+<p>If <code translate="no">OUTPUT_TARGETS</code> is used, either <code translate="no">IMMEDIATE_CALL</code> or <code translate="no">SOURCE_TARGETS</code> must be specified.</p>
+<p>The automatic resource embedding can be turned off by giving the <code translate="no">QM_FILES_OUTPUT_VARIABLE</code> option, followed by the name of a variable in which the command should store the list of generated <code translate="no">.qm</code> files.</p>
+<h2 id="qt-add-translations-before-qt-6-7"><code translate="no">qt_add_translations</code> before Qt 6.7</h2>
+<p>Before Qt 6.7, this command accepted only one target as the first argument. This target was used for both, extracting translatable sources and embedding <code translate="no">.qm</code> files.</p>
+<p>Since Qt 6.7, the target in the first argument is not used for source extraction anymore.</p>
+<h2 id="merging-qt-provided-translations">Merging Qt-provided translations</h2>
+<p>Since Qt 6.9, you can merge the translations that are provided by Qt into application-specific <code translate="no">.qm</code> files. To do that, pass the <code translate="no">MERGE_QT_TRANSLATIONS</code> option to <code translate="no">qt_add_translations</code>. This will determine the Qt translation catalogs that belong to the modules used by your project and merge them into the <code translate="no">.qm</code> files that are produced by <code translate="no">lrelease</code>.</p>
+<p>The Qt translation catalogs are determined by the <code translate="no">find_package</code> calls in the scope of your <code translate="no">CMakeLists.txt</code> where <code translate="no">qt_add_translations</code> is called. For example, the following sequence will merge the catalogs <code translate="no">qtbase</code> and <code translate="no">qtmultimedia</code> into your <code translate="no">.qm</code> files:</p>
+<pre class="cpp plain" translate="no">
+ find_package(Qt6 COMPONENTS MultimediaWidgets)
+ ...
+ qt_add_translations(my_app MERGE_QT_TRANSLATIONS)
+</pre>
+<p>To explicitly specify the catalogs, use the <code translate="no">QT_TRANSLATION_CATALOGS</code> argument:</p>
+<pre class="cpp plain" translate="no">
+ qt_add_translations(my_app
+     MERGE_QT_TRANSLATIONS
+     QT_TRANSLATION_CATALOGS qtbase qtmultimedia
+ )
+</pre>
+<p>If your project supports a language for which Qt doesn't offer its own translation, a warning will be issued at configure time. You can suppress this warning by setting the CMake variable <code translate="no">QT_NO_MISSING_CATALOG_LANGUAGE_WARNING</code> to <code translate="no">ON</code>.</p>
+<p>If the automatic determination of <code translate="no">.ts</code> file names is not used then you must ensure that the QT_I18N_TRANSLATED_LANGUAGE source file property is set on each of the <code translate="no">.ts</code> files.</p>
+<h2 id="examples">Examples</h2>
+<p>Add a German and a French translation to the target <code translate="no">frogger</code> using <code translate="no">qt_add_translations</code>:</p>
+<pre class="cpp" translate="no">
+ cmake_minimum_required(VERSION 3.28)
+ project(frogger)
+ find_package(Qt6 COMPONENTS OpenGLWidgets)
+ qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de fr)
+
+ # The CMake files in the 'src' subdirectory create
+ # the targets 'frogger_game' and 'frogger_level_editor'.
+ add_subdirectory(src)
+
+ # Add translations to the 'frogger_game' target.
+ qt_add_translations(frogger_game)
+</pre>
+<p>This will create the <code translate="no">.ts</code> files <code translate="no">frogger_de.ts</code> and <code translate="no">frogger_fr.ts</code> in the source directory. <a href="linguist-lupdate.html#lupdate">lupdate</a> sees the source files of all targets that are eligible for translation, according to the rules of <a href="qtlinguist-cmake-qt-collect-targets-for-translation.html">qt_collect_translation_source_targets</a>.</p>
+<p>The <code translate="no">.qm</code> files that are created from the <code translate="no">.ts</code> files are embedded in the <code translate="no">frogger_game</code> target under the resource prefix <code translate="no">&quot;i18n&quot;</code>.</p>
+<p>The <code translate="no">qt_add_translations</code> call in the above example is roughly equivalent to the following:</p>
+<pre class="cpp" translate="no">
+ qt_collect_translation_source_targets(i18n_targets)
+ qt_add_lupdate(
+     SOURCE_TARGETS ${i18n_targets}
+     TS_FILES frogger_de.ts frogger_fr.ts)
+ qt_add_lrelease(
+     TS_FILES frogger_de.ts frogger_fr.ts
+     QM_FILES_OUTPUT_VARIABLE qm_files)
+ qt_add_resources(frogger_game &quot;translations&quot;
+     PREFIX &quot;/i18n&quot;
+     BASE &quot;${CMAKE_CURRENT_BINARY_DIR}&quot;
+     FILES &quot;${qm_files}&quot;
+ )
+</pre>
+<h3 id="excluding-directories-targets-and-sources">Excluding directories, targets, and sources</h3>
+<p>You can exclude targets and directories from the automatic collection of source targets. The following excludes the target <code translate="no">helper_lib</code> and everything under the <code translate="no">tests</code> directory. See the <a href="cmake-directory-property-qt-exclude-from-translation.html">directory property QT_EXCLUDE_FROM_TRANSLATION</a> and the <a href="cmake-target-property-qt-exclude-from-translation.html">target property QT_EXCLUDE_FROM_TRANSLATION</a>.</p>
+<pre class="cpp plain" translate="no">
+ # &lt;project_root&gt;/CMakeLists.txt
+ qt_add_translations(frogger_game)
+</pre>
+<pre class="cpp plain" translate="no">
+ # &lt;project_root&gt;/src/helper_lib/CMakeLists.txt
+ qt_add_library(helper_lib STATIC helpers.cpp)
+ set_property(TARGET helper_lib PROPERTY QT_EXCLUDE_FROM_TRANSLATION ON)
+</pre>
+<pre class="cpp plain" translate="no">
+ # &lt;project_root&gt;/tests/CMakeLists.txt
+ add_subdirectory(behavior_tests)
+ add_subdirectory(physics_tests)
+ set_directory_properties(PROPERTIES QT_EXCLUDE_FROM_TRANSLATION ON)
+</pre>
+<p>In the following example, we exclude source files that are part of the <code translate="no">frogger_game</code> target using the <a href="cmake-target-property-qt-exclude-sources-from-translation.html">QT_EXCLUDE_SOURCES_FROM_TRANSLATION</a> target property:</p>
+<pre class="cpp plain" translate="no">
+ qt_add_executable(frogger_game
+     main.cpp
+     3rdparty/jumpsim.cpp
+     3rdparty/frogmath.cpp
+ )
+ set_property(TARGET frogger_game
+     PROPERTY QT_EXCLUDE_SOURCES_FROM_TRANSLATION &quot;3rdparty/*&quot;
+ )
+</pre>
+<h3 id="explicit-specification-of-source-targets">Explicit specification of source targets</h3>
+<p>If you don't want to use the automatic collection of source targets you can specify the source targets explicitly:</p>
+<pre class="cpp" translate="no">
+ qt_add_translations(frogger_game
+     SOURCE_TARGETS frogger_game
+ )
+</pre>
+<h3 id="custom-resource-prefix">Custom resource prefix</h3>
+<p>Now, let's embed the <code translate="no">.qm</code> files in <code translate="no">frogger_game</code> and <code translate="no">frogger_level_editor</code> and set a custom resource prefix.</p>
+<pre class="cpp" translate="no">
+ qt_add_translations(
+     TARGETS frogger_game frogger_level_editor
+     RESOURCE_PREFIX &quot;/translations&quot;
+ )
+</pre>
+<h3 id="installing-qm-files">Installing .qm files</h3>
+<p>Instead of embedding the <code translate="no">.qm</code> files we can install them as regular files:</p>
+<pre class="cpp" translate="no">
+ qt_add_translations(
+     TARGETS frogger_game frogger_level_editor
+     QM_FILES_OUTPUT_VARIABLE qm_files
+ )
+ install(FILES ${qm_files} DESTINATION &quot;translations&quot;)
+</pre>
+<h3 id="influencing-the-names-of-the-ts-files">Influencing the names of the .ts files</h3>
+<p>Place the <code translate="no">.ts</code> files in a <code translate="no">translations</code> directory and change the base name to <code translate="no">frogger_i18n</code>:</p>
+<pre class="cpp plain" translate="no">
+ qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES de fr)
+ ...
+ qt_add_translations(frogger
+     TS_FILE_BASE froggo
+     TS_OUTPUT_DIRECTORY translations
+ )
+</pre>
+<p>This creates the following files</p>
+<ul>
+<li><code translate="no">translations/froggo_de.ts</code></li>
+<li><code translate="no">translations/froggo_fr.ts</code></li>
+</ul>
+<p>You can also specify the paths explicitly:</p>
+<pre class="cpp plain" translate="no">
+ qt_add_translations(frogger
+     TS_FILES translations/froggo_de.ts translations/froggo_fr.ts
+ )
+</pre>
+</div>
+<!-- @@@qtlinguist-cmake-qt-add-translations.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

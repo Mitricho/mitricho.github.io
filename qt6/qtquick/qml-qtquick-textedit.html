@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquicktextedit.cpp -->
+  <meta name="description" content="Displays multiple lines of editable formatted text.">
+  <title>TextEdit QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li>TextEdit</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">TextEdit QML Type</h1>
+<!-- $$$TextEdit-brief -->
+<p>Displays multiple lines of editable formatted text. <a href="#details">More...</a></p>
+<!-- @@@TextEdit -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-item.html" translate="no">Item</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-textedit-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#activeFocusOnPress-prop" translate="no">activeFocusOnPress</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#baseUrl-prop" translate="no">baseUrl</a></b> : url</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#bottomPadding-prop" translate="no">bottomPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#canPaste-prop" translate="no">canPaste</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#canRedo-prop" translate="no">canRedo</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#canUndo-prop" translate="no">canUndo</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#color-prop" translate="no">color</a></b> : color</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#contentHeight-prop" translate="no">contentHeight</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#contentWidth-prop" translate="no">contentWidth</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cursorDelegate-prop" translate="no">cursorDelegate</a></b> : Component</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cursorPosition-prop" translate="no">cursorPosition</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cursorRectangle-prop" translate="no">cursorRectangle</a></b> : rectangle</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cursorSelection-prop" translate="no">cursorSelection</a></b> : QtQuick::TextSelection <code class="summary extra" translate="no">(preliminary)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cursorVisible-prop" translate="no">cursorVisible</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#effectiveHorizontalAlignment-prop" translate="no">effectiveHorizontalAlignment</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.bold-prop" translate="no">font.bold</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.capitalization-prop" translate="no">font.capitalization</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.contextFontMerging-prop" translate="no">font.contextFontMerging</a></b> : bool <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.family-prop" translate="no">font.family</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.features-prop" translate="no">font.features</a></b> : object <code class="summary extra" translate="no">(since 6.6)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.hintingPreference-prop" translate="no">font.hintingPreference</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.italic-prop" translate="no">font.italic</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.kerning-prop" translate="no">font.kerning</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.letterSpacing-prop" translate="no">font.letterSpacing</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.pixelSize-prop" translate="no">font.pixelSize</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.pointSize-prop" translate="no">font.pointSize</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.preferShaping-prop" translate="no">font.preferShaping</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.preferTypoLineMetrics-prop" translate="no">font.preferTypoLineMetrics</a></b> : bool <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.strikeout-prop" translate="no">font.strikeout</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.styleName-prop" translate="no">font.styleName</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.underline-prop" translate="no">font.underline</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.variableAxes-prop" translate="no">font.variableAxes</a></b> : object <code class="summary extra" translate="no">(since 6.7)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.weight-prop" translate="no">font.weight</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#font.wordSpacing-prop" translate="no">font.wordSpacing</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#horizontalAlignment-prop" translate="no">horizontalAlignment</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#hoveredLink-prop" translate="no">hoveredLink</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#inputMethodComposing-prop" translate="no">inputMethodComposing</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#inputMethodHints-prop" translate="no">inputMethodHints</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#leftPadding-prop" translate="no">leftPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#length-prop" translate="no">length</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#lineCount-prop" translate="no">lineCount</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#mouseSelectionMode-prop" translate="no">mouseSelectionMode</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#overwriteMode-prop" translate="no">overwriteMode</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#padding-prop" translate="no">padding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#persistentSelection-prop" translate="no">persistentSelection</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#preeditText-prop" translate="no">preeditText</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#readOnly-prop" translate="no">readOnly</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#renderType-prop" translate="no">renderType</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#rightPadding-prop" translate="no">rightPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectByKeyboard-prop" translate="no">selectByKeyboard</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectByMouse-prop" translate="no">selectByMouse</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectedText-prop" translate="no">selectedText</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectedTextColor-prop" translate="no">selectedTextColor</a></b> : color</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectionColor-prop" translate="no">selectionColor</a></b> : color</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#tabStopDistance-prop" translate="no">tabStopDistance</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#textDocument-prop" translate="no">textDocument</a></b> : TextDocument</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#textFormat-prop" translate="no">textFormat</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#textMargin-prop" translate="no">textMargin</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#topPadding-prop" translate="no">topPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#verticalAlignment-prop" translate="no">verticalAlignment</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#wrapMode-prop" translate="no">wrapMode</a></b> : enumeration</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#editingFinished-signal" translate="no">editingFinished</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#linkActivated-signal" translate="no">linkActivated</a></b>(string <i>link</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#linkHovered-signal" translate="no">linkHovered</a></b>(string <i>link</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#textEdited-signal" translate="no">textEdited</a></b>() <code class="summary extra" translate="no">(since 6.9)</code></li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no">void <b><a href="qml-qtquick-textedit.html#append-method" translate="no">append</a></b>(string <i>text</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#clear-method" translate="no">clear</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#copy-method" translate="no">copy</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#cut-method" translate="no">cut</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#deselect-method" translate="no">deselect</a></b>()</li>
+<li class="fn" translate="no">string <b><a href="qml-qtquick-textedit.html#getFormattedText-method" translate="no">getFormattedText</a></b>(int <i>start</i>, int <i>end</i>)</li>
+<li class="fn" translate="no">string <b><a href="qml-qtquick-textedit.html#getText-method" translate="no">getText</a></b>(int <i>start</i>, int <i>end</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#insert-method" translate="no">insert</a></b>(int <i>position</i>, string <i>text</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#isRightToLeft-method" translate="no">isRightToLeft</a></b>(int <i>start</i>, int <i>end</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#linkAt-method" translate="no">linkAt</a></b>(real <i>x</i>, real <i>y</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#moveCursorSelection-method" translate="no">moveCursorSelection</a></b>(int <i>position</i>, SelectionMode <i>mode</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#paste-method" translate="no">paste</a></b>()</li>
+<li class="fn" translate="no">int <b><a href="qml-qtquick-textedit.html#positionAt-method" translate="no">positionAt</a></b>(int <i>x</i>, int <i>y</i>)</li>
+<li class="fn" translate="no">rectangle <b><a href="qml-qtquick-textedit.html#positionToRectangle-method" translate="no">positionToRectangle</a></b>(<i>position</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#redo-method" translate="no">redo</a></b>()</li>
+<li class="fn" translate="no">string <b><a href="qml-qtquick-textedit.html#remove-method" translate="no">remove</a></b>(int <i>start</i>, int <i>end</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#select-method" translate="no">select</a></b>(int <i>start</i>, int <i>end</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectAll-method" translate="no">selectAll</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#selectWord-method" translate="no">selectWord</a></b>()</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-textedit.html#undo-method" translate="no">undo</a></b>()</li>
+</ul>
+<!-- $$$TextEdit-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The TextEdit item displays a block of editable, formatted text.</p>
+<p>It can display both plain and rich text. For example:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+     <span class="name">width</span>: <span class="number">240</span>
+     <span class="name">text</span>: <span class="string">&quot;&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World!&lt;/i&gt;&quot;</span>
+     <span class="name">font</span>.family: <span class="string">&quot;Helvetica&quot;</span>
+     <span class="name">font</span>.pointSize: <span class="number">20</span>
+     <span class="name">color</span>: <span class="string">&quot;blue&quot;</span>
+     <span class="name">focus</span>: <span class="number">true</span>
+ }
+</pre>
+<p class="centerAlign"><img src="images/declarative-textedit.gif" alt="" /></p><p>Setting <a href="qml-qtquick-item.html#focus-prop" translate="no">focus</a> to <code translate="no">true</code> enables the TextEdit item to receive keyboard focus.</p>
+<p>Note that the TextEdit does not implement scrolling, following the cursor, or other behaviors specific to a look and feel. For example, to add flickable scrolling that follows the cursor:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-flickable.html" translate="no">Flickable</a></span> {
+      <span class="name">id</span>: <span class="name">flick</span>
+
+      <span class="name">width</span>: <span class="number">300</span>; <span class="name">height</span>: <span class="number">200</span>;
+      <span class="name">contentWidth</span>: <span class="name">edit</span>.<span class="name">contentWidth</span>
+      <span class="name">contentHeight</span>: <span class="name">edit</span>.<span class="name">contentHeight</span>
+      <span class="name">clip</span>: <span class="number">true</span>
+
+      <span class="keyword">function</span> <span class="name">ensureVisible</span>(r)
+      {
+          <span class="keyword">if</span> (<span class="name">contentX</span> <span class="operator">&gt;=</span> <span class="name">r</span>.<span class="name">x</span>)
+              <span class="name">contentX</span> <span class="operator">=</span> <span class="name">r</span>.<span class="name">x</span>;
+          <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">contentX</span><span class="operator">+</span><span class="name">width</span> <span class="operator">&lt;=</span> <span class="name">r</span>.<span class="name">x</span><span class="operator">+</span><span class="name">r</span>.<span class="name">width</span>)
+              <span class="name">contentX</span> <span class="operator">=</span> <span class="name">r</span>.<span class="name">x</span><span class="operator">+</span><span class="name">r</span>.<span class="name">width</span><span class="operator">-</span><span class="name">width</span>;
+          <span class="keyword">if</span> (<span class="name">contentY</span> <span class="operator">&gt;=</span> <span class="name">r</span>.<span class="name">y</span>)
+              <span class="name">contentY</span> <span class="operator">=</span> <span class="name">r</span>.<span class="name">y</span>;
+          <span class="keyword">else</span> <span class="keyword">if</span> (<span class="name">contentY</span><span class="operator">+</span><span class="name">height</span> <span class="operator">&lt;=</span> <span class="name">r</span>.<span class="name">y</span><span class="operator">+</span><span class="name">r</span>.<span class="name">height</span>)
+              <span class="name">contentY</span> <span class="operator">=</span> <span class="name">r</span>.<span class="name">y</span><span class="operator">+</span><span class="name">r</span>.<span class="name">height</span><span class="operator">-</span><span class="name">height</span>;
+      }
+
+      <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+          <span class="name">id</span>: <span class="name">edit</span>
+          <span class="name">width</span>: <span class="name">flick</span>.<span class="name">width</span>
+          <span class="name">focus</span>: <span class="number">true</span>
+          <span class="name">wrapMode</span>: <span class="name">TextEdit</span>.<span class="name">Wrap</span>
+          <span class="name">onCursorRectangleChanged</span>: <span class="name">flick</span>.<span class="name">ensureVisible</span>(<span class="name">cursorRectangle</span>)
+      }
+  }
+</pre>
+<p>A particular look and feel might use smooth scrolling (eg. using <a href="qml-qtquick-smoothedanimation.html" translate="no">SmoothedAnimation</a>), might have a visible scrollbar, or a scrollbar that fades in to show location, etc.</p>
+<p>Clipboard support is provided by the <a href="qml-qtquick-textedit.html#cut-method" translate="no">cut</a>(), <a href="qml-qtquick-textedit.html#copy-method" translate="no">copy</a>(), and <a href="qml-qtquick-textedit.html#paste-method" translate="no">paste</a>() functions. Text can be selected by mouse in the usual way, unless <a href="qml-qtquick-textedit.html#selectByMouse-prop" translate="no">selectByMouse</a> is set to <code translate="no">false</code>; and by keyboard with the <code translate="no">Shift+arrow</code> key combinations, unless <a href="qml-qtquick-textedit.html#selectByKeyboard-prop" translate="no">selectByKeyboard</a> is set to <code translate="no">false</code>. To select text programmatically, you can set the <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> and <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a> properties, or use <a href="qml-qtquick-textedit.html#selectAll-method" translate="no">selectAll</a>() or <a href="qml-qtquick-textedit.html#selectWord-method" translate="no">selectWord</a>().</p>
+<p>You can translate between cursor positions (characters from the start of the document) and pixel points using <a href="qml-qtquick-textedit.html#positionAt-method" translate="no">positionAt</a>() and <a href="qml-qtquick-textedit.html#positionToRectangle-method" translate="no">positionToRectangle</a>().</p>
+<p><b>See also </b><a href="qml-qtquick-text.html" translate="no">Text</a>, <a href="qml-qtquick-textinput.html" translate="no">TextInput</a>, <a href="../qtquickcontrols/qml-qtquick-controls-textarea.html" translate="no">TextArea</a>, and <a href="../qtquickcontrols/qtquickcontrols-texteditor-example.html">Qt Quick Controls - Text Editor</a>.</p>
+<!-- @@@TextEdit -->
+<h2>Property Documentation</h2>
+<!-- $$$ -->
+<div class="qmlitem"><div class="fngroup">
+<div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="effectiveHorizontalAlignment-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">effectiveHorizontalAlignment</span> : <span class="type">enumeration</span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+<tr valign="top" class="odd" id="horizontalAlignment-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">horizontalAlignment</span> : <span class="type">enumeration</span></p></td></tr>
+<tr valign="top" class="odd" id="verticalAlignment-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">verticalAlignment</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+</div><div class="qmldoc"><p>Sets the horizontal and vertical alignment of the text within the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item's width and height. By default, the text alignment follows the natural alignment of the text, for example text that is read from left to right will be aligned to the left.</p>
+<p>Valid values for <code translate="no">horizontalAlignment</code> are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignLeft</code></td><td class="topAlign">left alignment with ragged edges on the right (default)</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignRight</code></td><td class="topAlign">align each line to the right with ragged edges on the left</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignHCenter</code></td><td class="topAlign">align each line to the center</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignJustify</code></td><td class="topAlign">align each line to both right and left, spreading out words as necessary</td></tr>
+</table></div>
+<p>Valid values for <code translate="no">verticalAlignment</code> are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignTop</code></td><td class="topAlign">start at the top of the item (default)</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignBottom</code></td><td class="topAlign">align the last line to the bottom and other lines above</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AlignVCenter</code></td><td class="topAlign">align the center vertically</td></tr>
+</table></div>
+<p>When using the attached property <a href="qml-qtquick-layoutmirroring.html#enabled-prop" translate="no">LayoutMirroring::enabled</a> to mirror application layouts, the horizontal alignment of text will also be mirrored. However, the property <code translate="no">horizontalAlignment</code> will remain unchanged. To query the effective horizontal alignment of <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>, use the read-only property <code translate="no">effectiveHorizontalAlignment</code>.</p>
+</div></div><!-- @@@ -->
+<br/>
+<!-- $$$ -->
+<div class="qmlitem"><div class="fngroup">
+<div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="bottomPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">bottomPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="leftPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">leftPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="padding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">padding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="rightPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">rightPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+<tr valign="top" class="odd" id="topPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">topPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+</div><div class="qmldoc"><p>These properties hold the padding around the content. This space is reserved in addition to the <a href="qml-qtquick-textedit.html#contentWidth-prop" translate="no">contentWidth</a> and <a href="qml-qtquick-textedit.html#contentHeight-prop" translate="no">contentHeight</a>.</p>
+</div></div><!-- @@@ -->
+<br/>
+<!-- $$$activeFocusOnPress -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="activeFocusOnPress-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">activeFocusOnPress</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Whether the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> should gain active focus on a mouse press. By default this is set to true.</p>
+</div></div><!-- @@@activeFocusOnPress -->
+<br/>
+<!-- $$$baseUrl -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="baseUrl-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">baseUrl</span> : <span class="type"><a href="../qtqml/qml-url.html" translate="no">url</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property specifies a base URL which is used to resolve relative URLs within the text.</p>
+<p>The default value is the url of the QML file instantiating the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item.</p>
+</div></div><!-- @@@baseUrl -->
+<br/>
+<!-- $$$canPaste -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="canPaste-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">canPaste</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns true if the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> is writable and the content of the clipboard is suitable for pasting into the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.</p>
+</div></div><!-- @@@canPaste -->
+<br/>
+<!-- $$$canRedo -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="canRedo-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">canRedo</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns true if the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> is writable and there are <a href="qml-qtquick-textedit.html#undo-method" translate="no">undone</a> operations that can be redone.</p>
+</div></div><!-- @@@canRedo -->
+<br/>
+<!-- $$$canUndo -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="canUndo-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">canUndo</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns true if the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> is writable and there are previous operations that can be undone.</p>
+</div></div><!-- @@@canUndo -->
+<br/>
+<!-- $$$color -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="color-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">color</span> : <span class="type"><a href="qml-color.html" translate="no">color</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The text color.</p>
+<pre class="qml" translate="no">
+ <span class="comment">// green text using hexadecimal notation</span>
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">color</span>: <span class="string">&quot;#00FF00&quot;</span> }
+</pre>
+<pre class="qml" translate="no">
+ <span class="comment">// steelblue text using SVG color name</span>
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">color</span>: <span class="string">&quot;steelblue&quot;</span> }
+</pre>
+</div></div><!-- @@@color -->
+<br/>
+<!-- $$$contentHeight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="contentHeight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">contentHeight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the height of the text, including the height past the height that is covered if the text does not fit within the set height.</p>
+</div></div><!-- @@@contentHeight -->
+<br/>
+<!-- $$$contentWidth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="contentWidth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">contentWidth</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the width of the text, including the width past the width which is covered due to insufficient wrapping if <a href="qml-qtquick-textedit.html#wrapMode-prop" translate="no">wrapMode</a> is set.</p>
+</div></div><!-- @@@contentWidth -->
+<br/>
+<!-- $$$cursorDelegate -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cursorDelegate-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cursorDelegate</span> : <span class="type">Component</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The delegate for the cursor in the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.</p>
+<p>If you set a cursorDelegate for a <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>, this delegate will be used for drawing the cursor instead of the standard cursor. An instance of the delegate will be created and managed by the text edit when a cursor is needed, and the x and y properties of delegate instance will be set so as to be one pixel before the top left of the current character.</p>
+<p>Note that the root item of the delegate component must be a <a href="qquickitem.html" translate="no">QQuickItem</a> or <a href="qquickitem.html" translate="no">QQuickItem</a> derived item.</p>
+</div></div><!-- @@@cursorDelegate -->
+<br/>
+<!-- $$$cursorPosition -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cursorPosition-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cursorPosition</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The position of the cursor in the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>. The cursor is positioned between characters.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <i>characters</i> in this case refer to the string of <a href="../qtcore/qchar.html" translate="no">QChar</a> objects, therefore 16-bit Unicode characters, and the position is considered an index into this string. This does not necessarily correspond to individual graphemes in the writing system, as a single grapheme may be represented by multiple Unicode characters, such as in the case of surrogate pairs, linguistic ligatures or diacritics.</p>
+</div>
+</div></div><!-- @@@cursorPosition -->
+<br/>
+<!-- $$$cursorRectangle -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cursorRectangle-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cursorRectangle</span> : <span class="type">rectangle</span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The rectangle where the standard text cursor is rendered within the text edit. Read-only.</p>
+<p>The position and height of a custom <a href="qml-qtquick-textedit.html#cursorDelegate-prop" translate="no">cursorDelegate</a> are updated to follow the cursorRectangle automatically when it changes. The width of the delegate is unaffected by changes in the cursor rectangle.</p>
+</div></div><!-- @@@cursorRectangle -->
+<br/>
+<!-- $$$cursorSelection -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cursorSelection-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cursorSelection</span> : <span class="type"><a href="qml-qtquick-textselection.html" translate="no">QtQuick::TextSelection</a></span> <code class="details extra" translate="no">[read-only, preliminary]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p><b>This property is under development and is subject to change.</b></p>
+<p>This property is an object that provides properties of the text that is currently selected, if any, alongside the text cursor.</p>
+<p>This property was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#selectedText-prop" translate="no">selectedText</a>, <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a>, and <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a>.</p>
+</div></div><!-- @@@cursorSelection -->
+<br/>
+<!-- $$$cursorVisible -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cursorVisible-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cursorVisible</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>If true the text edit shows a cursor.</p>
+<p>This property is set and unset when the text edit gets active focus, but it can also be set directly (useful, for example, if a KeyProxy might forward keys to it).</p>
+</div></div><!-- @@@cursorVisible -->
+<br/>
+<!-- $$$font.bold -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.bold-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.bold</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets whether the font weight is bold.</p>
+</div></div><!-- @@@font.bold -->
+<br/>
+<!-- $$$font.capitalization -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.capitalization-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.capitalization</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the capitalization for the text.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Font.MixedCase</code></td><td class="topAlign">no capitalization change is applied</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.AllUppercase</code></td><td class="topAlign">alters the text to be rendered in all uppercase type</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.AllLowercase</code></td><td class="topAlign">alters the text to be rendered in all lowercase type</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.SmallCaps</code></td><td class="topAlign">alters the text to be rendered in small-caps type</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Capitalize</code></td><td class="topAlign">alters the text to be rendered with the first character of each word as an uppercase character<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">text</span>: <span class="string">&quot;Hello&quot;</span>; <span class="name">font</span>.capitalization: <span class="name">Font</span>.<span class="name">AllLowercase</span> }
+</pre>
+</td></tr>
+</table></div>
+</div></div><!-- @@@font.capitalization -->
+<br/>
+<!-- $$$font.contextFontMerging -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.contextFontMerging-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.contextFontMerging</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>If the selected font does not contain a certain character, Qt automatically chooses a similar-looking fallback font that contains the character. By default this is done on a character-by-character basis.</p>
+<p>This means that in certain uncommon cases, many different fonts may be used to represent one string of text even if it's in the same script. Setting <code translate="no">contextFontMerging</code> to true will try finding the fallback font that matches the largest subset of the input string instead. This will be more expensive for strings where missing glyphs occur, but may give more consistent results. By default, <code translate="no">contextFontMerging</code> is <code translate="no">false</code>.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="../qtgui/qfont.html#StyleStrategy-enum" translate="no">QFont::StyleStrategy</a>.</p>
+</div></div><!-- @@@font.contextFontMerging -->
+<br/>
+<!-- $$$font.family -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.family-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.family</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the family name of the font.</p>
+<p>The family name is case insensitive and may optionally include a foundry name, e.g. &quot;Helvetica [Cronyx]&quot;. If the family is available from more than one foundry and the foundry isn't specified, an arbitrary foundry is chosen. If the family isn't available a family will be set using the font matching algorithm.</p>
+</div></div><!-- @@@font.family -->
+<br/>
+<!-- $$$font.features -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.features-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.features</span> : <span class="type">object</span> <code class="details extra" translate="no">[since 6.6]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Applies integer values to specific OpenType features when shaping the text based on the contents in <i translate="no">features</i>. This provides advanced access to the font shaping process, and can be used to support font features that are otherwise not covered in the API.</p>
+<p>The font features are represented by a map from four-letter tags to integer values. This integer value passed along with the tag in most cases represents a boolean value: A zero value means the feature is disabled, and a non-zero value means it is enabled. For certain font features, however, it may have other interpretations. For example, when applied to the <code translate="no">salt</code> feature, the value is an index that specifies the stylistic alternative to use.</p>
+<p>For example, the <code translate="no">frac</code> font feature will convert diagonal fractions separated with a slash (such as <code translate="no">1/2</code>) with a different representation. Typically this will involve baking the full fraction into a single character width (such as <code translate="no">½</code>).</p>
+<p>If a font supports the <code translate="no">frac</code> feature, then it can be enabled in the shaper as in the following code:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;One divided by two is 1/2&quot;</span>
+     <span class="name">font</span>.family: <span class="string">&quot;MyFractionFont&quot;</span>
+     <span class="name">font</span>.features: { &quot;frac&quot;: <span class="number">1</span> }
+ }
+</pre>
+<p>Multiple features can be assigned values in the same mapping. For instance, if you would like to also disable kerning for the font, you can explicitly disable this as follows:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;One divided by two is 1/2&quot;</span>
+     <span class="name">font</span>.family: <span class="string">&quot;MyFractionFont&quot;</span>
+     <span class="name">font</span>.features: { &quot;frac&quot;: <span class="number">1</span>, &quot;kern&quot;: <span class="number">0</span> }
+ }
+</pre>
+<p>You can also collect the font properties in an object:</p>
+<pre class="qml" translate="no">
+ Text {
+     text: &quot;One divided by two is 1/2&quot;
+     font: {
+         family: &quot;MyFractionFont&quot;
+         features: { &quot;frac&quot;: 1, &quot;kern&quot;: 0 }
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>By default, Qt will enable and disable certain font features based on other font properties. In particular, the <code translate="no">kern</code> feature will be enabled/disabled depending on the <a href="qml-qtquick-textedit.html#font.kerning-prop" translate="no">font.kerning</a> property of the <a href="../qtgui/qfont.html" translate="no">QFont</a>. In addition, all ligature features (<code translate="no">liga</code>, <code translate="no">clig</code>, <code translate="no">dlig</code>, <code translate="no">hlig</code>) will be disabled if a <a href="qml-qtquick-textedit.html#font.letterSpacing-prop" translate="no">font.letterSpacing</a> is set, but only for writing systems where the use of ligature is cosmetic. For writing systems where ligatures are required, the features will remain in their default state. The values set using <code translate="no">font.features</code> will override the default behavior. If, for instance, <code translate="no">&quot;kern&quot;</code> is set to 1, then kerning will always be enabled, regardless of whether the <a href="qml-qtquick-textedit.html#font.kerning-prop" translate="no">font.kerning</a> property is set to false. Similarly, if it is set to <code translate="no">0</code>, it will always be disabled.</p>
+</div>
+<p>This property was introduced in Qt 6.6.</p>
+<p><b>See also </b><a href="../qtgui/qfont.html#setFeature" translate="no">QFont::setFeature</a>().</p>
+</div></div><!-- @@@font.features -->
+<br/>
+<!-- $$$font.hintingPreference -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.hintingPreference-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.hintingPreference</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the preferred hinting on the text. This is a hint to the underlying text rendering system to use a certain level of hinting, and has varying support across platforms. See the table in the documentation for <a href="../qtgui/qfont.html#HintingPreference-enum" translate="no">QFont::HintingPreference</a> for more details.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property only has an effect when used together with render type <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.NativeRendering.</p>
+</div>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Font.PreferDefaultHinting</code></td><td class="topAlign">Use the default hinting level for the target platform.</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.PreferNoHinting</code></td><td class="topAlign">If possible, render text without hinting the outlines of the glyphs. The text layout will be typographically accurate, using the same metrics as are used e.g. when printing.</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.PreferVerticalHinting</code></td><td class="topAlign">If possible, render text with no horizontal hinting, but align glyphs to the pixel grid in the vertical direction. The text will appear crisper on displays where the density is too low to give an accurate rendering of the glyphs. But since the horizontal metrics of the glyphs are unhinted, the text's layout will be scalable to higher density devices (such as printers) without impacting details such as line breaks.</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.PreferFullHinting</code></td><td class="topAlign">If possible, render text with hinting in both horizontal and vertical directions. The text will be altered to optimize legibility on the target device, but since the metrics will depend on the target size of the text, the positions of glyphs, line breaks, and other typographical detail will not scale, meaning that a text layout may look different on devices with different pixel densities.<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">text</span>: <span class="string">&quot;Hello&quot;</span>; <span class="name">renderType</span>: <span class="name">TextEdit</span>.<span class="name">NativeRendering</span>; <span class="name">font</span>.hintingPreference: <span class="name">Font</span>.<span class="name">PreferVerticalHinting</span> }
+</pre>
+</td></tr>
+</table></div>
+</div></div><!-- @@@font.hintingPreference -->
+<br/>
+<!-- $$$font.italic -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.italic-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.italic</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets whether the font has an italic style.</p>
+</div></div><!-- @@@font.italic -->
+<br/>
+<!-- $$$font.kerning -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.kerning-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.kerning</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Enables or disables the kerning OpenType feature when shaping the text. Disabling this may improve performance when creating or changing the text, at the expense of some cosmetic features. The default value is true.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">text</span>: <span class="string">&quot;OATS FLAVOUR WAY&quot;</span>; <span class="name">kerning</span>: <span class="name">font</span>.<span class="name">false</span> }
+</pre>
+</div></div><!-- @@@font.kerning -->
+<br/>
+<!-- $$$font.letterSpacing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.letterSpacing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.letterSpacing</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the letter spacing for the font.</p>
+<p>Letter spacing changes the default spacing between individual letters in the font. A positive value increases the letter spacing by the corresponding pixels; a negative value decreases the spacing.</p>
+</div></div><!-- @@@font.letterSpacing -->
+<br/>
+<!-- $$$font.pixelSize -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.pixelSize-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.pixelSize</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the font size in pixels.</p>
+<p>Using this function makes the font device dependent. Use <a href="qml-qtquick-textedit.html#font.pointSize-prop" translate="no">TextEdit::font.pointSize</a> to set the size of the font in a device independent manner.</p>
+</div></div><!-- @@@font.pixelSize -->
+<br/>
+<!-- $$$font.pointSize -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.pointSize-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.pointSize</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the font size in points. The point size must be greater than zero.</p>
+</div></div><!-- @@@font.pointSize -->
+<br/>
+<!-- $$$font.preferShaping -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.preferShaping-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.preferShaping</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sometimes, a font will apply complex rules to a set of characters in order to display them correctly. In some writing systems, such as Brahmic scripts, this is required in order for the text to be legible, but in e.g. Latin script, it is merely a cosmetic feature. Setting the <code translate="no">preferShaping</code> property to false will disable all such features when they are not required, which will improve performance in most cases.</p>
+<p>The default value is true.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">text</span>: <span class="string">&quot;Some text&quot;</span>; <span class="name">font</span>.preferShaping: <span class="number">false</span> }
+</pre>
+</div></div><!-- @@@font.preferShaping -->
+<br/>
+<!-- $$$font.preferTypoLineMetrics -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.preferTypoLineMetrics-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.preferTypoLineMetrics</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>competing sets of the vertical line metrics that provide the <a href="../qtgui/qfontmetricsf.html#ascent" translate="no">ascent</a>, <a href="../qtgui/qfontmetricsf.html#descent" translate="no">descent</a> and <a href="../qtgui/qfontmetricsf.html#leading" translate="no">leading</a> of the font. These are often referred to as the <a href="https://learn.microsoft.com/en-us/typography/opentype/spec/os2#uswinascent">win</a> (Windows) metrics and the <a href="https://learn.microsoft.com/en-us/typography/opentype/spec/os2#sta">typo</a> (typographical) metrics. While the specification recommends using the <code translate="no">typo</code> metrics for line spacing, many applications prefer the <code translate="no">win</code> metrics unless the <code translate="no">USE_TYPO_METRICS</code> flag is set in the <a href="https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection">fsSelection</a> field of the font. For backwards-compatibility reasons, this is also the case for Qt applications. This is not an issue for fonts that set the <code translate="no">USE_TYPO_METRICS</code> flag to indicate that the <code translate="no">typo</code> metrics are valid, nor for fonts where the <code translate="no">win</code> metrics and <code translate="no">typo</code> metrics match up. However, for certain fonts the <code translate="no">win</code> metrics may be larger than the preferable line spacing and the <code translate="no">USE_TYPO_METRICS</code> flag may be unset by mistake. For such fonts, setting <code translate="no">font.preferTypoLineMetrics</code> may give superior results.</p>
+<p>By default, <code translate="no">preferTypoLineMetrics</code> is <code translate="no">false</code>.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="../qtgui/qfont.html#StyleStrategy-enum" translate="no">QFont::StyleStrategy</a>.</p>
+</div></div><!-- @@@font.preferTypoLineMetrics -->
+<br/>
+<!-- $$$font.strikeout -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.strikeout-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.strikeout</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets whether the font has a strikeout style.</p>
+</div></div><!-- @@@font.strikeout -->
+<br/>
+<!-- $$$font.styleName -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.styleName-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.styleName</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the style name of the font.</p>
+<p>The style name is case insensitive. If set, the font will be matched against style name instead of the font properties <a href="qml-qtquick-textedit.html#font.weight-prop" translate="no">font.weight</a>, <a href="qml-qtquick-textedit.html#font.bold-prop" translate="no">font.bold</a> and <a href="qml-qtquick-textedit.html#font.italic-prop" translate="no">font.italic</a>.</p>
+</div></div><!-- @@@font.styleName -->
+<br/>
+<!-- $$$font.underline -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.underline-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.underline</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets whether the text is underlined.</p>
+</div></div><!-- @@@font.underline -->
+<br/>
+<!-- $$$font.variableAxes -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.variableAxes-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.variableAxes</span> : <span class="type">object</span> <code class="details extra" translate="no">[since 6.7]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Applies floating point values to variable axes in variable fonts.</p>
+<p>Variable fonts provide a way to store multiple variations (with different weights, widths or styles) in the same font file. The variations are given as floating point values for a pre-defined set of parameters, called &quot;variable axes&quot;. Specific instances are typically given names by the font designer, and, in Qt, these can be selected using setStyleName() just like traditional sub-families.</p>
+<p>In some cases, it is also useful to provide arbitrary values for the different axes. For instance, if a font has a Regular and Bold sub-family, you may want a weight in-between these. You could then manually request this by supplying a custom value for the &quot;wght&quot; axis in the font.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-text.html" translate="no">Text</a></span> {
+     <span class="name">text</span>: <span class="string">&quot;Foobar&quot;</span>
+     <span class="name">font</span>.family: <span class="string">&quot;MyVariableFont&quot;</span>
+     <span class="name">font</span>.variableAxes: { &quot;wght&quot;: (<span class="name">Font</span>.<span class="name">Normal</span> <span class="operator">+</span> <span class="name">Font</span>.<span class="name">Bold</span>) <span class="operator">/</span> <span class="number">2.0</span> }
+ }
+</pre>
+<p>If the &quot;wght&quot; axis is supported by the font and the given value is within its defined range, a font corresponding to the weight 550.0 will be provided.</p>
+<p>There are a few standard axes than many fonts provide, such as &quot;wght&quot; (weight), &quot;wdth&quot; (width), &quot;ital&quot; (italic) and &quot;opsz&quot; (optical size). They each have indivdual ranges defined in the font itself. For instance, &quot;wght&quot; may span from 100 to 900 (<a href="../qtgui/qfont.html#Weight-enum" translate="no">QFont::Thin</a> to <a href="../qtgui/qfont.html#Weight-enum" translate="no">QFont::Black</a>) whereas &quot;ital&quot; can span from 0 to 1 (from not italic to fully italic).</p>
+<p>A font may also choose to define custom axes; the only limitation is that the name has to meet the requirements for a <a href="../qtgui/qfont-tag.html" translate="no">QFont::Tag</a> (sequence of four latin-1 characters.)</p>
+<p>By default, no variable axes are set.</p>
+<div class="admonition note">
+<p><b>Note: </b>On Windows, variable axes are not supported if the optional GDI font backend is in use.</p>
+</div>
+<p>This property was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="../qtgui/qfont.html#setVariableAxis" translate="no">QFont::setVariableAxis</a>().</p>
+</div></div><!-- @@@font.variableAxes -->
+<br/>
+<!-- $$$font.weight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.weight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.weight</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The requested weight of the font. The weight requested must be an integer between 1 and 1000, or one of the predefined values:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Font.Thin</code></td><td class="topAlign">100</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.ExtraLight</code></td><td class="topAlign">200</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Light</code></td><td class="topAlign">300</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Normal</code></td><td class="topAlign">400 (default)</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Medium</code></td><td class="topAlign">500</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.DemiBold</code></td><td class="topAlign">600</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Bold</code></td><td class="topAlign">700</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.ExtraBold</code></td><td class="topAlign">800</td></tr>
+<tr><td class="topAlign"><code translate="no">Font.Black</code></td><td class="topAlign">900<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> { <span class="name">text</span>: <span class="string">&quot;Hello&quot;</span>; <span class="name">font</span>.weight: <span class="name">Font</span>.<span class="name">DemiBold</span> }
+</pre>
+</td></tr>
+</table></div>
+</div></div><!-- @@@font.weight -->
+<br/>
+<!-- $$$font.wordSpacing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font.wordSpacing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font.wordSpacing</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the word spacing for the font.</p>
+<p>Word spacing changes the default spacing between individual words. A positive value increases the word spacing by a corresponding amount of pixels, while a negative value decreases the inter-word spacing accordingly.</p>
+</div></div><!-- @@@font.wordSpacing -->
+<br/>
+<!-- $$$hoveredLink -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="hoveredLink-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">hoveredLink</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property contains the link string when the user hovers a link embedded in the text. The link must be in rich text or HTML format and the link string provides access to the particular link.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#linkHovered-signal" translate="no">linkHovered</a> and <a href="qml-qtquick-textedit.html#linkAt-method" translate="no">linkAt</a>().</p>
+</div></div><!-- @@@hoveredLink -->
+<br/>
+<!-- $$$inputMethodComposing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="inputMethodComposing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">inputMethodComposing</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> has partial text input from an input method.</p>
+<p>While it is composing an input method may rely on mouse or key events from the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> to edit or commit the partial text. This property can be used to determine when to disable events handlers that may interfere with the correct operation of an input method.</p>
+</div></div><!-- @@@inputMethodComposing -->
+<br/>
+<!-- $$$inputMethodHints -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="inputMethodHints-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">inputMethodHints</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Provides hints to the input method about the expected content of the text edit and how it should operate.</p>
+<p>The value is a bit-wise combination of flags or Qt.ImhNone if no hints are set.</p>
+<p>Flags that alter behaviour are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhHiddenText</code></td><td class="topAlign">Characters should be hidden, as is typically used when entering passwords.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhSensitiveData</code></td><td class="topAlign">Typed text should not be stored by the active input method in any persistent storage like predictive user dictionary.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhNoAutoUppercase</code></td><td class="topAlign">The input method should not try to automatically switch to upper case when a sentence ends.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhPreferNumbers</code></td><td class="topAlign">Numbers are preferred (but not required).</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhPreferUppercase</code></td><td class="topAlign">Upper case letters are preferred (but not required).</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhPreferLowercase</code></td><td class="topAlign">Lower case letters are preferred (but not required).</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhNoPredictiveText</code></td><td class="topAlign">Do not use predictive text (i.e. dictionary lookup) while typing.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhDate</code></td><td class="topAlign">The text editor functions as a date field.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhTime</code></td><td class="topAlign">The text editor functions as a time field.</td></tr>
+</table></div>
+<p>Flags that restrict input (exclusive flags) are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhDigitsOnly</code></td><td class="topAlign">Only digits are allowed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhFormattedNumbersOnly</code></td><td class="topAlign">Only number input is allowed. This includes decimal point and minus sign.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhUppercaseOnly</code></td><td class="topAlign">Only upper case letter input is allowed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhLowercaseOnly</code></td><td class="topAlign">Only lower case letter input is allowed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhDialableCharactersOnly</code></td><td class="topAlign">Only characters suitable for phone dialing are allowed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhEmailCharactersOnly</code></td><td class="topAlign">Only characters suitable for email addresses are allowed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhUrlCharactersOnly</code></td><td class="topAlign">Only characters suitable for URLs are allowed.</td></tr>
+</table></div>
+<p>Masks:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ImhExclusiveInputMask</code></td><td class="topAlign">This mask yields nonzero if any of the exclusive flags are used.</td></tr>
+</table></div>
+</div></div><!-- @@@inputMethodHints -->
+<br/>
+<!-- $$$length -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="length-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">length</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the total number of plain text characters in the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item.</p>
+<p>As this number doesn't include any formatting markup it may not be the same as the length of the string returned by the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property.</p>
+<p>This property can be faster than querying the length the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property as it doesn't require any copying or conversion of the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>'s internal string data.</p>
+</div></div><!-- @@@length -->
+<br/>
+<!-- $$$lineCount -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="lineCount-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">lineCount</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the total number of lines in the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item.</p>
+</div></div><!-- @@@lineCount -->
+<br/>
+<!-- $$$mouseSelectionMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="mouseSelectionMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">mouseSelectionMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies how text should be selected using a mouse.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.SelectCharacters</code></td><td class="topAlign">(default) The selection is updated with individual characters.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.SelectWords</code></td><td class="topAlign">The selection is updated with whole words.</td></tr>
+</table></div>
+<p>This property only applies when <a href="qml-qtquick-textedit.html#selectByMouse-prop" translate="no">selectByMouse</a> is true.</p>
+</div></div><!-- @@@mouseSelectionMode -->
+<br/>
+<!-- $$$overwriteMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="overwriteMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">overwriteMode</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Whether text entered by the user will overwrite existing text.</p>
+<p>As with many text editors, the text editor widget can be configured to insert or overwrite existing text with new text entered by the user.</p>
+<p>If this property is <code translate="no">true</code>, existing text is overwritten, character-for-character by new text; otherwise, text is inserted at the cursor position, displacing existing text.</p>
+<p>By default, this property is <code translate="no">false</code> (new text does not overwrite existing text).</p>
+</div></div><!-- @@@overwriteMode -->
+<br/>
+<!-- $$$persistentSelection -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="persistentSelection-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">persistentSelection</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Whether the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> should keep the selection visible when it loses active focus to another item in the scene. By default this is set to false.</p>
+</div></div><!-- @@@persistentSelection -->
+<br/>
+<!-- $$$preeditText -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="preeditText-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">preeditText</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property contains partial text input from an input method.</p>
+<p>To turn off partial text that results from predictions, set the <code translate="no">Qt.ImhNoPredictiveText</code> flag in <a href="qml-qtquick-textedit.html#inputMethodHints-prop" translate="no">inputMethodHints</a>.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#inputMethodHints-prop" translate="no">inputMethodHints</a>.</p>
+</div></div><!-- @@@preeditText -->
+<br/>
+<!-- $$$readOnly -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="readOnly-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">readOnly</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Whether the user can interact with the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item. If this property is set to true the text cannot be edited by user interaction.</p>
+<p>By default this property is false.</p>
+</div></div><!-- @@@readOnly -->
+<br/>
+<!-- $$$renderType -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="renderType-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">renderType</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Override the default rendering type for this component.</p>
+<p>Supported render types are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.QtRendering</code></td><td class="topAlign">Text is rendered using a scalable distance field for each glyph.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.NativeRendering</code></td><td class="topAlign">Text is rendered using a platform-specific technique.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.CurveRendering</code></td><td class="topAlign">Text is rendered using a curve rasterizer running directly on the graphics hardware. (Introduced in Qt 6.7.0.)</td></tr>
+</table></div>
+<p>Select <code translate="no">TextEdit.NativeRendering</code> if you prefer text to look native on the target platform and do not require advanced features such as transformation of the text. Using such features in combination with the NativeRendering render type will lend poor and sometimes pixelated results.</p>
+<p>Both <code translate="no">TextEdit.QtRendering</code> and <code translate="no">TextEdit.CurveRendering</code> are hardware-accelerated techniques. <code translate="no">QtRendering</code> is the faster of the two, but uses more memory and will exhibit rendering artifacts at large sizes. <code translate="no">CurveRendering</code> should be considered as an alternative in cases where <code translate="no">QtRendering</code> does not give good visual results or where reducing graphics memory consumption is a priority.</p>
+<p>The default rendering type is determined by <a href="qquickwindow.html#textRenderType" translate="no">QQuickWindow::textRenderType</a>().</p>
+</div></div><!-- @@@renderType -->
+<br/>
+<!-- $$$selectByKeyboard -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectByKeyboard-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectByKeyboard</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Defaults to true when the editor is editable, and false when read-only.</p>
+<p>If true, the user can use the keyboard to select text even if the editor is read-only. If false, the user cannot use the keyboard to select text even if the editor is editable.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#readOnly-prop" translate="no">readOnly</a>.</p>
+</div></div><!-- @@@selectByKeyboard -->
+<br/>
+<!-- $$$selectByMouse -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectByMouse-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectByMouse</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Defaults to <code translate="no">true</code> since Qt 6.4.</p>
+<p>If <code translate="no">true</code>, the user can use the mouse to select text in the usual way.</p>
+<div class="admonition note">
+<p><b>Note: </b>In versions prior to 6.4, the default was <code translate="no">false</code>; but if you enabled this property, you could also select text on a touchscreen by dragging your finger across it. This interfered with flicking when <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> was used inside a Flickable. However, Qt has supported text selection handles on mobile platforms, and on embedded platforms using Qt Virtual Keyboard, since version 5.7, via <a href="../qtgui/qinputmethod.html" translate="no">QInputMethod</a>. Most users would be surprised if finger dragging selected text rather than flicking the parent Flickable. Therefore, selectByMouse now really means what it says: if <code translate="no">true</code>, you can select text by dragging <i>only</i> with a mouse, whereas the platform is expected to provide selection handles on touchscreens. If this change does not suit your application, you can set <code translate="no">selectByMouse</code> to <code translate="no">false</code>, or import an older API version (for example <code translate="no">import QtQuick 6.3</code>) to revert to the previous behavior. The option to revert behavior by changing the import version will be removed in a later version of Qt.</p>
+</div>
+</div></div><!-- @@@selectByMouse -->
+<br/>
+<!-- $$$selectedText -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectedText-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectedText</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This read-only property provides the text currently selected in the text edit.</p>
+<p>It is equivalent to the following snippet, but is faster and easier to use.</p>
+<pre class="cpp" translate="no">
+ <span class="comment">//myTextEdit is the id of the TextEdit</span>
+ myTextEdit<span class="operator">.</span>text<span class="operator">.</span>toString()<span class="operator">.</span>substring(myTextEdit<span class="operator">.</span>selectionStart<span class="operator">,</span>
+         myTextEdit<span class="operator">.</span>selectionEnd);
+</pre>
+</div></div><!-- @@@selectedText -->
+<br/>
+<!-- $$$selectedTextColor -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectedTextColor-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectedTextColor</span> : <span class="type"><a href="qml-color.html" translate="no">color</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The selected text color, used in selections.</p>
+</div></div><!-- @@@selectedTextColor -->
+<br/>
+<!-- $$$selectionColor -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectionColor-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectionColor</span> : <span class="type"><a href="qml-color.html" translate="no">color</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The text highlight color, used behind selections.</p>
+</div></div><!-- @@@selectionColor -->
+<br/>
+<!-- $$$selectionEnd -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectionEnd-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectionEnd</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The cursor position after the last character in the current selection.</p>
+<p>This property is read-only. To change the selection, use select(start,end), <a href="qml-qtquick-textedit.html#selectAll-method" translate="no">selectAll</a>(), or <a href="qml-qtquick-textedit.html#selectWord-method" translate="no">selectWord</a>().</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a>, <a href="qml-qtquick-textedit.html#cursorPosition-prop" translate="no">cursorPosition</a>, and <a href="qml-qtquick-textedit.html#selectedText-prop" translate="no">selectedText</a>.</p>
+</div></div><!-- @@@selectionEnd -->
+<br/>
+<!-- $$$selectionStart -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectionStart-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">selectionStart</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The cursor position before the first character in the current selection.</p>
+<p>This property is read-only. To change the selection, use select(start,end), <a href="qml-qtquick-textedit.html#selectAll-method" translate="no">selectAll</a>(), or <a href="qml-qtquick-textedit.html#selectWord-method" translate="no">selectWord</a>().</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a>, <a href="qml-qtquick-textedit.html#cursorPosition-prop" translate="no">cursorPosition</a>, and <a href="qml-qtquick-textedit.html#selectedText-prop" translate="no">selectedText</a>.</p>
+</div></div><!-- @@@selectionStart -->
+<br/>
+<!-- $$$tabStopDistance -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="tabStopDistance-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">tabStopDistance</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The default distance, in device units, between tab stops.</p>
+<p><b>See also </b><a href="../qtgui/qtextoption.html#setTabStopDistance" translate="no">QTextOption::setTabStopDistance</a>().</p>
+</div></div><!-- @@@tabStopDistance -->
+<br/>
+<!-- $$$text -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="text-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">text</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The text to display. If the text format is AutoText the text edit will automatically determine whether the text should be treated as rich text. This determination is made using <a href="../qtgui/qt-sub-qtgui.html#mightBeRichText" translate="no">Qt::mightBeRichText</a>(). However, detection of Markdown is not automatic.</p>
+<p>The text-property is mostly suitable for setting the initial content and handling modifications to relatively small text content. The <a href="qml-qtquick-textedit.html#append-method" translate="no">append</a>(), <a href="qml-qtquick-textedit.html#insert-method" translate="no">insert</a>() and <a href="qml-qtquick-textedit.html#remove-method" translate="no">remove</a>() methods provide more fine-grained control and remarkably better performance for modifying especially large rich text content.</p>
+<p>Note that some keyboards use a predictive function. In this case, the text being composed by the input method is not part of this property. The part of the text related to the predictions is underlined and stored in the <a href="qml-qtquick-textedit.html#preeditText-prop" translate="no">preeditText</a> property.</p>
+<p>If you used <a href="qml-qtquick-textdocument.html#source-prop" translate="no">TextDocument::source</a> to load text, you can retrieve the loaded text from this property. In that case, you can then change <a href="qml-qtquick-textedit.html#textFormat-prop" translate="no">textFormat</a> to do format conversions that will change the value of the <code translate="no">text</code> property. For example, if <code translate="no">textFormat</code> is <code translate="no">RichText</code> or <code translate="no">AutoText</code> and you load an HTML file, then set <code translate="no">textFormat</code> to <code translate="no">MarkdownText</code> afterwards, the <code translate="no">text</code> property will contain the conversion from HTML to Markdown.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#clear-method" translate="no">clear</a>(), <a href="qml-qtquick-textedit.html#preeditText-prop" translate="no">preeditText</a>, and <a href="qml-qtquick-textedit.html#textFormat-prop" translate="no">textFormat</a>.</p>
+</div></div><!-- @@@text -->
+<br/>
+<!-- $$$textDocument -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="textDocument-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">textDocument</span> : <span class="type"><a href="qml-qtquick-textdocument.html" translate="no">TextDocument</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the <a href="qquicktextdocument.html" translate="no">QQuickTextDocument</a> of this <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>. Since Qt 6.7, it has features for loading and saving files. It can also be used in C++ as a means of accessing the underlying <a href="../qtgui/qtextdocument.html" translate="no">QTextDocument</a> instance, for example to install a <a href="../qtgui/qsyntaxhighlighter.html" translate="no">QSyntaxHighlighter</a>.</p>
+<p><b>See also </b><a href="qquicktextdocument.html" translate="no">QQuickTextDocument</a>.</p>
+</div></div><!-- @@@textDocument -->
+<br/>
+<!-- $$$textFormat -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="textFormat-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">textFormat</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The way the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property should be displayed.</p>
+<p>Supported text formats are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.PlainText</code></td><td class="topAlign">(default) all styling tags are treated as plain text</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.AutoText</code></td><td class="topAlign">detected via the <a href="../qtgui/qt-sub-qtgui.html#mightBeRichText" translate="no">Qt::mightBeRichText</a>() heuristic or the file format of <a href="qml-qtquick-textdocument.html#source-prop" translate="no">TextDocument::source</a></td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.RichText</code></td><td class="topAlign"><a href="../qtgui/richtext-html-subset.html">a subset of HTML 4</a></td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.MarkdownText</code></td><td class="topAlign"><a href="https://commonmark.org/help/">CommonMark</a> plus the <a href="https://guides.github.com/features/mastering-markdown/">GitHub</a> extensions for tables and task lists (since 5.14)</td></tr>
+</table></div>
+<p>The default is <code translate="no">TextEdit.PlainText</code>. If the text format is set to <code translate="no">TextEdit.AutoText</code>, the text edit will automatically determine whether the text should be treated as rich text. If the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property is set, this determination is made using <a href="../qtgui/qt-sub-qtgui.html#mightBeRichText" translate="no">Qt::mightBeRichText</a>(), which can detect the presence of an HTML tag on the first line of text, but cannot distinguish Markdown from plain text. If the <a href="qml-qtquick-textdocument.html#source-prop" translate="no">TextDocument::source</a> property is set, this determination is made from the <a href="../qtcore/qmimedatabase.html#mimeTypeForFile" translate="no">mime type of the file</a>.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-column.html" translate="no">Column</a></span> {
+     <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+         <span class="name">font</span>.pointSize: <span class="number">24</span>
+         <span class="name">textFormat</span>: <span class="name">TextEdit</span>.<span class="name">AutoText</span>
+         <span class="name">text</span>: <span class="string">&quot;&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World!&lt;/i&gt;&quot;</span>
+     }
+     <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+         <span class="name">font</span>.pointSize: <span class="number">24</span>
+         <span class="name">textFormat</span>: <span class="name">TextEdit</span>.<span class="name">RichText</span>
+         <span class="name">text</span>: <span class="string">&quot;&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World!&lt;/i&gt;&quot;</span>
+     }
+     <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+         <span class="name">font</span>.pointSize: <span class="number">24</span>
+         <span class="name">textFormat</span>: <span class="name">TextEdit</span>.<span class="name">PlainText</span>
+         <span class="name">text</span>: <span class="string">&quot;&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;World!&lt;/i&gt;&quot;</span>
+     }
+     <span class="type"><a href="qml-qtquick-textedit.html" translate="no">TextEdit</a></span> {
+         <span class="name">font</span>.pointSize: <span class="number">24</span>
+         <span class="name">textFormat</span>: <span class="name">TextEdit</span>.<span class="name">MarkdownText</span>
+         <span class="name">text</span>: <span class="string">&quot;**Hello** *World!*&quot;</span>
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/declarative-textformat.png" alt="" /></p></td></tr>
+</table></div>
+<p>With <code translate="no">TextEdit.MarkdownText</code>, checkboxes that result from using the <a href="https://guides.github.com/features/mastering-markdown/#GitHub-flavored-markdown">GitHub checkbox extension</a> are interactively checkable.</p>
+<p>If the <a href="qml-qtquick-textdocument.html#source-prop" translate="no">TextDocument::source</a> property is set, changing the <code translate="no">textFormat</code> property after loading has the effect of converting from the detected format to the requested format. For example, you can convert between HTML and Markdown. However if either of those &quot;rich&quot; formats is loaded and then you set <code translate="no">textFormat</code> to <code translate="no">PlainText</code>, the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> will show the raw markup. Thus, suitable bindings (e.g. to a checkable Control) can enable the user to toggle back and forth between &quot;raw&quot; and WYSIWYG editing.</p>
+<div class="admonition note">
+<p><b>Note: </b>Interactively typing markup or markdown formatting in WYSIWYG mode is not supported; but you can switch to <code translate="no">PlainText</code>, make changes, then switch back to the appropriate <code translate="no">textFormat</code>.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>With <code translate="no">Text.MarkdownText</code>, and with the supported subset of HTML, some decorative elements are not rendered as they would be in a web browser:</p>
+</div>
+<ul>
+<li>code blocks use the <a href="../qtgui/qfontdatabase.html#SystemFont-enum" translate="no">default monospace font</a> but without a surrounding highlight box</li>
+<li>block quotes are indented, but there is no vertical line alongside the quote</li>
+</ul>
+</div></div><!-- @@@textFormat -->
+<br/>
+<!-- $$$textMargin -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="textMargin-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">textMargin</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The margin, in pixels, around the text in the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.</p>
+</div></div><!-- @@@textMargin -->
+<br/>
+<!-- $$$wrapMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="wrapMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">wrapMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Set this property to wrap the text to the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> item's width. The text will only wrap if an explicit width has been set.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.NoWrap</code></td><td class="topAlign">(default) no wrapping will be performed. If the text contains insufficient newlines, <a href="qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a> will exceed a set width.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.WordWrap</code></td><td class="topAlign">wrapping is done on word boundaries only. If a word is too long, <a href="qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a> will exceed a set width.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.WrapAnywhere</code></td><td class="topAlign">wrapping is done at any point on a line, even if it occurs in the middle of a word.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.Wrap</code></td><td class="topAlign">if possible, wrapping occurs at a word boundary; otherwise it will occur at the appropriate point on the line, even in the middle of a word.</td></tr>
+</table></div>
+<p>The default is <code translate="no">TextEdit.NoWrap</code>. If you set a width, consider using <code translate="no">TextEdit.Wrap</code>.</p>
+</div></div><!-- @@@wrapMode -->
+<br/>
+<h2>Signal Documentation</h2>
+<!-- $$$editingFinished[overload1]$$$editingFinished -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="editingFinished-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">editingFinished</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when the text edit loses focus.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onEditingFinished</code>.</p>
+</div></div></div><!-- @@@editingFinished -->
+<br/>
+<!-- $$$linkActivated[overload1]$$$linkActivatedstring -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="linkActivated-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">linkActivated</span>(<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <i>link</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when the user clicks on a link embedded in the text. The link must be in rich text or HTML format and the <i translate="no">link</i> string provides access to the particular link.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onLinkActivated</code>.</p>
+</div></div></div><!-- @@@linkActivated -->
+<br/>
+<!-- $$$linkHovered[overload1]$$$linkHoveredstring -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="linkHovered-signal">
+<td class="tblQmlFuncNode"><p>
+<span class="name">linkHovered</span>(<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <i>link</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when the user hovers a link embedded in the text. The link must be in rich text or HTML format and the <i translate="no">link</i> string provides access to the particular link.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onLinkHovered</code>.</p>
+</div><p><b>See also </b><a href="qml-qtquick-textedit.html#hoveredLink-prop" translate="no">hoveredLink</a> and <a href="qml-qtquick-textedit.html#linkAt-method" translate="no">linkAt</a>().</p>
+</div></div><!-- @@@linkHovered -->
+<br/>
+<!-- $$$textEdited[overload1]$$$textEdited -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="textEdited-signal">
+<td class="tblQmlFuncNode"><p>
+<code class="details extra" translate="no">[since 6.9]</code> <span class="name">textEdited</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted whenever the text is edited. Unlike <a href="qml-qtquick-textedit.html#text-prop" translate="no">textChanged()</a>, this signal is not emitted when the text is changed programmatically, for example, by changing the value of the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property or by calling <a href="qml-qtquick-textedit.html#clear-method" translate="no">clear</a>().</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onTextEdited</code>.</p>
+</div><p>This signal was introduced in Qt 6.9.</p>
+</div></div><!-- @@@textEdited -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$append[overload1]$$$appendstring -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="append-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type">void</span> <span class="name">append</span>(<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <i>text</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Appends a new paragraph with <i translate="no">text</i> to the end of the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.</p>
+<p>In order to append without inserting a new paragraph, call <code translate="no">myTextEdit.insert(myTextEdit.length, text)</code> instead.</p>
+</div></div><!-- @@@append -->
+<br/>
+<!-- $$$clear[overload1]$$$clear -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="clear-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">clear</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Clears the contents of the text edit and resets partial text input from an input method.</p>
+<p>Use this method instead of setting the <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a> property to an empty string.</p>
+<p><b>See also </b><a href="../qtgui/qinputmethod.html#reset" translate="no">QInputMethod::reset</a>().</p>
+</div></div><!-- @@@clear -->
+<br/>
+<!-- $$$copy[overload1]$$$copy -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="copy-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">copy</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Copies the currently selected text to the system clipboard.</p>
+</div></div><!-- @@@copy -->
+<br/>
+<!-- $$$cut[overload1]$$$cut -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cut-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">cut</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Moves the currently selected text to the system clipboard.</p>
+</div></div><!-- @@@cut -->
+<br/>
+<!-- $$$deselect[overload1]$$$deselect -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="deselect-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">deselect</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Removes active text selection.</p>
+</div></div><!-- @@@deselect -->
+<br/>
+<!-- $$$getFormattedText[overload1]$$$getFormattedTextintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="getFormattedText-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">getFormattedText</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>start</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>end</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the section of text that is between the <i translate="no">start</i> and <i translate="no">end</i> positions.</p>
+<p>The returned text will be formatted according the <a href="qml-qtquick-textedit.html#textFormat-prop" translate="no">textFormat</a> property.</p>
+</div></div><!-- @@@getFormattedText -->
+<br/>
+<!-- $$$getText[overload1]$$$getTextintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="getText-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">getText</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>start</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>end</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the section of text that is between the <i translate="no">start</i> and <i translate="no">end</i> positions.</p>
+<p>The returned text does not include any rich text formatting.</p>
+</div></div><!-- @@@getText -->
+<br/>
+<!-- $$$insert[overload1]$$$insertintstring -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="insert-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">insert</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>position</i>, <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <i>text</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Inserts <i translate="no">text</i> into the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a> at <i translate="no">position</i>.</p>
+</div></div><!-- @@@insert -->
+<br/>
+<!-- $$$isRightToLeft[overload1]$$$isRightToLeftintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="isRightToLeft-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">isRightToLeft</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>start</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>end</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns true if the natural reading direction of the editor text found between positions <i translate="no">start</i> and <i translate="no">end</i> is right to left.</p>
+</div></div><!-- @@@isRightToLeft -->
+<br/>
+<!-- $$$linkAt[overload1]$$$linkAtrealreal -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="linkAt-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">linkAt</span>(<span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <i>x</i>, <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <i>y</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the link string at point <i translate="no">x</i>, <i translate="no">y</i> in content coordinates, or an empty string if no link exists at that point.</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#hoveredLink-prop" translate="no">hoveredLink</a>.</p>
+</div></div><!-- @@@linkAt -->
+<br/>
+<!-- $$$moveCursorSelection[overload1]$$$moveCursorSelectionintSelectionMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="moveCursorSelection-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">moveCursorSelection</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>position</i>, <span class="type">SelectionMode</span> <i>mode</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Moves the cursor to <i translate="no">position</i> and updates the selection according to the optional <i translate="no">mode</i> parameter. (To only move the cursor, set the <a href="qml-qtquick-textedit.html#cursorPosition-prop" translate="no">cursorPosition</a> property.)</p>
+<p>When this method is called it additionally sets either the <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> or the <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a> (whichever was at the previous cursor position) to the specified position. This allows you to easily extend and contract the selected text range.</p>
+<p>The selection mode specifies whether the selection is updated on a per character or a per word basis. If not specified the selection mode will default to <code translate="no">TextEdit.SelectCharacters</code>.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.SelectCharacters</code></td><td class="topAlign">Sets either the <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> or <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a> (whichever was at the previous cursor position) to the specified position.</td></tr>
+<tr><td class="topAlign"><code translate="no">TextEdit.SelectWords</code></td><td class="topAlign">Sets the <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> and <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a> to include all words between the specified position and the previous cursor position. Words partially in the range are included.</td></tr>
+</table></div>
+<p>For example, take this sequence of calls:</p>
+<pre class="cpp" translate="no">
+ cursorPosition <span class="operator">=</span> <span class="number">5</span>
+ moveCursorSelection(<span class="number">9</span><span class="operator">,</span> TextEdit<span class="operator">.</span>SelectCharacters)
+ moveCursorSelection(<span class="number">7</span><span class="operator">,</span> TextEdit<span class="operator">.</span>SelectCharacters)
+</pre>
+<p>This moves the cursor to position 5, extend the selection end from 5 to 9 and then retract the selection end from 9 to 7, leaving the text from position 5 to 7 selected (the 6th and 7th characters).</p>
+<p>The same sequence with <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.SelectWords will extend the selection start to a word boundary before or on position 5 and extend the selection end to a word boundary on or past position 9.</p>
+</div></div><!-- @@@moveCursorSelection -->
+<br/>
+<!-- $$$paste[overload1]$$$paste -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="paste-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">paste</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Replaces the currently selected text by the contents of the system clipboard.</p>
+</div></div><!-- @@@paste -->
+<br/>
+<!-- $$$positionAt[overload1]$$$positionAtintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="positionAt-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">positionAt</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>x</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>y</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the text position closest to pixel position (<i translate="no">x</i>, <i translate="no">y</i>).</p>
+<p>Position 0 is before the first character, position 1 is after the first character but before the second, and so on until position <a href="qml-qtquick-textedit.html#text-prop" translate="no">text</a>.length, which is after all characters.</p>
+</div></div><!-- @@@positionAt -->
+<br/>
+<!-- $$$positionToRectangle[overload1]$$$positionToRectangle -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="positionToRectangle-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type">rectangle</span> <span class="name">positionToRectangle</span>(<i>position</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the rectangle at the given <i translate="no">position</i> in the text. The x, y, and height properties correspond to the cursor that would describe that position.</p>
+</div></div><!-- @@@positionToRectangle -->
+<br/>
+<!-- $$$redo[overload1]$$$redo -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="redo-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">redo</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Redoes the last operation if redo is <a href="qml-qtquick-textedit.html#canRedo-prop" translate="no">available</a>.</p>
+</div></div><!-- @@@redo -->
+<br/>
+<!-- $$$remove[overload1]$$$removeintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="remove-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">remove</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>start</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>end</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Removes the section of text that is between the <i translate="no">start</i> and <i translate="no">end</i> positions from the <a href="qml-qtquick-textedit.html" translate="no">TextEdit</a>.</p>
+</div></div><!-- @@@remove -->
+<br/>
+<!-- $$$select[overload1]$$$selectintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="select-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">select</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>start</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>end</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Causes the text from <i translate="no">start</i> to <i translate="no">end</i> to be selected.</p>
+<p>If either start or end is out of range, the selection is not changed.</p>
+<p>After calling this, <a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> will become the lesser and <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a> will become the greater (regardless of the order passed to this method).</p>
+<p><b>See also </b><a href="qml-qtquick-textedit.html#selectionStart-prop" translate="no">selectionStart</a> and <a href="qml-qtquick-textedit.html#selectionEnd-prop" translate="no">selectionEnd</a>.</p>
+</div></div><!-- @@@select -->
+<br/>
+<!-- $$$selectAll[overload1]$$$selectAll -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectAll-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">selectAll</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Causes all text to be selected.</p>
+</div></div><!-- @@@selectAll -->
+<br/>
+<!-- $$$selectWord[overload1]$$$selectWord -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="selectWord-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">selectWord</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Causes the word closest to the current cursor position to be selected.</p>
+</div></div><!-- @@@selectWord -->
+<br/>
+<!-- $$$undo[overload1]$$$undo -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="undo-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">undo</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Undoes the last operation if undo is <a href="qml-qtquick-textedit.html#canUndo-prop" translate="no">available</a>. Deselects any current selection, and updates the selection start to the current cursor position.</p>
+</div></div><!-- @@@undo -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

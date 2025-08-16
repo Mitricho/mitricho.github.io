@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qabstracttextdocumentlayout.cpp -->
+  <meta name="description" content="The QAbstractTextDocumentLayout::PaintContext class is a convenience class defining the parameters used when painting a document's layout.">
+  <title>QAbstractTextDocumentLayout::PaintContext Struct | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>PaintContext</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-variables">Public Variables</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QAbstractTextDocumentLayout::PaintContext Struct</h1>
+<span class="small-subtitle" translate="no">struct <a href="qabstracttextdocumentlayout.html" translate="no">QAbstractTextDocumentLayout</a>::PaintContext</span>
+<!-- $$$PaintContext-brief -->
+<p>The <a href="qabstracttextdocumentlayout-paintcontext.html" translate="no">QAbstractTextDocumentLayout::PaintContext</a> class is a convenience class defining the parameters used when painting a document's layout. <a href="#details">More...</a></p>
+<!-- @@@PaintContext -->
+<ul>
+<li><a href="qabstracttextdocumentlayout-paintcontext-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-variables">Public Variables</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QRectF </td><td class="memItemRight bottomAlign"><b><a href="qabstracttextdocumentlayout-paintcontext.html#clip-var" translate="no">clip</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qabstracttextdocumentlayout-paintcontext.html#cursorPosition-var" translate="no">cursorPosition</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPalette </td><td class="memItemRight bottomAlign"><b><a href="qabstracttextdocumentlayout-paintcontext.html#palette-var" translate="no">palette</a></b></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QAbstractTextDocumentLayout::Selection&gt; </td><td class="memItemRight bottomAlign"><b><a href="qabstracttextdocumentlayout-paintcontext.html#selections-var" translate="no">selections</a></b></td></tr>
+</table></div>
+<!-- $$$PaintContext-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A paint context is used when rendering custom layouts for QTextDocuments with the <a href="qabstracttextdocumentlayout.html#draw" translate="no">QAbstractTextDocumentLayout::draw</a>() function. It is specified by a <a href="qabstracttextdocumentlayout-paintcontext.html#cursorPosition-var" translate="no">cursor position</a>, <a href="qabstracttextdocumentlayout-paintcontext.html#palette-var" translate="no">default text color</a>, <a href="qabstracttextdocumentlayout-paintcontext.html#clip-var" translate="no">clip</a> rectangle and a collection of <a href="qabstracttextdocumentlayout-paintcontext.html#selections-var" translate="no">selections</a>.</p>
+</div>
+<p><b>See also </b><a href="qabstracttextdocumentlayout.html" translate="no">QAbstractTextDocumentLayout</a>.</p>
+<!-- @@@PaintContext -->
+<div class="vars">
+<h2>Member Variable Documentation</h2>
+<!-- $$$clip -->
+<h3 class="fn" translate="no" id="clip-var"><span class="type"><a href="../qtcore/qrectf.html" translate="no">QRectF</a></span> PaintContext::<span class="name">clip</span></h3>
+<p>This variable holds a hint to the layout specifying the area around paragraphs, frames or text require painting.</p>
+<p>Everything outside of this rectangle does not need to be painted.</p>
+<p>Specifying a clip rectangle can speed up drawing of large documents significantly. Note that the clip rectangle is in document coordinates (not in viewport coordinates). It is not a substitute for a clip region set on the painter but merely a hint.</p>
+<p>The default value is a null rectangle indicating everything needs to be painted.</p>
+<!-- @@@clip -->
+<!-- $$$cursorPosition -->
+<h3 class="fn" translate="no" id="cursorPosition-var"><span class="type">int</span> PaintContext::<span class="name">cursorPosition</span></h3>
+<p>This variable holds the position within the document, where the cursor line should be drawn.</p>
+<p>The default value is -1.</p>
+<!-- @@@cursorPosition -->
+<!-- $$$palette -->
+<h3 class="fn" translate="no" id="palette-var"><span class="type"><a href="qpalette.html" translate="no">QPalette</a></span> PaintContext::<span class="name">palette</span></h3>
+<p>This variable holds the default color that is used for the text, when no color is specified.</p>
+<p>The default value is the application's default palette.</p>
+<!-- @@@palette -->
+<!-- $$$selections -->
+<h3 class="fn" translate="no" id="selections-var"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qabstracttextdocumentlayout-selection.html" translate="no">QAbstractTextDocumentLayout::Selection</a></span>&gt; PaintContext::<span class="name">selections</span></h3>
+<p>This variable holds the collection of selections that will be rendered when passing this paint context to <a href="qabstracttextdocumentlayout.html" translate="no">QAbstractTextDocumentLayout</a>'s <a href="qabstracttextdocumentlayout.html#draw" translate="no">draw</a>() function.</p>
+<p>The default value is an empty list indicating no selection.</p>
+<!-- @@@selections -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

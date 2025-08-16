@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- morphing.qdoc -->
+  <meta name="description" content="Demonstrates how to control morphing animations in Qt Quick 3D.">
+  <title>Qt Quick 3D - Morphing Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Morphing Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#creating-a-mesh">Creating a mesh</a></li>
+<li class="level1"><a href="#controlling-the-morph-targets">Controlling the morph targets</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Morphing Example</h1>
+<!-- $$$morphing-brief -->
+<p>Demonstrates how to control morphing animations in Qt Quick 3D.</p>
+<!-- @@@morphing -->
+<!-- $$$morphing-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/morphing.png" alt="" /></p><p>This example shows how to control morphing animation on a model that has been imported from an external tool.</p>
+<h4 id="creating-a-mesh">Creating a mesh</h4>
+<p>The mesh for the model was created using the Blender 3D modeling tool. In addition to the base shape, the mesh contains three morph targets (called <i>shape keys</i> in Blender).</p>
+<p class="centerAlign"><img src="images/blender.jpg" alt="" /></p><p>It was exported from Blender as a glTF file, and imported using <a href="qtquick3d-tool-balsam.html">balsam</a>.</p>
+<h4 id="controlling-the-morph-targets">Controlling the morph targets</h4>
+<p>Normally, morphing is controlled by a timeline animation or a property animation. In this example, we use sliders instead, to make it possible to experiment freely with combining different weights:</p>
+<pre class="qml" translate="no">
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-label.html" translate="no">Label</a></span> { <span class="name">text</span>: <span class="string">&quot;Mouth:&quot;</span>; }
+             <span class="type">RealSlider</span> {
+                 <span class="name">id</span>: <span class="name">mouthSlider</span>
+                 <span class="name">from</span>: <span class="number">0.0</span>
+                 <span class="name">to</span>: <span class="number">1.0</span>
+             }
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-label.html" translate="no">Label</a></span> { <span class="name">text</span>: <span class="string">&quot;Ears and eyebrows:&quot;</span> }
+             <span class="type">RealSlider</span> {
+                 <span class="name">id</span>: <span class="name">earSlider</span>
+                 <span class="name">from</span>: <span class="number">0.0</span>
+                 <span class="name">to</span>: <span class="number">1.0</span>
+             }
+             <span class="type"><a href="../qtquickcontrols/qml-qtquick-controls-label.html" translate="no">Label</a></span> { <span class="name">text</span>: <span class="string">&quot;Cubify:&quot;</span> }
+             <span class="type">RealSlider</span> {
+                 <span class="name">id</span>: <span class="name">cubeSlider</span>
+                 <span class="name">from</span>: <span class="number">0.0</span>
+                 <span class="name">to</span>: <span class="number">1.0</span>
+             }
+</pre>
+<p>(<code translate="no">RealSlider</code> is a simple slider that provides a floating point value. It is borrowed from the effects example.)</p>
+<p>We define a <a href="qml-qtquick3d-morphtarget.html" translate="no">MorphTarget</a> for each of the the targets in the mesh. Morph targets are the objects we bind to to control the morphing. Typically, they will be animated, but in this example we bind to the slider values:</p>
+<pre class="qml" translate="no">
+         <span class="type"><a href="qml-qtquick3d-morphtarget.html" translate="no">MorphTarget</a></span> {
+             <span class="name">id</span>: <span class="name">morphtarget0</span>
+             <span class="name">weight</span>: <span class="name">mouthSlider</span>.<span class="name">value</span>
+             <span class="name">attributes</span>: <span class="name">MorphTarget</span>.<span class="name">Position</span> <span class="operator">|</span> <span class="name">MorphTarget</span>.<span class="name">Normal</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-morphtarget.html" translate="no">MorphTarget</a></span> {
+             <span class="name">id</span>: <span class="name">morphtarget1</span>
+             <span class="name">weight</span>: <span class="name">earSlider</span>.<span class="name">value</span>
+             <span class="name">attributes</span>: <span class="name">MorphTarget</span>.<span class="name">Position</span> <span class="operator">|</span> <span class="name">MorphTarget</span>.<span class="name">Normal</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-morphtarget.html" translate="no">MorphTarget</a></span> {
+             <span class="name">id</span>: <span class="name">morphtarget2</span>
+             <span class="name">weight</span>: <span class="name">cubeSlider</span>.<span class="name">value</span>
+             <span class="name">attributes</span>: <span class="name">MorphTarget</span>.<span class="name">Position</span> <span class="operator">|</span> <span class="name">MorphTarget</span>.<span class="name">Normal</span>
+         }
+</pre>
+<p>Finally we create a model and bind the morph targets to the targets in the mesh:</p>
+<pre class="qml" translate="no">
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;suzanne.mesh&quot;</span>
+             <span class="name">morphTargets</span>: [
+                 <span class="name">morphtarget0</span>,
+                 <span class="name">morphtarget1</span>,
+                 <span class="name">morphtarget2</span>
+             ]
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;#41cd52&quot;</span>
+                 <span class="name">roughness</span>: <span class="number">0.1</span>
+             }
+             SequentialAnimation on <span class="name">eulerRotation</span>.y {
+                 <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">from</span>: -<span class="number">45</span>; <span class="name">to</span>: <span class="number">45</span>; <span class="name">duration</span>: <span class="number">10000</span> }
+                 <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> { <span class="name">from</span>: <span class="number">45</span>; <span class="name">to</span>: -<span class="number">45</span>; <span class="name">duration</span>: <span class="number">10000</span> }
+                 <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+             }
+         }
+</pre>
+<p>Note that the targets are matched by their position in the list: the names are not significant.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/morphing?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@morphing -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

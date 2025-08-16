@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-custom.qdoc -->
+  <meta name="description" content="Custom materials, effects, geometry and texture data providers in Qt Quick 3D">
+  <title>Programmable Materials, Effects, Geometry, and Texture data | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li>Programmable Materials, Effects, Geometry, and Texture data</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquick3d-2d.html" />
+  <link rel="next" href="qtquick3d-tool-balsam.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquick3d-2d.html">Qt Quick 3D Scenes with 2D Content</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-balsam.html">Balsam Asset Import Tool</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#programmability-for-materials">Programmability for Materials</a></li>
+<li class="level2"><a href="#our-first-vertex-shader">Our first vertex shader</a></li>
+<li class="level2"><a href="#uniforms-from-qml-properties">Uniforms from QML properties</a></li>
+<li class="level2"><a href="#improving-the-example">Improving the example</a></li>
+<li class="level2"><a href="#adding-a-fragment-shader">Adding a fragment shader</a></li>
+<li class="level2"><a href="#colors">Colors</a></li>
+<li class="level2"><a href="#blending">Blending</a></li>
+<li class="level2"><a href="#passing-data-between-the-vertex-and-fragment-shader">Passing data between the vertex and fragment shader</a></li>
+<li class="level2"><a href="#textures">Textures</a></li>
+<li class="level2"><a href="#depth-and-screen-textures">Depth and screen textures</a></li>
+<li class="level2"><a href="#light-processor-functions">Light processor functions</a></li>
+<li class="level2"><a href="#unshaded-custom-materials">Unshaded custom materials</a></li>
+<li class="level1"><a href="#programmability-for-effects">Programmability for Effects</a></li>
+<li class="level2"><a href="#a-post-processing-effect">A post-processing effect</a></li>
+<li class="level2"><a href="#chaining-multiple-effects">Chaining multiple effects</a></li>
+<li class="level1"><a href="#defining-mesh-and-texture-data-from-c">Defining Mesh and Texture Data from C++</a></li>
+<li class="level2"><a href="#custom-vertex-data">Custom vertex data</a></li>
+<li class="level2"><a href="#custom-texture-data">Custom texture data</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Programmable Materials, Effects, Geometry, and Texture data</h1>
+<!-- $$$qtquick3d-custom.html-description -->
+<div class="descr" id="details">
+<p>While the built-in materials of Qt Quick 3D, <a href="qml-qtquick3d-defaultmaterial.html" class="obsolete" translate="no">DefaultMaterial</a> and <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, allow a wide degree of customization via their properties, they do not provide programmability on the vertex and fragment shader level. To allow that, the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> type is provided.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >A model with <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></th><th >With a <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> transforming the vertices</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-custom-mat1.jpg" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-custom-mat2.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Post-processing effects, where one or more passes of processing on the color buffer are performed, optionally taking the depth buffer into account, before the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>'s output is passed on to Qt Quick, also exist in two varieties:</p>
+<ul>
+<li>built-in post-processing steps that can be configured via <a href="qml-qtquick3d-helpers-extendedsceneenvironment.html" translate="no">ExtendedSceneEnvironment</a>, such as glow/bloom, depth of field, vignette, lens flare,</li>
+<li><code translate="no">custom</code> effects implemented by the application in form of fragment shader code and a specification of the processing passes in an <a href="qml-qtquick3d-effect.html" translate="no">Effect</a> object.</li>
+</ul>
+<p>In practice there is a third category of post-processing effects: 2D effects implemented via Qt Quick, operating on the output of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> item without any involvement from the 3D renderer. For example, to apply a blur to a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> item, the simplest approach is to use Qt Quick's existing facilities, such as <a href="../qtquick/qml-qtquick-effects-multieffect.html" translate="no">MultiEffect</a>. The 3D post-processing system becomes beneficial for complex effects that involve 3D scene concepts such as the depth buffer or the screen texture, or need to deal with HDR tonemapping or need multiple passes with intermediate buffers, etc. Simple 2D effects that do not require any insight into the 3D scene and renderer can always be implemented with <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> or <a href="../qtquick/qml-qtquick-effects-multieffect.html" translate="no">MultiEffect</a> instead.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Scene without effect</th><th >The same scene with a custom post-processing effect applied</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-custom-effect1.jpg" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-custom-effect2.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>In addition to programmable materials and post-processing, there are two types of data that is normally provided in form of files (<code translate="no">.mesh</code> files or images such as <code translate="no">.png</code>):</p>
+<ul>
+<li>vertex data, including the geometry for the mesh to be rendered, texture coordinates, normals, colors, and other data,</li>
+<li>the content for textures that are then used as texture maps for the rendered objects, or used with skybox or image based lighting.</li>
+</ul>
+<p>If they so wish, applications can provide such data from C++ in form of a <a href="../qtcore/qbytearray.html" translate="no">QByteArray</a>. Such data can also be changed over time, allowing to procedurally generate and later alter the data for a <a href="qml-qtquick3d-model.html" translate="no">Model</a> or <a href="qml-qtquick3d-texture.html" translate="no">Texture</a>.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >A grid, rendered by specifying vertex data dynamically from C++</th><th >A cube textured with image data generated from C++</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-custom-geom.jpg" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-custom-tex.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>These four approaches to customizing and making materials, effects, geometry, and textures dynamic enable the programmability of shading and procedural generation of the data the shaders get as their input. The following sections provide an overview of these features. The full reference is available in the documentation pages for the respective types:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Feature</th><th >Reference Documentation</th><th >Relevant Examples</th></tr></thead>
+<tr valign="top" class="odd"><td >Custom materials</td><td ><a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a></td><td ><a href="qtquick3d-customshaders-example.html">Qt Quick 3D - Custom Shaders Example</a>, <a href="qtquick3d-custommaterial-example.html">Qt Quick 3D - Custom Materials Example</a></td></tr>
+<tr valign="top" class="even"><td >Custom post-processing effects</td><td ><a href="qml-qtquick3d-effect.html" translate="no">Effect</a></td><td ><a href="qtquick3d-customeffect-example.html">Qt Quick 3D - Custom Effect Example</a></td></tr>
+<tr valign="top" class="odd"><td >Custom geometry</td><td ><a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a>, <a href="qml-qtquick3d-model.html#geometry-prop" translate="no">Model::geometry</a></td><td ><a href="qtquick3d-customgeometry-example.html">Qt Quick 3D - Custom Geometry Example</a></td></tr>
+<tr valign="top" class="even"><td >Custom texture data</td><td ><a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a>, <a href="qml-qtquick3d-texture.html#textureData-prop" translate="no">Texture::textureData</a></td><td ><a href="qtquick3d-proceduraltexture-example.html">Qt Quick 3D - Procedural Texture Example</a></td></tr>
+</table></div>
+<h2 id="programmability-for-materials">Programmability for Materials</h2>
+<p>Let's have a scene with a cube, and start with a default <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> and <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th ><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></th><th ><a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a></th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+          }
+     }
+ }
+</pre>
+</td><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> { }
+          }
+     }
+ }
+</pre>
+</td></tr>
+</table></div>
+<p>These both lead to the exact same result, because a <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> is effectively a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, when no vertex or fragment shader code is added to it.</p>
+<p class="centerAlign"><img src="images/quick3d-custom-cube1.jpg" alt="" /></p><div class="admonition note">
+<p><b>Note: </b>Properties, such as, <a href="qml-qtquick3d-principledmaterial.html#baseColor-prop" translate="no">baseColor</a>, <a href="qml-qtquick3d-principledmaterial.html#metalness-prop" translate="no">metalness</a>, <a href="qml-qtquick3d-principledmaterial.html#baseColorMap-prop" translate="no">baseColorMap</a>, and many others, have no equivalent properties in the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> QML type. This is by design: customizing the material is done via shader code, not by merely providing a few fixed values.</p>
+</div>
+<h3 id="our-first-vertex-shader">Our first vertex shader</h3>
+<p>Let's add a custom vertex shader snippet. This is done by referencing a file in the <a href="qml-qtquick3d-custommaterial.html#vertexShader-prop" translate="no">vertexShader</a> property. The approach will be the same for fragment shaders. These references work like <a href="../qtquick/qml-qtquick-image.html#source-prop" translate="no">Image.source</a> or <a href="../qtquick/qml-qtquick-shadereffect.html#vertexShader-prop" translate="no">ShaderEffect.vertexShader</a>: they are local or <code translate="no">qrc</code> URLs, and a relative path is treated relative to the <code translate="no">.qml</code> file's location. The common approach is therefore to place the <code translate="no">.vert</code> and <code translate="no">.frag</code> files into the Qt resource system (<code translate="no">qt_add_resources</code> when using CMake) and reference them using a relative path.</p>
+<p>In Qt 6.0 inline shader strings are no longer supported, neither in Qt Quick nor in Qt Quick 3D. (make note of the fact that these properties are URLs, not strings) However, due to their intrinsically dynamic nature, custom materials and post-processing effects in Qt Quick 3D still provide shader snippets in source form in the referenced files. This is a difference to <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> where the shaders are complete on their own, with no further amending by the engine, and so are expected to be provided as pre-conditioned <code translate="no">.qsb</code> shader packs.</p>
+<div class="admonition note">
+<p><b>Note: </b>In Qt Quick 3D URLs can only refer to local resources. Schemes for remote content are not supported.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>The shading language used is Vulkan-compatible GLSL. The <code translate="no">.vert</code> and <code translate="no">.frag</code> files are not complete shaders on their own, hence being often called <code translate="no">snippets</code>. That is why there are no uniform blocks, input and output variables, or sampler uniforms provided directly by these snippets. Rather, the Qt Quick 3D engine will amend them as appropriate.</p>
+</div>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.vert</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     vertexShader: &quot;material.vert&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube1-small.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>A custom vertex or fragment shader snippet is expected to provide one or more functions with pre-defined names, such as <code translate="no">MAIN</code>, <code translate="no">DIRECTIONAL_LIGHT</code>, <code translate="no">POINT_LIGHT</code>, <code translate="no">SPOT_LIGHT</code>, <code translate="no">AMBIENT_LIGHT</code>, <code translate="no">SPECULAR_LIGHT</code>. For now let's focus on <code translate="no">MAIN</code>.</p>
+<p>As shown here, the end result with an empty MAIN() is exactly the same as before.</p>
+<p>Before making it more interesting, let's look at an overview of the most commonly used special keywords in custom vertex shader snippets. This is not the full list. For a full reference, check the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> page.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Keyword</th><th >Type</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >MAIN</td><td ></td><td >void MAIN() is the entry point. This function must always be present in a custom vertex shader snippet, there is no point in providing one otherwise.</td></tr>
+<tr valign="top" class="even"><td >VERTEX</td><td >vec3</td><td >The vertex position the shader receives as input. A common use case for vertex shaders in custom materials is to change (displace) the x, y, or z values of this vector, by simply assigning a value to the whole vector, or some of its components.</td></tr>
+<tr valign="top" class="odd"><td >NORMAL</td><td >vec3</td><td >The vertex normal from the input mesh data, or all zeroes if there were no normals provided. As with VERTEX, the shader is free to alter the value as it sees fit. The altered value is then used by the rest of the pipeline, including the lighting calculations in the fragment stage.</td></tr>
+<tr valign="top" class="even"><td >UV0</td><td >vec2</td><td >The first set of texture coordinates from the input mesh data, or all zeroes if there were no UV values provided. As with VERTEX and NORMAL, the value can altered.</td></tr>
+<tr valign="top" class="odd"><td >MODELVIEWPROJECTION_MATRIX</td><td >mat4</td><td >The model-view-projection matrix. To unify the behavior regardless of which graphics API rendering happens with, all vertex data and transformation matrices follow OpenGL conventions on this level. (Y axis pointing up, OpenGL-compatible projection matrix) Read only.</td></tr>
+<tr valign="top" class="even"><td >MODEL_MATRIX</td><td >mat4</td><td >The model (world) matrix. Read only.</td></tr>
+<tr valign="top" class="odd"><td >NORMAL_MATRIX</td><td >mat3</td><td >The transposed inverse of the top-left 3x3 slice of the model matrix. Read only.</td></tr>
+<tr valign="top" class="even"><td >CAMERA_POSITION</td><td >vec3</td><td >The camera position in world space. In the examples on this page this is <code translate="no">(0, 0, 600)</code>. Read only.</td></tr>
+<tr valign="top" class="odd"><td >CAMERA_DIRECTION</td><td >vec3</td><td >The camera direction vector. In the examples on this page this is <code translate="no">(0, 0, -1)</code>. Read only.</td></tr>
+<tr valign="top" class="even"><td >CAMERA_PROPERTIES</td><td >vec2</td><td >The near and far clip values of the camera. In the examples on this page this is <code translate="no">(10, 10000)</code>. Read only.</td></tr>
+<tr valign="top" class="odd"><td >POINT_SIZE</td><td >float</td><td >Relevant only when rendering with a topology of points, for example because the <a href="qquick3dgeometry.html" translate="no">custom geometry</a> provides such a geometry for the mesh. Writing to this value is equivalent to setting <a href="qml-qtquick3d-principledmaterial.html#pointSize-prop" translate="no">pointSize on a PrincipledMaterial</a>.</td></tr>
+<tr valign="top" class="even"><td >POSITION</td><td >vec4</td><td >Like <code translate="no">gl_Position</code>. When not present, a default assignment statement is generated automatically using <code translate="no">MODELVIEWPROJECTION_MATRIX</code> and <code translate="no">VERTEX</code>. This is why an empty MAIN() is functional, and in most cases there will be no need to assign a custom value to it.</td></tr>
+</table></div>
+<p>Let's make a custom material that displaces the vertices according to some pattern. To make it more interesting, have some animated QML properties, the values of which end up being exposed as uniforms in the shader code. (to be precise, most properties are going to be mapped to members in a uniform block, backed by a uniform buffer at run time, but Qt Quick 3D conveniently makes such details transparent to the custom material author)</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.vert</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+    vertexShader: &quot;material.vert&quot;
+    property real uAmplitude: 0
+    NumberAnimation on uAmplitude {
+        from: 0; to: 100; duration: 5000; loops: -1
+    }
+    property real uTime: 0
+    NumberAnimation on uTime {
+        from: 0; to: 100; duration: 10000; loops: -1
+    }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     VERTEX.x += sin(uTime + VERTEX.y) * uAmplitude;
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube2-anim.gif" alt="" /></p></td></tr>
+</table></div>
+<h3 id="uniforms-from-qml-properties">Uniforms from QML properties</h3>
+<p>Custom properties in the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> object get mapped to uniforms. In the above example this includes <code translate="no">uAmplitude</code> and <code translate="no">uTime</code>. Any time the values change, the updated value will become visible in the shader. This concept may already be familiar from <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a>.</p>
+<p>The name of the QML property and the GLSL variable must match. There is no separate declaration in the shader code for the individual uniforms. Rather, the QML property name can be used as-is. This is why the example above can just reference <code translate="no">uTime</code> and <code translate="no">uAmplitude</code> in the vertex shader snippet without any previous declaration for them.</p>
+<p>The following table lists how the types are mapped:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >QML Type</th><th >Shader Type</th><th >Notes</th></tr></thead>
+<tr valign="top" class="odd"><td >real, int, bool</td><td >float, int, bool</td><td ></td></tr>
+<tr valign="top" class="even"><td >color</td><td >vec4</td><td >sRGB to linear conversion is performed implicitly</td></tr>
+<tr valign="top" class="odd"><td >vector2d</td><td >vec2</td><td ></td></tr>
+<tr valign="top" class="even"><td >vector3d</td><td >vec3</td><td ></td></tr>
+<tr valign="top" class="odd"><td >vector4d</td><td >vec4</td><td ></td></tr>
+<tr valign="top" class="even"><td >matrix4x4</td><td >mat4</td><td ></td></tr>
+<tr valign="top" class="odd"><td >quaternion</td><td >vec4</td><td >scalar value is <code translate="no">w</code></td></tr>
+<tr valign="top" class="even"><td >rect</td><td >vec4</td><td ></td></tr>
+<tr valign="top" class="odd"><td >point, size</td><td >vec2</td><td ></td></tr>
+<tr valign="top" class="even"><td ><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a></td><td >sampler2D</td><td ></td></tr>
+</table></div>
+<h3 id="improving-the-example">Improving the example</h3>
+<p>Before moving further, let's make the example somewhat better looking. By adding a rotated rectangle mesh and making the <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> cast shadows, we can verify that the alteration to the cube's vertices is correctly reflected in all rendering passes, including shadow maps. To get a visible shadow, the light is now placed a bit higher on the Y axis, and a rotation is applied to have it pointing partly downwards. (this being a <code translate="no">directional</code> light, the rotation matters)</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.vert</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> { <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>; <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span> }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+             <span class="name">y</span>: <span class="number">200</span>
+             <span class="name">eulerRotation</span>.x: -<span class="number">45</span>
+             <span class="name">castsShadow</span>: <span class="number">true</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+             <span class="name">y</span>: -<span class="number">250</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>)
+             <span class="name">eulerRotation</span>.x: -<span class="number">45</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { <span class="name">baseColor</span>: <span class="string">&quot;lightBlue&quot;</span> }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">vertexShader</span>: <span class="string">&quot;material.vert&quot;</span>
+                 property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">uAmplitude</span>: <span class="number">0</span>
+                 NumberAnimation on <span class="name">uAmplitude</span> {
+                     <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">100</span>; <span class="name">duration</span>: <span class="number">5000</span>; <span class="name">loops</span>: -<span class="number">1</span>
+                 }
+                 property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">uTime</span>: <span class="number">0</span>
+                 NumberAnimation on <span class="name">uTime</span> {
+                     <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">100</span>; <span class="name">duration</span>: <span class="number">10000</span>; <span class="name">loops</span>: -<span class="number">1</span>
+                 }
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     VERTEX.x += sin(uTime + VERTEX.y) * uAmplitude;
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube3-anim.gif" alt="" /></p></td></tr>
+</table></div>
+<h3 id="adding-a-fragment-shader">Adding a fragment shader</h3>
+<p>Many custom materials will want to have a fragment shader as well. In fact, many will want only a fragment shader. If there is no extra data to be passed from the vertex to fragment stage, and the default vertex transformation is sufficient, setting the <code translate="no">vertexShader</code> property can be left out from the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube4.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Our first fragment shader contains an empty MAIN() function. This is no different than not specifying a fragment shader snippet at all: what we get looks like what we get with a default <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>.</p>
+<p>Let's look at some of the commonly used keywords in fragment shaders. This is not the full list, refer to the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> documentation for a complete reference. Many of these are read-write, meaning they have a default value, but the shader can, and often will want to, assign a different value to them.</p>
+<p>As the names suggest, many of these map to similarly named <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> properties, with the same meaning and semantics, following the <a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#metallic-roughness-material">metallic-roughness material model</a>. It is up the custom material implementation to decide how these values are calculated: for example, a value for <a href="qml-qtquick3d-principledmaterial.html#base-color" translate="no">BASE_COLOR</a> can be hard coded in the shader, can be based on sampling a texture, or can be calculated based on QML properties exposed as uniforms or on interpolated data passed along from the vertex shader.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Keyword</th><th >Type</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><a href="qml-qtquick3d-principledmaterial.html#base-color" translate="no">BASE_COLOR</a></td><td >vec4</td><td >The base color and alpha value. Corresponds to <a href="qml-qtquick3d-principledmaterial.html#baseColor-prop" translate="no">PrincipledMaterial::baseColor</a>. The final alpha value of the fragment is the model opacity multiplied by the base color alpha. The default value is <code translate="no">(1.0, 1.0, 1.0, 1.0)</code>.</td></tr>
+<tr valign="top" class="even"><td >EMISSIVE_COLOR</td><td >vec3</td><td >The color of self-illumination. Corresponds to <a href="qml-qtquick3d-principledmaterial.html#emissiveFactor-prop" translate="no">PrincipledMaterial::emissiveFactor</a>. The default value is <code translate="no">(0.0, 0.0, 0.0)</code>.</td></tr>
+<tr valign="top" class="odd"><td >METALNESS</td><td >float</td><td ><a href="qml-qtquick3d-principledmaterial.html#metalness-prop" translate="no">Metalness</a> value in range 0-1. Default to 0, which means the material is dielectric (non-metallic).</td></tr>
+<tr valign="top" class="even"><td >ROUGHNESS</td><td >float</td><td ><a href="qml-qtquick3d-principledmaterial.html#roughness-prop" translate="no">Roughness</a> value in range 0-1. The default value is 0. Larger values soften specular highlights and blur reflections.</td></tr>
+<tr valign="top" class="odd"><td >SPECULAR_AMOUNT</td><td >float</td><td ><a href="qml-qtquick3d-principledmaterial.html#specularAmount-prop" translate="no">The strength of specularity</a> in range 0-1. The default value is <code translate="no">0.5</code>. For metallic objects with <code translate="no">metalness</code> set to <code translate="no">1</code> this value will have no effect. When both <code translate="no">SPECULAR_AMOUNT</code> and <code translate="no">METALNESS</code> have values larger than 0 but smaller than 1, the result is a blend between the two material models.</td></tr>
+<tr valign="top" class="even"><td >NORMAL</td><td >vec3</td><td >The interpolated normal in world space, adjusted for double-sidedness when face culling is disabled. Read only.</td></tr>
+<tr valign="top" class="odd"><td >UV0</td><td >vec2</td><td >The interpolated texture coordinates. Read only.</td></tr>
+<tr valign="top" class="even"><td >VAR_WORLD_POSITION</td><td >vec3</td><td >Interpolated vertex position in world space. Read only.</td></tr>
+</table></div>
+<p>Let's make the cube's base color red:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube5.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Now strengthen the level of self-illumination a bit:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+     EMISSIVE_COLOR = vec3(0.4);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube6.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Instead of having values hardcoded in the shader, we could also use QML properties exposed as uniforms, even animated ones:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+     property color baseColor: &quot;black&quot;
+     ColorAnimation on baseColor {
+         from: &quot;black&quot;; to: &quot;purple&quot;; duration: 5000; loops: -1
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(baseColor.rgb, 1.0);
+     EMISSIVE_COLOR = vec3(0.4);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube7-anim.gif" alt="" /></p></td></tr>
+</table></div>
+<p>Let's do something less trivial, something that is not implementable with a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> and its standard, built-in properties. The following material visualizes the texture UV coordinates of the cube mesh. U runs 0 to 1, so from black to red, while V is also 0 to 1, black to green.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(UV0, 0.0, 1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube8.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>While we are at it, why not visualize normals as well, this time on a sphere. Like with UVs, if a custom vertex shader snippet were to alter the value of NORMAL, the interpolated per-fragment value in the fragment shader, also exposed under the name NORMAL, would reflect those adjustments.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+     <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+         <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(NORMAL, 1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-cube9.jpg" alt="" /></p></td></tr>
+</table></div>
+<h3 id="colors">Colors</h3>
+<p>Let's switch over to a teapot model for a moment, make the material a blend of metallic and dielectric, and try to set a green base color for it. The <code translate="no">green</code> <a href="../qtgui/qcolor.html" translate="no">QColor</a> value maps to <code translate="no">(0, 128, 0)</code>, based on which our first attempt could be:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> { <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>; <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span> }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;teapot.mesh&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">60</span>, <span class="number">60</span>, <span class="number">60</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(0.0, 0.5, 0.0, 1.0);
+     METALNESS = 0.6;
+     SPECULAR_AMOUNT = 0.4;
+     ROUGHNESS = 0.4;
+ }
+</pre>
+</td></tr>
+</table></div>
+<p class="centerAlign"><img src="images/quick3d-custom-color1.jpg" alt="" /></p><p>This does not look entirely right. Compare with the second approach:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+     property color uColor: &quot;green&quot;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(uColor.rgb, 1.0);
+     METALNESS = 0.6;
+     SPECULAR_AMOUNT = 0.4;
+     ROUGHNESS = 0.4;
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-color2.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Switching to a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, we can confirm that setting the <a href="qml-qtquick3d-principledmaterial.html#baseColor-prop" translate="no">PrincipledMaterial::baseColor</a> to &quot;green&quot; and following the metalness and other properties, the result is identical to our second approach:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: PrincipledMaterial {
+     baseColor: &quot;green&quot;
+     metalness: 0.6
+     specularAmount: 0.4
+     roughness: 0.4
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-color3.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>If the type of the <code translate="no">uColor</code> property was changed to <code translate="no">vector4d</code>, or any type other than <code translate="no">color</code>, the results would suddenly change and become identical to our first approach.</p>
+<p>Why is this?</p>
+<p>The answer lies in the sRGB to linear conversion that is performed implicitly for color properties of DefaultMaterial, <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, and also for custom properties with a <code translate="no">color</code> type in a <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>. Such conversion is not performed for any other value, so if the shader hardcodes a color value, or bases it on a QML property with a type different from <code translate="no">color</code>, it will be up to the shader to perform linearization in case the source value was in sRGB color space. Converting to linear is important since Qt Quick 3D performs <a href="qml-qtquick3d-sceneenvironment.html#tonemapMode-prop" translate="no">tonemapping</a> on the results of fragment shading, and that process assumes values in the sRGB space as its input.</p>
+<p>The built-in <a href="../qtgui/qcolor.html" translate="no">QColor</a> constants, such as, <code translate="no">&quot;green&quot;</code>, are all given in sRGB space. Therefore, just assigning <code translate="no">vec4(0.0, 0.5, 0.0, 1.0)</code> to <a href="qml-qtquick3d-principledmaterial.html#base-color" translate="no">BASE_COLOR</a> in the first attempt is insufficient if we wanted a result that matches an RGB value <code translate="no">(0, 128, 0)</code> in the sRGB space. See the <code translate="no">BASE_COLOR</code> documentation in <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> for a formula for linearizing such color values. The same applies to color values retrieved by sampling textures: if the source image data is not in the sRGB color space, a conversion is needed (unless <a href="qml-qtquick3d-sceneenvironment.html#tonemapMode-prop" translate="no">tonemapping</a> is disabled).</p>
+<h3 id="blending">Blending</h3>
+<p>Just writing a value less than <code translate="no">1.0</code> to <code translate="no">BASE_COLOR.a</code> is not sufficient if the expectation is to get alpha blending. Such materials will very often change the values of <a href="qml-qtquick3d-custommaterial.html#sourceBlend-prop" translate="no">sourceBlend</a> and <a href="qml-qtquick3d-custommaterial.html#destinationBlend-prop" translate="no">destinationBlend</a> properties to get the desired results.</p>
+<p>Also keep in mind that the combined alpha value is the <a href="qml-qtquick3d-node.html#opacity-prop" translate="no">Node opacity</a> multiplied by the material alpha.</p>
+<p>To visualize, let's use a shader that assigns red with alpha <code translate="no">0.5</code> to <code translate="no">BASE_COLOR</code>:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;white&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">z</span>: <span class="number">600</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">x</span>: -<span class="number">150</span>
+             <span class="name">eulerRotation</span>.x: <span class="number">60</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">20</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">eulerRotation</span>.x: <span class="number">60</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">20</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">sourceBlend</span>: <span class="name">CustomMaterial</span>.<span class="name">SrcAlpha</span>
+                 <span class="name">destinationBlend</span>: <span class="name">CustomMaterial</span>.<span class="name">OneMinusSrcAlpha</span>
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">x</span>: <span class="number">150</span>
+             <span class="name">eulerRotation</span>.x: <span class="number">60</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">20</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">sourceBlend</span>: <span class="name">CustomMaterial</span>.<span class="name">SrcAlpha</span>
+                 <span class="name">destinationBlend</span>: <span class="name">CustomMaterial</span>.<span class="name">OneMinusSrcAlpha</span>
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+             <span class="name">opacity</span>: <span class="number">0.5</span>
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(1.0, 0.0, 0.0, 0.5);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-blend.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>The first cube is writing 0.5 to the alpha value of the color but it does not bring visible results since alpha blending is not enabled. The second cube enables simple alpha blending via the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> properties. The third one also assigns an opacity of 0.5 to the Model, which means that the effective opacity is 0.25.</p>
+<h3 id="passing-data-between-the-vertex-and-fragment-shader">Passing data between the vertex and fragment shader</h3>
+<p>Calculating a value per vertex (for example, assuming a single triangle, for the 3 corners of the triangle), and then passing it on to the fragment stage, where for each fragment (for example, every fragment covered by the rasterized triangle) an interpolated value is made accessible. In custom material shader snippets this is made possible by the <code translate="no">VARYING</code> keyword. This provides a syntax similar to GLSL 120 and GLSL ES 100, but will work regardless of the graphics API used at run time. The engine will take care of rewriting the varying declaration as appropriate.</p>
+<p>Let's see how the classic texture sampling with UV coordinates would look like. Textures are going to be covered in an upcoming section, for now let's focus on how we get the UV coordinates that can be passed to the <code translate="no">texture()</code> function in the shader.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.vert, material.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> { <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>; <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span> }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">vertexShader</span>: <span class="string">&quot;material.vert&quot;</span>
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+                 property <span class="type"><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a></span> <span class="name">someTextureMap</span>: <span class="name">TextureInput</span> {
+                     <span class="name">texture</span>: <span class="name">Texture</span> {
+                         <span class="name">source</span>: <span class="string">&quot;qt_logo_rect.png&quot;</span>
+                     }
+                 }
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ VARYING vec2 uv;
+ void MAIN()
+ {
+     uv = UV0;
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ VARYING vec2 uv;
+ void MAIN()
+ {
+     BASE_COLOR = texture(someTextureMap, uv);
+ }
+</pre>
+</td></tr>
+</table></div>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >qt_logo_rect.png</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-custom-varying-map.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-custom-varying1.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Note that <code translate="no">VARYING</code> declarations. The name and type must match, <code translate="no">uv</code> in the fragment shader will expose the interpolated UV coordinate for the current fragment.</p>
+<p>Any other type of data can be passed on to the fragment stage in a similar manner. It is worth noting that in many cases setting up the material's own varyings is not necessary because there are builtins provided that cover many of typical needs. This includes making the (interpolated) normals, UVs, world position (<code translate="no">VAR_WORLD_POSITION</code>), or the vector pointing towards the camera (<code translate="no">VIEW_VECTOR</code>).</p>
+<p>The above example can in fact be simplified to the following as <code translate="no">UV0</code> is automatically available in the fragment stage as well:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     fragmentShader: &quot;material.frag&quot;
+     property TextureInput someTextureMap: TextureInput {
+         texture: Texture {
+         source: &quot;qt_logo_rect.png&quot;
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = texture(someTextureMap, UV0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-varying1.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>To disable interpolation for a variable, use the <code translate="no">flat</code> keyword in both the vertex and fragment shader snippet. For example:</p>
+<pre class="cpp plain" translate="no">
+ VARYING flat vec2 v;
+</pre>
+<h3 id="textures">Textures</h3>
+<p>A <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> has no built-in texture maps, meaning there is no equivalent of, for example, <a href="qml-qtquick3d-principledmaterial.html#baseColorMap-prop" translate="no">PrincipledMaterial::baseColorMap</a>. This is because implementing the same is often trivial, while giving a lot more flexibility than what DefaultMaterial and <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> has built in. Besides simply sampling a texture, custom fragment shader snippets are free to combine and blend data from various sources when calculating the values they assign to <code translate="no">BASE_COLOR</code>, <code translate="no">EMISSIVE_COLOR</code>, <code translate="no">ROUGHNESS</code>, etc. They can base these calculations on data provided via QML properties, interpolated data sent on from the vertex stage, values retrieved from sampling textures, and on hardcoded values.</p>
+<p>As the previous example shows, exposing a texture to the vertex, fragment, or both shaders is very similar to scalar and vector uniform values: a QML property with the type <a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a> will automatically get associated with a <code translate="no">sampler2D</code> in the shader code. As always, there is no need to declare this sampler in the shader code.</p>
+<p>A <a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a> references a <a href="qml-qtquick3d-texture.html" translate="no">Texture</a>, with an additional <a href="qml-qtquick3d-textureinput.html#enabled-prop" translate="no">enabled</a> property. A <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> can source its data in three ways: <a href="qml-qtquick3d-texture.html#source-prop" translate="no">from an image file</a>, <a href="qml-qtquick3d-texture.html#sourceItem-prop" translate="no">from a texture with live Qt Quick content</a>, or <a href="qml-qtquick3d-texture.html#textureData-prop" translate="no">can be provided from C++</a> via <a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>When it comes to <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> properties, the source, tiling, and filtering related ones are the only ones that are taken into account implicitly with custom materials, as the rest (such as, UV transformations) is up to the custom shaders to implement as they see fit.</p>
+</div>
+<p>Let's see an example where a model, a sphere in this case, is textured using live Qt Quick content:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> { <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>; <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span> }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+                 property <span class="type"><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a></span> <span class="name">someTextureMap</span>: <span class="name">TextureInput</span> {
+                     <span class="name">texture</span>: <span class="name">Texture</span> {
+                         <span class="name">sourceItem</span>: <span class="name">Rectangle</span> {
+                             <span class="name">width</span>: <span class="number">512</span>; <span class="name">height</span>: <span class="number">512</span>
+                             <span class="name">color</span>: <span class="string">&quot;red&quot;</span>
+                             <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                                 <span class="name">width</span>: <span class="number">32</span>; <span class="name">height</span>: <span class="number">32</span>
+                                 <span class="name">anchors</span>.horizontalCenter: <span class="name">parent</span>.<span class="name">horizontalCenter</span>
+                                 <span class="name">y</span>: <span class="number">150</span>
+                                 <span class="name">color</span>: <span class="string">&quot;gray&quot;</span>;
+                                 NumberAnimation on <span class="name">rotation</span> { <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">360</span>; <span class="name">duration</span>: <span class="number">3000</span>; <span class="name">loops</span>: -<span class="number">1</span> }
+                             }
+                             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+                                 <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                                 <span class="name">text</span>: <span class="string">&quot;Texture Map&quot;</span>
+                                 <span class="name">font</span>.pointSize: <span class="number">16</span>
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec2 uv = vec2(UV0.x, 1.0 - UV0.y);
+     vec4 c = texture(someTextureMap, uv);
+     BASE_COLOR = c;
+ }
+</pre>
+</td></tr>
+</table></div>
+<p class="centerAlign"><img src="images/quick3d-custmat-tex1-anim.gif" alt="" /></p><p>Here the 2D subtree (Rectangle with two children: another Rectangle and the Text) is rendered in to an 512x512 2D texture every time this mini-scene changes. The texture is then exposed to the custom material under the name of <code translate="no">someTextureMap</code>.</p>
+<p>Note the flipping of the V coordinate in the shader. As noted above, custom materials, where there is full programmability on shader level, do not offer the &quot;fixed&quot; features of <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> and <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>. This means that any transformations to the UV coordinates will need to be applied by the shader. Here we know that the texture is generated via <a href="qml-qtquick3d-texture.html#sourceItem-prop" translate="no">Texture::sourceItem</a> and so V needs to be flipped to get something that matches the UV set of the mesh we are using.</p>
+<p>What this example shows is possible to do with a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> too. Let's make it more interesting by doing a simple emboss effect in addition:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec2 uv = vec2(UV0.x, 1.0 - UV0.y);
+     vec2 size = vec2(textureSize(someTextureMap, 0));
+     vec2 d = vec2(1.0 / size.x, 1.0 / size.y);
+     vec4 diff = texture(someTextureMap, uv + d) - texture(someTextureMap, uv - d);
+     float c = (diff.x + diff.y + diff.z) + 0.5;
+     BASE_COLOR = vec4(c, c, c, 1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custmat-tex2-anim.gif" alt="" /></p></td></tr>
+</table></div>
+<p>With the features covered so far a wide range of possibilities are open for creating materials that shade the meshes in visually impressive ways. To finish the basic tour, let's look at an example that applies height and normal maps to a plane mesh. (a dedicated <code translate="no">.mesh</code> file is used here because the builtin <code translate="no">#Rectangle</code> does not have enough subdivisions) For better lighting results, we will use image based lighting with a 360 degree HDR image. The image is also set as the skybox to make it more clear what is happening.</p>
+<p>First let's start with an empty <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">SkyBox</span>
+             <span class="name">lightProbe</span>: <span class="name">Texture</span> {
+                 <span class="name">source</span>: <span class="string">&quot;00489_OpenfootageNET_snowfield_low.hdr&quot;</span>
+             }
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">z</span>: <span class="number">600</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;plane.mesh&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">400</span>, <span class="number">400</span>, <span class="number">400</span>)
+             <span class="name">z</span>: <span class="number">400</span>
+             <span class="name">y</span>: -<span class="number">50</span>
+             <span class="name">eulerRotation</span>.x: -<span class="number">90</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> { }
+         }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-tex3.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Now let's make some shaders that apply a height and normal map to the mesh:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Height map</th><th >Normap map</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/quick3d-custom-heightmap.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/quick3d-custom-normalmap.jpg" alt="" /></p></td></tr>
+</table></div>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >material.vert, material.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="cpp plain" translate="no">
+ float getHeight(vec2 pos)
+ {
+     return texture(heightMap, pos).r;
+ }
+
+ void MAIN()
+ {
+     const float offset = 0.004;
+     VERTEX.y += getHeight(UV0);
+     TANGENT = normalize(vec3(0.0, getHeight(UV0 + vec2(0.0, offset)) - getHeight(UV0 + vec2(0.0, -offset)), offset * 2.0));
+     BINORMAL = normalize(vec3(offset * 2.0, getHeight(UV0 + vec2(offset, 0.0)) - getHeight(UV0 + vec2(-offset, 0.0)), 0.0));
+     NORMAL = cross(TANGENT, BINORMAL);
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec3 normalValue = texture(normalMap, UV0).rgb;
+     normalValue.xy = normalValue.xy * 2.0 - 1.0;
+     normalValue.z = sqrt(max(0.0, 1.0 - dot(normalValue.xy, normalValue.xy)));
+     NORMAL = normalize(mix(NORMAL, TANGENT * normalValue.x + BINORMAL * normalValue.y + NORMAL * normalValue.z, 1.0));
+ }
+</pre>
+</td></tr>
+</table></div>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ materials: CustomMaterial {
+     vertexShader: &quot;material.vert&quot;
+     fragmentShader: &quot;material.frag&quot;
+     property TextureInput normalMap: TextureInput {
+         texture: Texture { source: &quot;normalmap.jpg&quot; }
+     }
+     property TextureInput heightMap: TextureInput {
+         texture: Texture { source: &quot;heightmap.png&quot; }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-tex4.jpg" alt="" /></p></td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a> object can be immensely helpful during development and troubleshooting as it allows navigating and looking around in the scene with the keyboard and mouse in a familiar manner. Having a camera controlled by the <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a> is as simple as:</p>
+</div>
+<pre class="qml" translate="no">
+ import QtQuick3D.Helpers
+ View3D {
+     PerspectiveCamera {
+         id: camera
+     }
+     // ...
+ }
+ WasdController {
+     controlledObject: camera
+ }
+</pre>
+<h3 id="depth-and-screen-textures">Depth and screen textures</h3>
+<p>When a custom shader snippet uses the <code translate="no">DEPTH_TEXTURE</code> or <code translate="no">SCREEN_TEXTURE</code> keywords, it opts in to generating the corresponding textures in a separate render pass, which is not necessarily a cheap operation, but allows implementing a variety of techniques, such as refraction for glass-like materials.</p>
+<p><code translate="no">DEPTH_TEXTURE</code> is a <code translate="no">sampler2D</code> that allows sampling a texture with the contents of the depth buffer with all the <code translate="no">opaque</code> objects in the scene rendered. Similarly, <code translate="no">SCREEN_TEXTURE</code> is a <code translate="no">sampler2D</code> that allows sampling a texture containing the contents of the scene excluding any transparent materials or any materials also using the SCREEN_TEXTURE. The texture can be used for materials that require the contents of the framebuffer they are being rendered to. The SCREEN_TEXTURE texture uses the same clear mode as the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. The size of these textures matches the size of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> in pixels.</p>
+<p>Let's have a simple demonstration by visualizing the depth buffer contents via <code translate="no">DEPTH_TEXTURE</code>. The camera's <a href="qml-qtquick3d-perspectivecamera.html#clipFar-prop" translate="no">far clip value</a> is reduced here from the default 10000 to 2000, in order to have a smaller range, and so have the visualized depth value differences more obvious. The result is a rectangle that happens to visualize the depth buffer for the scene over its surface.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Helpers
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">width</span>: <span class="number">400</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">color</span>: <span class="string">&quot;black&quot;</span>
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">id</span>: <span class="name">camera</span>
+             <span class="name">z</span>: <span class="number">600</span>
+             <span class="name">clipNear</span>: <span class="number">1</span>
+             <span class="name">clipFar</span>: <span class="number">2000</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">150</span>, <span class="number">200</span>, -<span class="number">1000</span>)
+             <span class="name">eulerRotation</span>.x: <span class="number">60</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">20</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cylinder&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">400</span>, <span class="number">200</span>, -<span class="number">1000</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+             <span class="name">opacity</span>: <span class="number">0.3</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">150</span>, <span class="number">200</span>, -<span class="number">600</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cone&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">400</span>, -<span class="number">1200</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>)
+             <span class="name">y</span>: -<span class="number">150</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+     }
+     <span class="type"><a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+         <span class="name">controlledObject</span>: <span class="name">camera</span>
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     float zNear = CAMERA_PROPERTIES.x;
+     float zFar = CAMERA_PROPERTIES.y;
+     float zRange = zFar - zNear;
+     vec4 depthSample = texture(DEPTH_TEXTURE, vec2(UV0.x, 1.0 - UV0.y));
+     float zn = 2.0 * depthSample.r - 1.0;
+     float d = 2.0 * zNear * zFar / (zFar + zNear - zn * zRange);
+     d /= zFar;
+     BASE_COLOR = vec4(d, d, d, 1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-depth-anim.gif" alt="" /></p></td></tr>
+</table></div>
+<p>Note how the cylinder is not present in <code translate="no">DEPTH_TEXTURE</code> due to its reliance on semi-transparency, which puts it into a different category than the other objects that are all opaque. These objects do not write into the depth buffer, although they do test against the depth values written by opaque objects, and rely on being rendered in back to front order. Hence they are not present in <code translate="no">DEPTH_TEXTURE</code> either.</p>
+<p>What happens if we switch the shader to sample <code translate="no">SCREEN_TEXTURE</code> instead?</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >material.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec4 c = texture(SCREEN_TEXTURE, vec2(UV0.x, 1.0 - UV0.y));
+     if (c.a == 0.0)
+         c.rgb = vec3(0.2, 0.1, 0.3);
+     BASE_COLOR = c;
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-screen.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Here the rectangle is textured with <code translate="no">SCREEN_TEXTURE</code>, while replacing transparent pixels with purple.</p>
+<h3 id="light-processor-functions">Light processor functions</h3>
+<p>An advanced feature of <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> is the ability to define functions in the fragment shader that reimplement the lighting equations that are used to calculate the fragment color. A light processor function, when present, is called once per each light in the scene, for each fragment. There is a dedicated function for different light types, as well as the ambient and specular contribution. When no corresponding light processor function is present, the standard calculations are used, just like a <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a> would do. When a light processor is present, but the function body is empty, it means there will be no contribution from a given type of lights in the scene.</p>
+<p>Refer to the <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> documentation for details on functions such as <code translate="no">DIRECTIONAL_LIGHT</code>, <code translate="no">POINT_LIGHT</code>, <code translate="no">SPOT_LIGHT</code>, <code translate="no">AMBIENT_LIGHT</code>, and <code translate="no">SPECULAR_LIGHT</code>.</p>
+<h3 id="unshaded-custom-materials">Unshaded custom materials</h3>
+<p>There is another type of <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>: <code translate="no">unshaded</code> custom materials. All the example so far used <code translate="no">shaded</code> custom materials, with the <a href="qml-qtquick3d-custommaterial.html#shadingMode-prop" translate="no">shadingMode</a> property left at its default <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>.Shaded value.</p>
+<p>What happens if we switch this property to <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>.Unshaded?</p>
+<p>First of all, keywords like <code translate="no">BASE_COLOR</code>, <code translate="no">EMISSIVE_COLOR</code>, <code translate="no">METALNESS</code>, etc. no longer have the desired effect. This is because an unshaded material, as the name suggests, does not automatically get amended with much of the standard shading code, thus ignoring lights, image based lighting, shadows, and ambient occlusion in the scene. Rather, an unshaded material gives full control to the shader via the <code translate="no">FRAGCOLOR</code> keyword. This is similar to gl_FragColor: the color assigned to <code translate="no">FRAGCOLOR</code> is the result and the final color of the fragment, without any further adjustments by Qt Quick 3D.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.frag, material2.frag</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cylinder&quot;</span>
+             <span class="name">x</span>: -<span class="number">100</span>
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cylinder&quot;</span>
+             <span class="name">x</span>: <span class="number">100</span>
+             <span class="name">eulerRotation</span>.x: <span class="number">30</span>
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 <span class="name">shadingMode</span>: <span class="name">CustomMaterial</span>.<span class="name">Unshaded</span>
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material2.frag&quot;</span>
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     BASE_COLOR = vec4(1.0);
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     FRAGCOLOR = vec4(1.0);
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-unshaded1.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Notice how the right cylinder ignores the <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> in the scene. Its shading knows nothing about scene lighting, the final fragment color is all white.</p>
+<p>The vertex shader in an unshaded material still has the typical inputs available: <code translate="no">VERTEX</code>, <code translate="no">NORMAL</code>, <code translate="no">MODELVIEWPROJECTION_MATRIX</code>, etc. and can write to <code translate="no">POSITION</code>. The fragment shader no longer has the similar conveniences available, however: <code translate="no">NORMAL</code>, <code translate="no">UV0</code>, or <code translate="no">VAR_WORLD_POSITION</code> are not available in an unshaded material's fragment shader. Rather, it is now up to the shader code to calculate and pass on using <code translate="no">VARYING</code> everything it needs to determine the final fragment color.</p>
+<p>Let's look at an example that has both a vertex and fragment shader. The altered vertex position is passed on to the fragment shader, with an interpolated value made available to every fragment.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml, material.vert, material.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">600</span> }
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>)
+             <span class="name">materials</span>: <span class="name">CustomMaterial</span> {
+                 property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">time</span>: <span class="number">0.0</span>
+                 NumberAnimation on <span class="name">time</span> { <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">100</span>; <span class="name">duration</span>: <span class="number">20000</span>; <span class="name">loops</span>: -<span class="number">1</span> }
+                 property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">amplitude</span>: <span class="number">10.0</span>
+                 <span class="name">shadingMode</span>: <span class="name">CustomMaterial</span>.<span class="name">Unshaded</span>
+                 <span class="name">vertexShader</span>: <span class="string">&quot;material.vert&quot;</span>
+                 <span class="name">fragmentShader</span>: <span class="string">&quot;material.frag&quot;</span>
+             }
+         }
+     }
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ VARYING vec3 pos;
+ void MAIN()
+ {
+     pos = VERTEX;
+     pos.x += sin(time * 4.0 + pos.y) * amplitude;
+     POSITION = MODELVIEWPROJECTION_MATRIX * vec4(pos, 1.0);
+ }
+</pre>
+<pre class="cpp plain" translate="no">
+ VARYING vec3 pos;
+ void MAIN()
+ {
+     FRAGCOLOR = vec4(vec3(pos.x * 0.02, pos.y * 0.02, pos.z * 0.02), 1.0);
+ }
+</pre>
+</td></tr>
+</table></div>
+<p class="centerAlign"><img src="images/quick3d-custom-unshaded-anim.gif" alt="" /></p><p>Unshaded materials are useful when interacting with scene lighting is not necessary or desired, and the material needs full control on the final fragment color. Notice how the example above has neither a <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> nor any other lights, but the sphere with the custom material shows up as expected.</p>
+<div class="admonition note">
+<p><b>Note: </b>An unshaded material that only has a vertex shader snippet, but does not specify the fragmentShader property, will still be functional but the results are as if the shadingMode was set to Shaded. Therefore it makes little sense to switch shadingMode for materials that only have a vertex shader.</p>
+</div>
+<h2 id="programmability-for-effects">Programmability for Effects</h2>
+<p>Post-processing effects apply one or more fragment shaders to the result of a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. The output from these fragment shaders is then displayed instead of the original rendering results. This is conceptually very similar to Qt Quick's <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> and <a href="../qtquick/qml-qtquick-shadereffectsource.html" translate="no">ShaderEffectSource</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Post-processing effects are only available when the <a href="qml-qtquick3d-view3d.html#renderMode-prop" translate="no">renderMode</a> for the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> is set to <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.Offscreen.</p>
+</div>
+<p>Custom vertex shader snippets can also be specified for an effect, but they have limited usefulness and therefore are expected to be used relatively rarely. The vertex input for a post-processing effect is a quad (either two triangles or a triangle strip), transforming or displacing the vertices of that is often not helpful. It can however make sense to have a vertex shader in order to calculate and pass on data to the fragment shader using the <code translate="no">VARYING</code> keyword. As usual, the fragment shader will then receive an interpolated value based on the current fragment coordinate.</p>
+<p>The syntax of the shader snippets associated with a <a href="qml-qtquick3d-effect.html" translate="no">Effect</a> is identical to the shaders for an unshaded <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>. When it comes to the built-in special keywords, <code translate="no">VARYING</code>, <code translate="no">MAIN</code>, <code translate="no">FRAGCOLOR</code> (fragment shader only), <code translate="no">POSITION</code> (vertex shader only), <code translate="no">VERTEX</code> (vertex shader only), and <code translate="no">MODELVIEWPROJECTION_MATRIX</code> work identically to <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>.</p>
+<p>The most important special keywords for <a href="qml-qtquick3d-effect.html" translate="no">Effect</a> fragment shaders are the following:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Name</th><th >Type</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >INPUT</td><td >sampler2D or sampler2DArray</td><td >The sampler for the input texture. An effect will typically sample this using <code translate="no">INPUT_UV</code>.</td></tr>
+<tr valign="top" class="even"><td >INPUT_UV</td><td >vec2</td><td >UV coordinates for sampling <code translate="no">INPUT</code>.</td></tr>
+<tr valign="top" class="odd"><td >INPUT_SIZE</td><td >vec2</td><td >The size of the <code translate="no">INPUT</code> texture, in pixels. This is a convenient alternative to calling textureSize().</td></tr>
+<tr valign="top" class="even"><td >OUTPUT_SIZE</td><td >vec2</td><td >The size of the output texture, in pixels. Equal to <code translate="no">INPUT_SIZE</code> in many cases, but a multi-pass effect may have passes that output to intermediate textures with different sizes.</td></tr>
+<tr valign="top" class="odd"><td >DEPTH_TEXTURE</td><td >sampler2D</td><td >Depth texture with the depth buffer contents with the opaque objects in the scene. Like with <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>, the presence of this keyword in the shader triggers generating the depth texture automatically.</td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>When multiview rendering is enabled, the input texture is a 2D texture array. GLSL functions such as texture() and textureSize() take/return a vec3/ivec3, respectively, then. Use <code translate="no">VIEW_INDEX</code> for the layer. In VR/AR applications that wish to function both with and without multiview rendering, the portable approach is to write the shader code like this:</p>
+</div>
+<pre class="cpp plain" translate="no">
+ #if QSHADER_VIEW_COUNT &gt;= 2
+     vec4 c = texture(INPUT, vec3(INPUT_UV, VIEW_INDEX));
+ #else
+     vec4 c = texture(INPUT, INPUT_UV);
+ #endif
+</pre>
+<h3 id="a-post-processing-effect">A post-processing effect</h3>
+<p>Let's start with a simple scene, this time using a few more objects, including a textured rectangle that uses a checkerboard texture as its base color map.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >main.qml</th><th >Result</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick3D
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="type"><a href="qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+             <span class="name">clearColor</span>: <span class="string">&quot;black&quot;</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> { <span class="name">z</span>: <span class="number">400</span> }
+
+         <span class="type"><a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> { }
+
+         <span class="type"><a href="qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+             <span class="name">id</span>: <span class="name">checkerboard</span>
+             <span class="name">source</span>: <span class="string">&quot;checkerboard.png&quot;</span>
+             <span class="name">scaleU</span>: <span class="number">20</span>
+             <span class="name">scaleV</span>: <span class="number">20</span>
+             <span class="name">tilingModeHorizontal</span>: <span class="name">Texture</span>.<span class="name">Repeat</span>
+             <span class="name">tilingModeVertical</span>: <span class="name">Texture</span>.<span class="name">Repeat</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">10</span>, <span class="number">10</span>, <span class="number">1</span>)
+             <span class="name">eulerRotation</span>.x: -<span class="number">45</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColorMap</span>: <span class="name">checkerboard</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cone&quot;</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">100</span>, -<span class="number">50</span>, <span class="number">100</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+             <span class="name">position</span>.y: <span class="number">100</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">20</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">150</span>, <span class="number">200</span>, -<span class="number">100</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> { }
+         }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/quick3d-custom-effect-section-scene.jpg" alt="" /></p></td></tr>
+</table></div>
+<p>Now let's apply an affect to the entire scene. More precisely, to the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. When there are multiple <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> items in the scene, each has its own <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> and therefore have their own post-processing effect chain. In the example there is one single <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> covering the entire window.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml</th><th >effect.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ environment: SceneEnvironment {
+     backgroundMode: SceneEnvironment.Color
+     clearColor: &quot;black&quot;
+     effects: redEffect
+ }
+
+ Effect {
+     id: redEffect
+     property real uRed: 1.0
+     NumberAnimation on uRed { from: 1; to: 0; duration: 5000; loops: -1 }
+     passes: Pass {
+         shaders: Shader {
+             stage: Shader.Fragment
+             shader: &quot;effect.frag&quot;
+         }
+     }
+ }
+</pre>
+</td><td ><pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec4 c = texture(INPUT, INPUT_UV);
+     c.r = uRed;
+     FRAGCOLOR = c;
+ }
+</pre>
+</td></tr>
+</table></div>
+<p>This simple effect alters the red color channel value. Exposing QML properties as uniforms works the same way with effects as with custom materials. The shader starts with a line that is going to be very common when writing fragment shaders fro effects: sampling <code translate="no">INPUT</code> at the UV coordinates <code translate="no">INPUT_UV</code>. It then performs its desired calculations, and assigns the final fragment color to <code translate="no">FRAGCOLOR</code>.</p>
+<p class="centerAlign"><img src="images/quick3d-custom-first-effect-anim.gif" alt="" /></p><p>Many properties set in the example are in plural (effects, passes, shaders). While the list <code translate="no">[ ]</code> syntax can be omitted when having a single element only, all these properties are lists, and can hold more than one element. Why is this?</p>
+<ul>
+<li><a href="qml-qtquick3d-sceneenvironment.html#effects-prop" translate="no">effects</a> is a list, because <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> allows chaining multiple effects together. The effects are applied in the order in which they are added to the list. This allows easily applying two or more effects together to the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>, and is similar to what one can achieve in Qt Quick by nesting <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> items. The <code translate="no">INPUT</code> texture of the next effect is always a texture that contains the previous effect's output. The output of the last effect in what gets used as the final output of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</li>
+<li><a href="qml-qtquick3d-effect.html#passes-prop" translate="no">passes</a> is a list, because unlike <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a>, Effect has built-in support for multiple passes. A multi-pass effect is more powerful than chaining together multiple, independent effects in <a href="qml-qtquick3d-sceneenvironment.html#effects-prop" translate="no">effects</a>: a pass can output to a temporary, intermediate texture, which can then be used as input to subsequent passes, in addition to the original input texture of the effect. This allows creating complex effects that calculate, render, and blend together multiple textures in order to get to the final fragment color. This advanced use case is not going to be covered here. Refer to the <a href="qml-qtquick3d-effect.html" translate="no">Effect</a> documentation page for details.</li>
+<li><a href="qml-qtquick3d-pass.html#shaders-prop" translate="no">shaders</a> is a list, because an effect may have both a vertex and a fragment shader associated.</li>
+</ul>
+<h3 id="chaining-multiple-effects">Chaining multiple effects</h3>
+<p>Let's look at an example where the effect from the previous example gets complemented by another effect similar to the built-in <a href="qml-qtquick3d-effects-distortionspiral.html" class="obsolete" translate="no">DistortionSpiral</a> effect.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Change in main.qml</th><th >effect2.frag</th></tr></thead>
+<tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ environment: SceneEnvironment {
+     backgroundMode: SceneEnvironment.Color
+     clearColor: &quot;black&quot;
+     effects: [redEffect, distortEffect]
+ }
+
+ Effect {
+     id: redEffect
+     property real uRed: 1.0
+     NumberAnimation on uRed { from: 1; to: 0; duration: 5000; loops: -1 }
+     passes: Pass {
+         shaders: Shader {
+             stage: Shader.Fragment
+             shader: &quot;effect.frag&quot;
+         }
+     }
+ }
+
+ Effect {
+     id: distortEffect
+     property real uRadius: 0.1
+     NumberAnimation on uRadius { from: 0.1; to: 1.0; duration: 5000; loops: -1 }
+     passes: Pass {
+         shaders: Shader {
+             stage: Shader.Fragment
+             shader: &quot;effect2.frag&quot;
+         }
+     }
+ }
+</pre>
+</td><td ><pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec2 center_vec = INPUT_UV - vec2(0.5, 0.5);
+     center_vec.y *= INPUT_SIZE.y / INPUT_SIZE.x;
+     float dist_to_center = length(center_vec) / uRadius;
+     vec2 texcoord = INPUT_UV;
+     if (dist_to_center &lt;= 1.0) {
+         float rotation_amount = (1.0 - dist_to_center) * (1.0 - dist_to_center);
+         float r = radians(360.0) * rotation_amount / 4.0;
+         float cos_r = cos(r);
+         float sin_r = sin(r);
+         mat2 rotation = mat2(cos_r, sin_r, -sin_r, cos_r);
+         texcoord = vec2(0.5, 0.5) + rotation * (INPUT_UV - vec2(0.5, 0.5));
+     }
+     vec4 c = texture(INPUT, texcoord);
+     FRAGCOLOR = c;
+ }
+</pre>
+</td></tr>
+</table></div>
+<p class="centerAlign"><img src="images/quick3d-custom-chained-effect-anim.gif" alt="" /></p><p>Now the perhaps surprising question: why is this a bad example?</p>
+<p>More precisely, it is not bad, but rather shows a pattern that can often be beneficial to avoid.</p>
+<p>Chaining effects this way can be useful, but it is important to keep in mind the performance implications: doing two render passes (one to generate a texture with the adjusted red color channel, and then another one two calculate the distortion) is quite wasteful when one would be enough. If the fragment shader snippets were combined, the same result could have been achieved with one single effect.</p>
+<h2 id="defining-mesh-and-texture-data-from-c">Defining Mesh and Texture Data from C++</h2>
+<p>Procedurally generating mesh and texture image data both follow similar steps:</p>
+<ul>
+<li>Subclass <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> or <a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a></li>
+<li>Set the desired vertex or image data upon construction by calling the protected member functions from the base class</li>
+<li>If dynamic changes are needed afterwards at some point, set the new data and call update()</li>
+<li>Once the implementation is done, the class needs to be registered to make it visible in QML</li>
+<li><a href="qml-qtquick3d-model.html" translate="no">Model</a> and <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> objects in QML can now use the custom vertex or image data provider by setting the <a href="qml-qtquick3d-model.html#geometry-prop" translate="no">Model::geometry</a> or <a href="qml-qtquick3d-texture.html#textureData-prop" translate="no">Texture::textureData</a> property</li>
+</ul>
+<h3 id="custom-vertex-data">Custom vertex data</h3>
+<p>Vertex data refers to the sequence of (typically <code translate="no">float</code>) values that make up a mesh. Instead of loading <code translate="no">.mesh</code> files, a custom geometry provider is responsible for providing the same data. The vertex data consist of <code translate="no">attributes</code>, such as position, texture (UV) coordinates, or normals. The specification of attributes describes what kind of attributes are present, the component type (for example, a 3 component float vector for vertex position consisting of x, y, z values), which offset they start at in the provided data, and what the stride (the increment that needs to be added to the offset to point to the next element for the same attribute) is.</p>
+<p>This may seem familiar if one has worked with graphics APIs, such as OpenGL or Vulkan directly, because the way vertex input is specified with those APIs maps loosely to what a <code translate="no">.mesh</code> file or a <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> instance defines.</p>
+<p>In addition, the mesh topology (primitive type) must be specified too. For indexed drawing, the data for an index buffer must be provided as well.</p>
+<p>There is one built-in custom geometry implementation: the <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a>.Helpers module includes a <a href="qml-qtquick3d-helpers-gridgeometry.html" translate="no">GridGeometry</a> type. This allows rendering a grid in the scene with line primitives, without having to implement a custom <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> subclass.</p>
+<p>One other common use cases is rendering points. This is fairly simple to do since the attribute specification is going to be minimal: we provide three floats (x, y, z) for each vertex, nothing else. A <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> subclass could implement a geometry consisting of 2000 points similarly to the following:</p>
+<pre class="cpp plain" translate="no">
+ clear();
+ const int N = 2000;
+ const int stride = 3 * sizeof(float);
+ QByteArray v;
+ v.resize(N * stride);
+ float *p = reinterpret_cast&lt;float *&gt;(v.data());
+ QRandomGenerator *rg = QRandomGenerator::global();
+ for (int i = 0; i &lt; N; ++i) {
+     const float x = float(rg-&gt;bounded(200.0f) - 100.0f) / 20.0f;
+     const float y = float(rg-&gt;bounded(200.0f) - 100.0f) / 20.0f;
+     *p++ = x;
+     *p++ = y;
+     *p++ = 0.0f;
+ }
+ setVertexData(v);
+ setStride(stride);
+ setPrimitiveType(QQuick3DGeometry::PrimitiveType::Points);
+ addAttribute(QQuick3DGeometry::Attribute::PositionSemantic, 0, QQuick3DGeometry::Attribute::F32Type);
+</pre>
+<p>Combined with a material of</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-defaultmaterial.html" translate="no">DefaultMaterial</a></span> {
+     <span class="name">lighting</span>: <span class="name">DefaultMaterial</span>.<span class="name">NoLighting</span>
+     <span class="name">cullMode</span>: <span class="name">DefaultMaterial</span>.<span class="name">NoCulling</span>
+     <span class="name">diffuseColor</span>: <span class="string">&quot;yellow&quot;</span>
+     <span class="name">pointSize</span>: <span class="number">4</span>
+ }
+</pre>
+<p>the end result is similar to this (here viewed from an altered camera angle, with the help of <a href="qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a>):</p>
+<p class="centerAlign"><img src="images/quick3d-custom-points.jpg" alt="" /></p><div class="admonition note">
+<p><b>Note: </b>Be aware that point sizes and line widths other than 1 may not be supported at run time, depending on the underlying graphics API. This is not something Qt has control over. Therefore, it can become necessary to implement alternative techniques instead of relying on point and line drawing.</p>
+</div>
+<h3 id="custom-texture-data">Custom texture data</h3>
+<p>With textures, the data that needs to be provided is a lot simpler structurally: it is the raw pixel data, with a varying number of bytes per pixel, depending on the texture format. For example, an <code translate="no">RGBA</code> texture expects four bytes per pixel, whereas <code translate="no">RGBA16F</code> is four half-floats per pixel. This is similar to what a <a href="../qtgui/qimage.html" translate="no">QImage</a> stores internally. However, Qt Quick 3D textures can have formats the data for which cannot be represented by a <a href="../qtgui/qimage.html" translate="no">QImage</a>. For example, floating point HDR textures, or compressed textures. Therefore the data for <a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a> is always provided as a raw sequence of bytes. This may seem familiar if one has worked with graphics APIs, such as OpenGL or Vulkan directly.</p>
+<p>For details, refer to the <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a> and <a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a> documentation pages.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>, <a href="qml-qtquick3d-effect.html" translate="no">Effect</a>, <a href="qquick3dgeometry.html" translate="no">QQuick3DGeometry</a>, <a href="qquick3dtexturedata.html" translate="no">QQuick3DTextureData</a>, <a href="qtquick3d-customeffect-example.html">Qt Quick 3D - Custom Effect Example</a>, <a href="qtquick3d-customshaders-example.html">Qt Quick 3D - Custom Shaders Example</a>, <a href="qtquick3d-custommaterial-example.html">Qt Quick 3D - Custom Materials Example</a>, <a href="qtquick3d-customgeometry-example.html">Qt Quick 3D - Custom Geometry Example</a>, and <a href="qtquick3d-proceduraltexture-example.html">Qt Quick 3D - Procedural Texture Example</a>.</p>
+<!-- @@@qtquick3d-custom.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquick3d-2d.html">Qt Quick 3D Scenes with 2D Content</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-balsam.html">Balsam Asset Import Tool</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

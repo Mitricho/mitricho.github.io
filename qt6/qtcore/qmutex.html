@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qmutex.cpp -->
+  <meta name="description" content="The QMutex class provides access serialization between threads.">
+  <title>QMutex Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QMutex</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QMutex Class</h1>
+<!-- $$$QMutex-brief -->
+<p>The QMutex class provides access serialization between threads. <a href="#details">More...</a></p>
+<!-- @@@QMutex -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QMutex&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qmutex-members.html">List of all members, including inherited members</a></li>
+</ul>
+<p><b>Note:</b> All functions in this class are thread-safe.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#QMutex" translate="no">QMutex</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#dtor.QMutex" translate="no">~QMutex</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#lock" translate="no">lock</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#tryLock" translate="no">tryLock</a></b>(QDeadlineTimer <i>timer</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#tryLock-1" translate="no">tryLock</a></b>(int <i>timeout</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#tryLock-2" translate="no">tryLock</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#try_lock" translate="no">try_lock</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#try_lock_for" translate="no">try_lock_for</a></b>(std::chrono::duration&lt;Rep, Period&gt; <i>duration</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#try_lock_until" translate="no">try_lock_until</a></b>(std::chrono::time_point&lt;Clock, Duration&gt; <i>timePoint</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qmutex.html#unlock" translate="no">unlock</a></b>()</td></tr>
+</table></div>
+<!-- $$$QMutex-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The purpose of a QMutex is to protect an object, data structure or section of code so that only one thread can access it at a time (this is similar to the Java <code translate="no">synchronized</code> keyword). It is usually best to use a mutex with a <a href="qmutexlocker.html" translate="no">QMutexLocker</a> since this makes it easy to ensure that locking and unlocking are performed consistently.</p>
+<p>For example, say there is a method that prints a message to the user on two lines:</p>
+<pre class="cpp" translate="no">
+ <span class="type">int</span> number <span class="operator">=</span> <span class="number">6</span>;
+
+ <span class="type">void</span> method1()
+ {
+     number <span class="operator">*</span><span class="operator">=</span> <span class="number">5</span>;
+     number <span class="operator">/</span><span class="operator">=</span> <span class="number">4</span>;
+ }
+
+ <span class="type">void</span> method2()
+ {
+     number <span class="operator">*</span><span class="operator">=</span> <span class="number">3</span>;
+     number <span class="operator">/</span><span class="operator">=</span> <span class="number">2</span>;
+ }
+</pre>
+<p>If these two methods are called in succession, the following happens:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// method1()</span>
+ number <span class="operator">*</span><span class="operator">=</span> <span class="number">5</span>;        <span class="comment">// number is now 30</span>
+ number <span class="operator">/</span><span class="operator">=</span> <span class="number">4</span>;        <span class="comment">// number is now 7</span>
+
+ <span class="comment">// method2()</span>
+ number <span class="operator">*</span><span class="operator">=</span> <span class="number">3</span>;        <span class="comment">// number is now 21</span>
+ number <span class="operator">/</span><span class="operator">=</span> <span class="number">2</span>;        <span class="comment">// number is now 10</span>
+</pre>
+<p>If these two methods are called simultaneously from two threads then the following sequence could result:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">// Thread 1 calls method1()</span>
+ number <span class="operator">*</span><span class="operator">=</span> <span class="number">5</span>;        <span class="comment">// number is now 30</span>
+
+ <span class="comment">// Thread 2 calls method2().</span>
+ <span class="comment">//</span>
+ <span class="comment">// Most likely Thread 1 has been put to sleep by the operating</span>
+ <span class="comment">// system to allow Thread 2 to run.</span>
+ number <span class="operator">*</span><span class="operator">=</span> <span class="number">3</span>;        <span class="comment">// number is now 90</span>
+ number <span class="operator">/</span><span class="operator">=</span> <span class="number">2</span>;        <span class="comment">// number is now 45</span>
+
+ <span class="comment">// Thread 1 finishes executing.</span>
+ number <span class="operator">/</span><span class="operator">=</span> <span class="number">4</span>;        <span class="comment">// number is now 11, instead of 10</span>
+</pre>
+<p>If we add a mutex, we should get the result we want:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qmutex.html#QMutex" translate="no">QMutex</a></span> mutex;
+ <span class="type">int</span> number <span class="operator">=</span> <span class="number">6</span>;
+
+ <span class="type">void</span> method1()
+ {
+     mutex<span class="operator">.</span>lock();
+     number <span class="operator">*</span><span class="operator">=</span> <span class="number">5</span>;
+     number <span class="operator">/</span><span class="operator">=</span> <span class="number">4</span>;
+     mutex<span class="operator">.</span>unlock();
+ }
+
+ <span class="type">void</span> method2()
+ {
+     mutex<span class="operator">.</span>lock();
+     number <span class="operator">*</span><span class="operator">=</span> <span class="number">3</span>;
+     number <span class="operator">/</span><span class="operator">=</span> <span class="number">2</span>;
+     mutex<span class="operator">.</span>unlock();
+ }
+</pre>
+<p>Then only one thread can modify <code translate="no">number</code> at any given time and the result is correct. This is a trivial example, of course, but applies to any other case where things need to happen in a particular sequence.</p>
+<p>When you call <a href="qmutex.html#lock" translate="no">lock</a>() in a thread, other threads that try to call <a href="qmutex.html#lock" translate="no">lock</a>() in the same place will block until the thread that got the lock calls <a href="qmutex.html#unlock" translate="no">unlock</a>(). A non-blocking alternative to <a href="qmutex.html#lock" translate="no">lock</a>() is <a href="qmutex.html#tryLock-2" translate="no">tryLock</a>().</p>
+<p>QMutex is optimized to be fast in the non-contended case. It will not allocate memory if there is no contention on that mutex. It is constructed and destroyed with almost no overhead, which means it is fine to have many mutexes as part of other classes.</p>
+</div>
+<p><b>See also </b><a href="qrecursivemutex.html" translate="no">QRecursiveMutex</a>, <a href="qmutexlocker.html" translate="no">QMutexLocker</a>, <a href="qreadwritelock.html" translate="no">QReadWriteLock</a>, <a href="qsemaphore.html" translate="no">QSemaphore</a>, and <a href="qwaitcondition.html" translate="no">QWaitCondition</a>.</p>
+<!-- @@@QMutex -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QMutex[overload1]$$$QMutex -->
+<h3 class="fn" translate="no" id="QMutex"><code class="details extra" translate="no">[constexpr noexcept]</code> QMutex::<span class="name">QMutex</span>()</h3>
+<p>Constructs a new mutex. The mutex is created in an unlocked state.</p>
+<!-- @@@QMutex -->
+<!-- $$$~QMutex[overload1]$$$~QMutex -->
+<h3 class="fn" translate="no" id="dtor.QMutex"><code class="details extra" translate="no">[noexcept]</code> QMutex::<span class="name">~QMutex</span>()</h3>
+<p>Destroys the mutex.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Destroying a locked mutex may result in undefined behavior.</p>
+</div>
+<!-- @@@~QMutex -->
+<!-- $$$lock[overload1]$$$lock -->
+<h3 class="fn" translate="no" id="lock"><code class="details extra" translate="no">[noexcept(...)]</code> <span class="type">void</span> QMutex::<span class="name">lock</span>()</h3>
+<p>Locks the mutex. If another thread has locked the mutex then this call will block until that thread has unlocked it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function is noexcept when <code translate="no">FutexAlwaysAvailable</code> is <code translate="no">true</code>.</p>
+</div>
+<p><b>See also </b><a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@lock -->
+<!-- $$$tryLock[overload1]$$$tryLockQDeadlineTimer -->
+<h3 class="fn" translate="no" id="tryLock"><code class="details extra" translate="no">[noexcept(...), since 6.6]</code> <span class="type">bool</span> QMutex::<span class="name">tryLock</span>(<span class="type"><a href="qdeadlinetimer.html" translate="no">QDeadlineTimer</a></span> <i>timer</i>)</h3>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>. If another thread has locked the mutex, this function will wait until <i translate="no">timer</i> expires for the mutex to become available.</p>
+<p>If the lock was obtained, the mutex must be unlocked with <a href="qmutex.html#unlock" translate="no">unlock</a>() before another thread can successfully lock it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function is noexcept when <code translate="no">FutexAlwaysAvailable</code> is <code translate="no">true</code>.</p>
+</div>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>() and <a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@tryLock -->
+<!-- $$$tryLock$$$tryLockint -->
+<h3 class="fn" translate="no" id="tryLock-1"><code class="details extra" translate="no">[noexcept(...)]</code> <span class="type">bool</span> QMutex::<span class="name">tryLock</span>(<span class="type">int</span> <i>timeout</i>)</h3>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>. If another thread has locked the mutex, this function will wait for at most <i translate="no">timeout</i> milliseconds for the mutex to become available.</p>
+<p>Note: Passing a negative number as the <i translate="no">timeout</i> is equivalent to calling <a href="qmutex.html#lock" translate="no">lock</a>(), i.e. this function will wait forever until mutex can be locked if <i translate="no">timeout</i> is negative.</p>
+<p>If the lock was obtained, the mutex must be unlocked with <a href="qmutex.html#unlock" translate="no">unlock</a>() before another thread can successfully lock it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>This function is noexcept when <code translate="no">FutexAlwaysAvailable</code> is <code translate="no">true</code>.</p>
+</div>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>() and <a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@tryLock -->
+<!-- $$$tryLock$$$tryLock -->
+<h3 class="fn" translate="no" id="tryLock-2"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QMutex::<span class="name">tryLock</span>()</h3>
+<p>This is an overloaded function.</p>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>.</p>
+<p>If the lock was obtained, the mutex must be unlocked with <a href="qmutex.html#unlock" translate="no">unlock</a>() before another thread can successfully lock it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>() and <a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@tryLock -->
+<!-- $$$try_lock[overload1]$$$try_lock -->
+<h3 class="fn" translate="no" id="try_lock"><code class="details extra" translate="no">[noexcept]</code> <span class="type">bool</span> QMutex::<span class="name">try_lock</span>()</h3>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>.</p>
+<p>This function is provided for compatibility with the Standard Library concept <code translate="no">Lockable</code>. It is equivalent to <a href="qmutex.html#tryLock-2" translate="no">tryLock</a>().</p>
+<!-- @@@try_lock -->
+<!-- $$$try_lock_for[overload1]$$$try_lock_forstd::chrono::duration<Rep,Period> -->
+<h3 class="fn" translate="no" id="try_lock_for">template &lt;typename Rep, typename Period&gt; <span class="type">bool</span> QMutex::<span class="name">try_lock_for</span>(<span class="type">std::chrono::duration</span>&lt;<span class="type">Rep</span>, <span class="type">Period</span>&gt; <i>duration</i>)</h3>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>. If another thread has locked the mutex, this function will wait for at least <i translate="no">duration</i> for the mutex to become available.</p>
+<p>Note: Passing a negative duration as the <i translate="no">duration</i> is equivalent to calling <a href="qmutex.html#try_lock" translate="no">try_lock</a>(). This behavior differs from <a href="qmutex.html#tryLock-2" translate="no">tryLock</a>().</p>
+<p>If the lock was obtained, the mutex must be unlocked with <a href="qmutex.html#unlock" translate="no">unlock</a>() before another thread can successfully lock it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>() and <a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@try_lock_for -->
+<!-- $$$try_lock_until[overload1]$$$try_lock_untilstd::chrono::time_point<Clock,Duration> -->
+<h3 class="fn" translate="no" id="try_lock_until">template &lt;typename Clock, typename Duration&gt; <span class="type">bool</span> QMutex::<span class="name">try_lock_until</span>(<span class="type">std::chrono::time_point</span>&lt;<span class="type">Clock</span>, <span class="type">Duration</span>&gt; <i>timePoint</i>)</h3>
+<p>Attempts to lock the mutex. This function returns <code translate="no">true</code> if the lock was obtained; otherwise it returns <code translate="no">false</code>. If another thread has locked the mutex, this function will wait at least until <i translate="no">timePoint</i> for the mutex to become available.</p>
+<p>Note: Passing a <i translate="no">timePoint</i> which has already passed is equivalent to calling <a href="qmutex.html#try_lock" translate="no">try_lock</a>(). This behavior differs from <a href="qmutex.html#tryLock-2" translate="no">tryLock</a>().</p>
+<p>If the lock was obtained, the mutex must be unlocked with <a href="qmutex.html#unlock" translate="no">unlock</a>() before another thread can successfully lock it.</p>
+<p>Calling this function multiple times on the same mutex from the same thread will cause a <i>dead-lock</i>.</p>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>() and <a href="qmutex.html#unlock" translate="no">unlock</a>().</p>
+<!-- @@@try_lock_until -->
+<!-- $$$unlock[overload1]$$$unlock -->
+<h3 class="fn" translate="no" id="unlock"><code class="details extra" translate="no">[noexcept]</code> <span class="type">void</span> QMutex::<span class="name">unlock</span>()</h3>
+<p>Unlocks the mutex. Attempting to unlock a mutex in a different thread to the one that locked it results in an error. Unlocking a mutex that is not locked results in undefined behavior.</p>
+<p><b>See also </b><a href="qmutex.html#lock" translate="no">lock</a>().</p>
+<!-- @@@unlock -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

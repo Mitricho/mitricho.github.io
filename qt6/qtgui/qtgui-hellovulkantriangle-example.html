@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- hellovulkantriangle.qdoc -->
+  <meta name="description" content="Shows the basics of rendering with QVulkanWindow and the Vulkan API.">
+  <title>Hello Vulkan Triangle Example | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li>Hello Vulkan Triangle Example</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#startup">Startup</a></li>
+<li class="level1"><a href="#the-qvulkanwindow-subclass">The QVulkanWindow Subclass</a></li>
+<li class="level1"><a href="#the-actual-rendering">The Actual Rendering</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Hello Vulkan Triangle Example</h1>
+<!-- $$$hellovulkantriangle-brief -->
+<p>Shows the basics of rendering with <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> and the Vulkan API.</p>
+<!-- @@@hellovulkantriangle -->
+<!-- $$$hellovulkantriangle-description -->
+<div class="descr" id="details">
+<p>The <i>Hello Vulkan Triangle Example</i> creates a full graphics pipeline, including a vertex and fragment shader, to render a triangle.</p>
+<p class="centerAlign"><img src="images/hellovulkantriangle.png" alt="" /></p><h4 id="startup">Startup</h4>
+<p>Each Qt application using Vulkan will have to have a <code translate="no">Vulkan instance</code> which encapsulates application-level state and initializes a Vulkan library.</p>
+<p>A <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> must always be associated with a <a href="qvulkaninstance.html" translate="no">QVulkanInstance</a> and hence the example performs instance creation before the window. The <a href="qvulkaninstance.html" translate="no">QVulkanInstance</a> object must also outlive the window.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qvulkaninstance.html" translate="no">QVulkanInstance</a></span> inst;
+     inst<span class="operator">.</span>setLayers({ <span class="string">&quot;VK_LAYER_KHRONOS_validation&quot;</span> });
+     <span class="keyword">if</span> (<span class="operator">!</span>inst<span class="operator">.</span>create())
+         <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Failed to create Vulkan instance: %d&quot;</span><span class="operator">,</span> inst<span class="operator">.</span>errorCode());
+</pre>
+<p>The example enables validation layers, when supported. When the requested layers are not present, the request will be ignored. Additional layers and extensions can be enabled in a similar manner.</p>
+<pre class="cpp" translate="no">
+     VulkanWindow w;
+     w<span class="operator">.</span>setVulkanInstance(<span class="operator">&amp;</span>inst);
+
+     w<span class="operator">.</span>resize(<span class="number">1024</span><span class="operator">,</span> <span class="number">768</span>);
+     w<span class="operator">.</span>show();
+</pre>
+<p>Once the instance is ready, it is time to create a window. Note that <code translate="no">w</code> lives on the stack and is declared after <code translate="no">inst</code>.</p>
+<h4 id="the-qvulkanwindow-subclass">The QVulkanWindow Subclass</h4>
+<p>To add custom functionality to a <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a>, subclassing is used. This follows the existing patterns from <a href="../qtopengl/qopenglwindow.html" translate="no">QOpenGLWindow</a> and <a href="../qtopengl/qopenglwidget.html" translate="no">QOpenGLWidget</a>. However, <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> utilizes a separate <a href="qvulkanwindowrenderer.html" translate="no">QVulkanWindowRenderer</a> object.</p>
+<p>The <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> subclass reimplements the factory function <a href="qvulkanwindow.html#createRenderer" translate="no">QVulkanWindow::createRenderer</a>(). This simply returns a new instance of the <a href="qvulkanwindowrenderer.html" translate="no">QVulkanWindowRenderer</a> subclass. In order to be able to access various Vulkan resources via the window object, a pointer to the window is passed and stored via the constructor.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> VulkanWindow : <span class="keyword">public</span> <span class="type"><a href="qvulkanwindow.html" translate="no">QVulkanWindow</a></span>
+ {
+ <span class="keyword">public</span>:
+     <span class="type"><a href="qvulkanwindowrenderer.html" translate="no">QVulkanWindowRenderer</a></span> <span class="operator">*</span>createRenderer() override;
+ };
+</pre>
+<h4 id="the-actual-rendering">The Actual Rendering</h4>
+<p><a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> subclasses queue their draw calls in their reimplementation of <a href="qvulkanwindowrenderer.html#startNextFrame" translate="no">QVulkanWindowRenderer::startNextFrame</a>(). Once done, they are required to call back <a href="qvulkanwindow.html#frameReady" translate="no">QVulkanWindow::frameReady</a>(). The example has no asynchronous command generation, so the frameReady() call is made directly from startNextFrame(). To get continuous updates, the example simply invokes <a href="qwindow.html#requestUpdate" translate="no">QWindow::requestUpdate</a>() in order to schedule a repaint.</p>
+<p>The example also demonstrates multisample antialiasing. Based on the supported sample counts reported by <a href="qvulkanwindow.html#supportedSampleCounts" translate="no">QVulkanWindow::supportedSampleCounts</a>() the example chooses between 8x, 4x, or no multisampling. Once configured via QVulkanWindow::setSamples(), <a href="qvulkanwindow.html" translate="no">QVulkanWindow</a> takes care of the rest: the additional multisample color buffers are created automatically, and resolving into the swapchain buffers is performed at the end of the default render pass for each frame.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/vulkan/hellovulkantriangle?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@hellovulkantriangle -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

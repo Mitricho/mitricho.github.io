@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-universal.qdoc -->
+  <title>Universal Style | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+<li>Universal Style</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquickcontrols-material.html" />
+  <link rel="next" href="qtquickcontrols-windows.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquickcontrols-material.html">Material Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-windows.html">Windows Style</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#attached-properties">Attached Properties</a></li>
+<li class="level1"><a href="#attached-methods">Attached Methods</a></li>
+<li class="level1"><a href="#detailed-description">Detailed Description</a></li>
+<li class="level2"><a href="#customization">Customization</a></li>
+<li class="level2"><a href="#dependency">Dependency</a></li>
+<li class="level2"><a href="#pre-defined-universal-colors">Pre-defined Universal Colors</a></li>
+<li class="level1"><a href="#attached-property-documentation">Attached Property Documentation</a></li>
+<li class="level1"><a href="#attached-method-documentation">Attached Method Documentation</a></li>
+<li class="level1"><a href="#related-information">Related Information</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Universal Style</h1>
+<!-- $$$qtquickcontrols-universal.html-description -->
+<div class="descr" id="details">
+<p>The Universal Style is based on the Microsoft Universal Design Guidelines. <a href="qtquickcontrols-universal.html#detailed-desc-universal">More...</a></p>
+<table class="alignedsummary"><tbody><tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import QtQuick.Controls.Universal 2.12</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 5.7</td></tr></tbody></table><h2 id="attached-properties">Attached Properties</h2>
+<ul>
+<li><a href="qtquickcontrols-universal.html#universal-accent-attached-prop"><b>accent</b></a> : color</li>
+<li><a href="qtquickcontrols-universal.html#universal-background-attached-prop"><b>background</b></a> : color</li>
+<li><a href="qtquickcontrols-universal.html#universal-foreground-attached-prop"><b>foreground</b></a> : color</li>
+<li><a href="qtquickcontrols-universal.html#universal-theme-attached-prop"><b>theme</b></a> : enumeration</li>
+</ul>
+<h2 id="attached-methods">Attached Methods</h2>
+<ul>
+<li>color <a href="qtquickcontrols-universal.html#color-attached-method"><b>color</b></a>(enumeration predefined)</li>
+</ul>
+<h2 id="detailed-description">Detailed Description</h2>
+<span id="detailed-desc-universal"></span><p>The Universal style is a device-agnostic style based on the <a href="https://dev.windows.com/design">Microsoft Universal Design Guidelines</a>. The Universal style has been designed to look good on all devices, from phones and tablets to PCs.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-light.png" alt="" /></p><p class="figCaption">The light theme of the Universal style.</p>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-dark.png" alt="" /></p><p class="figCaption">The dark theme of the Universal style.</p>
+</td></tr>
+</table></div>
+<p>To run an application with the Universal style, see <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The Universal style is not a native Windows 10 style. The Universal style is a 100% cross-platform Qt Quick Controls style implementation that follows the Microsoft Universal Design Guidelines. The style runs on any platform, and looks more or less identical everywhere. Minor differences may occur due to differences in available system fonts and font rendering engines.</p>
+</div>
+<h3 id="customization">Customization</h3>
+<p>The Universal style allows customizing four attributes, <a href="qtquickcontrols-universal.html#universal-theme-attached-prop">theme</a>, <a href="qtquickcontrols-universal.html#universal-accent-attached-prop">accent</a>, <a href="qtquickcontrols-universal.html#universal-foreground-attached-prop">foreground</a>, and <a href="qtquickcontrols-universal.html#universal-background-attached-prop">background</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-universal-attributes.png" alt="" /></p><p>Both attributes can be specified for any window or item, and they automatically propagate to children in the same manner as <a href="qml-qtquick-controls-control.html#font-prop" translate="no">fonts</a>. In the following example, the window and all three radio buttons appear in the dark theme using a violet accent color:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick 2.12
+ import QtQuick.Controls 2.12
+ import QtQuick.Controls.Universal 2.12
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="name">Universal</span>.theme: <span class="name">Universal</span>.<span class="name">Dark</span>
+     <span class="name">Universal</span>.accent: <span class="name">Universal</span>.<span class="name">Violet</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-column.html" translate="no">Column</a></span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Small&quot;</span>) }
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Medium&quot;</span>);  <span class="name">checked</span>: <span class="number">true</span> }
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Large&quot;</span>) }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-violet.png" alt="" /></p></td></tr>
+</table></div>
+<p>In addition to specifying the attributes in QML, it is also possible to specify them via environment variables or in a configuration file. Attributes specified in QML take precedence over all other methods.</p>
+<h4 id="configuration-file">Configuration File</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Variable</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">Theme</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-theme-attached-prop">Universal theme</a>. The value can be one of the available themes, for example <code translate="no">&quot;Dark&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">Accent</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-accent-attached-prop">Universal accent color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Violet&quot;</code>.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">Foreground</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-foreground-attached-prop">Universal foreground color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Brown&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">Background</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-background-attached-prop">Universal background color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Steel&quot;</code>.</td></tr>
+</table></div>
+<p>See <a href="qtquickcontrols-configuration.html">Qt Quick Controls Configuration File</a> for more details about the configuration file.</p>
+<h4 id="environment-variables">Environment Variables</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Variable</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">QT_QUICK_CONTROLS_UNIVERSAL_THEME</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-theme-attached-prop">Universal theme</a>. The value can be one of the available themes, for example <code translate="no">&quot;Dark&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">QT_QUICK_CONTROLS_UNIVERSAL_ACCENT</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-accent-attached-prop">Universal accent color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Violet&quot;</code>.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">QT_QUICK_CONTROLS_UNIVERSAL_FOREGROUND</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-foreground-attached-prop">Universal foreground color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Brown&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">QT_QUICK_CONTROLS_UNIVERSAL_BACKGROUND</code></td><td >Specifies the default <a href="qtquickcontrols-universal.html#universal-background-attached-prop">Universal background color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a>, for example <code translate="no">&quot;Steel&quot;</code>.</td></tr>
+</table></div>
+<p>See <a href="qtquickcontrols-environment.html">Supported Environment Variables in Qt Quick Controls</a> for the full list of supported environment variables.</p>
+<h3 id="dependency">Dependency</h3>
+<p>The Universal style must be separately imported to gain access to the attributes that are specific to the Universal style. It should be noted that regardless of the references to the Universal style, the same application code runs with any other style. Universal-specific attributes only have an effect when the application is run with the Universal style.</p>
+<p>If the Universal style is imported in a QML file that is always loaded, the Universal style must be deployed with the application in order to be able to run the application regardless of which style the application is run with. By using <a href="qtquickcontrols-fileselectors.html">file selectors</a>, style-specific tweaks can be applied without creating a hard dependency to a style.</p>
+<h3 id="pre-defined-universal-colors">Pre-defined Universal Colors</h3>
+<p>Available pre-defined colors:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Lime</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#A4C400;">#A4C400 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Green</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#60A917;">#60A917 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Emerald</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#008A00;">#008A00 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Teal</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#00ABA9;">#00ABA9 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Cyan</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#1BA1E2;">#1BA1E2 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Cobalt</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#3E65FF;">#3E65FF (default accent)</div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Indigo</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#6A00FF;">#6A00FF </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Violet</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#AA00FF;">#AA00FF </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Pink</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#F472D0;">#F472D0 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Magenta</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#D80073;">#D80073 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Crimson</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#A20025;">#A20025 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Red</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#E51400;">#E51400 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Orange</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FA6800;">#FA6800 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Amber</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#F0A30A;">#F0A30A </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Yellow</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#E3C800;">#E3C800 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Brown</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#825A2C;">#825A2C </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Olive</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#6D8764;">#6D8764 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Steel</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#647687;">#647687 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Mauve</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#76608A;">#76608A </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Taupe</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#87794E;">#87794E </div></td></tr>
+</table></div>
+<p><b>See also</b> <a href="qtquickcontrols-basic.html">Basic Style</a>, <a href="qtquickcontrols-material.html">Material Style</a></p>
+<h2 id="attached-property-documentation">Attached Property Documentation</h2>
+<div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Universal.accent</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="universal-accent-attached-prop"></span><p>This attached property holds the accent color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is <code translate="no">Universal.Cobalt</code>.</p>
+<p>In the following example, the accent color of the highlighted button is changed to <code translate="no">Universal.Orange</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">highlighted</span>: <span class="number">true</span>
+     <span class="name">Universal</span>.accent: <span class="name">Universal</span>.<span class="name">Orange</span>
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-accent.png" alt="" /></p></td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>Even though the accent can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, it is recommended to use one of the <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal colors</a> that have been designed to work well with the rest of the Universal style palette.</p>
+</div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Universal.background</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="universal-background-attached-prop"></span><p>This attached property holds the background color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is theme-specific (light or dark).</p>
+<p>In the following example, the background color of the pane is changed to <code translate="no">Universal.Steel</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">Universal</span>.background: <span class="name">Universal</span>.<span class="name">Steel</span>
+
+     <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-background.png" alt="" /></p></td></tr>
+</table></div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Universal.foreground</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="universal-foreground-attached-prop"></span><p>This attached property holds the foreground color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is theme-specific (light or dark).</p>
+<p>In the following example, the foreground color of the button is set to <code translate="no">Universal.Pink</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">Universal</span>.foreground: <span class="name">Universal</span>.<span class="name">Pink</span>
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-foreground.png" alt="" /></p></td></tr>
+</table></div>
+<div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Universal.theme</span> : <span class="type">enumeration</span></p></td></tr></tbody></table></div><span id="universal-theme-attached-prop"></span><p>This attached property holds whether the theme is light or dark. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>Available themes:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Light</code></td><td class="topAlign">Light theme (default)</td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.Dark</code></td><td class="topAlign">Dark theme</td></tr>
+<tr><td class="topAlign"><code translate="no">Universal.System</code></td><td class="topAlign">System theme</td></tr>
+</table></div>
+<p>Setting the theme to <code translate="no">System</code> chooses either the light or dark theme based on the system theme colors. However, when reading the value of the theme property, the value is never <code translate="no">System</code>, but the actual theme.</p>
+<p>In the following example, the theme for both the pane and the button is set to <code translate="no">Universal.Dark</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">Universal</span>.theme: <span class="name">Universal</span>.<span class="name">Dark</span>
+
+     <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-universal-theme.png" alt="" /></p></td></tr>
+</table></div>
+<br/><h2 id="attached-method-documentation">Attached Method Documentation</h2>
+<div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlFuncNode"><p><span class="type">color</span> <span class="name">color</span>(<span class= type>enumeration</span> <i>predefined</i>)</p></td></tr></tbody></table></div><span id="color-attached-method"></span><p>This attached method returns the effective color value of the specified <a href="qtquickcontrols-universal.html#pre-defined-universal-colors">pre-defined Universal color</a>.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">color</span>: <span class="name">Universal</span>.<span class="name">color</span>(<span class="name">Universal</span>.<span class="name">Red</span>)
+ }
+</pre>
+<br/><h2 id="related-information">Related Information</h2>
+<ul>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+</ul>
+</div>
+<!-- @@@qtquickcontrols-universal.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquickcontrols-material.html">Material Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-windows.html">Windows Style</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

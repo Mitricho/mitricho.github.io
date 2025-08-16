@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- overview-compositor.qdoc -->
+  <meta name="description" content="Overview Compositor shows how to switch between clients in a grid.">
+  <title>Overview Compositor | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-examples.html">Qt Wayland Compositor Examples</a></li>
+<li>Overview Compositor</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#application-grid">Application Grid</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Overview Compositor</h1>
+<!-- $$$overview-compositor-brief -->
+<p>Overview Compositor shows how to switch between clients in a grid.</p>
+<!-- @@@overview-compositor -->
+<!-- $$$overview-compositor-description -->
+<div class="descr" id="details">
+<h4 id="introduction">Introduction</h4>
+<p>Overview Compositor demonstrates selecting and activating an application from a grid of currently connected clients.</p>
+<p class="centerAlign"><img src="images/overview-compositor.jpg" alt="" /></p><p>For an introduction to the basic principles of creating a <a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a> with Qt, see the <a href="qtwaylandcompositor-minimal-qml-example.html">Minimal QML example</a>.</p>
+<h4 id="application-grid">Application Grid</h4>
+<p>In this example, the compositor supports two different modes of operation:</p>
+<ul>
+<li>A <i>fullscreen</i> mode, where a single application window occupies the whole compositor window and is interactable.</li>
+<li>An <i>overview</i> mode, where all application windows are visible in a grid. Clicking on a window in the grid causes it to be selected. The compositor enters fullscreen mode, showing the selected application window.</li>
+</ul>
+<p>When a client connects to the compositor and creates a top-level surface, the surface will be connected to a <a href="qtwaylandcompositor-shellextensions.html">shell extension</a>. The example only supports the <a href="qml-qtwayland-compositor-xdgshell-xdgshell.html" translate="no">XdgShell</a> extension, so the client will connect to this.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtwayland-compositor-xdgshell-xdgshell.html" translate="no">XdgShell</a></span> {
+     <span class="name">onToplevelCreated</span>: (<span class="keyword"></span>toplevel, xdgSurface) =&gt; {
+         <span class="name">toplevels</span>.<span class="name">append</span>({<span class="name">xdgSurface</span>});
+         <span class="name">toplevel</span>.<span class="name">sendFullscreen</span>(<span class="name">Qt</span>.<span class="name">size</span>(<span class="name">win</span>.<span class="name">pixelWidth</span>, <span class="name">win</span>.<span class="name">pixelHeight</span>));
+     }
+ }
+</pre>
+<p>For each surface, we tell the client to configure it as fullscreen. In addition, the surfaces are added to a <a href="../qtqmlmodels/qml-qtqml-models-listmodel.html" translate="no">ListModel</a> for easy access.</p>
+<p>This model is used by a <a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a> to create <a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItems</a> inside a <a href="../qtquick/qml-qtquick-grid.html" translate="no">Grid</a>. The <a href="../qtquick/qml-qtquick-grid.html" translate="no">Grid</a> component positions the items in a grid.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+     <span class="name">model</span>: <span class="name">toplevels</span>
+     <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         <span class="name">width</span>: <span class="name">win</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">win</span>.<span class="name">height</span>
+         <span class="type"><a href="qml-qtwayland-compositor-shellsurfaceitem.html" translate="no">ShellSurfaceItem</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">shellSurface</span>: <span class="name">xdgSurface</span>
+             <span class="name">onSurfaceDestroyed</span>: <span class="name">toplevels</span>.<span class="name">remove</span>(<span class="name">index</span>)
+         }
+         <span class="type"><a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a></span> {
+             <span class="name">enabled</span>: <span class="name">grid</span>.<span class="name">overview</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">onClicked</span>: {
+                 <span class="name">grid</span>.<span class="name">selected</span> <span class="operator">=</span> <span class="name">index</span>;
+                 <span class="name">grid</span>.<span class="name">overview</span> <span class="operator">=</span> <span class="number">false</span>;
+             }
+         }
+     }
+ }
+</pre>
+<p>For each of the items, we create a <a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a> which covers the item and intercepts all mouse and touch input. This is only active when the compositor is in <i>overview</i> mode, and activates the application that was clicked.</p>
+<p>When the compositor goes into fullscreen mode, the same <a href="../qtquick/qml-qtquick-grid.html" translate="no">Grid</a> component is used, but is scaled and translated into a position where the single selected cell fills the compositor's window. The idea is to &quot;zoom in&quot; on the selected cell, allowing the user to interact with the application it contains.</p>
+<pre class="qml" translate="no">
+ <span class="name">transform</span>: [
+     <span class="type"><a href="../qtquick/qml-qtquick-scale.html" translate="no">Scale</a></span> {
+         <span class="name">xScale</span>: <span class="name">grid</span>.<span class="name">overview</span> ? (<span class="number">1.0</span><span class="operator">/</span><span class="name">grid</span>.<span class="name">columns</span>) : <span class="number">1</span>
+         <span class="name">yScale</span>: <span class="name">grid</span>.<span class="name">overview</span> ? (<span class="number">1.0</span><span class="operator">/</span><span class="name">grid</span>.<span class="name">columns</span>) : <span class="number">1</span>
+         Behavior on <span class="name">xScale</span> { <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>; <span class="name">duration</span>: <span class="number">200</span> } }
+         Behavior on <span class="name">yScale</span> { <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>; <span class="name">duration</span>: <span class="number">200</span> } }
+     },
+     <span class="type"><a href="../qtquick/qml-qtquick-translate.html" translate="no">Translate</a></span> {
+         <span class="name">x</span>: <span class="name">grid</span>.<span class="name">overview</span> ? <span class="number">0</span> : <span class="name">win</span>.<span class="name">width</span> <span class="operator">*</span> -<span class="name">grid</span>.<span class="name">selectedColumn</span>
+         <span class="name">y</span>: <span class="name">grid</span>.<span class="name">overview</span> ? <span class="number">0</span> : <span class="name">win</span>.<span class="name">height</span> <span class="operator">*</span> -<span class="name">grid</span>.<span class="name">selectedRow</span>
+         Behavior on <span class="name">x</span> { <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>; <span class="name">duration</span>: <span class="number">200</span> } }
+         Behavior on <span class="name">y</span> { <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutQuad</span>; <span class="name">duration</span>: <span class="number">200</span> } }
+     }
+ ]
+</pre>
+<p>At the bottom side of the window, there is a button which toggles between the modes. This can be used to bring back the application grid while the compositor is in fullscreen mode.</p>
+<p>This example shows one way to have the compositor visualize clients in different modes. Another way to achieve similar effects is to create multiple Qt Quick items that refer to the same surface. See <a href="qtwaylandcompositor-multi-output-example.html">the Multi Output example</a> for a demonstration.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtwayland.git/tree/examples/wayland/overview-compositor?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@overview-compositor -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

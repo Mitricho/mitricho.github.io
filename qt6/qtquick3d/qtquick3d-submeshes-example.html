@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-submeshes.qdoc -->
+  <meta name="description" content="Demonstrates how assign materials to sub-meshes.">
+  <title>Qt Quick 3D - Sub-mesh Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - Sub-mesh Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#sub-meshes-and-materials">Sub-meshes and materials</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - Sub-mesh Example</h1>
+<!-- $$$submeshes-brief -->
+<p>Demonstrates how assign materials to sub-meshes.</p>
+<!-- @@@submeshes -->
+<!-- $$$submeshes-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/submeshes-example.png" alt="" /></p><p>This example demonstrates how material and sub-meshes are mapped.</p>
+<h4 id="sub-meshes-and-materials">Sub-meshes and materials</h4>
+<p>When a <a href="qml-qtquick3d-model.html" translate="no">Model</a> is built up of two or more meshes, then those meshes are referred to as sub-meshes. Each sub-mesh can have its own material, but it's not required to provide more then one material per model. If there are more sub-meshes then there are materials, then the last material in the <a href="qml-qtquick3d-model.html#materials-prop" translate="no">materials</a> list is used for all remeining sub-meshes. When a model is provided with one material per sub-mesh, then those are mapped on-to-one, meaning the first material in the list is applied to the first sub-mesh, the second material to the second sub-mesh, and so forth. How the sub-meshes are ordered in a model depends on how the model was created and exported by the 3D modeling tool used to create it.</p>
+<p>The following example shows two distored cubes where each side of the cube is a sub-mesh of its own.</p>
+<p>If we look at the cube on the left, we can see that there's one side colored <b>red</b> while the rest of the sides are <b>green</b>, the reason for this is of course that the material only has two materials, namely one red, and one green. In our model the first sub-mesh happens to be the &quot;top&quot; side of the distored cube, and since the red material is the placed first in the material list, it gets a red color as expected. The second material in the list is the <b>green</b> material which is mapped to the second sub-mesh, which is the &quot;fron&quot; side of the distored cube, and since it's the last material in the list, it will also be the material used for all the remaining sides of the distored cube.</p>
+<p class="centerAlign"><img src="images/submeshes-example1.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type">DistortedCube</span> {
+     <span class="name">x</span>: -<span class="number">4</span>
+     <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+     <span class="name">materials</span>: [ <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">baseColor</span>: <span class="string">&quot;red&quot;</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     },
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+                     <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+                 } ]
+</pre>
+<p>Looking at the cube to the right we can see that it has been give some more colors, this is of of course because we now provided one material for each of the six sub-meshes, each with a different color.</p>
+<p class="centerAlign"><img src="images/submeshes-example2.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+     <span class="name">source</span>: <span class="string">&quot;qrc:/meshes/distortedcube.mesh&quot;</span>
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">frontTop_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;red&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">frontBottom_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">leftSide_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;blue&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">rightSide_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;pink&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">backSide_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;orange&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="type"><a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+         <span class="name">id</span>: <span class="name">bottomSide_material</span>
+         <span class="name">baseColor</span>: <span class="string">&quot;navy&quot;</span>
+         <span class="name">cullMode</span>: <span class="name">Material</span>.<span class="name">NoCulling</span>
+         <span class="name">lighting</span>: <span class="name">PrincipledMaterial</span>.<span class="name">NoLighting</span>
+     }
+
+     <span class="name">materials</span>: [
+         <span class="name">frontTop_material</span>,
+         <span class="name">frontBottom_material</span>,
+         <span class="name">leftSide_material</span>,
+         <span class="name">backSide_material</span>,
+         <span class="name">rightSide_material</span>,
+         <span class="name">bottomSide_material</span>
+     ]
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/submeshes?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@submeshes -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-customshapes.qdoc -->
+  <meta name="description" content="Demonstrates using different shapes.">
+  <title>Qt Quick 3D Physics - Custom Shapes Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - Custom Shapes Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#environment">Environment</a></li>
+<li class="level1"><a href="#textures">Textures</a></li>
+<li class="level1"><a href="#scene">Scene</a></li>
+<li class="level1"><a href="#tablecloth">Tablecloth</a></li>
+<li class="level1"><a href="#cup">Cup</a></li>
+<li class="level1"><a href="#tower">Tower</a></li>
+<li class="level1"><a href="#dice">Dice</a></li>
+<li class="level1"><a href="#animation">Animation</a></li>
+<li class="level1"><a href="#controller">Controller</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D Physics - Custom Shapes Example</h1>
+<!-- $$$customshapes-brief -->
+<p>Demonstrates using different shapes.</p>
+<!-- @@@customshapes -->
+<!-- $$$customshapes-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/customshapes-example.jpg" alt="" /></p><p>This example demonstrates loading and spawning several rigid body meshes as well as animating them. The scene consists of a dice tower, a tablecloth, a cup and a handful of dice. The cup is animated to collect spawning dice and put them in the dice tower. The dice will then roll down and out on the tablecloth.</p>
+<h4 id="environment">Environment</h4>
+<p>As usual we have a <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a> and a <a href="../qtquick3d/qml-qtquick3d-view3d.html" translate="no">View3D</a>. In the <a href="../qtquick3d/qml-qtquick3d-view3d.html" translate="no">View3D</a> we have our environment which sets up a lightprobe:</p>
+<pre class="qml" translate="no">
+ <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+     <span class="name">clearColor</span>: <span class="string">&quot;white&quot;</span>
+     <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">SkyBox</span>
+     <span class="name">antialiasingMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">MSAA</span>
+     <span class="name">antialiasingQuality</span>: <span class="name">SceneEnvironment</span>.<span class="name">High</span>
+     <span class="name">lightProbe</span>: <span class="name">proceduralSky</span>
+ }
+</pre>
+<h4 id="textures">Textures</h4>
+<p>We define four textures which will be used for the skybox, the tablecloth and the numbers on the dice:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+     <span class="name">id</span>: <span class="name">proceduralSky</span>
+     <span class="name">textureData</span>: <span class="name">ProceduralSkyTextureData</span> {
+         <span class="name">sunLongitude</span>: -<span class="number">115</span>
+     }
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+     <span class="name">id</span>: <span class="name">weaveNormal</span>
+     <span class="name">source</span>: <span class="string">&quot;maps/weave.png&quot;</span>
+     <span class="name">scaleU</span>: <span class="number">200</span>
+     <span class="name">scaleV</span>: <span class="number">200</span>
+     <span class="name">generateMipmaps</span>: <span class="number">true</span>
+     <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+     <span class="name">id</span>: <span class="name">numberNormal</span>
+     <span class="name">source</span>: <span class="string">&quot;maps/numbers-normal.png&quot;</span>
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-texture.html" translate="no">Texture</a></span> {
+     <span class="name">id</span>: <span class="name">numberFill</span>
+     <span class="name">source</span>: <span class="string">&quot;maps/numbers.png&quot;</span>
+     <span class="name">generateMipmaps</span>: <span class="number">true</span>
+     <span class="name">mipFilter</span>: <span class="name">Texture</span>.<span class="name">Linear</span>
+ }
+</pre>
+<h4 id="scene">Scene</h4>
+<p>We have a Node which contains our scene with the camera and a directional light:</p>
+<pre class="qml" translate="no">
+ <span class="name">id</span>: <span class="name">scene</span>
+ <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>)
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+     <span class="name">id</span>: <span class="name">camera</span>
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">45</span>, <span class="number">25</span>, <span class="number">60</span>)
+     <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">6</span>, -<span class="number">33</span>, <span class="number">0</span>)
+     <span class="name">clipFar</span>: <span class="number">1000</span>
+     <span class="name">clipNear</span>: <span class="number">0.1</span>
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+     <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">45</span>, <span class="number">25</span>, <span class="number">0</span>)
+     <span class="name">castsShadow</span>: <span class="number">true</span>
+     <span class="name">brightness</span>: <span class="number">1</span>
+     <span class="name">shadowMapQuality</span>: <span class="name">Light</span>.<span class="name">ShadowMapQualityHigh</span>
+     <span class="name">pcfFactor</span>: <span class="number">0.1</span>
+     <span class="name">shadowBias</span>: <span class="number">1</span>
+ }
+</pre>
+<h4 id="tablecloth">Tablecloth</h4>
+<p>We add the tablecloth which is a <a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a> consisting of a model with a weave texture and a <a href="qml-qtquick3d-physics-heightfieldshape.html" translate="no">HeightFieldShape</a> for collision.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+     <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">15</span>, -<span class="number">8</span>, <span class="number">0</span>)
+     <span class="name">id</span>: <span class="name">tablecloth</span>
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">geometry</span>: <span class="name">HeightFieldGeometry</span> {
+             <span class="name">id</span>: <span class="name">tableclothGeometry</span>
+             <span class="name">extents</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">150</span>, <span class="number">20</span>, <span class="number">150</span>)
+             <span class="name">source</span>: <span class="string">&quot;maps/cloth-heightmap.png&quot;</span>
+             <span class="name">smoothShading</span>: <span class="number">false</span>
+         }
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;#447722&quot;</span>
+             <span class="name">roughness</span>: <span class="number">0.8</span>
+             <span class="name">normalMap</span>: <span class="name">weaveNormal</span>
+             <span class="name">normalStrength</span>: <span class="number">0.7</span>
+         }
+     }
+
+     <span class="name">collisionShapes</span>: <span class="name">HeightFieldShape</span> {
+         <span class="name">id</span>: <span class="name">hfShape</span>
+         <span class="name">extents</span>: <span class="name">tableclothGeometry</span>.<span class="name">extents</span>
+         <span class="name">source</span>: <span class="string">&quot;maps/cloth-heightmap.png&quot;</span>
+     }
+ }
+</pre>
+<h4 id="cup">Cup</h4>
+<p>We define the cup as a <a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a> with a Model and a <a href="qml-qtquick3d-physics-trianglemeshshape.html" translate="no">TriangleMeshShape</a> as the collision shape. It has a Behavior on the <code translate="no">eulerRotation</code> and <code translate="no">position</code> properties as these are part of an animation.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+     <span class="name">id</span>: <span class="name">diceCup</span>
+     <span class="name">isKinematic</span>: <span class="number">true</span>
+     <span class="name">mass</span>: <span class="number">0</span>
+     property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">bottomPos</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">11</span>, <span class="number">6</span>, <span class="number">0</span>)
+     property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">topPos</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">11</span>, <span class="number">45</span>, <span class="number">0</span>)
+     property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">unloadPos</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">45</span>, <span class="number">0</span>)
+     <span class="name">position</span>: <span class="name">bottomPos</span>
+     <span class="name">kinematicPivot</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">6</span>, <span class="number">0</span>)
+     <span class="name">kinematicPosition</span>: <span class="name">bottomPos</span>
+     <span class="name">collisionShapes</span>: <span class="name">TriangleMeshShape</span> {
+         <span class="name">id</span>: <span class="name">cupShape</span>
+         <span class="name">source</span>: <span class="string">&quot;meshes/simpleCup.mesh&quot;</span>
+     }
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;meshes/cup.mesh&quot;</span>
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="string">&quot;#cc9988&quot;</span>
+             <span class="name">roughness</span>: <span class="number">0.3</span>
+             <span class="name">metalness</span>: <span class="number">1</span>
+         }
+     }
+ }
+</pre>
+<h4 id="tower">Tower</h4>
+<p>The tower is just a <a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a> with a Model and a <a href="qml-qtquick3d-physics-trianglemeshshape.html" translate="no">TriangleMeshShape</a> for collision.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+     <span class="name">id</span>: <span class="name">diceTower</span>
+     <span class="name">x</span>: -<span class="number">4</span>
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">id</span>: <span class="name">testModel</span>
+         <span class="name">source</span>: <span class="string">&quot;meshes/tower.mesh&quot;</span>
+         <span class="name">materials</span>: [
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+                 <span class="name">baseColor</span>: <span class="string">&quot;#ccccce&quot;</span>
+                 <span class="name">roughness</span>: <span class="number">0.3</span>
+             },
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a></span> {
+                 <span class="name">id</span>: <span class="name">glassMaterial</span>
+                 <span class="name">baseColor</span>: <span class="string">&quot;#aaaacc&quot;</span>
+                 <span class="name">transmissionFactor</span>: <span class="number">0.95</span>
+                 <span class="name">thicknessFactor</span>: <span class="number">1</span>
+                 <span class="name">roughness</span>: <span class="number">0.05</span>
+             }
+         ]
+     }
+     <span class="name">collisionShapes</span>: <span class="name">TriangleMeshShape</span> {
+         <span class="name">id</span>: <span class="name">triShape</span>
+         <span class="name">source</span>: <span class="string">&quot;meshes/tower.mesh&quot;</span>
+     }
+ }
+</pre>
+<h4 id="dice">Dice</h4>
+<p>To generate the dice we use a Component and a <a href="../qtquick3d/qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a>. The Component contains a <a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a> with a <a href="qml-qtquick3d-physics-convexmeshshape.html" translate="no">ConvexMeshShape</a> and a Model. The position, color, scale and mesh source are randomly generated for each die.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+     <span class="name">id</span>: <span class="name">diceComponent</span>
+
+     <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+         <span class="name">id</span>: <span class="name">thisBody</span>
+         <span class="keyword">function</span> <span class="name">randomInRange</span>(min, max) {
+             <span class="keyword">return</span> <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">*</span> (<span class="name">max</span> <span class="operator">-</span> <span class="name">min</span>) <span class="operator">+</span> <span class="name">min</span>
+         }
+
+         <span class="keyword">function</span> <span class="name">restore</span>() {
+             <span class="name">reset</span>(<span class="name">initialPosition</span>, <span class="name">eulerRotation</span>)
+         }
+
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">scaleFactor</span>, <span class="name">scaleFactor</span>, <span class="name">scaleFactor</span>)
+         <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">randomInRange</span>(<span class="number">0</span>, <span class="number">360</span>),
+                                    <span class="name">randomInRange</span>(<span class="number">0</span>, <span class="number">360</span>),
+                                    <span class="name">randomInRange</span>(<span class="number">0</span>, <span class="number">360</span>))
+
+         property <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">initialPosition</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">11</span> <span class="operator">+</span> <span class="number">1.5</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">cos</span>(<span class="name">index</span><span class="operator">/</span>(<span class="name">Math</span>.<span class="name">PI</span><span class="operator">/</span><span class="number">4</span>)),
+                                                        <span class="name">diceCup</span>.<span class="name">bottomPos</span>.<span class="name">y</span> <span class="operator">+</span> <span class="name">index</span> <span class="operator">*</span> <span class="number">1.5</span>,
+                                                        <span class="number">0</span>)
+         <span class="name">position</span>: <span class="name">initialPosition</span>
+
+         property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">scaleFactor</span>: <span class="name">randomInRange</span>(<span class="number">0.8</span>, <span class="number">1.4</span>)
+         property <span class="type"><a href="../qtquick/qml-color.html" translate="no">color</a></span> <span class="name">baseCol</span>: <span class="name">Qt</span>.<span class="name">hsla</span>(<span class="name">randomInRange</span>(<span class="number">0</span>, <span class="number">1</span>),
+                                         <span class="name">randomInRange</span>(<span class="number">0.6</span>, <span class="number">1.0</span>),
+                                         <span class="name">randomInRange</span>(<span class="number">0.4</span>, <span class="number">0.7</span>),
+                                         <span class="number">1.0</span>)
+
+         <span class="name">collisionShapes</span>: <span class="name">ConvexMeshShape</span> {
+             <span class="name">id</span>: <span class="name">diceShape</span>
+             <span class="name">source</span>: <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">&lt;</span> <span class="number">0.25</span> ? <span class="string">&quot;meshes/icosahedron.mesh&quot;</span>
+                   : <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">&lt;</span> <span class="number">0.5</span> ? <span class="string">&quot;meshes/dodecahedron.mesh&quot;</span>
+                   : <span class="name">Math</span>.<span class="name">random</span>() <span class="operator">&lt;</span> <span class="number">0.75</span> ? <span class="string">&quot;meshes/octahedron.mesh&quot;</span>
+                                          : <span class="string">&quot;meshes/tetrahedron.mesh&quot;</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">id</span>: <span class="name">thisModel</span>
+             <span class="name">source</span>: <span class="name">diceShape</span>.<span class="name">source</span>
+             <span class="name">receivesShadows</span>: <span class="number">false</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">metalness</span>: <span class="number">1.0</span>
+                 <span class="name">roughness</span>: <span class="name">randomInRange</span>(<span class="number">0.2</span>, <span class="number">0.6</span>)
+                 <span class="name">baseColor</span>: <span class="name">baseCol</span>
+                 <span class="name">emissiveMap</span>: <span class="name">numberFill</span>
+                 <span class="name">emissiveFactor</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)
+                 <span class="name">normalMap</span>: <span class="name">numberNormal</span>
+                 <span class="name">normalStrength</span>: <span class="number">0.75</span>
+             }
+         }
+     }
+ }
+
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a></span> {
+     <span class="name">id</span>: <span class="name">dicePool</span>
+     <span class="name">model</span>: <span class="number">25</span>
+     <span class="name">delegate</span>: <span class="name">diceComponent</span>
+     <span class="keyword">function</span> <span class="name">restore</span>() {
+         <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">count</span>; i++) {
+             <span class="name">objectAt</span>(<span class="name">i</span>).<span class="name">restore</span>()
+         }
+     }
+ }
+</pre>
+<h4 id="animation">Animation</h4>
+<p>To make the dice move from the cup to the dice tower we animate the cup and move it up and then tip it over. To make sure that the animation stays in sync with the physical simulation we use an <a href="../qtquick/qml-qtquick-animationcontroller.html" translate="no">AnimationController</a> which we connect to the <code translate="no">onFrameDone</code> signal on the <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a>. After every simulated frame we progress the animation with the elapsed timestep.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtqml/qml-qtqml-connections.html" translate="no">Connections</a></span> {
+     <span class="name">target</span>: <span class="name">physicsWorld</span>
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">totalAnimationTime</span>: <span class="number">7500</span>
+     <span class="keyword">function</span> <span class="name">onFrameDone</span>(timeStep) {
+         let progressStep = <span class="name">timeStep</span> <span class="operator">/</span> <span class="name">totalAnimationTime</span>
+         <span class="name">animationController</span>.<span class="name">progress</span> <span class="operator">+=</span> <span class="name">progressStep</span>
+         <span class="keyword">if</span> (<span class="name">animationController</span>.<span class="name">progress</span> <span class="operator">&gt;=</span> <span class="number">1</span>) {
+             <span class="name">animationController</span>.<span class="name">completeToEnd</span>()
+             <span class="name">animationController</span>.<span class="name">reload</span>()
+             <span class="name">animationController</span>.<span class="name">progress</span> <span class="operator">=</span> <span class="number">0</span>
+         }
+     }
+ }
+
+ <span class="type"><a href="../qtquick/qml-qtquick-animationcontroller.html" translate="no">AnimationController</a></span> {
+     <span class="name">id</span>: <span class="name">animationController</span>
+     <span class="name">animation</span>: <span class="name">SequentialAnimation</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-pauseanimation.html" translate="no">PauseAnimation</a></span> { <span class="name">duration</span>: <span class="number">2500</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> {
+             <span class="name">target</span>: <span class="name">diceCup</span>
+             <span class="name">property</span>: <span class="string">&quot;kinematicPosition&quot;</span>
+             <span class="name">to</span>: <span class="name">diceCup</span>.<span class="name">topPos</span>
+             <span class="name">duration</span>: <span class="number">2500</span>
+         }
+         <span class="type"><a href="../qtquick/qml-qtquick-parallelanimation.html" translate="no">ParallelAnimation</a></span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> {
+                 <span class="name">target</span>: <span class="name">diceCup</span>
+                 <span class="name">property</span>: <span class="string">&quot;kinematicEulerRotation.z&quot;</span>
+                 <span class="name">to</span>: <span class="number">130</span>
+                 <span class="name">duration</span>: <span class="number">1500</span>
+             }
+             <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> {
+                 <span class="name">target</span>: <span class="name">diceCup</span>
+                 <span class="name">property</span>: <span class="string">&quot;kinematicPosition&quot;</span>
+                 <span class="name">to</span>: <span class="name">diceCup</span>.<span class="name">unloadPos</span>
+                 <span class="name">duration</span>: <span class="number">1500</span>
+             }
+         }
+         <span class="type"><a href="../qtquick/qml-qtquick-pauseanimation.html" translate="no">PauseAnimation</a></span> { <span class="name">duration</span>: <span class="number">1000</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-parallelanimation.html" translate="no">ParallelAnimation</a></span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> {
+                 <span class="name">target</span>: <span class="name">diceCup</span>
+                 <span class="name">property</span>: <span class="string">&quot;kinematicEulerRotation.z&quot;</span>
+                 <span class="name">to</span>: <span class="number">0</span>
+                 <span class="name">duration</span>: <span class="number">1500</span>
+             }
+             <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> {
+                 <span class="name">target</span>: <span class="name">diceCup</span>
+                 <span class="name">property</span>: <span class="string">&quot;kinematicPosition&quot;</span>
+                 <span class="name">to</span>: <span class="name">diceCup</span>.<span class="name">topPos</span>
+                 <span class="name">duration</span>: <span class="number">1500</span>
+             }
+         }
+         <span class="type"><a href="../qtquick/qml-qtquick-propertyanimation.html" translate="no">PropertyAnimation</a></span> { <span class="name">target</span>: <span class="name">diceCup</span>; <span class="name">property</span>: <span class="string">&quot;kinematicPosition&quot;</span>; <span class="name">to</span>: <span class="name">diceCup</span>.<span class="name">bottomPos</span>; <span class="name">duration</span>: <span class="number">1500</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-pauseanimation.html" translate="no">PauseAnimation</a></span> { <span class="name">duration</span>: <span class="number">2000</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-scriptaction.html" translate="no">ScriptAction</a></span> { <span class="name">script</span>: <span class="name">dicePool</span>.<span class="name">restore</span>() }
+     }
+ }
+</pre>
+<h4 id="controller">Controller</h4>
+<p>Finally a <a href="../qtquick3d/qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a> is added to be able to control the camera using a keyboard:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick3d/qml-qtquick3d-helpers-wasdcontroller.html" translate="no">WasdController</a></span> {
+     <span class="name">keysEnabled</span>: <span class="number">true</span>
+     <span class="name">controlledObject</span>: <span class="name">camera</span>
+     <span class="name">speed</span>: <span class="number">0.2</span>
+ }
+</pre>
+<p>Files:</p>
+<ul>
+<li><a href="qtquick3dphysics-customshapes-cmakelists-txt.html" translate="no">customshapes/CMakeLists.txt</a></li>
+<li><a href="qtquick3dphysics-customshapes-customshapes-pro.html" translate="no">customshapes/customshapes.pro</a></li>
+<li><a href="qtquick3dphysics-customshapes-main-cpp.html" translate="no">customshapes/main.cpp</a></li>
+<li><a href="qtquick3dphysics-customshapes-main-qml.html" translate="no">customshapes/main.qml</a></li>
+<li><a href="qtquick3dphysics-customshapes-qml-qrc.html" translate="no">customshapes/qml.qrc</a></li>
+<li><a href="qtquick3dphysics-customshapes-resources-qrc.html" translate="no">customshapes/resources.qrc</a></li>
+</ul>
+<p>Images:</p>
+<ul>
+<li><a href="images/used-in-examples/customshapes/maps/cloth-heightmap.png" translate="no">customshapes/maps/cloth-heightmap.png</a></li>
+<li><a href="images/used-in-examples/customshapes/maps/numbers-normal.png" translate="no">customshapes/maps/numbers-normal.png</a></li>
+<li><a href="images/used-in-examples/customshapes/maps/numbers.png" translate="no">customshapes/maps/numbers.png</a></li>
+<li><a href="images/used-in-examples/customshapes/maps/weave.png" translate="no">customshapes/maps/weave.png</a></li>
+</ul>
+</div>
+<!-- @@@customshapes -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

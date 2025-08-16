@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- linguist-manual.qdoc -->
+  <title>Using lupdate | Qt Linguist Manual</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtlinguist-index.html">Qt Linguist Manual</a></li>
+<li><a href="linguist-manager.html">Release managers</a></li>
+<li>Using lupdate</li>
+<li id="buildversion"><a href="qtlinguist-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="linguist-creating-ts-files.html" />
+  <link rel="next" href="linguist-lrelease.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="linguist-creating-ts-files.html">Creating translation files</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="linguist-lrelease.html">Using lrelease</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#lupdate-syntax">lupdate syntax</a></li>
+<li class="level2"><a href="#lupdate-options">lupdate options</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level2"><a href="#using-lupdate-with-cmake">Using lupdate with CMake</a></li>
+<li class="level2"><a href="#using-lupdate-with-qmake">Using lupdate with qmake</a></li>
+<li class="level1"><a href="#xliff-format-files">XLIFF format files</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Using lupdate</h1>
+<!-- $$$linguist-lupdate.html-description -->
+<div class="descr" id="details">
+<span id="lupdate"></span><p>The <code translate="no">lupdate</code> command line tool finds translatable strings in C++ source, C++ header, Java, Python, QML, and UI files and generates or updates TS files.</p>
+<p>When building with qmake, specify the files to process at the command line or in a .pro file.</p>
+<p>When building with CMake, use <a href="cmake-commands-qtlinguisttools.html">CMake commands</a> to add targets that create or update TS files and transform them into QM files. The <code translate="no">lupdate</code> tool is run with the <a href="linguist-lupdate.html#lupdate-options">options</a> you pass to the commands when you build the target.</p>
+<p>For more information about specifying translations in project files, see Localizing Applications.</p>
+<h2 id="lupdate-syntax">lupdate syntax</h2>
+<pre class="cpp plain" translate="no">
+ lupdate [options] [project-file]...
+ lupdate [options] [source-file|path|@lst-file]... -ts ts-files|@lst-file
+</pre>
+<p>Where:</p>
+<ul>
+<li><code translate="no">options</code> means one or several <a href="linguist-lupdate.html#lupdate-options">lupdate options</a>.</li>
+<li><code translate="no">project-file</code> is the project configuration file.</li>
+<li><code translate="no">source-file</code> is a file that contains translatable strings.</li>
+<li><code translate="no">path</code> is the path to a folder that contains translation source files.</li>
+<li><code translate="no">@lst-file</code> reads additional file names (one per line) or includepaths (one per line and prefixed with <code translate="no">-I</code>) from <i>lst-file</i>.</li>
+<li><code translate="no">ts-files</code> are the TS files to generate or update.</li>
+</ul>
+<p>To view the latest help, enter:</p>
+<pre class="cpp plain" translate="no">
+ lupdate -help
+</pre>
+<h3 id="lupdate-options">lupdate options</h3>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Option</th><th >Action</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">-help</code></td><td >Display up-to-date help information and exit.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-no-obsolete</code></td><td >Drop all obsolete and vanished strings.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-extensions &lt;ext&gt;[,&lt;ext&gt;]...</code></td><td >Process files with the given extensions, only. Use commas to separate extensions in the list. Do not use whitespace. The default value is: <code translate="no">java,jui,ui,c,c++,cc,cpp,cxx,ch,h,h++,hh,hpp,hxx,js,qs,qml,qrc</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-pluralonly</code></td><td >Only include plural form messages.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-silent</code></td><td >Do not explain what is being done.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-no-sort</code></td><td >Do not sort contexts in TS files.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-no-recursive</code></td><td >Do not recursively scan directories.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-recursive</code></td><td >Recursively scan directories (default).</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-warnings-are-errors</code></td><td >Treat warnings as errors.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-I &lt;includepath&gt; or -I&lt;includepath&gt;</code></td><td >Look for include files in this additional location. You can specify multiple paths.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-locations {absolute|relative|none}</code></td><td >Specify or override the way to save source code references in TS files.<ul>
+<li><code translate="no">absolute</code> means that the source file path is relative to the target file, but the line number is absolute.</li>
+<li><code translate="no">relative</code> means that the source file path is relative to the target file. The line number is relative to other entries in the same source file.</li>
+<li><code translate="no">none</code> stores no information about source location.</li>
+</ul>
+<p>If you do not specify the location, <code translate="no">lupdate</code> determines it from existing TS files. The default value for new files is <code translate="no">absolute</code>.</p>
+</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-no-ui-lines</code></td><td >Do not record line numbers in references to UI files.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-disable-heuristic {sametext|similartext}</code></td><td >Disable the named merge heuristic. Can be specified multiple times.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-project &lt;filename&gt;</code></td><td >Name of a file containing the project's description in JSON format. You can use the <code translate="no">lprodump</code> tool to generate the file from a .pro file.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-pro &lt;filename&gt;</code></td><td >Name of a .pro file. Useful for files with the .pro file syntax but some other file suffix. Projects are recursed into and merged. This option is deprecated. Use the <code translate="no">lupdate-pro</code> tool instead.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-pro-out &lt;directory&gt;</code></td><td >Virtual output directory for processing subsequent .pro files.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-pro-debug</code></td><td >Trace processing .pro files. Specify twice for more verbosity.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-source-language &lt;language&gt;[_&lt;region&gt;]</code></td><td >Specify the language of the source strings for new files. Defaults to POSIX if not specified.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-target-language &lt;language&gt;[_&lt;region&gt;]</code></td><td >Specify the language of the translations for new files. If you do not specify the language, <code translate="no">lupdate</code> determines it from the file name.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-tr-function-alias &lt;function&gt;{+=,=}&lt;alias&gt;[,&lt;function&gt;{+=,=}&lt;alias&gt;]...</code></td><td >With <code translate="no">+=</code>, recognize <code translate="no">&lt;alias&gt;</code> as an alternative spelling of <code translate="no">&lt;function&gt;</code>. With <code translate="no">=,</code> recognize <code translate="no">&lt;alias&gt;</code> as the only spelling of <code translate="no">&lt;function&gt;</code>.<p>Available <code translate="no">&lt;function&gt;</code> values (with their currently defined aliases) are:</p>
+<ul>
+<li><code translate="no">Q_DECLARE_TR_FUNCTIONS</code> (<code translate="no">=Q_DECLARE_TR_FUNCTIONS</code>)</li>
+<li><code translate="no">QT_TR_N_NOOP</code> (<code translate="no">=QT_TR_N_NOOP</code>)</li>
+<li><code translate="no">QT_TRID_N_NOOP</code> (<code translate="no">=QT_TRID_N_NOOP</code>)</li>
+<li><code translate="no">QT_TRANSLATE_N_NOOP</code> (<code translate="no">=QT_TRANSLATE_N_NOOP</code>)</li>
+<li><code translate="no">QT_TRANSLATE_N_NOOP3</code> (<code translate="no">=QT_TRANSLATE_N_NOOP3</code>)</li>
+<li><code translate="no">QT_TR_NOOP</code> (<code translate="no">=QT_TR_NOOP</code>)</li>
+<li><code translate="no">QT_TRID_NOOP</code> (<code translate="no">=QT_TRID_NOOP</code>)</li>
+<li><code translate="no">QT_TRANSLATE_NOOP</code> (<code translate="no">=QT_TRANSLATE_NOOP</code>)</li>
+<li><code translate="no">QT_TRANSLATE_NOOP3</code> (<code translate="no">=QT_TRANSLATE_NOOP3</code>)</li>
+<li><code translate="no">QT_TR_NOOP_UTF8</code> (<code translate="no">=QT_TR_NOOP_UTF8</code>)</li>
+<li><code translate="no">QT_TRANSLATE_NOOP_UTF8</code> (<code translate="no">=QT_TRANSLATE_NOOP_UTF8</code>)</li>
+<li><code translate="no">QT_TRANSLATE_NOOP3_UTF8</code> (<code translate="no">=QT_TRANSLATE_NOOP3_UTF8</code>)</li>
+<li><code translate="no">findMessage</code> (<code translate="no">=findMessage</code>)</li>
+<li><code translate="no">qtTrId</code> (<code translate="no">=qtTrId</code>)</li>
+<li><code translate="no">tr</code> (<code translate="no">=tr</code>)</li>
+<li><code translate="no">trUtf8</code> (<code translate="no">=trUtf8</code>)</li>
+<li><code translate="no">translate</code> (<code translate="no">=translate</code>)</li>
+<li><code translate="no">qsTr</code> (<code translate="no">=qsTr</code>)</li>
+<li><code translate="no">qsTrId</code> (<code translate="no">=qsTrId</code>)</li>
+<li><code translate="no">qsTranslate</code> (<code translate="no">=qsTranslate</code>)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-ts &lt;ts-file&gt;...</code></td><td >Specify the output files. This overrides <code translate="no">TRANSLATIONS</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-version</code></td><td >Display the version of <code translate="no">lupdate</code> and exit.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">-clang-parser [compilation-database-dir]</code></td><td >Use clang to parse .cpp files. Otherwise, use a custom parser. This option needs a clang compilation database (<code translate="no">compile_commands.json</code>) for the files to be parsed. Specify the path to the directory containing this file on the command line, directly after the <code translate="no">-clang-parser</code> option, or in the project file.<p>When using qmake, set the <code translate="no">LUPDATE_COMPILE_COMMANDS_PATH</code> variable in the .pro file.</p>
+<p>A directory specified on the command line takes precedence. If you do not specify a path, <code translate="no">lupdate</code> searches for the compilation database from all parent paths of the first input file.</p>
+</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">-project-roots &lt;directory&gt;...</code></td><td >Specify one or more project root directories. Only files below a project root are considered for translation when using the <code translate="no">-clang-parser</code> option.</td></tr>
+</table></div>
+<h2 id="examples">Examples</h2>
+<h3 id="using-lupdate-with-cmake">Using lupdate with CMake</h3>
+<p>When building with CMake, use <a href="cmake-commands-qtlinguisttools.html">CMake commands</a> to add translations on targets to the CMakeLists.txt file, and then build the targets.</p>
+<p>Select one of the following options:</p>
+<ul>
+<li>Use <a href="qtlinguist-cmake-qt-add-translations.html">qt_add_translations</a> on a target, such as <i>app</i>. This calls <a href="qtlinguist-cmake-qt-add-lupdate.html">qt_add_lupdate</a> and <a href="qtlinguist-cmake-qt-add-lrelease.html">qt_add_lrelease</a>.</li>
+<li>Use <code translate="no">qt_add_lupdate</code> on a target.</li>
+</ul>
+<p>Build a target (for example, <code translate="no">app_lupdate</code>) to update the .ts files for it. To update the .ts files for all targets, build the target <code translate="no">update_translations</code>.</p>
+<h3 id="using-lupdate-with-qmake">Using lupdate with qmake</h3>
+<p>To generate a translation file for a single QML file:</p>
+<pre class="cpp plain" translate="no">
+ lupdate main.qml -ts main_en.ts
+</pre>
+<p>To make a translation file for another language, for example French, copy main_en.ts to main_fr.ts, and translate the strings in the French TS file.</p>
+<p><code translate="no">lupdate</code> processes QML files that are listed in the <code translate="no">.qrc</code> file:</p>
+<pre class="cpp plain" translate="no">
+ RESOURCES += qml.qrc
+</pre>
+<p>To have all QML files processed by <code translate="no">lupdate</code>:</p>
+<pre class="cpp plain" translate="no">
+ lupdate application.qrc -ts myapp_en.ts
+</pre>
+<p>To process all QML files in the current working directory (or its subfolders) without using a <code translate="no">.qrc</code> file:</p>
+<pre class="cpp plain" translate="no">
+ lupdate . -extensions qml -ts myapp_en.ts
+</pre>
+<p>To check for translatable strings in both QML and C++ source files:</p>
+<pre class="cpp plain" translate="no">
+ lupdate qml.qrc filevalidator.cpp -ts myapp_en.ts
+</pre>
+<p>To generate .ts files that will be used for English and French without specifying the languages in the project file:</p>
+<pre class="cpp plain" translate="no">
+ lupdate qml.qrc filevalidator.cpp -ts myapp_en.ts myapp_fr.ts
+</pre>
+<p>Give the TS files to the translator who uses Qt Linguist to read the files and insert the translations.</p>
+<h2 id="xliff-format-files">XLIFF format files</h2>
+<p>The TS file format is a simple human-readable XML format that you can use with version control systems. In addition, <code translate="no">lupdate</code> can process Localization Interchange File Format (XLIFF) files (<code translate="no">.xlf</code>).</p>
+<div class="admonition note">
+<p><b>Note: </b>Only XLIFF versions 1.1 and 1.2 are currently supported.</p>
+</div>
+<p>You can open and edit XLIFF files in Qt Linguist.</p>
+</div>
+<!-- @@@linguist-lupdate.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="linguist-creating-ts-files.html">Creating translation files</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="linguist-lrelease.html">Using lrelease</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

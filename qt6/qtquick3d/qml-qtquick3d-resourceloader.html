@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dresourceloader.cpp -->
+  <meta name="description" content="Allows pre-loading of 3D resources.">
+  <title>ResourceLoader QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>ResourceLoader</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ResourceLoader QML Type</h1>
+<!-- $$$ResourceLoader-brief -->
+<p>Allows pre-loading of 3D resources. <a href="#details">More...</a></p>
+<!-- @@@ResourceLoader -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-object3d.html" translate="no">Object3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-resourceloader-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-resourceloader.html#geometries-prop" translate="no">geometries</a></b> : List&lt;QtQuick3D::Geometry&gt;</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-resourceloader.html#meshSources-prop" translate="no">meshSources</a></b> : List&lt;url&gt;</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-resourceloader.html#textures-prop" translate="no">textures</a></b> : List&lt;QtQuick3D::Texture&gt;</li>
+</ul>
+<!-- $$$ResourceLoader-description -->
+<h2 id="details">Detailed Description</h2>
+<p>ResourceLoader is used to pre-load resources for Qt Quick 3D. Normally resources are only loaded when they are needed to render a frame, and are unloaded when they are not used to render the scene. This aggressive approach to resource lifetimes means that only the bare minimum of GPU resources are used to render a frame, but for some dynamic scenes this can lead to resources being loaded and released frequently. The ResourceLoader component enables a finer grain control on the lifetimes of resources in the scene. Resources listed in the ResourceLoader component are loaded into GPU memory and will remain there until they are removed from the ResourceLoader lists or the ResourceLoader is destroyed.</p>
+<p>ResourceLoader can also be used to make sure that large resources are available before rendering a frame. Since resources are loaded only when needed for a frame, this can lead to frames being dropped waiting for a large resource to be loaded. By pre-loading large resources before showing a scene, there is no risk of dropping any frames due to resources being loaded during an animation.</p>
+<p>For usage examples, see <a href="qtquick3d-principledmaterial-example.html">Qt Quick 3D - Principled Material Example</a></p>
+<!-- @@@ResourceLoader -->
+<h2>Property Documentation</h2>
+<!-- $$$geometries -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="geometries-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">geometries</span> : <span class="type">List</span>&lt;<span class="type"><a href="qml-qtquick3d-geometry.html" translate="no">QtQuick3D::Geometry</a></span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines a list of Geometry resources that will be loaded to the GPU and cached.</p>
+</div></div><!-- @@@geometries -->
+<br/>
+<!-- $$$meshSources -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="meshSources-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">meshSources</span> : <span class="type">List</span>&lt;<span class="type"><a href="../qtqml/qml-url.html" translate="no">url</a></span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines a list of locations of mesh files containing geometry. When a mesh file is added to this list, it will be loaded to the GPU and cached. If these same mesh files are source is used by a /c Model they will not need to be loaded again.</p>
+</div></div><!-- @@@meshSources -->
+<br/>
+<!-- $$$textures -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="textures-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">textures</span> : <span class="type">List</span>&lt;<span class="type"><a href="qml-qtquick3d-texture.html" translate="no">QtQuick3D::Texture</a></span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines a list of Texture resources that will be loaded to the GPU and cached.</p>
+</div></div><!-- @@@textures -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

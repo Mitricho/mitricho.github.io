@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qgraphicssceneevent.cpp -->
+  <meta name="description" content="The QGraphicsSceneEvent class provides a base class for all graphics view related events.">
+  <title>QGraphicsSceneEvent Class | Qt Widgets | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwidgets-index.html">Qt Widgets</a></li>
+<li><a href="qtwidgets-module.html" translate="no">C++ Classes</a></li>
+<li>QGraphicsSceneEvent</li>
+<li id="buildversion"><a href="qtwidgets-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QGraphicsSceneEvent Class</h1>
+<!-- $$$QGraphicsSceneEvent-brief -->
+<p>The QGraphicsSceneEvent class provides a base class for all graphics view related events. <a href="#details">More...</a></p>
+<!-- @@@QGraphicsSceneEvent -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QGraphicsSceneEvent&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Widgets)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Widgets)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += widgets</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qevent.html" translate="no">QEvent</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qgraphicsscenecontextmenuevent.html" translate="no">QGraphicsSceneContextMenuEvent</a>, <a href="qgraphicsscenedragdropevent.html" translate="no">QGraphicsSceneDragDropEvent</a>, <a href="qgraphicsscenehelpevent.html" translate="no">QGraphicsSceneHelpEvent</a>, <a href="qgraphicsscenehoverevent.html" translate="no">QGraphicsSceneHoverEvent</a>, <a href="qgraphicsscenemouseevent.html" translate="no">QGraphicsSceneMouseEvent</a>, <a href="qgraphicsscenemoveevent.html" translate="no">QGraphicsSceneMoveEvent</a>, <a href="qgraphicssceneresizeevent.html" translate="no">QGraphicsSceneResizeEvent</a>, and <a href="qgraphicsscenewheelevent.html" translate="no">QGraphicsSceneWheelEvent</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qgraphicssceneevent-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qgraphicssceneevent.html#dtor.QGraphicsSceneEvent" translate="no">~QGraphicsSceneEvent</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.2)</code> quint64 </td><td class="memItemRight bottomAlign"><b><a href="qgraphicssceneevent.html#timestamp" translate="no">timestamp</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QWidget *</td><td class="memItemRight bottomAlign"><b><a href="qgraphicssceneevent.html#widget" translate="no">widget</a></b>() const</td></tr>
+</table></div>
+<!-- $$$QGraphicsSceneEvent-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>When a <a href="qgraphicsview.html" translate="no">QGraphicsView</a> receives Qt mouse, keyboard, and drag and drop events (<a href="../qtgui/qmouseevent.html" translate="no">QMouseEvent</a>, <a href="../qtgui/qkeyevent.html" translate="no">QKeyEvent</a>, QDragEvent, etc.), it translates them into instances of QGraphicsSceneEvent subclasses and forwards them to the <a href="qgraphicsscene.html" translate="no">QGraphicsScene</a> it displays. The scene then forwards the events to the relevant items.</p>
+<p>For example, when a <a href="qgraphicsview.html" translate="no">QGraphicsView</a> receives a <a href="../qtgui/qmouseevent.html" translate="no">QMouseEvent</a> of type MousePress as a response to a user click, the view sends a <a href="qgraphicsscenemouseevent.html" translate="no">QGraphicsSceneMouseEvent</a> of type GraphicsSceneMousePress to the underlying <a href="qgraphicsscene.html" translate="no">QGraphicsScene</a> through its <a href="qgraphicsscene.html#mousePressEvent" translate="no">mousePressEvent</a>() function. The default <a href="qgraphicsscene.html#mousePressEvent" translate="no">QGraphicsScene::mousePressEvent</a>() implementation determines which item was clicked and forwards the event to <a href="qgraphicsitem.html#mousePressEvent" translate="no">QGraphicsItem::mousePressEvent</a>().</p>
+<p>Subclasses such as <a href="qgraphicsscenemouseevent.html" translate="no">QGraphicsSceneMouseEvent</a> and <a href="qgraphicsscenecontextmenuevent.html" translate="no">QGraphicsSceneContextMenuEvent</a> provide the coordinates from the original <a href="../qtcore/qevent.html" translate="no">QEvent</a> in screen, scene, and item coordinates (see <a href="qgraphicsscenemouseevent.html#screenPos" translate="no">screenPos</a>(), <a href="qgraphicsscenemouseevent.html#scenePos" translate="no">scenePos</a>(), and <a href="qgraphicsscenemouseevent.html#pos" translate="no">pos</a>()). The item coordinates are set by the <a href="qgraphicsscene.html" translate="no">QGraphicsScene</a> before it forwards the event to the event to a <a href="qgraphicsitem.html" translate="no">QGraphicsItem</a>. The mouse events also add the possibility to retrieve the coordinates from the last event received by the view (see <a href="qgraphicsscenemouseevent.html#lastScreenPos" translate="no">lastScreenPos</a>(), <a href="qgraphicsscenemouseevent.html#lastScenePos" translate="no">lastScenePos</a>(), and <a href="qgraphicsscenemouseevent.html#lastPos" translate="no">lastPos</a>()).</p>
+</div>
+<p><b>See also </b><a href="../qtcore/qevent.html" translate="no">QEvent</a>.</p>
+<!-- @@@QGraphicsSceneEvent -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$~QGraphicsSceneEvent[overload1]$$$~QGraphicsSceneEvent -->
+<h3 class="fn" translate="no" id="dtor.QGraphicsSceneEvent"><code class="details extra" translate="no">[virtual noexcept]</code> QGraphicsSceneEvent::<span class="name">~QGraphicsSceneEvent</span>()</h3>
+<p>Destroys the event.</p>
+<!-- @@@~QGraphicsSceneEvent -->
+<!-- $$$timestamp[overload1]$$$timestamp -->
+<h3 class="fn" translate="no" id="timestamp"><code class="details extra" translate="no">[since 6.2]</code> <span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span> QGraphicsSceneEvent::<span class="name">timestamp</span>() const</h3>
+<p>Returns the timestamp of the original event, or 0 if the original event does not report a time stamp.</p>
+<p>This function was introduced in Qt 6.2.</p>
+<!-- @@@timestamp -->
+<!-- $$$widget[overload1]$$$widget -->
+<h3 class="fn" translate="no" id="widget"><span class="type"><a href="qwidget.html" translate="no">QWidget</a></span> *QGraphicsSceneEvent::<span class="name">widget</span>() const</h3>
+<p>Returns the widget where the event originated, or <code translate="no">nullptr</code> if the event originates from another application.</p>
+<!-- @@@widget -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

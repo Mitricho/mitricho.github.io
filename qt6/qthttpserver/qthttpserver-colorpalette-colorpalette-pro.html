@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- colorpalette-example.qdoc -->
+  <meta name="description" content="Example of how to create a RESTful API server using the QHttpServer.">
+  <title>RESTful API Server | Qt HTTP Server | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qthttpserver-index.html">Qt HTTP Server</a></li>
+<li><a href="qthttpserver-examples.html">Qt HTTP Server Examples</a></li>
+<li>RESTful API Server</li>
+<li id="buildversion"><a href="qthttpserver-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">RESTful API Server</h1>
+<pre class="cpp" translate="no">
+ requires(qtHaveModule(httpserver))
+ requires(qtHaveModule(gui))
+ requires(qtHaveModule(concurrent))
+
+ TEMPLATE = app
+
+ QT += httpserver gui concurrent
+
+ SOURCES += \
+     main.cpp
+
+ HEADERS += \
+     apibehavior.h \
+     types.h \
+     utils.h
+
+ target.path = $$[QT_INSTALL_EXAMPLES]/httpserver/colorpalette
+ INSTALLS += target
+
+ RESOURCES += \
+     assets/colors.json \
+     assets/users.json \
+     assets/sessions.json \
+     assets/img/1-image.jpg \
+     assets/img/2-image.jpg \
+     assets/img/3-image.jpg \
+     assets/img/4-image.jpg \
+     assets/img/5-image.jpg \
+     assets/img/6-image.jpg \
+     assets/img/7-image.jpg \
+     assets/img/8-image.jpg \
+     assets/img/9-image.jpg \
+     assets/img/10-image.jpg \
+     assets/img/11-image.jpg \
+     assets/img/12-image.jpg
+
+ CONFIG += cmdline
+</pre>

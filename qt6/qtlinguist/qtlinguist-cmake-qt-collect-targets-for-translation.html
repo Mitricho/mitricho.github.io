@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cmake-macros.qdoc -->
+  <meta name="description" content="Collects targets that are eligible for translation.">
+  <title>qt_collect_translation_source_targets | Qt Linguist Manual</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtlinguist-index.html">Qt Linguist Manual</a></li>
+<li><a href="cmake-commands-qtlinguisttools.html">CMake Commands in Qt6 LinguistTools</a></li>
+<li>qt_collect_translation_source_targets</li>
+<li id="buildversion"><a href="qtlinguist-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#synopsis">Synopsis</a></li>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#excluding-targets-from-translation">Excluding targets from translation</a></li>
+<li class="level1"><a href="#when-to-call-this-command">When to call this command</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">qt_collect_translation_source_targets</h1>
+<!-- $$$qtlinguist-cmake-qt-collect-targets-for-translation.html-description -->
+<div class="descr" id="details">
+<p>Collects targets that are eligible for translation.</p>
+<p>The command is defined in the <code translate="no">LinguistTools</code> component of the <code translate="no">Qt6</code> package. Load the package with:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+</pre>
+<p>This command was introduced in Qt 6.7.</p>
+<h2 id="synopsis">Synopsis</h2>
+<pre class="cpp plain" translate="no">
+ qt_collect_translation_source_targets(out_var [DIRECTORY path])
+</pre>
+<p>If versionless commands are disabled, use <code translate="no">qt6_collect_translation_source_targets()</code> instead. It supports the same set of arguments as this command.</p>
+<h2 id="description">Description</h2>
+<p>Collect targets that are eligible for translation in the given <code translate="no">DIRECTORY</code> and all subdirectories. If <code translate="no">DIRECTORY</code> is not specified, start the target collection at <code translate="no">CMAKE_CURRENT_SOURCE_DIR</code>.</p>
+<p>The command stores the list of targets in the variable that is specified as first argument.</p>
+<h2 id="excluding-targets-from-translation">Excluding targets from translation</h2>
+<p>By default, all non-imported executable and library targets are eligible for translation.</p>
+<p>Single targets can be excluded by setting the <a href="cmake-target-property-qt-exclude-from-translation.html">target property QT_EXCLUDE_FROM_TRANSLATION</a>.</p>
+<p>Targets below a certain directory can be excluded by setting the <a href="cmake-directory-property-qt-exclude-from-translation.html">directory property QT_EXCLUDE_FROM_TRANSLATION</a>.</p>
+<h2 id="when-to-call-this-command">When to call this command</h2>
+<p>The <code translate="no">qt_collect_translation_source_targets</code> command reads the <a href="https://cmake.org/cmake/help/latest/prop_dir/BUILDSYSTEM_TARGETS.html">BUILDSYSTEM_TARGETS</a> directory properties. As a consequence, it only collects targets that already have been created. Targets that are created after <code translate="no">qt_collect_translation_source_targets</code> has been called are not collected.</p>
+<p>To collect all targets of the build system, call <code translate="no">qt_collect_translation_source_targets</code> at the end of the top-level <code translate="no">CMakeLists.txt</code> or use <code translate="no">cmake_language(DEFER CALL)</code> to set up i18n at the end of the top-level directory scope.</p>
+<h2 id="examples">Examples</h2>
+<p>Use the result of <code translate="no">qt_collect_translation_source_targets</code> as input for <code translate="no">qt_add_lupdate</code>.</p>
+<pre class="cpp" translate="no">
+ add_subdirectory(src)         # The actual application is defined here.
+
+ # All targets that have been defined up to this point will be in i18n_targets.
+ qt_collect_translation_source_targets(i18n_targets)
+ qt_add_lupdate(SOURCE_TARGETS ${i18n_targets})
+
+ # No targets from this directory are in i18n_targets.
+ add_subdirectory(tests)       # Unit tests - we don't want to translate those.
+</pre>
+<p>With CMake 3.19 and above, you can collect the source targets at the end of the directory scope. This way, <code translate="no">qt_collect_translation_source_targets</code> can be called before all targets have been defined. However, you need to exclude the tests by setting the directory property <a href="cmake-directory-property-qt-exclude-from-translation.html">QT_EXCLUDE_FROM_TRANSLATION</a> to <code translate="no">ON</code>.</p>
+<pre class="cpp" translate="no">
+ function(set_up_translations)
+     qt_collect_translation_source_targets(i18n_targets)
+     qt_add_lupdate(SOURCE_TARGETS ${i18n_targets})
+ endfunction()
+
+ cmake_language(DEFER CALL set_up_translations)
+
+ add_subdirectory(src)         # The actual application is defined here.
+ add_subdirectory(tests)       # Unit tests - we don't want to translate those.
+ set_property(DIRECTORY tests PROPERTY QT_EXCLUDE_FROM_TRANSLATION ON)
+</pre>
+</div>
+<!-- @@@qtlinguist-cmake-qt-collect-targets-for-translation.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

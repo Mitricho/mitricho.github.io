@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qssgrenderextensions.cpp -->
+  <meta name="description" content="Base class for extension backend node implementations.">
+  <title>QSSGRenderExtension Class | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-module.html" translate="no">C++ Classes</a></li>
+<li>QSSGRenderExtension</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QSSGRenderExtension Class</h1>
+<!-- $$$QSSGRenderExtension-brief -->
+<p>Base class for extension backend node implementations. <a href="#details">More...</a></p>
+<!-- @@@QSSGRenderExtension -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QSSGRenderExtension&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.7</td></tr>
+</table></div>
+<ul>
+<li><a href="qssgrenderextension-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#RenderMode-enum" translate="no">RenderMode</a></b> { Standalone, Main }</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#RenderStage-enum" translate="no">RenderStage</a></b> { PreColor, PostColor }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSSGRenderExtension::RenderMode </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#mode" translate="no">mode</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#prepareData" translate="no">prepareData</a></b>(QSSGFrameData &amp;<i>data</i>) = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#prepareRender" translate="no">prepareRender</a></b>(QSSGFrameData &amp;<i>data</i>) = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#render" translate="no">render</a></b>(QSSGFrameData &amp;<i>data</i>) = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#resetForFrame" translate="no">resetForFrame</a></b>() = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QSSGRenderExtension::RenderStage </td><td class="memItemRight bottomAlign"><b><a href="qssgrenderextension.html#stage" translate="no">stage</a></b>() const = 0</td></tr>
+</table></div>
+<!-- $$$QSSGRenderExtension-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+</div>
+<p><b>See also </b><a href="qquick3drenderextension.html" translate="no">QQuick3DRenderExtension</a>.</p>
+<!-- @@@QSSGRenderExtension -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$RenderMode$$$Standalone$$$Main -->
+<h3 class="fn" translate="no" id="RenderMode-enum">enum class QSSGRenderExtension::<span class="name">RenderMode</span></h3>
+<p>Specifies the render extension mode.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QSSGRenderExtension::RenderMode::Standalone</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The rendering code is recorded in full during the render prepare phase. This will usually imply that there are some output crated for a preceding render extension(s). When this mode is used the <a href="qssgrenderextension.html#prepareRender" translate="no">prepareRender</a>() and <a href="qssgrenderextension.html#render" translate="no">render</a>() functions are both called during the frame's prepare phase.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSSGRenderExtension::RenderMode::Main</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The rendering code is recorded within the main render pass. In this mode the <a href="qssgrenderextension.html#prepareRender" translate="no">prepareRender</a>() is called in the frame's prepare phase while <a href="qssgrenderextension.html#render" translate="no">render</a>() is called the frame's render phase.</td></tr>
+</table></div>
+<!-- @@@RenderMode -->
+<!-- $$$RenderStage$$$PreColor$$$PostColor -->
+<h3 class="fn" translate="no" id="RenderStage-enum">enum class QSSGRenderExtension::<span class="name">RenderStage</span></h3>
+<p>Specifies the order the extension will be called.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QSSGRenderExtension::RenderStage::PreColor</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The rendering code is recorded and executed before the main (color) pass.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSSGRenderExtension::RenderStage::PostColor</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The rendering code is recorded and executed after the main (color) pass.</td></tr>
+</table></div>
+<!-- @@@RenderStage -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$mode[overload1]$$$mode -->
+<h3 class="fn" translate="no" id="mode"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qssgrenderextension.html#RenderMode-enum" translate="no">QSSGRenderExtension::RenderMode</a></span> QSSGRenderExtension::<span class="name">mode</span>() const</h3>
+<p>Returns The render mode used for this extension.</p>
+<!-- @@@mode -->
+<!-- $$$prepareData[overload1]$$$prepareDataQSSGFrameData& -->
+<h3 class="fn" translate="no" id="prepareData"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">bool</span> QSSGRenderExtension::<span class="name">prepareData</span>(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> &amp;<i>data</i>)</h3>
+<p>Called after scene <i translate="no">data</i> is collected, but before any render data or rendering in the current frame has been done.</p>
+<p>Returns Dirty state. Return <code translate="no">true</code> if the there are dirty data that needs to be rendered.</p>
+<div class="admonition note">
+<p><b>Note: </b>Much of the data created/collected from the engine during the prepare and render phases is per-frame and should be released or assumed released at the start of the next frame</p>
+</div>
+<p><b>See also </b><a href="qssgframedata.html" translate="no">QSSGFrameData</a>.</p>
+<!-- @@@prepareData -->
+<!-- $$$prepareRender[overload1]$$$prepareRenderQSSGFrameData& -->
+<h3 class="fn" translate="no" id="prepareRender"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">void</span> QSSGRenderExtension::<span class="name">prepareRender</span>(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> &amp;<i>data</i>)</h3>
+<p>Prepare data for rendering. Build and collect <i translate="no">data</i> needed for rendering. Any render extension scheduled before this one has been processed. In addition; any render extension of mode <a href="qssgrenderextension.html#RenderMode-enum" translate="no">RenderMode::Standalone</a> will, if successful, have been completed in full.</p>
+<div class="admonition note">
+<p><b>Note: </b>Much of the data created/collected from the engine during the prepare and render phases is per-frame and should be released or assumed released at the start of the next frame</p>
+</div>
+<p><b>See also </b><a href="qssgframedata.html" translate="no">QSSGFrameData</a>.</p>
+<!-- @@@prepareRender -->
+<!-- $$$render[overload1]$$$renderQSSGFrameData& -->
+<h3 class="fn" translate="no" id="render"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">void</span> QSSGRenderExtension::<span class="name">render</span>(<span class="type"><a href="qssgframedata.html" translate="no">QSSGFrameData</a></span> &amp;<i>data</i>)</h3>
+<p>Record the render pass. Depending on the extensions <a href="qssgrenderextension.html#RenderMode-enum" translate="no">mode</a> this function will be called during the frame's prepare or render phase.</p>
+<p>Use <i translate="no">data</i> to gain access to the render context from which the active <a href="../qtgui/qrhi.html" translate="no">QRhi</a> object can be queried.</p>
+<p><b>See also </b><a href="qssgrenderextension.html#RenderMode-enum" translate="no">QSSGRenderExtension::RenderMode</a>.</p>
+<!-- @@@render -->
+<!-- $$$resetForFrame[overload1]$$$resetForFrame -->
+<h3 class="fn" translate="no" id="resetForFrame"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">void</span> QSSGRenderExtension::<span class="name">resetForFrame</span>()</h3>
+<p>Called each time a new frame starts. Any data from the previous frame should be cleared at this point.</p>
+<!-- @@@resetForFrame -->
+<!-- $$$stage[overload1]$$$stage -->
+<h3 class="fn" translate="no" id="stage"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qssgrenderextension.html#RenderStage-enum" translate="no">QSSGRenderExtension::RenderStage</a></span> QSSGRenderExtension::<span class="name">stage</span>() const</h3>
+<p>Returns The stage in which this render extension will be used.</p>
+<!-- @@@stage -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dcamera.cpp -->
+  <meta name="description" content="Defines an abstract base for Cameras.">
+  <title>Camera QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Camera</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Camera QML Type</h1>
+<!-- $$$Camera-brief -->
+<p>Defines an abstract base for Cameras. <a href="#details">More...</a></p>
+<!-- @@@Camera -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-customcamera.html" translate="no">CustomCamera</a>, <a href="qml-qtquick3d-orthographiccamera.html" translate="no">OrthographicCamera</a>, and <a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-camera-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-camera.html#frustumCullingEnabled-prop" translate="no">frustumCullingEnabled</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-camera.html#levelOfDetailBias-prop" translate="no">levelOfDetailBias</a></b> : real <code class="summary extra" translate="no">(since 6.5)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-camera.html#lookAtNode-prop" translate="no">lookAtNode</a></b> : Node</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no">vector3d <b><a href="qml-qtquick3d-camera.html#lookAt-method" translate="no">lookAt</a></b>(QtQuick3D::Node <i>node</i>)</li>
+<li class="fn" translate="no">vector3d <b><a href="qml-qtquick3d-camera.html#lookAt-method-1" translate="no">lookAt</a></b>(vector3d <i>scenePos</i>)</li>
+<li class="fn" translate="no">vector3d <b><a href="qml-qtquick3d-camera.html#mapFromViewport-method" translate="no">mapFromViewport</a></b>(vector3d <i>viewportPos</i>)</li>
+<li class="fn" translate="no">vector3d <b><a href="qml-qtquick3d-camera.html#mapToViewport-method" translate="no">mapToViewport</a></b>(vector3d <i>scenePos</i>)</li>
+</ul>
+<!-- $$$Camera-description -->
+<h2 id="details">Detailed Description</h2>
+<p>A Camera defines how the content of the 3D scene is projected onto a 2D surface, such as a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. A scene needs at least one Camera in order to visualize its contents.</p>
+<p>It is possible to position and rotate the Camera like any other spatial <a href="qml-qtquick3d-node.html" translate="no">Node</a> in the scene. The <a href="qml-qtquick3d-node.html" translate="no">Node</a>'s location and orientation determines where the Camera is in the scene, and what direction it is facing. The default orientation of the camera has its forward vector pointing along the negative Z axis and its up vector along the positive Y axis.</p>
+<p>Together with the position and orientation, the frustum defines which parts of a scene are visible to the Camera and how they are projected onto the 2D surface. The different Camera subtypes provide multiple options to determine the shape of the Camera's frustum.</p>
+<ul>
+<li><a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a> provides a camera with a pyramid-shaped frustum, where objects are projected so that those further away from the camera appear to be smaller. This is the most commonly used camera type, and corresponds to how most real world cameras work.</li>
+<li><a href="qml-qtquick3d-orthographiccamera.html" translate="no">OrthographicCamera</a> provides a camera where the lines of the frustum are parallel, making the perceived scale of an object unaffected by its distance to the camera. Typical use cases for this type of camera are CAD (Computer-Assisted Design) applications and cartography.</li>
+<li><a href="qml-qtquick3d-frustumcamera.html" translate="no">FrustumCamera</a> is a perspective camera type where the frustum can be freely customized by the coordinates of its intersection with the near plane. It can be useful if an asymmetrical camera frustum is needed.</li>
+<li><a href="qml-qtquick3d-customcamera.html" translate="no">CustomCamera</a> is a camera type where the projection matrix can be freely customized, and can be useful for advanced users who wish to calculate their own projection matrix.</li>
+</ul>
+<p>To illustrate the difference, these screenshots show the same scene as projected by a <a href="qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a> and an <a href="qml-qtquick3d-orthographiccamera.html" translate="no">OrthographicCamera</a>. Notice how the red box is smaller than the green box in the image rendered using the perspective projection.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Perspective camera</th><th >Orthographic camera</th></tr></thead>
+<tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/perspectivecamera.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/orthographiccamera.png" alt="" /></p></td></tr>
+</table></div>
+<p><b>See also </b><a href="qtquick3d-view3d-example.html">Qt Quick 3D - View3D Example</a>.</p>
+<!-- @@@Camera -->
+<h2>Property Documentation</h2>
+<!-- $$$frustumCullingEnabled -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="frustumCullingEnabled-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">frustumCullingEnabled</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>When this property is <code translate="no">true</code>, objects outside the camera frustum will be culled, meaning they will not be passed to the renderer. By default this property is set to <code translate="no">false</code>. For scenes where all or most objects are inside the camera frustum, frustum culling is an unnecessary performance overhead. But for complex scenes where large parts are located outside the camera's view, enabling frustum culling may improve performance.</p>
+</div></div><!-- @@@frustumCullingEnabled -->
+<br/>
+<!-- $$$levelOfDetailBias -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="levelOfDetailBias-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">levelOfDetailBias</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since 6.5]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property changes the size a model needs to be when rendered before the automatic level of detail meshes are used. Each generated level of detail mesh contains an ideal size value that each level should be shown, which is a ratio of how much of the rendered scene will be that mesh. A model that represents only a few pixels on screen will not require the full geometry to look correct, so a lower level of detail mesh will be used instead in this case. This value is a bias to the ideal value such that a value smaller than <code translate="no">1.0</code> will require an even smaller rendered size before switching to a lesser level of detail. Values above <code translate="no">1.0</code> will lead to lower levels of detail being used sooner. A value of <code translate="no">0.0</code> will disable the usage of levels of detail completely.</p>
+<p>The default value is <code translate="no">1.0</code></p>
+<div class="admonition note">
+<p><b>Note: </b>This property will only have an effect on Models with geomtry containing levels of detail.</p>
+</div>
+<p>This property was introduced in Qt 6.5.</p>
+<p><b>See also </b><a href="qml-qtquick3d-model.html#levelOfDetailBias-prop" translate="no">Model::levelOfDetailBias</a>.</p>
+</div></div><!-- @@@levelOfDetailBias -->
+<br/>
+<!-- $$$lookAtNode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="lookAtNode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">lookAtNode</span> : <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>If this property is set to a <code translate="no">non-null</code> value, the rotation of this camera is automatically updated so that this camera keeps looking at the specified node whenever the scene position of this camera or the specified node changes. By default this property is set to <code translate="no">null</code>.</p>
+<p><b>See also </b><a href="qml-qtquick3d-camera.html#lookAt-method" translate="no">lookAt</a>.</p>
+</div></div><!-- @@@lookAtNode -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$lookAt[overload1]$$$lookAtQtQuick3D::Node -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="lookAt-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">lookAt</span>(<span class="type"><a href="qml-qtquick3d-node.html" translate="no">QtQuick3D::Node</a></span> <i>node</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the rotation value of the Camera so that it is pointing at <i translate="no">node</i>.</p>
+</div></div><!-- @@@lookAt -->
+<br/>
+<!-- $$$lookAt$$$lookAtvector3d -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="lookAt-method-1">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">lookAt</span>(<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <i>scenePos</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the rotation value of the Camera so that it is pointing at <i translate="no">scenePos</i>.</p>
+</div></div><!-- @@@lookAt -->
+<br/>
+<!-- $$$mapFromViewport[overload1]$$$mapFromViewportvector3d -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="mapFromViewport-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">mapFromViewport</span>(<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <i>viewportPos</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Transforms <i translate="no">viewportPos</i> from viewport space (2D) into global scene space (3D).</p>
+<p>The x- and y-values of <i translate="no">viewportPos</i> must be normalized, with the top-left of the viewport at [0, 0] and the bottom-right at [1, 1]. The z-value is interpreted as the distance from the near clip plane of the frustum (clipNear).</p>
+<p>If <i translate="no">viewportPos</i> cannot successfully be mapped to a position in the scene, a position of [0, 0, 0] is returned.</p>
+<p><b>See also </b><a href="qml-qtquick3d-camera.html#mapToViewport-method" translate="no">mapToViewport</a> and <a href="qml-qtquick3d-view3d.html#mapTo3DScene-method" translate="no">View3D.mapTo3DScene</a>().</p>
+</div></div><!-- @@@mapFromViewport -->
+<br/>
+<!-- $$$mapToViewport[overload1]$$$mapToViewportvector3d -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="mapToViewport-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <span class="name">mapToViewport</span>(<span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span> <i>scenePos</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Transforms <i translate="no">scenePos</i> from global scene space (3D) into viewport space (2D).</p>
+<p>The returned position is normalized, with the top-left of the viewport at [0, 0] and the bottom-right at [1, 1]. The returned z-value will contain the distance from the near clip plane of the frustum (clipNear) to <i translate="no">scenePos</i> in scene coordinates. If the distance is negative, the point is behind camera.</p>
+<p>If <i translate="no">scenePos</i> cannot successfully be mapped to a position in the viewport, a position of [0, 0, 0] is returned.</p>
+<p><b>See also </b><a href="qml-qtquick3d-camera.html#mapFromViewport-method" translate="no">mapFromViewport</a>() and <a href="qml-qtquick3d-view3d.html#mapFrom3DScene-method" translate="no">View3D.mapFrom3DScene</a>().</p>
+</div></div><!-- @@@mapToViewport -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

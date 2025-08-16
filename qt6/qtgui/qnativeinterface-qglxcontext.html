@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qunixnativeinterface.cpp -->
+  <meta name="description" content="Native interface to a GLX context.">
+  <title>QNativeInterface::QGLXContext Struct | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QGLXContext</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QNativeInterface::QGLXContext Struct</h1>
+<!-- $$$QGLXContext-brief -->
+<p>Native interface to a GLX context. <a href="#details">More...</a></p>
+<!-- @@@QGLXContext -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpenGLContext&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.0</td></tr>
+</table></div>
+<ul>
+<li><a href="qnativeinterface-qglxcontext-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual GLXContext </td><td class="memItemRight bottomAlign"><b><a href="qnativeinterface-qglxcontext.html#nativeContext" translate="no">nativeContext</a></b>() const = 0</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QOpenGLContext *</td><td class="memItemRight bottomAlign"><b><a href="qnativeinterface-qglxcontext.html#fromNative" translate="no">fromNative</a></b>(GLXContext <i>configBasedContext</i>, QOpenGLContext *<i>shareContext</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpenGLContext *</td><td class="memItemRight bottomAlign"><b><a href="qnativeinterface-qglxcontext.html#fromNative-1" translate="no">fromNative</a></b>(GLXContext <i>visualBasedContext</i>, void *<i>visualInfo</i>, QOpenGLContext *<i>shareContext</i> = nullptr)</td></tr>
+</table></div>
+<!-- $$$QGLXContext-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Accessed through <a href="qopenglcontext.html#nativeInterface" translate="no">QOpenGLContext::nativeInterface</a>().</p>
+</div>
+<!-- @@@QGLXContext -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$fromNative[overload1]$$$fromNativeGLXContextQOpenGLContext* -->
+<h3 class="fn" translate="no" id="fromNative"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qopenglcontext.html" translate="no">QOpenGLContext</a></span> *QGLXContext::<span class="name">fromNative</span>(<span class="type">GLXContext</span> <i>configBasedContext</i>, <span class="type"><a href="qopenglcontext.html" translate="no">QOpenGLContext</a></span> *<i>shareContext</i> = nullptr)</h3>
+<p>Adopts a GLXContext <i translate="no">configBasedContext</i> created from an FBConfig.</p>
+<p>The context must be created from a framebuffer configuration, using the <code translate="no">glXCreateNewContext</code> function.</p>
+<p>Ownership of the created <a href="qopenglcontext.html" translate="no">QOpenGLContext</a> <i translate="no">shareContext</i> is transferred to the caller.</p>
+<!-- @@@fromNative -->
+<!-- $$$fromNative$$$fromNativeGLXContextvoid*QOpenGLContext* -->
+<h3 class="fn" translate="no" id="fromNative-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qopenglcontext.html" translate="no">QOpenGLContext</a></span> *QGLXContext::<span class="name">fromNative</span>(<span class="type">GLXContext</span> <i>visualBasedContext</i>, <span class="type">void</span> *<i>visualInfo</i>, <span class="type"><a href="qopenglcontext.html" translate="no">QOpenGLContext</a></span> *<i>shareContext</i> = nullptr)</h3>
+<p>Adopts a GLXContext created from an X visual.</p>
+<p>The context must be created from a visual, using the <code translate="no">glXCreateContext</code> function. The same visual must be passed as a pointer to an <code translate="no">XVisualInfo</code> struct, in the <i translate="no">visualInfo</i> argument.</p>
+<p>Ownership of the created <a href="qopenglcontext.html" translate="no">QOpenGLContext</a> is transferred to the caller.</p>
+<!-- @@@fromNative -->
+<!-- $$$nativeContext[overload1]$$$nativeContext -->
+<h3 class="fn" translate="no" id="nativeContext"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">GLXContext</span> QGLXContext::<span class="name">nativeContext</span>() const</h3>
+<p>Returns the underlying GLXContext.</p>
+<!-- @@@nativeContext -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

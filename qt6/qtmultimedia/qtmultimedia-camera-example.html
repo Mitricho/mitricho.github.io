@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- camera.qdoc -->
+  <meta name="description" content="Shows how to capture a still image or record video.">
+  <title>Camera Example | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="multimedia-examples.html">Qt Multimedia Examples</a></li>
+<li>Camera Example</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#the-camera-constructor">The Camera constructor</a></li>
+<li class="level1"><a href="#setcamera">setCamera()</a></li>
+<li class="level1"><a href="#triggering-capturing">Triggering capturing</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Camera Example</h1>
+<!-- $$$camera-brief -->
+<p>Shows how to capture a still image or record video.</p>
+<!-- @@@camera -->
+<!-- $$$camera-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/camera-example.png" alt="" /></p><p>The Camera Example demonstrates how you can use <a href="qtmultimedia-index.html">Qt Multimedia</a> to implement some basic Camera functionality to take still images and record video clips with audio.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p>The example implements a <code translate="no">Camera</code> class that acts as our camera interface. It has a user interface, control functions, setting values and a means of defining the location where the image or video clip is to be saved. It will also store the image and video settings.</p>
+<p>The Camera class uses:</p>
+<ul>
+<li>An instance of <a href="qcamera.html" translate="no">QCamera</a>, the API class interface to the hardware.</li>
+<li>An instance of <a href="qimagecapture.html" translate="no">QImageCapture</a> to take still images.</li>
+<li>An instance of <a href="qmediarecorder.html" translate="no">QMediaRecorder</a> to record video. It also contains the user interface object.</li>
+</ul>
+<h4 id="the-camera-constructor">The Camera constructor</h4>
+<p>The Camera constructor does some basic initialization of the user interface including disabling all buttons by default.</p>
+<pre class="cpp" translate="no">
+ Camera<span class="operator">::</span>Camera() : ui(<span class="keyword">new</span> Ui<span class="operator">::</span>Camera)
+ {
+     ui<span class="operator">-</span><span class="operator">&gt;</span>setupUi(<span class="keyword">this</span>);
+     <span class="comment">// disable all buttons by default</span>
+     updateCameraActive(<span class="keyword">false</span>);
+     readyForCapture(<span class="keyword">false</span>);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>recordButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>pauseButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>stopButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+     ui<span class="operator">-</span><span class="operator">&gt;</span>metaDataButton<span class="operator">-</span><span class="operator">&gt;</span>setEnabled(<span class="keyword">false</span>);
+</pre>
+<p>It seeks permissions for input device access:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#if QT_CONFIG(permissions)</span>
+     <span class="comment">// camera</span>
+     <span class="type"><a href="../qtcore/qcamerapermission.html" translate="no">QCameraPermission</a></span> cameraPermission;
+     <span class="keyword">switch</span> (<a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>checkPermission(cameraPermission)) {
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Undetermined:
+         <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>requestPermission(cameraPermission<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>init);
+         <span class="keyword">return</span>;
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Denied:
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Camera permission is not granted!&quot;</span>);
+         <span class="keyword">return</span>;
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Granted:
+         <span class="keyword">break</span>;
+     }
+     <span class="comment">// microphone</span>
+     <span class="type"><a href="../qtcore/qmicrophonepermission.html" translate="no">QMicrophonePermission</a></span> microphonePermission;
+     <span class="keyword">switch</span> (<a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>checkPermission(microphonePermission)) {
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Undetermined:
+         <a href="../qtwidgets/qapplication.html#qApp" translate="no">qApp</a><span class="operator">-</span><span class="operator">&gt;</span>requestPermission(microphonePermission<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>init);
+         <span class="keyword">return</span>;
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Denied:
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>(<span class="string">&quot;Microphone permission is not granted!&quot;</span>);
+         <span class="keyword">return</span>;
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>PermissionStatus<span class="operator">::</span>Granted:
+         <span class="keyword">break</span>;
+     }
+ <span class="preprocessor">#endif</span>
+</pre>
+<p>Inputs are assigned:</p>
+<pre class="cpp" translate="no">
+     m_audioInput<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qaudioinput.html" translate="no">QAudioInput</a></span>);
+     m_captureSession<span class="operator">.</span>setAudioInput(m_audioInput<span class="operator">.</span>get());
+
+     <span class="comment">// Camera devices:</span>
+
+     videoDevicesGroup <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="../qtgui/qactiongroup.html" translate="no">QActionGroup</a></span>(<span class="keyword">this</span>);
+     videoDevicesGroup<span class="operator">-</span><span class="operator">&gt;</span>setExclusive(<span class="keyword">true</span>);
+     updateCameras();
+</pre>
+<p>UI signals are connected to slots that react to the triggering event:</p>
+<pre class="cpp" translate="no">
+     connect(<span class="operator">&amp;</span>m_devices<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmediadevices.html" translate="no">QMediaDevices</a></span><span class="operator">::</span>videoInputsChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateCameras);
+
+     connect(videoDevicesGroup<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtgui/qactiongroup.html" translate="no">QActionGroup</a></span><span class="operator">::</span>triggered<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateCameraDevice);
+     connect(ui<span class="operator">-</span><span class="operator">&gt;</span>captureWidget<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qtabwidget.html" translate="no">QTabWidget</a></span><span class="operator">::</span>currentChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateCaptureMode);
+
+     connect(ui<span class="operator">-</span><span class="operator">&gt;</span>metaDataButton<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qpushbutton.html" translate="no">QPushButton</a></span><span class="operator">::</span>clicked<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>showMetaDataDialog);
+     connect(ui<span class="operator">-</span><span class="operator">&gt;</span>exposureCompensation<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtwidgets/qabstractslider.html" translate="no">QAbstractSlider</a></span><span class="operator">::</span>valueChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+             <span class="operator">&amp;</span>Camera<span class="operator">::</span>setExposureCompensation);
+
+     setCamera(<span class="type"><a href="qmediadevices.html" translate="no">QMediaDevices</a></span><span class="operator">::</span>defaultVideoInput());
+</pre>
+<p>However, most of the work is done when the <i>setCamera()</i> function is called, passing in a <a href="qcameradevice.html" translate="no">QCameraDevice</a>.</p>
+<h4 id="setcamera">setCamera()</h4>
+<p><code translate="no">setCamera()</code> sets up various connections between the user interface and the functionality of the Camera class using signals and slots. It also instantiates and initializes the <a href="qcamera.html" translate="no">QCamera</a>, <a href="qimagecapture.html" translate="no">QImageCapture</a>, and <a href="qmediarecorder.html" translate="no">QMediaRecorder</a> objects.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> Camera<span class="operator">::</span>setCamera(<span class="keyword">const</span> <span class="type"><a href="qcameradevice.html" translate="no">QCameraDevice</a></span> <span class="operator">&amp;</span>cameraDevice)
+ {
+     m_camera<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qcamera.html" translate="no">QCamera</a></span>(cameraDevice));
+     m_captureSession<span class="operator">.</span>setCamera(m_camera<span class="operator">.</span>data());
+
+     connect(m_camera<span class="operator">.</span>data()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcamera.html" translate="no">QCamera</a></span><span class="operator">::</span>activeChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateCameraActive);
+     connect(m_camera<span class="operator">.</span>data()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qcamera.html" translate="no">QCamera</a></span><span class="operator">::</span>errorOccurred<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>displayCameraError);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_mediaRecorder) {
+         m_mediaRecorder<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qmediarecorder.html" translate="no">QMediaRecorder</a></span>);
+         m_captureSession<span class="operator">.</span>setRecorder(m_mediaRecorder<span class="operator">.</span>data());
+         connect(m_mediaRecorder<span class="operator">.</span>data()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmediarecorder.html" translate="no">QMediaRecorder</a></span><span class="operator">::</span>recorderStateChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateRecorderState);
+         connect(m_mediaRecorder<span class="operator">.</span>data()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmediarecorder.html" translate="no">QMediaRecorder</a></span><span class="operator">::</span>durationChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>updateRecordTime);
+         connect(m_mediaRecorder<span class="operator">.</span>data()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmediarecorder.html" translate="no">QMediaRecorder</a></span><span class="operator">::</span>errorChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>displayRecorderError);
+     }
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_imageCapture) {
+         m_imageCapture<span class="operator">.</span>reset(<span class="keyword">new</span> <span class="type"><a href="qimagecapture.html" translate="no">QImageCapture</a></span>);
+         m_captureSession<span class="operator">.</span>setImageCapture(m_imageCapture<span class="operator">.</span>get());
+         connect(m_imageCapture<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qimagecapture.html" translate="no">QImageCapture</a></span><span class="operator">::</span>readyForCaptureChanged<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>readyForCapture);
+         connect(m_imageCapture<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qimagecapture.html" translate="no">QImageCapture</a></span><span class="operator">::</span>imageCaptured<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>processCapturedImage);
+         connect(m_imageCapture<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qimagecapture.html" translate="no">QImageCapture</a></span><span class="operator">::</span>imageSaved<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>Camera<span class="operator">::</span>imageSaved);
+         connect(m_imageCapture<span class="operator">.</span>get()<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qimagecapture.html" translate="no">QImageCapture</a></span><span class="operator">::</span>errorOccurred<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                 <span class="operator">&amp;</span>Camera<span class="operator">::</span>displayCaptureError);
+     }
+</pre>
+<p>The still and video recording visual tabs are enabled:</p>
+<pre class="cpp" translate="no">
+     m_captureSession<span class="operator">.</span>setVideoOutput(ui<span class="operator">-</span><span class="operator">&gt;</span>viewfinder);
+
+     updateCameraActive(m_camera<span class="operator">-</span><span class="operator">&gt;</span>isActive());
+     updateRecorderState(m_mediaRecorder<span class="operator">-</span><span class="operator">&gt;</span>recorderState());
+     readyForCapture(m_imageCapture<span class="operator">-</span><span class="operator">&gt;</span>isReadyForCapture());
+
+     updateCaptureMode();
+</pre>
+<p>Finally the <a href="qcamera.html#start" translate="no">start</a>() function of the <a href="qcamera.html" translate="no">QCamera</a> object is called.</p>
+<pre class="cpp" translate="no">
+     m_camera<span class="operator">-</span><span class="operator">&gt;</span>start();
+</pre>
+<h4 id="triggering-capturing">Triggering capturing</h4>
+<p>Now that the camera is ready for user commands it waits for a suitable event. Such an event can be a key press of either the <a href="../qtcore/qt.html#Key-enum" translate="no">Qt::Key_CameraFocus</a> or <a href="../qtcore/qt.html#Key-enum" translate="no">Qt::Key_Camera</a> buttons on the application window.</p>
+<p>Key_CameraFocus will simply display the preview and lock the camera settings.</p>
+<pre class="cpp" translate="no">
+ }
+
+ <span class="type">void</span> Camera<span class="operator">::</span>keyPressEvent(<span class="type"><a href="../qtgui/qkeyevent.html" translate="no">QKeyEvent</a></span> <span class="operator">*</span>event)
+ {
+     <span class="keyword">if</span> (event<span class="operator">-</span><span class="operator">&gt;</span>isAutoRepeat())
+         <span class="keyword">return</span>;
+
+     <span class="keyword">switch</span> (event<span class="operator">-</span><span class="operator">&gt;</span>key()) {
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Key_CameraFocus:
+         displayViewfinder();
+         event<span class="operator">-</span><span class="operator">&gt;</span>accept();
+         <span class="keyword">break</span>;
+</pre>
+<p><code translate="no">Key_Camera</code> will either call <i>takeImage()</i> if doing an image capture, or call <code translate="no">record()</code> or <code translate="no">stop()</code> (if already recording) on the <a href="qmediarecorder.html" translate="no">QMediaRecorder</a> instance when recording video.</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">case</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Key_Camera:
+         <span class="keyword">if</span> (m_doImageCapture) {
+             takeImage();
+         } <span class="keyword">else</span> {
+             <span class="keyword">if</span> (m_mediaRecorder<span class="operator">-</span><span class="operator">&gt;</span>recorderState() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmediarecorder.html" translate="no">QMediaRecorder</a></span><span class="operator">::</span>RecordingState)
+                 stop();
+             <span class="keyword">else</span>
+                 record();
+         }
+         event<span class="operator">-</span><span class="operator">&gt;</span>accept();
+         <span class="keyword">break</span>;
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimedia/camera?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@camera -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

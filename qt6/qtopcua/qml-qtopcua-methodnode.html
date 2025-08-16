@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- opcuamethodnode.cpp -->
+  <meta name="description" content="Calls a method on the server.">
+  <title>MethodNode QML Type | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-qmlmodule.html" translate="no">QML Types</a></li>
+<li>MethodNode</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">MethodNode QML Type</h1>
+<!-- $$$MethodNode-brief -->
+<p>Calls a method on the server. <a href="#details">More...</a></p>
+<!-- @@@MethodNode -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtOpcUa</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> QtOpcUa 5.12</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtopcua-node.html" translate="no">Node</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Status:</td><td class="memItemRight bottomAlign"> Deprecated since 6.9<span class="status deprecated"></span></td></tr>
+</table></div>
+<p><b>This type is deprecated since QtOpcUa 6.9. We strongly advise against using it in new code.</b></p>
+<ul>
+<li><a href="qml-qtopcua-methodnode-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#inputArguments-prop" translate="no">inputArguments</a></b> : list&lt;MethodArgument&gt;</li>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#objectNodeId-prop" translate="no">objectNodeId</a></b> : OpcUaNode</li>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#outputArguments-prop" translate="no">outputArguments</a></b> : list&lt;var&gt;</li>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#resultStatus-prop" translate="no">resultStatus</a></b> : Status</li>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#type-prop" translate="no">type</a></b> : QOpcUa::Types</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtopcua-methodnode.html#callMethod-method" translate="no">callMethod</a></b>()</li>
+</ul>
+<!-- $$$MethodNode-description -->
+<h2 id="details">Detailed Description</h2>
+<p>This QML element supports calling method nodes on a server. The target object node ID has to be specified by the <a href="qml-qtopcua-methodnode.html#objectNodeId-prop" translate="no">objectNodeId</a> property.</p>
+<pre class="cpp" translate="no">
+ import QtOpcUa as QtOpcUa
+
+ <span class="type">QtOpcUa</span>.MethodNode {
+     <span class="name">nodeId</span> : <span class="name">QtOpcUa</span>.NodeId {
+         <span class="name">identifier</span>: <span class="string">&quot;s=Example.Method&quot;</span>
+         <span class="name">ns</span>: <span class="string">&quot;Example Namespace&quot;</span>
+     }
+     <span class="name">objectNodeId</span> : <span class="name">QtOpcUa</span>.NodeId {
+         <span class="name">identifier</span>: <span class="string">&quot;s=Example.Object&quot;</span>
+         <span class="name">ns</span>: <span class="string">&quot;Example Namespace&quot;</span>
+     }
+     <span class="name">connection</span>: <span class="name">myConnection</span>
+  }
+</pre>
+<p>The actual function call can be triggered by a signal.</p>
+<pre class="cpp" translate="no">
+ <span class="type">Button</span> {
+       <span class="name">text</span>: <span class="string">&quot;Start&quot;</span>
+       <span class="name">onClicked</span>: <span class="name">myNode</span>.<span class="name">callMethod</span>
+ }
+</pre>
+<p>or by JavaScript</p>
+<pre class="cpp" translate="no">
+ myNode<span class="operator">.</span>callMethod()
+</pre>
+<!-- @@@MethodNode -->
+<h2>Property Documentation</h2>
+<!-- $$$inputArguments -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="inputArguments-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">inputArguments</span> : <span class="type"><a href="../qtqml/qml-list.html" translate="no">list</a></span>&lt;<span class="type"><a href="qml-qtopcua-methodargument.html" translate="no">MethodArgument</a></span>&gt;</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Arguments to be used when calling the method on the server.</p>
+<p>This example shows how to call a method with two double arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="type">QtOpcUa</span><span class="operator">.</span>MethodNode {
+     <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+     inputArguments: <span class="operator">[</span>
+         <span class="type">QtOpcUa</span><span class="operator">.</span>MethodArgument {
+             value: <span class="number">3</span>
+             type: <span class="type">QtOpcUa</span><span class="operator">.</span>Constants<span class="operator">.</span>Double
+         }<span class="operator">,</span>
+         <span class="type">QtOpcUa</span><span class="operator">.</span>MethodArgument {
+             value: <span class="number">4</span>
+             type: <span class="type">QtOpcUa</span><span class="operator">.</span>Constants<span class="operator">.</span>Double
+         }
+     <span class="operator">]</span>
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtopcua-methodnode.html#callMethod-method" translate="no">callMethod</a>.</p>
+</div></div><!-- @@@inputArguments -->
+<br/>
+<!-- $$$objectNodeId -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="objectNodeId-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">objectNodeId</span> : <span class="type">OpcUaNode</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Determines the actual node on which the method is called. It can be a relative or absolute node Id.</p>
+</div></div><!-- @@@objectNodeId -->
+<br/>
+<!-- $$$outputArguments -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="outputArguments-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">outputArguments</span> : <span class="type"><a href="../qtqml/qml-list.html" translate="no">list</a></span>&lt;<span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span>&gt; <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns values from the method call. Depending on the output arguments, this list may contain zero or more values. The <a href="qml-qtopcua-methodnode.html#resultStatus-prop" translate="no">resultStatus</a> has to be checked separately. In case the method call failed, the list will be empty.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">if</span> (node<span class="operator">.</span>status<span class="operator">.</span>isGood) {
+     <span class="comment">// print two arguments</span>
+     console<span class="operator">.</span>log(<span class="string">&quot;Number of return values:&quot;</span><span class="operator">,</span> node<span class="operator">.</span>outputArguments<span class="operator">.</span>length)
+     console<span class="operator">.</span>log(<span class="string">&quot;Return value #1:&quot;</span><span class="operator">,</span> node<span class="operator">.</span>outputArguments<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>)
+     console<span class="operator">.</span>log(<span class="string">&quot;Return value #2:&quot;</span><span class="operator">,</span> node<span class="operator">.</span>outputArguments<span class="operator">[</span><span class="number">1</span><span class="operator">]</span>)
+ }
+</pre>
+<p><b>See also </b><a href="qml-qtopcua-methodnode.html#callMethod-method" translate="no">callMethod</a> and <a href="qml-qtopcua-methodnode.html#resultStatus-prop" translate="no">resultStatus</a>.</p>
+</div></div><!-- @@@outputArguments -->
+<br/>
+<!-- $$$resultStatus -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="resultStatus-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">resultStatus</span> : <span class="type"><a href="qml-qtopcua-status.html" translate="no">Status</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Status of the last method call. This property has to be checked to determine if the method call was successful.</p>
+<p><b>See also </b><a href="qml-qtopcua-status.html" class="obsolete" translate="no">Status</a>.</p>
+</div></div><!-- @@@resultStatus -->
+<br/>
+<!-- $$$type -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="type-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">type</span> : <span class="type">QOpcUa::Types</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Sets the type of the argument that is expected by the server. The value variant is converted to that type when calling the method. The type has to match the method on the server exactly, otherwise the method call will fail.</p>
+<p><b>See also </b><a href="qml-qtopcua-methodnode.html#callMethod-method" translate="no">MethodNode::callMethod</a>.</p>
+</div></div><!-- @@@type -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$callMethod[overload1]$$$callMethod -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="callMethod-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">callMethod</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Calls the method on the connected server.</p>
+</div></div><!-- @@@callMethod -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

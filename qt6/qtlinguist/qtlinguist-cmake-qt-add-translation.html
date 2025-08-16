@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cmake-macros.qdoc -->
+  <meta name="description" content="Compiles Qt Linguist .ts files into .qm files.">
+  <title>qt_add_translation | Qt Linguist Manual</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtlinguist-index.html">Qt Linguist Manual</a></li>
+<li><a href="cmake-commands-qtlinguisttools.html">CMake Commands in Qt6 LinguistTools</a></li>
+<li>qt_add_translation</li>
+<li id="buildversion"><a href="qtlinguist-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#synopsis">Synopsis</a></li>
+<li class="level1"><a href="#description">Description</a></li>
+<li class="level1"><a href="#options">Options</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">qt_add_translation</h1>
+<!-- $$$qtlinguist-cmake-qt-add-translation.html-description -->
+<div class="descr" id="details">
+<p>Compiles Qt Linguist .ts files into .qm files.</p>
+<p>The command is defined in the <code translate="no">LinguistTools</code> component of the <code translate="no">Qt6</code> package. Load the package with:</p>
+<pre class="cpp" translate="no">
+ find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+</pre>
+<div class="admonition warning">
+<p><b>Warning: </b>This function is deprecated. Consider using the target-based functions <a href="qtlinguist-cmake-qt-add-lrelease.html">qt6_add_lrelease</a> or <a href="qtlinguist-cmake-qt-add-translations.html">qt6_add_translations</a> instead.</p>
+</div>
+<h2 id="synopsis">Synopsis</h2>
+<pre class="cpp plain" translate="no">
+ qt_add_translation(&lt;VAR&gt; file1.ts [file2.ts ...]
+                     [OPTIONS ...])
+</pre>
+<p>If versionless commands are disabled, use <code translate="no">qt6_add_translation</code> instead. It supports the same set of arguments as this command.</p>
+<h2 id="description">Description</h2>
+<p>Calls <code translate="no">lrelease</code> on each <code translate="no">.ts</code> file passed as an argument, generating <code translate="no">.qm</code> files. The paths of the generated files are added to <code translate="no">&lt;VAR&gt;</code>.</p>
+<h2 id="options">Options</h2>
+<p>You can set additional <code translate="no">OPTIONS</code> that should be passed when <code translate="no">lrelease</code> is invoked. You can find possible options in the <a href="linguist-lrelease.html#lrelease">lrelease documentation</a>.</p>
+<p>By default, the <code translate="no">qm</code> files will be placed in the current build directory (<code translate="no">CMAKE_CURRENT_BINARY_DIR</code>). To change this, you can set <code translate="no">OUTPUT_LOCATION</code> as a property of the source <code translate="no">.ts</code> file before calling <code translate="no">qt_add_translation</code>.</p>
+<p>For example, with the following code, the <code translate="no">.qm</code> files are generated in a <code translate="no">translations</code> directory below the current build directory.</p>
+<pre class="cpp" translate="no">
+ set_source_files_properties(app_en.ts app_de.ts
+     PROPERTIES OUTPUT_LOCATION &quot;${CMAKE_CURRENT_BINARY_DIR}/translations&quot;)
+ qt_add_translation(qmFiles app_en.ts app_de.ts)
+</pre>
+<h2 id="examples">Examples</h2>
+<p>Generating <code translate="no">helloworld_en.qm</code>, <code translate="no">helloworld_de.qm</code> in the build directory:</p>
+<pre class="cpp" translate="no">
+ qt_add_translation(qmFiles helloworld_en.ts helloworld_de.ts)
+</pre>
+<p>Generating <code translate="no">helloworld_en.qm</code>, <code translate="no">helloworld_de.qm</code> in a <code translate="no">l10n</code> sub-directory:</p>
+<pre class="cpp" translate="no">
+ set(TS_FILES helloworld_en.ts helloworld_de.ts)
+ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION &quot;l10n&quot;)
+ qt_add_translation(qmFiles ${TS_FILES})
+</pre>
+</div>
+<!-- @@@qtlinguist-cmake-qt-add-translation.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

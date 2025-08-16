@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3djoint.cpp -->
+  <meta name="description" content="Defines a node in a skeletal animation hierarchy.">
+  <title>Joint QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Joint</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Joint QML Type</h1>
+<!-- $$$Joint-brief -->
+<p>Defines a node in a skeletal animation hierarchy. <a href="#details">More...</a></p>
+<!-- @@@Joint -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-joint-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-joint.html#index-prop" translate="no">index</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-joint.html#skeletonRoot-prop" translate="no">skeletonRoot</a></b> : Skeleton</li>
+</ul>
+<!-- $$$Joint-description -->
+<h2 id="details">Detailed Description</h2>
+<p>A joint is a transformable node inside a <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a>, used for <a href="quick3d-vertex-skinning.html">skeletal animation</a>. It is called a &quot;joint&quot; because it can be seen as a joint between the bones of a skeleton.</p>
+<p>All the joints must be contained inside a Skeleton, and each joint must have a <a href="qml-qtquick3d-joint.html#skeletonRoot-prop" translate="no">skeletonRoot</a> pointing back to that skeleton.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a></span> {
+     <span class="name">id</span>: <span class="name">qmlskeleton</span>
+     <span class="type"><a href="qml-qtquick3d-joint.html" translate="no">Joint</a></span> {
+         <span class="name">id</span>: <span class="name">joint0</span>
+         <span class="name">index</span>: <span class="number">0</span>
+         <span class="name">skeletonRoot</span>: <span class="name">qmlskeleton</span>
+         <span class="type"><a href="qml-qtquick3d-joint.html" translate="no">Joint</a></span> {
+             <span class="name">id</span>: <span class="name">joint1</span>
+             <span class="name">index</span>: <span class="number">1</span>
+             <span class="name">skeletonRoot</span>: <span class="name">qmlskeleton</span>
+         }
+     }
+ }
+</pre>
+<!-- @@@Joint -->
+<h2>Property Documentation</h2>
+<!-- $$$index -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="index-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">index</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the index of this joint. This index value is used in the <code translate="no">JointSemantic</code> <a href="qquick3dgeometry.html#addAttribute" translate="no">custom geometry attribute</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Index values must be unique within the same <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a>.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Negative values cannot be assigned.</p>
+</div>
+<p><b>See also </b><a href="qquick3dgeometry.html#addAttribute" translate="no">QQuick3DGeometry::addAttribute</a> and <a href="qtquick3d-skinning-example.html">Qt Quick 3D - Simple Skinning Example</a>.</p>
+</div></div><!-- @@@index -->
+<br/>
+<!-- $$$skeletonRoot -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="skeletonRoot-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">skeletonRoot</span> : <span class="type"><a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a> that contains this joint.</p>
+<div class="admonition note">
+<p><b>Note: </b>All the <a href="qml-qtquick3d-joint.html" translate="no">Joint</a>s in the <a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a> must have the same skeletonRoot. If not, the animation will be broken.</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick3d-skeleton.html" translate="no">Skeleton</a>.</p>
+</div></div><!-- @@@skeletonRoot -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qdom.cpp -->
+  <meta name="description" content="The QDomProcessingInstruction class represents an XML processing instruction.">
+  <title>QDomProcessingInstruction Class | Qt XML | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtxml-index.html">Qt XML</a></li>
+<li><a href="qtxml-module.html" translate="no">C++ Classes</a></li>
+<li>QDomProcessingInstruction</li>
+<li id="buildversion"><a href="qtxml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QDomProcessingInstruction Class</h1>
+<!-- $$$QDomProcessingInstruction-brief -->
+<p>The QDomProcessingInstruction class represents an XML processing instruction. <a href="#details">More...</a></p>
+<!-- @@@QDomProcessingInstruction -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QDomProcessingInstruction&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Xml)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Xml)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += xml</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qdomnode.html" translate="no">QDomNode</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qdomprocessinginstruction-members.html">List of all members, including inherited members</a></li>
+<li>QDomProcessingInstruction is part of <a href="xml-tools.html">XML Classes</a>.</li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#QDomProcessingInstruction" translate="no">QDomProcessingInstruction</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#QDomProcessingInstruction-1" translate="no">QDomProcessingInstruction</a></b>(const QDomProcessingInstruction &amp;<i>processingInstruction</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#data" translate="no">data</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDomNode::NodeType </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#nodeType" translate="no">nodeType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#setData" translate="no">setData</a></b>(const QString &amp;<i>data</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#target" translate="no">target</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDomProcessingInstruction &amp;</td><td class="memItemRight bottomAlign"><b><a href="qdomprocessinginstruction.html#operator-eq" translate="no">operator=</a></b>(const QDomProcessingInstruction &amp;<i>other</i>)</td></tr>
+</table></div>
+<!-- $$$QDomProcessingInstruction-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Processing instructions are used in XML to keep processor-specific information in the text of the document.</p>
+<p>The XML declaration that appears at the top of an XML document, typically <code translate="no">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</code>, is treated by QDom as a processing instruction. This is unfortunate, since the XML declaration is not a processing instruction; among other differences, it cannot be inserted into a document anywhere but on the first line.</p>
+<p>Do not use this function to create an xml declaration, since although it has the same syntax as a processing instruction, it isn't, and might not be treated by QDom as such.</p>
+<p>The content of the processing instruction is retrieved with <a href="qdomprocessinginstruction.html#data" translate="no">data</a>() and set with <a href="qdomprocessinginstruction.html#setData" translate="no">setData</a>(). The processing instruction's target is retrieved with <a href="qdomprocessinginstruction.html#target" translate="no">target</a>().</p>
+<p>For further information about the Document Object Model see <a href="http://www.w3.org/TR/REC-DOM-Level-1/">Level 1</a> and <a href="http://www.w3.org/TR/DOM-Level-2-Core/">Level 2 Core</a>. For a more general introduction of the DOM implementation see the <a href="qdomdocument.html" translate="no">QDomDocument</a> documentation.</p>
+</div>
+<!-- @@@QDomProcessingInstruction -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QDomProcessingInstruction[overload1]$$$QDomProcessingInstruction -->
+<h3 class="fn" translate="no" id="QDomProcessingInstruction">QDomProcessingInstruction::<span class="name">QDomProcessingInstruction</span>()</h3>
+<p>Constructs an empty processing instruction. Use <a href="qdomdocument.html#createProcessingInstruction" translate="no">QDomDocument::createProcessingInstruction</a>() to create a processing instruction with content.</p>
+<!-- @@@QDomProcessingInstruction -->
+<!-- $$$QDomProcessingInstruction$$$QDomProcessingInstructionconstQDomProcessingInstruction& -->
+<h3 class="fn" translate="no" id="QDomProcessingInstruction-1">QDomProcessingInstruction::<span class="name">QDomProcessingInstruction</span>(const <span class="type"><a href="qdomprocessinginstruction.html#QDomProcessingInstruction" translate="no">QDomProcessingInstruction</a></span> &amp;<i>processingInstruction</i>)</h3>
+<p>Constructs a copy of <i translate="no">processingInstruction</i>.</p>
+<p>The data of the copy is shared (shallow copy): modifying one node will also change the other. If you want to make a deep copy, use <a href="qdomnode.html#cloneNode" translate="no">cloneNode</a>().</p>
+<!-- @@@QDomProcessingInstruction -->
+<!-- $$$data[overload1]$$$data -->
+<h3 class="fn" translate="no" id="data"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QDomProcessingInstruction::<span class="name">data</span>() const</h3>
+<p>Returns the content of this processing instruction.</p>
+<p><b>See also </b><a href="qdomprocessinginstruction.html#setData" translate="no">setData</a>() and <a href="qdomprocessinginstruction.html#target" translate="no">target</a>().</p>
+<!-- @@@data -->
+<!-- $$$nodeType[overload1]$$$nodeType -->
+<h3 class="fn" translate="no" id="nodeType"><span class="type"><a href="qdomnode.html#NodeType-enum" translate="no">QDomNode::NodeType</a></span> QDomProcessingInstruction::<span class="name">nodeType</span>() const</h3>
+<p>Returns <code translate="no">ProcessingInstructionNode</code>.</p>
+<!-- @@@nodeType -->
+<!-- $$$setData[overload1]$$$setDataconstQString& -->
+<h3 class="fn" translate="no" id="setData"><span class="type">void</span> QDomProcessingInstruction::<span class="name">setData</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>data</i>)</h3>
+<p>Sets the data contained in the processing instruction to <i translate="no">data</i>.</p>
+<p><b>See also </b><a href="qdomprocessinginstruction.html#data" translate="no">data</a>().</p>
+<!-- @@@setData -->
+<!-- $$$target[overload1]$$$target -->
+<h3 class="fn" translate="no" id="target"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QDomProcessingInstruction::<span class="name">target</span>() const</h3>
+<p>Returns the target of this processing instruction.</p>
+<p><b>See also </b><a href="qdomprocessinginstruction.html#data" translate="no">data</a>().</p>
+<!-- @@@target -->
+<!-- $$$operator=[overload1]$$$operator=constQDomProcessingInstruction& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qdomprocessinginstruction.html#QDomProcessingInstruction" translate="no">QDomProcessingInstruction</a></span> &amp;QDomProcessingInstruction::<span class="name">operator=</span>(const <span class="type"><a href="qdomprocessinginstruction.html#QDomProcessingInstruction" translate="no">QDomProcessingInstruction</a></span> &amp;<i>other</i>)</h3>
+<p>Assigns <i translate="no">other</i> to this processing instruction.</p>
+<p>The data of the copy is shared (shallow copy): modifying one node will also change the other. If you want to make a deep copy, use <a href="qdomnode.html#cloneNode" translate="no">cloneNode</a>().</p>
+<!-- @@@operator= -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

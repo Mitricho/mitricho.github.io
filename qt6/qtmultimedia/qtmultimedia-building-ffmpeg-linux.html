@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtmultimedia-building-FFmpeg-linux.qdoc -->
+  <meta name="description" content="This document describes how to build FFmpeg from source code.">
+  <title>Building FFmpeg from source on Linux | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-building-from-source.html">Building Qt Multimedia from sources</a></li>
+<li><a href="qtmultimedia-building-ffmpeg.html">Building FFmpeg from source</a></li>
+<li>Building FFmpeg from source on Linux</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtmultimedia-building-ffmpeg-macos.html" />
+  <link rel="next" href="qtmultimedia-building-ffmpeg-ios.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtmultimedia-building-ffmpeg-macos.html">Building FFmpeg on macOS</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg-ios.html">Building FFmpeg for iOS</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#get-the-ffmpeg-source-code">Get the FFmpeg source code</a></li>
+<li class="level1"><a href="#prerequisites">Prerequisites</a></li>
+<li class="level2"><a href="#installing-packages">Installing packages</a></li>
+<li class="level1"><a href="#configuring-and-building-ffmpeg">Configuring and building FFmpeg</a></li>
+<li class="level2"><a href="#hardware-acceleration">Hardware Acceleration</a></li>
+<li class="level1"><a href="#disabling-autodetect">Disabling Autodetect</a></li>
+<li class="level1"><a href="#rpath-and-runpath-on-linux">RPATH and RUNPATH on Linux</a></li>
+<li class="level1"><a href="#building-ffmpeg">Building FFmpeg</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Building FFmpeg from source on Linux</h1>
+<!-- $$$qtmultimedia-building-ffmpeg-linux.html-description -->
+<div class="descr" id="details">
+<p>This page explains how to configure and build <a href="qtmultimedia-attribution-ffmpeg.html#ffmpeg">FFmpeg</a> on Linux. This involves:</p>
+<ul>
+<li>Get the FFmpeg source code.</li>
+<li>Install the required dependencies.</li>
+<li>Configure FFmpeg from the command line.</li>
+<li>Build the development libraries.</li>
+</ul>
+<h2 id="get-the-ffmpeg-source-code">Get the FFmpeg source code</h2>
+<p>You can get the FFmpeg source code in these ways:</p>
+<ul>
+<li>Download from the <a href="https://ffmpeg.org/download.html#get-sources">FFmpeg download page</a>.</li>
+<li>Clone from git. For example, this command clones the version 7.1 of the FFmpeg sources to <code translate="no">~/ffmpeg</code>.<pre class="cpp plain" translate="no">
+ $ git clone --branch n7.1 https://git.ffmpeg.org/ffmpeg.git ffmpeg
+</pre>
+</li>
+</ul>
+<p>It is recommended to use the same FFmpeg version as documented in the <a href="qtmultimedia-index.html">Qt Multimedia main page</a>.</p>
+<p>The following paragraphs assume that you store the FFmpeg source code under <code translate="no">~/ffmpeg</code>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To build FFmpeg, these tools and packages are required:</p>
+<ul>
+<li>Yasm</li>
+<li>Developer packages for your chosen security backend (see below).</li>
+</ul>
+<h3 id="installing-packages">Installing packages</h3>
+<p>To install the required packages (including Yasm for FFmpeg), run:</p>
+<pre class="cpp plain" translate="no">
+ $ apt-get install yasm
+</pre>
+<p>Additionally, if you're enabling a security backend, you need the corresponding developer package, for example:</p>
+<pre class="cpp plain" translate="no">
+ $ apt-get install libssl-dev
+</pre>
+<p>For other backends, install the relevant packages:</p>
+<ul>
+<li>For OpenSSL: <code translate="no">libssl-dev</code>.</li>
+<li>For GnuTLS: <code translate="no">libgnutls-dev</code>.</li>
+<li>For LibreSSL (libtls): <code translate="no">libtls-dev</code>.</li>
+<li>For MbedTLS: <code translate="no">libmbedtls-dev</code>.</li>
+</ul>
+<h2 id="configuring-and-building-ffmpeg">Configuring and building FFmpeg</h2>
+<p>Create a <code translate="no">build</code> directory inside the <code translate="no">~/ffmpeg</code> directory and navigate into it:</p>
+<pre class="cpp plain" translate="no">
+ $ mkdir ~/ffmpeg/build
+ $ cd ~/ffmpeg/build
+</pre>
+<p>To configure FFmpeg, run:</p>
+<pre class="cpp plain" translate="no">
+ $ ../configure --prefix=/usr/local/ffmpeg --disable-doc --enable-network --enable-shared
+</pre>
+<p>The <code translate="no">--prefix</code> argument specifies a path where the FFmpeg development libraries are installed after building. The documentation is not needed, but network features should be enabled. To build FFmpeg as static libraries, omit the <code translate="no">--enable-shared</code> option.</p>
+<p>If you're building FFmpeg with a security backend, choose the appropriate option:</p>
+<pre class="cpp plain" translate="no">
+ $ ../configure --enable-openssl # For OpenSSL
+ $ ../configure --enable-gnutls # For GnuTLS
+ $ ../configure --enable-libtls # For LibreSSL (libtls)
+ $ ../configure --enable-mbedtls # For MbedTLS
+</pre>
+<p>Make sure you have the corresponding developer package installed as mentioned earlier.</p>
+<h3 id="hardware-acceleration">Hardware Acceleration</h3>
+<p>By default, FFmpeg is built without hardware acceleration unless the appropriate packages are installed. For better performance, especially on systems with GPU support, it’s recommended to install VAAPI development packages:</p>
+<pre class="cpp plain" translate="no">
+ $ apt-get install libva-dev
+</pre>
+<p>This will enable FFmpeg to detect VAAPI support during configuration.</p>
+<p>If FFmpeg will be used with NVIDIA graphics cards, you should install the NVIDIA codec headers. These can be downloaded from the following repository: <a href="https://github.com/FFmpeg/nv-codec-headers">NVIDIA Codec Headers on GitHub</a>.</p>
+<p>To build and install the headers, run the following commands:</p>
+<pre class="cpp plain" translate="no">
+ $ mkdir ~/nv-codec-headers
+ $ cd ~/nv-codec-headers
+ $ git clone https://github.com/FFmpeg/nv-codec-headers.git
+ $ mkdir build
+ $ cd build
+ $ make -j install
+</pre>
+<p>Make sure to check the compatibility of the <code translate="no">nv-codec-headers</code> with your NVIDIA driver version, as newer <code translate="no">nv-codec-headers</code> may not be compatible with older driver versions. Refer to the official documentation for more details.</p>
+<h2 id="disabling-autodetect">Disabling Autodetect</h2>
+<p>By default, FFmpeg attempts to automatically detect available dependencies on the build system. This includes hardware acceleration and security backends. If you want to disable autodetection (for example, to avoid compiling unnecessary dependencies), you can use:</p>
+<pre class="cpp plain" translate="no">
+ $ ../configure --disable-autodetect
+</pre>
+<p>If you are building FFmpeg with any additional dependencies (like a security backend or hardware acceleration), ensure that the required libraries are installed on the target system. There are several ways to handle this:</p>
+<ul>
+<li>Deliver binaries of the dependencies together with FFmpeg.</li>
+<li>Ensure that the required binaries are installed on the target system.</li>
+<li>Implement library stubs that can look up the real libraries and return an error code if the real libraries aren't found.</li>
+</ul>
+<h2 id="rpath-and-runpath-on-linux">RPATH and RUNPATH on Linux</h2>
+<p>On Linux, FFmpeg uses both RPATH and RUNPATH metadata sections to manage library paths. We recommend using the <code translate="no">patchelf</code> utility to set the correct runpath:</p>
+<pre class="cpp plain" translate="no">
+ $ patchelf --set-rpath &quot;new/runpath&quot; lib.so
+</pre>
+<p>By default, <code translate="no">patchelf</code> modifies the RUNPATH, as RPATH is considered obsolete on Linux. To set a relative runpath, you can use the <code translate="no">$ORIGIN</code> variable, which makes the path relative to the location of the executable:</p>
+<pre class="cpp plain" translate="no">
+ $ patchelf --set-rpath &quot;$ORIGIN/../lib&quot; lib.so
+</pre>
+<p>This approach ensures portability by linking libraries based on their relative locations.</p>
+<h2 id="building-ffmpeg">Building FFmpeg</h2>
+<p>Once you've configured FFmpeg with your desired options, you can build and install it:</p>
+<pre class="cpp plain" translate="no">
+ $ make -j install
+</pre>
+<p>If the build completes without errors, FFmpeg development libraries will be installed in the <code translate="no">/usr/local/ffmpeg</code> directory. You can then reference this path when configuring Qt Multimedia by setting the <code translate="no">FFMPEG_DIR</code> variable.</p>
+</div>
+<!-- @@@qtmultimedia-building-ffmpeg-linux.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtmultimedia-building-ffmpeg-macos.html">Building FFmpeg on macOS</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtmultimedia-building-ffmpeg-ios.html">Building FFmpeg for iOS</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qphysicsworld.cpp -->
+  <meta name="description" content="Controls the physics simulation.">
+  <title>PhysicsWorld QML Type | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="qtquick3d-physics-qmlmodule.html" translate="no">QML Types</a></li>
+<li>PhysicsWorld</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">PhysicsWorld QML Type</h1>
+<!-- $$$PhysicsWorld-brief -->
+<p>Controls the physics simulation. <a href="#details">More...</a></p>
+<!-- @@@PhysicsWorld -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Physics</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.4</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-physics-physicsworld-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#defaultDensity-prop" translate="no">defaultDensity</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#enableCCD-prop" translate="no">enableCCD</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#forceDebugDraw-prop" translate="no">forceDebugDraw</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#gravity-prop" translate="no">gravity</a></b> : vector3d</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#maximumTimestep-prop" translate="no">maximumTimestep</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#minimumTimestep-prop" translate="no">minimumTimestep</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#numThreads-prop" translate="no">numThreads</a></b> : int <code class="summary extra" translate="no">(since 6.7)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#reportKinematicKinematicCollisions-prop" translate="no">reportKinematicKinematicCollisions</a></b> : bool <code class="summary extra" translate="no">(since 6.7)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#reportStaticKinematicCollisions-prop" translate="no">reportStaticKinematicCollisions</a></b> : bool <code class="summary extra" translate="no">(since 6.7)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#running-prop" translate="no">running</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#scene-prop" translate="no">scene</a></b> : Node</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#typicalLength-prop" translate="no">typicalLength</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#typicalSpeed-prop" translate="no">typicalSpeed</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#viewport-prop" translate="no">viewport</a></b> : Node</li>
+</ul>
+<h2 id="signals">Signals</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-physics-physicsworld.html#frameDone-signal" translate="no">frameDone</a></b>(float <i>timestep</i>) <code class="summary extra" translate="no">(since 6.5)</code></li>
+</ul>
+<!-- $$$PhysicsWorld-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The PhysicsWorld type controls the physics simulation. This node is used to create an instance of the physics world as well as define its properties. There can only be one physics world. All collision nodes in the qml will get added automatically to the physics world.</p>
+<!-- @@@PhysicsWorld -->
+<h2>Property Documentation</h2>
+<!-- $$$defaultDensity -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="defaultDensity-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">defaultDensity</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the default density of dynamic objects, measured in kilograms per cubic unit. This is equal to the weight of a cube with side <code translate="no">1</code>.</p>
+<p>The default value is <code translate="no">0.001</code>, corresponding to 1 g/cm³: the density of water. If your unit of measurement is meters, a good value would be <code translate="no">1000</code>. Note that only positive values are allowed.</p>
+<p>Range: <code translate="no">(0, inf]</code></p>
+</div></div><!-- @@@defaultDensity -->
+<br/>
+<!-- $$$enableCCD -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="enableCCD-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">enableCCD</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property enables continuous collision detection. This will reduce the risk of bodies going through other bodies at high velocities (also known as tunnelling). The default value is <code translate="no">false</code>.</p>
+<div class="admonition warning">
+<p><b>Warning: </b>Using trigger bodies with CCD enabled is not supported and can result in missing or false trigger reports.</p>
+</div>
+</div></div><!-- @@@enableCCD -->
+<br/>
+<!-- $$$forceDebugDraw -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="forceDebugDraw-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">forceDebugDraw</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property enables debug drawing of all active shapes in the physics world. The default value is <code translate="no">false</code>.</p>
+</div></div><!-- @@@forceDebugDraw -->
+<br/>
+<!-- $$$gravity -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="gravity-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">gravity</span> : <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the gravity vector of the physics world. The default value is <code translate="no">(0, -981, 0)</code>. Set the value to <code translate="no">Qt.vector3d(0, -9.81, 0)</code> if your unit of measurement is meters and you are simulating Earth gravity.</p>
+</div></div><!-- @@@gravity -->
+<br/>
+<!-- $$$maximumTimestep -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="maximumTimestep-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">maximumTimestep</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the maximum simulation timestep in milliseconds. The default value is <code translate="no">33.333</code> which corresponds to <code translate="no">30</code> frames per second.</p>
+<p>Range: <code translate="no">[0, inf]</code></p>
+</div></div><!-- @@@maximumTimestep -->
+<br/>
+<!-- $$$minimumTimestep -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="minimumTimestep-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">minimumTimestep</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the minimum simulation timestep in milliseconds. The default value is <code translate="no">16.667</code> which corresponds to <code translate="no">60</code> frames per second.</p>
+<p>Range: <code translate="no">[0, maximumTimestep]</code></p>
+</div></div><!-- @@@minimumTimestep -->
+<br/>
+<!-- $$$numThreads -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="numThreads-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">numThreads</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[since 6.7]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the number of threads used for the physical simulation. This is how the range of values are interpreted:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Value</th><th >Range</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >Negative</td><td ><code translate="no">[-inf, -1]</code></td><td >Automatic thread count. The application will try to query the number of threads from the system.</td></tr>
+<tr valign="top" class="even"><td >Zero</td><td ><code translate="no">{0}</code></td><td >No threading, simulation will run sequentially.</td></tr>
+<tr valign="top" class="odd"><td >Positive</td><td ><code translate="no">[1, inf]</code></td><td >Specific thread count.</td></tr>
+</table></div>
+<p>The default value is <code translate="no">-1</code>, meaning automatic thread count.</p>
+<div class="admonition note">
+<p><b>Note: </b>Once the scene has started running it is not possible to change the number of threads.</p>
+</div>
+<p>This property was introduced in Qt 6.7.</p>
+</div></div><!-- @@@numThreads -->
+<br/>
+<!-- $$$reportKinematicKinematicCollisions -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="reportKinematicKinematicCollisions-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">reportKinematicKinematicCollisions</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.7]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property controls if collisions between pairs of <i>kinematic</i> dynamic rigid bodies will trigger a contact report.</p>
+<p>The default value is <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Once the scene has started running it is not possible to change this setting.</p>
+</div>
+<p>This property was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qml-qtquick3d-physics-physicsworld.html#reportStaticKinematicCollisions-prop" translate="no">PhysicsWorld::reportStaticKinematicCollisions</a>, <a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a>, and <a href="qml-qtquick3d-physics-physicsnode.html#bodyContact-signal" translate="no">PhysicsNode::bodyContact</a>.</p>
+</div></div><!-- @@@reportKinematicKinematicCollisions -->
+<br/>
+<!-- $$$reportStaticKinematicCollisions -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="reportStaticKinematicCollisions-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">reportStaticKinematicCollisions</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.7]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property controls if collisions between a static rigid body and a <i>kinematic</i> dynamic rigid body will trigger a contact report.</p>
+<p>The default value is <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Once the scene has started running it is not possible to change this setting.</p>
+</div>
+<p>This property was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qml-qtquick3d-physics-physicsworld.html#reportKinematicKinematicCollisions-prop" translate="no">PhysicsWorld::reportKinematicKinematicCollisions</a>, <a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a>, <a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a>, and <a href="qml-qtquick3d-physics-physicsnode.html#bodyContact-signal" translate="no">PhysicsNode::bodyContact</a>.</p>
+</div></div><!-- @@@reportStaticKinematicCollisions -->
+<br/>
+<!-- $$$running -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="running-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">running</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property starts or stops the physical simulation. The default value is <code translate="no">true</code>.</p>
+</div></div><!-- @@@running -->
+<br/>
+<!-- $$$scene -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="scene-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">scene</span> : <span class="type"><a href="../qtquick3d/qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the top-most Node that contains all the nodes of the physical simulation. All physics objects that are an ancestor of this node will be seen as part of this <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Using the same scene node for several <a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a> is unsupported.</p>
+</div>
+</div></div><!-- @@@scene -->
+<br/>
+<!-- $$$typicalLength -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="typicalLength-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">typicalLength</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the approximate size of objects in the simulation. This is used to estimate certain length-related tolerances. Objects much smaller or much larger than this size may not behave properly. The default value is <code translate="no">100</code>.</p>
+<p>Range: <code translate="no">[0, inf]</code></p>
+</div></div><!-- @@@typicalLength -->
+<br/>
+<!-- $$$typicalSpeed -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="typicalSpeed-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">typicalSpeed</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the typical magnitude of velocities of objects in simulation. This is used to estimate whether a contact should be treated as bouncing or resting based on its impact velocity, and a kinetic energy threshold below which the simulation may put objects to sleep.</p>
+<p>For normal physical environments, a good choice is the approximate speed of an object falling under gravity for one second. The default value is <code translate="no">1000</code>.</p>
+<p>Range: <code translate="no">[0, inf]</code></p>
+</div></div><!-- @@@typicalSpeed -->
+<br/>
+<!-- $$$viewport -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="viewport-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">viewport</span> : <span class="type"><a href="../qtquick3d/qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the viewport where debug components will be drawn if <a href="qml-qtquick3d-physics-physicsworld.html#forceDebugDraw-prop" translate="no">forceDebugDraw</a> is enabled. If unset the <a href="qml-qtquick3d-physics-physicsworld.html#scene-prop" translate="no">scene</a> node will be used.</p>
+<p><b>See also </b><a href="qml-qtquick3d-physics-physicsworld.html#forceDebugDraw-prop" translate="no">forceDebugDraw</a> and <a href="qml-qtquick3d-physics-physicsworld.html#scene-prop" translate="no">scene</a>.</p>
+</div></div><!-- @@@viewport -->
+<br/>
+<h2>Signal Documentation</h2>
+<!-- $$$frameDone[overload1]$$$frameDonefloat -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="frameDone-signal">
+<td class="tblQmlFuncNode"><p>
+<code class="details extra" translate="no">[since 6.5]</code> <span class="name">frameDone</span>(<span class="type">float</span> <i>timestep</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This signal is emitted when the physical simulation is done simulating a frame. The <i translate="no">timestep</i> parameter is how long in milliseconds the timestep was in the simulation.</p>
+<div class="admonition note"><p><b>Note: </b>The corresponding handler is <code translate="no">onFrameDone</code>.</p>
+</div><p>This signal was introduced in Qt 6.5.</p>
+</div></div><!-- @@@frameDone -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qqmlobjectmodel.cpp -->
+  <meta name="description" content="Defines a set of items to be used as a model.">
+  <title>ObjectModel QML Type | Qt 6.9</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtqml-models-qmlmodule.html" translate="no">QtQml.Models</a></li>
+<li>ObjectModel</li>
+<li id="buildversion">Qt 6.9.0 Reference Documentation</li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#attached-properties">Attached Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ObjectModel QML Type</h1>
+<!-- $$$ObjectModel-brief -->
+<p>Defines a set of items to be used as a model. <a href="#details">More...</a></p>
+<!-- @@@ObjectModel -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQml.Models</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtqml-models-objectmodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#count-prop" translate="no">count</a></b> : int</li>
+</ul>
+<h2 id="attached-properties">Attached Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#index-attached-prop" translate="no">index</a></b> : int</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#append-method" translate="no">append</a></b>(object <i>item</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#clear-method" translate="no">clear</a></b>()</li>
+<li class="fn" translate="no">object <b><a href="qml-qtqml-models-objectmodel.html#get-method" translate="no">get</a></b>(int <i>index</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#insert-method" translate="no">insert</a></b>(int <i>index</i>, object <i>item</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#move-method" translate="no">move</a></b>(int <i>from</i>, int <i>to</i>, int <i>n</i>)</li>
+<li class="fn" translate="no"><b><a href="qml-qtqml-models-objectmodel.html#remove-method" translate="no">remove</a></b>(int <i>index</i>, int <i>n</i>)</li>
+</ul>
+<!-- $$$ObjectModel-description -->
+<h2 id="details">Detailed Description</h2>
+<p>An ObjectModel contains the visual items to be used in a view. When an ObjectModel is used in a view, the view does not require a delegate since the ObjectModel already contains the visual delegate (items).</p>
+<p>An item can determine its index within the model via the <a href="qml-qtqml-models-objectmodel.html#index-attached-prop" translate="no">index</a> attached property.</p>
+<p>The example below places three colored rectangles in a <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a>.</p>
+<pre class="cpp" translate="no">
+ import QtQuick 2.0
+ import QtQml.Models 2.1
+
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="type"><a href="qml-qtqml-models-objectmodel.html" translate="no">ObjectModel</a></span> {
+         <span class="name">id</span>: <span class="name">itemModel</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> { <span class="name">height</span>: <span class="number">30</span>; <span class="name">width</span>: <span class="number">80</span>; <span class="name">color</span>: <span class="string">&quot;red&quot;</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> { <span class="name">height</span>: <span class="number">30</span>; <span class="name">width</span>: <span class="number">80</span>; <span class="name">color</span>: <span class="string">&quot;green&quot;</span> }
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> { <span class="name">height</span>: <span class="number">30</span>; <span class="name">width</span>: <span class="number">80</span>; <span class="name">color</span>: <span class="string">&quot;blue&quot;</span> }
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="name">model</span>: <span class="name">itemModel</span>
+     }
+ }
+</pre>
+<p class="centerAlign"><img src="images/objectmodel.png" alt="" /></p><p><b>See also </b><a href="../qtquick/qtquick-views-example.html">Qt Quick Examples - Views</a>.</p>
+<!-- @@@ObjectModel -->
+<h2>Property Documentation</h2>
+<!-- $$$count -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="count-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">count</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The number of items in the model. This property is readonly.</p>
+</div></div><!-- @@@count -->
+<br/>
+<h2>Attached Property Documentation</h2>
+<!-- $$$index -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="index-attached-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">ObjectModel.index</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This attached property holds the index of this delegate's item within the model.</p>
+<p>It is attached to each instance of the delegate.</p>
+</div></div><!-- @@@index -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$append[overload1]$$$appendobject -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="append-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">append</span>(<span class="type">object</span> <i>item</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Appends a new <i translate="no">item</i> to the end of the model.</p>
+<pre class="cpp" translate="no">
+ objectModel<span class="operator">.</span>append(objectComponent<span class="operator">.</span>createObject())
+</pre>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#insert-method" translate="no">insert</a>() and <a href="qml-qtqml-models-objectmodel.html#remove-method" translate="no">remove</a>().</p>
+</div></div><!-- @@@append -->
+<br/>
+<!-- $$$clear[overload1]$$$clear -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="clear-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">clear</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Clears all items from the model.</p>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#append-method" translate="no">append</a>() and <a href="qml-qtqml-models-objectmodel.html#remove-method" translate="no">remove</a>().</p>
+</div></div><!-- @@@clear -->
+<br/>
+<!-- $$$get[overload1]$$$getint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="get-method">
+<td class="tblQmlFuncNode"><p>
+<span class="type">object</span> <span class="name">get</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Returns the item at <i translate="no">index</i> in the model. This allows the item to be accessed or modified from JavaScript:</p>
+<pre class="cpp" translate="no">
+ Component<span class="operator">.</span>onCompleted: {
+     objectModel<span class="operator">.</span>append(objectComponent<span class="operator">.</span>createObject())
+     console<span class="operator">.</span>log(objectModel<span class="operator">.</span>get(<span class="number">0</span>)<span class="operator">.</span>objectName);
+     objectModel<span class="operator">.</span>get(<span class="number">0</span>)<span class="operator">.</span>objectName <span class="operator">=</span> <span class="string">&quot;first&quot;</span>;
+ }
+</pre>
+<p>The <i translate="no">index</i> must be an element in the list.</p>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@get -->
+<br/>
+<!-- $$$insert[overload1]$$$insertintobject -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="insert-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">insert</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type">object</span> <i>item</i>)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Inserts a new <i translate="no">item</i> to the model at position <i translate="no">index</i>.</p>
+<pre class="cpp" translate="no">
+ objectModel<span class="operator">.</span>insert(<span class="number">2</span><span class="operator">,</span> objectComponent<span class="operator">.</span>createObject())
+</pre>
+<p>The <i translate="no">index</i> must be to an existing item in the list, or one past the end of the list (equivalent to append).</p>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#append-method" translate="no">append</a>() and <a href="qml-qtqml-models-objectmodel.html#remove-method" translate="no">remove</a>().</p>
+</div></div><!-- @@@insert -->
+<br/>
+<!-- $$$move[overload1]$$$moveintintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="move-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">move</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>from</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>to</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>n</i> = 1)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Moves <i translate="no">n</i> items <i translate="no">from</i> one position <i translate="no">to</i> another.</p>
+<p>The from and to ranges must exist; for example, to move the first 3 items to the end of the model:</p>
+<pre class="cpp" translate="no">
+ objectModel<span class="operator">.</span>move(<span class="number">0</span><span class="operator">,</span> objectModel<span class="operator">.</span>count <span class="operator">-</span> <span class="number">3</span><span class="operator">,</span> <span class="number">3</span>)
+</pre>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#append-method" translate="no">append</a>().</p>
+</div></div><!-- @@@move -->
+<br/>
+<!-- $$$remove[overload1]$$$removeintint -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="remove-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">remove</span>(<span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>index</i>, <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <i>n</i> = 1)</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Removes <i translate="no">n</i> items at <i translate="no">index</i> from the model.</p>
+<p><b>See also </b><a href="qml-qtqml-models-objectmodel.html#clear-method" translate="no">clear</a>().</p>
+</div></div><!-- @@@remove -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

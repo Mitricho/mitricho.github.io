@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-xrfreeformteleportation.qdoc -->
+  <meta name="description" content="Demonstrates how to implement simple locomotion in Qt Quick 3D XR.">
+  <title>Qt Quick 3D - XR Freeform Teleportation Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - XR Freeform Teleportation Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level2"><a href="#controls">Controls</a></li>
+<li class="level1"><a href="#implementation">Implementation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - XR Freeform Teleportation Example</h1>
+<!-- $$$xr_freeformteleportation-brief -->
+<p>Demonstrates how to implement simple locomotion in Qt Quick 3D XR.</p>
+<!-- @@@xr_freeformteleportation -->
+<!-- $$$xr_freeformteleportation-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/xrfreeformteleportation-example.jpg" alt="" /></p><h4 id="overview">Overview</h4>
+<p>This example shows how to move to places in the virtual environment using a simple freeform teleportation system, a non-continuous form of movement.</p>
+<h5 id="controls">Controls</h5>
+<p>For navigation, use the thumbstick on the right controller:</p>
+<ul>
+<li>Push the stick forwards to aim, and release it to teleport.</li>
+<li>Move the stick sideways to rotate.</li>
+</ul>
+<h4 id="implementation">Implementation</h4>
+<p>The teleportation logic is implemented in the <code translate="no">FreeformTeleporter</code> component. This is located in the separate sub-project <code translate="no">xr_shared</code>, so you can easily re-use it in other projects.</p>
+<pre class="qml" translate="no">
+ <span class="type">FreeformTeleporter</span> {
+     <span class="name">id</span>: <span class="name">teleporter</span>
+
+     <span class="name">view</span>: <span class="name">xrView</span>
+     <span class="name">originNode</span>: <span class="name">xrOrigin</span>
+     <span class="name">cameraNode</span>: <span class="name">xrOrigin</span>.<span class="name">camera</span>
+     <span class="name">beamHandle</span>: <span class="name">xrRightController</span>
+
+     <span class="name">xStickValue</span>: <span class="name">xrRightController</span>.<span class="name">xValue</span>
+     <span class="name">yStickValue</span>: <span class="name">xrRightController</span>.<span class="name">yValue</span>
+
+     <span class="name">onDoTeleportation</span>: (<span class="keyword"></span>cameraOriginPosition)=&gt; {
+                            <span class="name">xrOrigin</span>.<span class="name">position</span> <span class="operator">=</span> <span class="name">cameraOriginPosition</span>
+                        }
+     <span class="name">onDoRotation</span>: (<span class="keyword"></span>cameraOriginRotation, cameraOriginPosition)=&gt; {
+                       <span class="name">xrOrigin</span>.<span class="name">rotation</span> <span class="operator">=</span> <span class="name">cameraOriginRotation</span>
+                       <span class="name">xrOrigin</span>.<span class="name">position</span> <span class="operator">=</span> <span class="name">cameraOriginPosition</span>
+                   }
+ }
+</pre>
+<p>The FreeformTeleporter component has the following properties that need to be set:</p>
+<pre class="qml" translate="no">
+ QtObject xrView
+</pre>
+<p>The <code translate="no">xrView</code> property gives access to <a href="qml-qtquick3d-xr-xrview.html" translate="no">XrView</a>'s built-in ray-picking. You can use any object that implements a <code translate="no">rayPick</code> method. For example, a <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> may be useful for prototyping.</p>
+<pre class="qml" translate="no">
+ Node originNode
+</pre>
+<p>The <code translate="no">originNode</code> property specifies the node that the freeform teleporter will manipulate. In XR, artificial locomotion is performed by moving the <a href="qml-qtquick3d-xr-xrorigin.html" translate="no">XrOrigin</a>. We will therefore use the xrOrigin of our <a href="qml-qtquick3d-xr-xrview.html" translate="no">XrView</a> as the <code translate="no">originNode</code>.</p>
+<pre class="qml" translate="no">
+ Node cameraNode
+</pre>
+<p>The <code translate="no">cameraNode</code> property provides the position of the camera. When rotating, it defines the center of rotation. When teleporting, it defines the position that will be placed over the selected location. In this example, we use the tracked <a href="qml-qtquick3d-xr-xrcamera.html" translate="no">XrCamera</a> we created earlier.</p>
+<div class="admonition note">
+<p><b>Note: </b>In XR, the <a href="qml-qtquick3d-xr-xrorigin.html" translate="no">XrOrigin</a> defines the relationship between the scene and the user's reference space. This reference space is typically anchored to the physical space around the user. Changing the position of the <a href="qml-qtquick3d-xr-xrorigin.html" translate="no">XrOrigin</a> will change how physical locations are mapped to scene coordinates. The <a href="qml-qtquick3d-xr-xrcamera.html" translate="no">XrCamera</a> tracks the position of the user's head. When the user moves physically, the <a href="qml-qtquick3d-xr-xrcamera.html" translate="no">XrCamera</a>'s position and orientation will change relative to the <a href="qml-qtquick3d-xr-xrorigin.html" translate="no">XrOrigin</a>.</p>
+</div>
+<pre class="qml" translate="no">
+ Node beamHandle
+</pre>
+<p>The <code translate="no">beamHandle</code> property is the Node used as the teleportation beam's start point. In this example, we use the right controller as the beamHandle.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/xr_freeformteleportation?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="qtxr-locomotion.html">Locomotion in Qt Quick 3D Xr</a>.</p>
+<!-- @@@xr_freeformteleportation -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- convert.qdoc -->
+  <meta name="description" content="How to convert between different serialization formats.">
+  <title>Serialization Converter | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Serialization Converter</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-converter-class">The Converter Class</a></li>
+<li class="level2"><a href="#the-available-converters">The Available Converters</a></li>
+<li class="level2"><a href="#the-cborconverter-and-cbordiagnosticdumper-classes">The CborConverter and CborDiagnosticDumper Classes</a></li>
+<li class="level1"><a href="#the-convert-program">The convert program</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Serialization Converter</h1>
+<!-- $$$serialization/convert-brief -->
+<p>How to convert between different serialization formats.</p>
+<!-- @@@serialization/convert -->
+<!-- $$$serialization/convert-description -->
+<div class="descr" id="details">
+<p>This example converts between JSON, CBOR, XML, <a href="qdatastream.html" translate="no">QDataStream</a> and some simple text formats. It can auto-detect the format being used, or be told which format to use. Not all formats support both input and output, and they have different sets of which content datatypes they support. <a href="qdatastream.html" translate="no">QDataStream</a> and XML are the richest, followed by CBOR, then JSON, and then the plain text formats. Conversion via the less capable formats is apt to lose structure from the data.</p>
+<p class="centerAlign"><img src="images/convert.png" alt="" /></p><h4 id="the-converter-class">The Converter Class</h4>
+<p>The Converter class is the abstract superclass for all the converters to and from all the formats. They all convert from or to the <a href="qvariant.html" translate="no">QVariant</a> class, which is used to represent all the datastructures internally.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> Converter
+ {
+     <span class="keyword">static</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>converters();
+ <span class="keyword">protected</span>:
+     Converter();
+     <span class="keyword">static</span> <span class="type">bool</span> isNull(<span class="keyword">const</span> Converter <span class="operator">*</span>converter); <span class="comment">// in nullconverter.cpp</span>
+
+ <span class="keyword">public</span>:
+     <span class="keyword">static</span> <span class="keyword">const</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>allConverters();
+
+     <span class="keyword">enum</span> <span class="keyword">class</span> Direction { In <span class="operator">=</span> <span class="number">1</span><span class="operator">,</span> Out <span class="operator">=</span> <span class="number">2</span><span class="operator">,</span> InOut <span class="operator">=</span> In <span class="operator">|</span> Out };
+     Q_DECLARE_FLAGS(Directions<span class="operator">,</span> Direction)
+
+     <span class="keyword">enum</span> Option { SupportsArbitraryMapKeys <span class="operator">=</span> <span class="number">0x01</span> };
+     Q_DECLARE_FLAGS(Options<span class="operator">,</span> Option)
+
+     <span class="keyword">virtual</span> <span class="operator">~</span>Converter() <span class="operator">=</span> <span class="number">0</span>;
+
+     <span class="keyword">virtual</span> <span class="type"><a href="qstring.html" translate="no">QString</a></span> name() <span class="keyword">const</span> <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> Directions directions() <span class="keyword">const</span> <span class="operator">=</span> <span class="number">0</span>;
+     <span class="keyword">virtual</span> Options outputOptions() <span class="keyword">const</span>;
+     <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>optionsHelp() <span class="keyword">const</span>;
+     <span class="keyword">virtual</span> <span class="type">bool</span> probeFile(<span class="type"><a href="qiodevice.html" translate="no">QIODevice</a></span> <span class="operator">*</span>f) <span class="keyword">const</span>;
+     <span class="keyword">virtual</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> loadFile(<span class="type"><a href="qiodevice.html" translate="no">QIODevice</a></span> <span class="operator">*</span>f<span class="operator">,</span> <span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&amp;</span>outputConverter) <span class="keyword">const</span>;
+     <span class="keyword">virtual</span> <span class="type">void</span> saveFile(<span class="type"><a href="qiodevice.html" translate="no">QIODevice</a></span> <span class="operator">*</span>f<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>contents<span class="operator">,</span>
+                           <span class="keyword">const</span> <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> <span class="operator">&amp;</span>options) <span class="keyword">const</span> <span class="operator">=</span> <span class="number">0</span>;
+ };
+
+ Q_DECLARE_OPERATORS_FOR_FLAGS(Converter<span class="operator">::</span>Directions)
+ Q_DECLARE_OPERATORS_FOR_FLAGS(Converter<span class="operator">::</span>Options)
+</pre>
+<p>The Converter constructor and destructor manage a list of available converters used by the main program so that it knows what converters are available. Each converter type defines a static instance that ensures it is constructed and thus available to the main program via this list. The <code translate="no">allConverters()</code> method provides <code translate="no">main()</code>'s code with access to the list.</p>
+<pre class="cpp" translate="no">
+ Converter<span class="operator">::</span>Converter()
+ {
+     converters()<span class="operator">.</span>append(<span class="keyword">this</span>);
+ }
+
+ Converter<span class="operator">::</span><span class="operator">~</span>Converter()
+ {
+     converters()<span class="operator">.</span>removeAll(<span class="keyword">this</span>);
+ }
+
+ <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>Converter<span class="operator">::</span>converters()
+ {
+     Q_CONSTINIT <span class="keyword">static</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&gt;</span> store;
+     <span class="keyword">return</span> store;
+ }
+
+ <span class="keyword">const</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="keyword">const</span> Converter <span class="operator">*</span><span class="operator">&gt;</span> <span class="operator">&amp;</span>Converter<span class="operator">::</span>allConverters()
+ {
+     <span class="keyword">return</span> converters();
+ }
+</pre>
+<p>The name() function returns the name of the converter. The directions() function is used to determine if a converter can be used for input, output, or both. These enable the main program to report what converters are available in its help text for the command-line options to select input and output formats.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> inputFormats;
+     <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> outputFormats;
+     <span class="keyword">for</span> (<span class="keyword">const</span> Converter <span class="operator">*</span>conv : Converter<span class="operator">::</span>allConverters()) {
+         <span class="keyword">auto</span> direction <span class="operator">=</span> conv<span class="operator">-</span><span class="operator">&gt;</span>directions();
+         <span class="type"><a href="qstring.html" translate="no">QString</a></span> name <span class="operator">=</span> conv<span class="operator">-</span><span class="operator">&gt;</span>name();
+         <span class="keyword">if</span> (direction<span class="operator">.</span>testFlag(Converter<span class="operator">::</span>Direction<span class="operator">::</span>In))
+             inputFormats <span class="operator">&lt;</span><span class="operator">&lt;</span> name;
+         <span class="keyword">if</span> (direction<span class="operator">.</span>testFlag(Converter<span class="operator">::</span>Direction<span class="operator">::</span>Out))
+             outputFormats <span class="operator">&lt;</span><span class="operator">&lt;</span> name;
+     }
+</pre>
+<p>The optionsHelp() function is used to report the various command-line options supported by the available formats, when queried using its <code translate="no">--format-options &lt;format&gt;</code> command-line option.</p>
+<pre class="cpp" translate="no">
+         <span class="keyword">for</span> (<span class="keyword">const</span> Converter <span class="operator">*</span>conv : Converter<span class="operator">::</span>allConverters()) {
+             <span class="keyword">if</span> (conv<span class="operator">-</span><span class="operator">&gt;</span>name() <span class="operator">=</span><span class="operator">=</span> format) {
+                 <span class="keyword">const</span> <span class="type">char</span> <span class="operator">*</span>help <span class="operator">=</span> conv<span class="operator">-</span><span class="operator">&gt;</span>optionsHelp();
+                 <span class="keyword">if</span> (help) {
+                     <a href="qtlogging.html#qInfo" translate="no">qInfo</a>(<span class="string">&quot;The following options are available for format '%s':\n\n%s&quot;</span><span class="operator">,</span>
+                           <a href="qstring.html#qPrintable" translate="no">qPrintable</a>(format)<span class="operator">,</span> help);
+                 } <span class="keyword">else</span> {
+                     <a href="qtlogging.html#qInfo" translate="no">qInfo</a>(<span class="string">&quot;Format '%s' supports no options.&quot;</span><span class="operator">,</span> <a href="qstring.html#qPrintable" translate="no">qPrintable</a>(format));
+                 }
+                 <span class="keyword">return</span> EXIT_SUCCESS;
+             }
+         }
+</pre>
+<p>The outputOptions() function reports the output capabilities of a converter. At present the only optional feature is support for arbitrary keys in mappings from keys to values. An input converter's loadFile() can use this information to tailor the form in which it presents the data it has read, to be as faithfully represented by the output converter as its capabilities permit.</p>
+<p>The probeFile() function is used to determine if a file matches the format of the converter. The main program uses this to determine what format to use when reading or writing a file, based on its name and potentially content, when the user has not specified the format to use on the command-line.</p>
+<p>The loadFile() function deserializes data. The caller tells loadFile() which serializer it intends to use, so that loadFile() can query its outputOptions() to determine the form in which to represent the loaded data. If the caller hasn't settled on a choice of output converter, loadFile() supplies it with a default output converter suitable to the data it is returning.</p>
+<p>The saveFile() function serializes data. It is passed options from the command-line, as described by loadHelp(), that can tune the details of how it represents the data when saving to file.</p>
+<p>Both loadFile() and saveFile() can be used with an arbitrary <a href="qiodevice.html" translate="no">QIODevice</a>. This means that a Converter could also be used with a network socket or other source of data, to read from or write to. In the present program, the main program always passes a <a href="qfile.html" translate="no">QFile</a>, accessing either a file on disk or one of the standard streams of the process.</p>
+<h5 id="the-available-converters">The Available Converters</h5>
+<p>Several converters are supported, illustrating how the converter program could be adapted to other formats, should the need arise. See the source code for each for its details. The CBOR converters serve as a relatively full-featured illustration of the ways converters can work, that we'll look into in more detail below. This table summarizes the available converters:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Class</th><th >mode</th><th >format</th></tr></thead>
+<tr valign="top" class="odd"><td >CborConverter</td><td >In/Out</td><td >CBOR</td></tr>
+<tr valign="top" class="even"><td >CborDiagnosticDumper</td><td >Out</td><td >CBOR diagnostic</td></tr>
+<tr valign="top" class="odd"><td >DataStreamConverter</td><td >In/Out</td><td ><a href="qdatastream.html" translate="no">QDataStream</a></td></tr>
+<tr valign="top" class="even"><td >DebugTextDumper</td><td >Out</td><td >Lossless, non-standard, human-readable</td></tr>
+<tr valign="top" class="odd"><td >JsonConverter</td><td >In/Out</td><td >JSON</td></tr>
+<tr valign="top" class="even"><td >NullConverter</td><td >Out</td><td >No output</td></tr>
+<tr valign="top" class="odd"><td >TextConverter</td><td >In/Out</td><td >Structured plain text</td></tr>
+<tr valign="top" class="even"><td >XmlConverter</td><td >In/Out</td><td >XML</td></tr>
+</table></div>
+<p>Those that support input use themselves as loadFile()'s fallback converter, except for the CBOR and <a href="qdatastream.html" translate="no">QDataStream</a> converters, which use their respective output-only dumper companion classes. The null converter can be used as output converter when running the program for the sake of any validation or verification that an input converter may perform.</p>
+<h5 id="the-cborconverter-and-cbordiagnosticdumper-classes">The CborConverter and CborDiagnosticDumper Classes</h5>
+<p>The CborConverter class supports serializing to and from the CBOR format. It supports various options to configure the output of floating point values and a <code translate="no">signature</code> option to determine whether to start its output with a CBOR tag that serves as a file header, identifying the file as containing CBOR data.</p>
+<p>There is also a CborDiagnosticDumper class to output in CBOR diagnostic notation. It does not support loading data. The form of its output can be configured using two options. One selects whether to use the (more verbose) extended CBOR diagnostic format. The other control whether each CBOR value appears on a separate line.</p>
+<p>The plain diagnostic notation is similar to JSON, but not exactly, because it supports displaying the contents of a CBOR stream losslessly, while a conversion to JSON can be lossy. CborConverter's loadFile() uses CborDiagnosticDumper for the fallback output converter, if its caller hasn't determined the output format for itself.</p>
+<p>The convertCborValue(), convertCborMap() and convertCborArray() helper functions are used to convert a <a href="qcborvalue.html" translate="no">QCborValue</a> to a <a href="qvariant.html" translate="no">QVariant</a>, for the benefit of CborConverter::loadFile().</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">static</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> convertCborValue(<span class="keyword">const</span> <span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span> <span class="operator">&amp;</span>value);
+
+ <span class="keyword">static</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> convertCborMap(<span class="keyword">const</span> <span class="type"><a href="qcbormap.html" translate="no">QCborMap</a></span> <span class="operator">&amp;</span>map)
+ {
+     VariantOrderedMap result;
+     result<span class="operator">.</span>reserve(map<span class="operator">.</span>size());
+     <span class="keyword">for</span> (<span class="keyword">auto</span> pair : map)
+         result<span class="operator">.</span>append({ convertCborValue(pair<span class="operator">.</span>first)<span class="operator">,</span> convertCborValue(pair<span class="operator">.</span>second) });
+     <span class="keyword">return</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span><span class="operator">::</span>fromValue(result);
+ }
+
+ <span class="keyword">static</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> convertCborArray(<span class="keyword">const</span> <span class="type"><a href="qcborarray.html" translate="no">QCborArray</a></span> <span class="operator">&amp;</span>array)
+ {
+     <span class="type">QVariantList</span> result;
+     result<span class="operator">.</span>reserve(array<span class="operator">.</span>size());
+     <span class="keyword">for</span> (<span class="keyword">auto</span> value : array)
+         result<span class="operator">.</span>append(convertCborValue(value));
+     <span class="keyword">return</span> result;
+ }
+
+ <span class="keyword">static</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> convertCborValue(<span class="keyword">const</span> <span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span> <span class="operator">&amp;</span>value)
+ {
+     <span class="keyword">if</span> (value<span class="operator">.</span>isArray())
+         <span class="keyword">return</span> convertCborArray(value<span class="operator">.</span>toArray());
+     <span class="keyword">if</span> (value<span class="operator">.</span>isMap())
+         <span class="keyword">return</span> convertCborMap(value<span class="operator">.</span>toMap());
+     <span class="keyword">return</span> value<span class="operator">.</span>toVariant();
+ }
+</pre>
+<p>The convertFromVariant() function is used to convert a <a href="qvariant.html" translate="no">QVariant</a> to a <a href="qcborvalue.html" translate="no">QCborValue</a> for output by the <code translate="no">saveFile()</code> of either class.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">enum</span> TrimFloatingPoint { Double<span class="operator">,</span> Float<span class="operator">,</span> Float16 };
+ <span class="keyword">static</span> <span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span> convertFromVariant(<span class="keyword">const</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>v<span class="operator">,</span> TrimFloatingPoint fpTrimming)
+ {
+     <span class="keyword">if</span> (v<span class="operator">.</span>userType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span><span class="type">QVariantList</span>) {
+         <span class="keyword">const</span> <span class="type">QVariantList</span> list <span class="operator">=</span> v<span class="operator">.</span>toList();
+         <span class="type"><a href="qcborarray.html" translate="no">QCborArray</a></span> array;
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>v : list)
+             array<span class="operator">.</span>append(convertFromVariant(v<span class="operator">,</span> fpTrimming));
+
+         <span class="keyword">return</span> array;
+     }
+
+     <span class="keyword">if</span> (v<span class="operator">.</span>userType() <span class="operator">=</span><span class="operator">=</span> <a href="qmetatype.html#qMetaTypeId" translate="no">qMetaTypeId</a><span class="operator">&lt;</span>VariantOrderedMap<span class="operator">&gt;</span>()) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> m <span class="operator">=</span> qvariant_cast<span class="operator">&lt;</span>VariantOrderedMap<span class="operator">&gt;</span>(v);
+         <span class="type"><a href="qcbormap.html" translate="no">QCborMap</a></span> map;
+         <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>pair : m)
+             map<span class="operator">.</span>insert(convertFromVariant(pair<span class="operator">.</span>first<span class="operator">,</span> fpTrimming)<span class="operator">,</span>
+                        convertFromVariant(pair<span class="operator">.</span>second<span class="operator">,</span> fpTrimming));
+         <span class="keyword">return</span> map;
+     }
+
+     <span class="keyword">if</span> (v<span class="operator">.</span>userType() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span>Double <span class="operator">&amp;</span><span class="operator">&amp;</span> fpTrimming <span class="operator">!</span><span class="operator">=</span> Double) {
+         <span class="type">float</span> f <span class="operator">=</span> <span class="type">float</span>(v<span class="operator">.</span>toDouble());
+         <span class="keyword">if</span> (fpTrimming <span class="operator">=</span><span class="operator">=</span> Float16)
+             <span class="keyword">return</span> <span class="type">float</span>(qfloat16(f));
+         <span class="keyword">return</span> f;
+     }
+
+     <span class="keyword">return</span> <span class="type"><a href="qcborvalue.html" translate="no">QCborValue</a></span><span class="operator">::</span>fromVariant(v);
+ }
+</pre>
+<h4 id="the-convert-program">The convert program</h4>
+<p>The <code translate="no">main()</code> function sets up a <a href="../qtwidgets/qapplication.html" translate="no">QApplication</a> and a <a href="qcommandlineparser.html" translate="no">QCommandLineParser</a> to make sense of the options the user has specified and provide help if the user asks for it. It uses the values obtained for the various <a href="qcommandlineoption.html" translate="no">QCommandLineOption</a> instances describing the user's choices, plus the positional arguments for file names, to prepare the converters it will use.</p>
+<p>It then uses its input converter to load data (and possibly resolve its choice of output converter, if it hasn't selected one yet) and its output converter to serialize that data, taking account of any output options the user has supplied on the command-line.</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qstringlist.html" translate="no">QStringList</a></span> files <span class="operator">=</span> parser<span class="operator">.</span>positionalArguments();
+     <span class="type"><a href="qfile.html" translate="no">QFile</a></span> input(files<span class="operator">.</span>value(<span class="number">0</span>));
+     <span class="type"><a href="qfile.html" translate="no">QFile</a></span> output(files<span class="operator">.</span>value(<span class="number">1</span>));
+     <span class="keyword">const</span> Converter <span class="operator">*</span>inconv <span class="operator">=</span> prepareConverter(parser<span class="operator">.</span>value(inputFormatOption)<span class="operator">,</span>
+                                                Converter<span class="operator">::</span>Direction<span class="operator">::</span>In<span class="operator">,</span> <span class="operator">&amp;</span>input);
+     <span class="keyword">const</span> Converter <span class="operator">*</span>outconv <span class="operator">=</span> prepareConverter(parser<span class="operator">.</span>value(outputFormatOption)<span class="operator">,</span>
+                                                 Converter<span class="operator">::</span>Direction<span class="operator">::</span>Out<span class="operator">,</span> <span class="operator">&amp;</span>output);
+
+     <span class="comment">// Now finally perform the conversion:</span>
+     <span class="type"><a href="qvariant.html" translate="no">QVariant</a></span> data <span class="operator">=</span> inconv<span class="operator">-</span><span class="operator">&gt;</span>loadFile(<span class="operator">&amp;</span>input<span class="operator">,</span> outconv);
+     Q_ASSERT_X(outconv<span class="operator">,</span> <span class="string">&quot;Serialization Converter&quot;</span><span class="operator">,</span>
+                <span class="string">&quot;Internal error: converter format did not provide default&quot;</span>);
+     outconv<span class="operator">-</span><span class="operator">&gt;</span>saveFile(<span class="operator">&amp;</span>output<span class="operator">,</span> data<span class="operator">,</span> parser<span class="operator">.</span>values(optionOption));
+     <span class="keyword">return</span> EXIT_SUCCESS;
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtbase.git/tree/examples/corelib/serialization/convert?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<p><b>See also </b><a href="qtcore-serialization-cbordump-example.html">Parsing and displaying CBOR data</a>, <a href="qtcore-serialization-savegame-example.html">Saving and Loading a Game</a>, and <a href="cbor.html">CBOR Support in Qt</a>.</p>
+<!-- @@@serialization/convert -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

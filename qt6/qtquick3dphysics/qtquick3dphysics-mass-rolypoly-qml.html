@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-mass.qdoc -->
+  <meta name="description" content="Demonstrates different ways of setting mass and inertia of a body.">
+  <title>Qt Quick 3D Physics - Mass Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - Mass Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt Quick 3D Physics - Mass Example</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2022 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Physics
+
+ <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+     property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">color</span>: <span class="string">&quot;blue&quot;</span>
+
+     <span class="name">collisionShapes</span>: [
+         <span class="type"><a href="qml-qtquick3d-physics-sphereshape.html" translate="no">SphereShape</a></span> {
+             <span class="name">id</span>: <span class="name">sphere0</span>
+             <span class="name">diameter</span>:  <span class="number">1</span>
+         },
+         <span class="type"><a href="qml-qtquick3d-physics-sphereshape.html" translate="no">SphereShape</a></span> {
+             <span class="name">id</span>: <span class="name">sphere1</span>
+             <span class="name">diameter</span>:  <span class="number">0.8</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">0.6</span>, <span class="number">0</span>)
+         },
+         <span class="type"><a href="qml-qtquick3d-physics-sphereshape.html" translate="no">SphereShape</a></span> {
+             <span class="name">id</span>: <span class="name">sphere2</span>
+             <span class="name">diameter</span>:  <span class="number">0.6</span>
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">1.1</span>, <span class="number">0</span>)
+         }
+     ]
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">position</span>: <span class="name">sphere0</span>.<span class="name">position</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>).<span class="name">times</span>(<span class="name">sphere0</span>.<span class="name">diameter</span><span class="operator">*</span><span class="number">0.01</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="name">color</span>
+         }
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">position</span>: <span class="name">sphere1</span>.<span class="name">position</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>).<span class="name">times</span>(<span class="name">sphere1</span>.<span class="name">diameter</span><span class="operator">*</span><span class="number">0.01</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="name">color</span>
+         }
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+         <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+         <span class="name">position</span>: <span class="name">sphere2</span>.<span class="name">position</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>).<span class="name">times</span>(<span class="name">sphere2</span>.<span class="name">diameter</span><span class="operator">*</span><span class="number">0.01</span>)
+         <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+             <span class="name">baseColor</span>: <span class="name">color</span>
+         }
+     }
+ }
+</pre>

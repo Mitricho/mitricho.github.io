@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuagenericstructhandler.cpp -->
+  <meta name="description" content="Reads a server's data types and decodes/encodes generic structs from/to extension objects.">
+  <title>QOpcUaGenericStructHandler Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaGenericStructHandler</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaGenericStructHandler Class</h1>
+<!-- $$$QOpcUaGenericStructHandler-brief -->
+<p>Reads a server's data types and decodes/encodes generic structs from/to extension objects. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaGenericStructHandler -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaGenericStructHandler&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.7</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuagenericstructhandler-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#DataTypeKind-enum" translate="no">DataTypeKind</a></b> { Unknown, Struct, Enum, Other }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#QOpcUaGenericStructHandler" translate="no">QOpcUaGenericStructHandler</a></b>(QOpcUaClient *<i>client</i>, QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#addCustomEnumDefinition" translate="no">addCustomEnumDefinition</a></b>(const QOpcUaEnumDefinition &amp;<i>definition</i>, const QString &amp;<i>typeId</i>, const QString &amp;<i>name</i>, QOpcUa::IsAbstract <i>isAbstract</i> = QOpcUa::IsAbstract::NotAbstract)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#addCustomStructureDefinition" translate="no">addCustomStructureDefinition</a></b>(const QOpcUaStructureDefinition &amp;<i>definition</i>, const QString &amp;<i>typeId</i>, const QString &amp;<i>name</i>, QOpcUa::IsAbstract <i>isAbstract</i> = QOpcUa::IsAbstract::NotAbstract)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaGenericStructValue </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#createGenericStructValueForTypeId" translate="no">createGenericStructValueForTypeId</a></b>(const QString &amp;<i>typeId</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaGenericStructHandler::DataTypeKind </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#dataTypeKindForTypeId" translate="no">dataTypeKindForTypeId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QOpcUaGenericStructValue&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#decode" translate="no">decode</a></b>(const QOpcUaExtensionObject &amp;<i>extensionObject</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::optional&lt;QOpcUaExtensionObject&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#encode" translate="no">encode</a></b>(const QOpcUaGenericStructValue &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaEnumDefinition </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#enumDefinitionForTypeId" translate="no">enumDefinitionForTypeId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#initialize" translate="no">initialize</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#initialized" translate="no">initialized</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#isAbstractTypeId" translate="no">isAbstractTypeId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaStructureDefinition </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#structureDefinitionForBinaryEncodingId" translate="no">structureDefinitionForBinaryEncodingId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaStructureDefinition </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#structureDefinitionForTypeId" translate="no">structureDefinitionForTypeId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#typeIdForBinaryEncodingId" translate="no">typeIdForBinaryEncodingId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#typeNameForBinaryEncodingId" translate="no">typeNameForBinaryEncodingId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#typeNameForTypeId" translate="no">typeNameForTypeId</a></b>(const QString &amp;<i>id</i>) const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuagenericstructhandler.html#initializedChanged" translate="no">initializedChanged</a></b>(bool <i>initialized</i>)</td></tr>
+</table></div>
+<!-- $$$QOpcUaGenericStructHandler-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The binary data encoding used in OPC UA was designed with a small message size in mind and doesn't contain any information about the structure of the data. This means that a decoder must known the structure of the encoded data in advance to be able to decode a data buffer.</p>
+<p>Since OPC UA 1.04, nodes of the DataType node class may have the DataTypeDefinition attribute which contain information about the fields of structured types and the mapping of enum values to names. Together with the knowledge about how to decode built-in types, this allows a client to decode generic custom structured types without relying on outside knowledge.</p>
+<p>QOpcUaGenericStructHandler traverses the type hierarchy of a server by following the HasSubtype references starting from BaseDataType and reads the DataTypeDefinition attribute of the nodes.</p>
+<p>For structured types where a <a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a> value is present in the DataTypeDefinition attribute, automatic decoding of extension objects containing them is available. Fields with a built-in type or a type where a C++ data class exists are deserialized to the corresponding Qt OPC UA type, other generic structs are serialized to a nested <a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a>. All nested generic struct values must have a <a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a> in the server or decoding fails.</p>
+<p>The same conditions apply to encoding a custom struct.</p>
+<p>Example for decoding a custom struct:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuagenericstructhandler.html#QOpcUaGenericStructHandler" translate="no">QOpcUaGenericStructHandler</a></span> handler(opcuaClient);
+ handler<span class="operator">.</span>initialize();
+
+ <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>handler<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuagenericstructhandler.html#QOpcUaGenericStructHandler" translate="no">QOpcUaGenericStructHandler</a></span><span class="operator">::</span>initializedChanged<span class="operator">,</span> <span class="operator">[</span>opcuaClient<span class="operator">,</span> <span class="operator">&amp;</span>handler<span class="operator">]</span>(<span class="type">bool</span> initialized) {
+     <span class="keyword">if</span> (<span class="operator">!</span>initialized)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">auto</span> node <span class="operator">=</span> opcuaClient<span class="operator">-</span><span class="operator">&gt;</span>node(<span class="string">&quot;ns=4;i=3003&quot;</span>); <span class="comment">// A custom struct test node in the open62541-testserver</span>
+     node<span class="operator">-</span><span class="operator">&gt;</span>readValueAttribute();
+
+     <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(node<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>attributeRead<span class="operator">,</span> <span class="operator">[</span>node<span class="operator">,</span> <span class="operator">&amp;</span>handler<span class="operator">]</span>(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttributes attr) {
+         <span class="keyword">if</span> (<span class="operator">!</span>attr<span class="operator">.</span>testFlag(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value) <span class="operator">|</span><span class="operator">|</span> node<span class="operator">-</span><span class="operator">&gt;</span>valueAttributeError() <span class="operator">!</span><span class="operator">=</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+             <span class="keyword">return</span>;
+
+         <span class="keyword">auto</span> extObj <span class="operator">=</span> node<span class="operator">-</span><span class="operator">&gt;</span>valueAttribute()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span><span class="operator">&gt;</span>();
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Got object of type&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> handler<span class="operator">.</span>typeNameForBinaryEncodingId(extObj<span class="operator">.</span>encodingTypeId());
+
+         <span class="keyword">const</span> <span class="keyword">auto</span> result <span class="operator">=</span> handler<span class="operator">.</span>decode(extObj);
+
+         <span class="keyword">if</span> (<span class="operator">!</span>result)
+             <span class="keyword">return</span>;
+
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="operator">*</span>result;
+     });
+ });
+</pre>
+<p>Example for encoding a custom struct:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuagenericstructhandler.html#QOpcUaGenericStructHandler" translate="no">QOpcUaGenericStructHandler</a></span> handler(opcuaClient);
+ handler<span class="operator">.</span>initialize();
+
+ <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>handler<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuagenericstructhandler.html#QOpcUaGenericStructHandler" translate="no">QOpcUaGenericStructHandler</a></span><span class="operator">::</span>initializedChanged<span class="operator">,</span> <span class="operator">[</span>opcuaClient<span class="operator">,</span> <span class="operator">&amp;</span>handler<span class="operator">]</span>(<span class="type">bool</span> initialized) {
+     <span class="keyword">if</span> (<span class="operator">!</span>initialized)
+         <span class="keyword">return</span>;
+
+     <span class="type"><a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a></span> value <span class="operator">=</span> handler<span class="operator">.</span>createGenericStructValueForTypeId(<span class="string">&quot;ns=4;i=3006&quot;</span>);
+     value<span class="operator">.</span>fieldsRef()<span class="operator">[</span><span class="string">&quot;MandatoryMember&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="number">23.0</span>;
+     value<span class="operator">.</span>fieldsRef()<span class="operator">[</span><span class="string">&quot;OptionalMember&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="number">42.0</span>;
+
+     <span class="keyword">const</span> <span class="keyword">auto</span> ext <span class="operator">=</span> handler<span class="operator">.</span>encode(value);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>ext)
+         <span class="keyword">return</span>;
+
+     <span class="comment">// Use the extension object to write a node's value attribute, in a method parameter, etc...</span>
+ });
+</pre>
+</div>
+<!-- @@@QOpcUaGenericStructHandler -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$DataTypeKind$$$Unknown$$$Struct$$$Enum$$$Other -->
+<h3 class="fn" translate="no" id="DataTypeKind-enum">enum class QOpcUaGenericStructHandler::<span class="name">DataTypeKind</span></h3>
+<p>This enum type specifies data type kind of a data type node.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaGenericStructHandler::DataTypeKind::Unknown</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The type node id is unknown.</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaGenericStructHandler::DataTypeKind::Struct</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The type node id belongs to a structured type.</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaGenericStructHandler::DataTypeKind::Enum</code></td><td class="topAlign tblval"><code translate="no">2</code></td><td class="topAlign">The type node id belongs to an enum type.</td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaGenericStructHandler::DataTypeKind::Other</code></td><td class="topAlign tblval"><code translate="no">3</code></td><td class="topAlign">The type node id belongs to a type which is not a struct or enum (other built-in types or their subtypes)</td></tr>
+</table></div>
+<!-- @@@DataTypeKind -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QOpcUaGenericStructHandler[overload1]$$$QOpcUaGenericStructHandlerQOpcUaClient*QObject* -->
+<h3 class="fn" translate="no" id="QOpcUaGenericStructHandler"><code class="details extra" translate="no">[explicit]</code> QOpcUaGenericStructHandler::<span class="name">QOpcUaGenericStructHandler</span>(<span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span> *<i>client</i>, <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a generic struct handler for <i translate="no">client</i>.</p>
+<!-- @@@QOpcUaGenericStructHandler -->
+<!-- $$$addCustomEnumDefinition[overload1]$$$addCustomEnumDefinitionconstQOpcUaEnumDefinition&constQString&constQString&QOpcUa::IsAbstract -->
+<h3 class="fn" translate="no" id="addCustomEnumDefinition"><span class="type">bool</span> QOpcUaGenericStructHandler::<span class="name">addCustomEnumDefinition</span>(const <span class="type"><a href="qopcuaenumdefinition.html" translate="no">QOpcUaEnumDefinition</a></span> &amp;<i>definition</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>typeId</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, <span class="type">QOpcUa::IsAbstract</span> <i>isAbstract</i> = QOpcUa::IsAbstract::NotAbstract)</h3>
+<p>Adds the custom enum definition <i translate="no">definition</i> to the known types. This can be used to support custom structures the server doesn't expose a StructureDefinition for. The parameters <i translate="no">definition</i>, <i translate="no">typeId</i> and <i translate="no">name</i> are required for proper decoding and encoding. If <i translate="no">isAbstract</i> is set, the type can't be encoded and decoded.</p>
+<p>Returns <code translate="no">true</code> if the enum definition was successfully added.</p>
+<!-- @@@addCustomEnumDefinition -->
+<!-- $$$addCustomStructureDefinition[overload1]$$$addCustomStructureDefinitionconstQOpcUaStructureDefinition&constQString&constQString&QOpcUa::IsAbstract -->
+<h3 class="fn" translate="no" id="addCustomStructureDefinition"><span class="type">bool</span> QOpcUaGenericStructHandler::<span class="name">addCustomStructureDefinition</span>(const <span class="type"><a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a></span> &amp;<i>definition</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>typeId</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>, <span class="type">QOpcUa::IsAbstract</span> <i>isAbstract</i> = QOpcUa::IsAbstract::NotAbstract)</h3>
+<p>Adds the custom structure definition <i translate="no">definition</i> to the known types. This can be used to support custom structures the server doesn't expose a StructureDefinition for. The parameters <i translate="no">definition</i>, <i translate="no">typeId</i> and <i translate="no">name</i> are required for proper decoding and encoding. If <i translate="no">isAbstract</i> is set, the type can't be encoded and decoded.</p>
+<p>Returns <code translate="no">true</code> if the structure definition was successfully added.</p>
+<!-- @@@addCustomStructureDefinition -->
+<!-- $$$createGenericStructValueForTypeId[overload1]$$$createGenericStructValueForTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="createGenericStructValueForTypeId"><span class="type"><a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a></span> QOpcUaGenericStructHandler::<span class="name">createGenericStructValueForTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>typeId</i>)</h3>
+<p>Returns a generic struct value pre-filled with the struct definition, type id and type name corresponding to <i translate="no">typeId</i>. For all mandatory fields, an invalid placeholder <a href="../qtcore/qvariant.html" translate="no">QVariant</a> will be inserted.</p>
+<!-- @@@createGenericStructValueForTypeId -->
+<!-- $$$dataTypeKindForTypeId[overload1]$$$dataTypeKindForTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="dataTypeKindForTypeId"><span class="type"><a href="qopcuagenericstructhandler.html#DataTypeKind-enum" translate="no">QOpcUaGenericStructHandler::DataTypeKind</a></span> QOpcUaGenericStructHandler::<span class="name">dataTypeKindForTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the data type kind for the type node id <i translate="no">id</i>.</p>
+<!-- @@@dataTypeKindForTypeId -->
+<!-- $$$decode[overload1]$$$decodeconstQOpcUaExtensionObject& -->
+<h3 class="fn" translate="no" id="decode"><span class="type">std::optional</span>&lt;<span class="type"><a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a></span>&gt; QOpcUaGenericStructHandler::<span class="name">decode</span>(const <span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span> &amp;<i>extensionObject</i>) const</h3>
+<p>Decodes <i translate="no">extensionObject</i> to a <a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a>. If the decoder fails, <code translate="no">std::nullopt</code> is returned.</p>
+<!-- @@@decode -->
+<!-- $$$encode[overload1]$$$encodeconstQOpcUaGenericStructValue& -->
+<h3 class="fn" translate="no" id="encode"><span class="type">std::optional</span>&lt;<span class="type"><a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a></span>&gt; QOpcUaGenericStructHandler::<span class="name">encode</span>(const <span class="type"><a href="qopcuagenericstructvalue.html" translate="no">QOpcUaGenericStructValue</a></span> &amp;<i>value</i>)</h3>
+<p>Returns <i translate="no">value</i> encoded as a <a href="qopcuaextensionobject.html" translate="no">QOpcUaExtensionObject</a>, or <code translate="no">std::nullopt</code> if the value could not be encoded.</p>
+<!-- @@@encode -->
+<!-- $$$enumDefinitionForTypeId[overload1]$$$enumDefinitionForTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="enumDefinitionForTypeId"><span class="type"><a href="qopcuaenumdefinition.html" translate="no">QOpcUaEnumDefinition</a></span> QOpcUaGenericStructHandler::<span class="name">enumDefinitionForTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the <a href="qopcuaenumdefinition.html" translate="no">QOpcUaEnumDefinition</a> for the type node id <i translate="no">id</i>. If the node id is unknown or does not belong to an enum type, a default constructed value is returned.</p>
+<!-- @@@enumDefinitionForTypeId -->
+<!-- $$$initialize[overload1]$$$initialize -->
+<h3 class="fn" translate="no" id="initialize"><span class="type">bool</span> QOpcUaGenericStructHandler::<span class="name">initialize</span>()</h3>
+<p>Starts the data type hierarchy traversal. Success or failure is reported in the <a href="qopcuagenericstructhandler.html#initializedChanged" translate="no">initializedChanged</a> signal.</p>
+<p>Returns <code translate="no">false</code> if the operation can't be started.</p>
+<!-- @@@initialize -->
+<!-- $$$initialized[overload1]$$$initialized -->
+<h3 class="fn" translate="no" id="initialized"><code class="details extra" translate="no">[since 6.7]</code> <span class="type">bool</span> QOpcUaGenericStructHandler::<span class="name">initialized</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the generic struct handler is initialized.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@initialized -->
+<!-- $$$initializedChanged[overload1]$$$initializedChangedbool -->
+<h3 class="fn" translate="no" id="initializedChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaGenericStructHandler::<span class="name">initializedChanged</span>(<span class="type">bool</span> <i>initialized</i>)</h3>
+<p>This signal is emitted when the initialization process has finished. <i translate="no">initialized</i> indicates if the initialization was successful.</p>
+<!-- @@@initializedChanged -->
+<!-- $$$isAbstractTypeId[overload1]$$$isAbstractTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="isAbstractTypeId"><span class="type">bool</span> QOpcUaGenericStructHandler::<span class="name">isAbstractTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns true if the data type described by <i translate="no">id</i> is abstract.</p>
+<!-- @@@isAbstractTypeId -->
+<!-- $$$structureDefinitionForBinaryEncodingId[overload1]$$$structureDefinitionForBinaryEncodingIdconstQString& -->
+<h3 class="fn" translate="no" id="structureDefinitionForBinaryEncodingId"><span class="type"><a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a></span> QOpcUaGenericStructHandler::<span class="name">structureDefinitionForBinaryEncodingId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the <a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a> for the binary encoding node id <i translate="no">id</i>. If the node id is unknown or does not belong to a struct type, a default constructed value is returned.</p>
+<!-- @@@structureDefinitionForBinaryEncodingId -->
+<!-- $$$structureDefinitionForTypeId[overload1]$$$structureDefinitionForTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="structureDefinitionForTypeId"><span class="type"><a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a></span> QOpcUaGenericStructHandler::<span class="name">structureDefinitionForTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the <a href="qopcuastructuredefinition.html" translate="no">QOpcUaStructureDefinition</a> for the type node id <i translate="no">id</i>. If the node id is unknown or does not belong to a struct type, a default constructed value is returned.</p>
+<!-- @@@structureDefinitionForTypeId -->
+<!-- $$$typeIdForBinaryEncodingId[overload1]$$$typeIdForBinaryEncodingIdconstQString& -->
+<h3 class="fn" translate="no" id="typeIdForBinaryEncodingId"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QOpcUaGenericStructHandler::<span class="name">typeIdForBinaryEncodingId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the type node id associated with the binary encoding id <i translate="no">id</i>.</p>
+<!-- @@@typeIdForBinaryEncodingId -->
+<!-- $$$typeNameForBinaryEncodingId[overload1]$$$typeNameForBinaryEncodingIdconstQString& -->
+<h3 class="fn" translate="no" id="typeNameForBinaryEncodingId"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QOpcUaGenericStructHandler::<span class="name">typeNameForBinaryEncodingId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the type name belonging to the binary encoding node id <i translate="no">id</i>. If the node id is unknown or does not belong to a struct type, an empty string is returned.</p>
+<!-- @@@typeNameForBinaryEncodingId -->
+<!-- $$$typeNameForTypeId[overload1]$$$typeNameForTypeIdconstQString& -->
+<h3 class="fn" translate="no" id="typeNameForTypeId"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QOpcUaGenericStructHandler::<span class="name">typeNameForTypeId</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>id</i>) const</h3>
+<p>Returns the type name belonging to a data type node identified by type node id <i translate="no">id</i>. If the node id is unknown, an empty string is returned.</p>
+<!-- @@@typeNameForTypeId -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

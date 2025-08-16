@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3deffect.cpp -->
+  <meta name="description" content="Base component for creating a post-processing effect.">
+  <title>Effect QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Effect</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#post-processing-effects">Post-processing effects</a></li>
+<li class="level2"><a href="#exposing-data-to-the-shaders">Exposing data to the shaders</a></li>
+<li class="level2"><a href="#getting-started-with-user-defined-effects">Getting started with user-defined effects</a></li>
+<li class="level2"><a href="#effects-with-vertex-shaders">Effects with vertex shaders</a></li>
+<li class="level2"><a href="#special-keywords-in-effect-shaders">Special keywords in effect shaders</a></li>
+<li class="level2"><a href="#building-multi-pass-effects">Building multi-pass effects</a></li>
+<li class="level2"><a href="#performance-considerations">Performance considerations</a></li>
+<li class="level2"><a href="#vr-ar-considerations">VR/AR considerations</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Effect QML Type</h1>
+<!-- $$$Effect-brief -->
+<p>Base component for creating a post-processing effect. <a href="#details">More...</a></p>
+<!-- @@@Effect -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-object3d.html" translate="no">Object3D</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-effect-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-effect.html#passes-prop" translate="no">passes</a></b> : list</li>
+</ul>
+<!-- $$$Effect-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The Effect type allows the user to implement their own post-processing effects for <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a>.</p>
+<h2 id="post-processing-effects">Post-processing effects</h2>
+<p>A post-processing effect is conceptually very similar to Qt Quick's <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> item. When an effect is present, the scene is rendered into a separate texture first. The effect is then applied by drawing a textured quad to the main render target, depending on the <a href="qml-qtquick3d-view3d.html#renderMode-prop" translate="no">render mode</a> of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. The effect can provide a vertex shader, a fragment shader, or both. Effects are always applied on the entire scene, per <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</p>
+<p>Effects are associated with the <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> in the <a href="qml-qtquick3d-sceneenvironment.html#effects-prop" translate="no">SceneEnvironment::effects</a> property. The property is a list: effects can be chained together; they are applied in the order they are in the list, using the previous step's output as the input to the next one, with the last effect's output defining the contents of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b><a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> and <a href="qml-qtquick3d-helpers-extendedsceneenvironment.html" translate="no">ExtendedSceneEnvironment</a> provide a set of built-in effects, such as depth of field, glow/bloom, lens flare, color grading, and vignette. Always consider first if these are sufficient for the application's needs, and prefer using the built-in facilities instead of implementing a custom post-processing effect.</p>
+</div>
+<p>Effects are similar to <a href="qml-qtquick3d-custommaterial.html" translate="no">custom materials</a> in many ways. However, a custom material is associated with a model and is responsible for the shading of that given mesh. Whereas an effect's vertex shader always gets a quad (for example, two triangles) as its input, while its fragment shader samples the texture with the scene's content.</p>
+<p>Unlike custom materials, effects support multiple passes. For many effects this it not necessary, and when there is a need to apply multiple effects, identical results can often be achieved by chaining together multiple effects in <a href="qml-qtquick3d-sceneenvironment.html#effects-prop" translate="no">the SceneEnvironment</a>. This is demonstrated by the <a href="qtquick3d-customeffect-example.html">Custom Effect example</a> as well. However, passes have the possibility to request additional color buffers (texture), and specify which of these additional buffers they output to. This allows implementing more complex image processing techniques since subsequent passes can then use one or more of these additional buffers, plus the original scene's content, as their input. If necessary, these additional buffers can have an extended lifetime, meaning their content is preserved between frames, which allows implementing effects that rely on accumulating content from multiple frames, such as, motion blur.</p>
+<p>When compared to Qt Quick's 2D <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a>, the 3D post-processing effects have the advantage of being able to work with depth buffer data, as well as the ability to implement multiple passes with intermediate buffers. In addition, the texture-related capabilities are extended: Qt Quick 3D allows more fine-grained control over filtering modes, and allows effects to work with texture formats other than RGBA8, for example, floating point formats.</p>
+<div class="admonition note">
+<p><b>Note: </b>Post-processing effects are currently available when the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> has its <a href="qml-qtquick3d-view3d.html#renderMode-prop" translate="no">renderMode</a> set to <code translate="no">Offscreen</code>, <code translate="no">Underlay</code> or <code translate="no">Overlay</code>. Effects will not be rendered for <code translate="no">Inline</code> mode.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>When using post-processing effects, the application-provided shaders should expect linear color data without tonemapping applied. The tonemapping that is performed during the main render pass (or during skybox rendering, if there is a skybox) when <a href="qml-qtquick3d-sceneenvironment.html#tonemapMode-prop" translate="no">tonemapMode</a> is set to a value other than <code translate="no">SceneEnvironment.TonemapModeNone</code>, is automatically disabled when there is at least one post-processing effect specified in the <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a>. The last effect in the chain (more precisely, the last pass of the last effect in the chain) will automatically get its fragment shader amended to perform the same tonemapping the main render pass would.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Effects that perform their own tonemapping should be used in a <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a> that has the built-in tonemapping disabled by setting <a href="qml-qtquick3d-sceneenvironment.html#tonemapMode-prop" translate="no">tonemapMode</a> to <code translate="no">SceneEnvironment.TonemapModeNone</code>.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>By default the texture used as the effects' input is created with a floating point texture format, such as 16-bit floating point RGBA. The output texture's format is the same since by default it follows the input format. This can be overridden using <a href="qml-qtquick3d-buffer.html" translate="no">Buffer</a> and an empty name. The default RGBA16F is useful because it allows working with non-tonemapped linear data without having the color values outside the 0-1 range clamped.</p>
+</div>
+<h2 id="exposing-data-to-the-shaders">Exposing data to the shaders</h2>
+<p>Like with <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a> or <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a>, the dynamic properties of an Effect object can be changed and animated using the usual QML and Qt Quick facilities, and the values are exposed to the shaders automatically. The following list shows how properties are mapped:</p>
+<ul>
+<li>bool, int, real -&gt; bool, int, float</li>
+<li><a href="../qtgui/qcolor.html" translate="no">QColor</a>, <a href="../qtqml/qml-qtqml-qt.html#rgba-method" translate="no">color</a> -&gt; vec4, and the color gets converted to linear, assuming sRGB space for the color value specified in QML. The built-in Qt colors, such as <code translate="no">&quot;green&quot;</code> are in sRGB color space as well, and the same conversion is performed for all color properties of DefaultMaterial and <a href="qml-qtquick3d-principledmaterial.html" translate="no">PrincipledMaterial</a>, so this behavior of Effect matches those.</li>
+<li><a href="../qtcore/qrect.html" translate="no">QRect</a>, <a href="../qtcore/qrectf.html" translate="no">QRectF</a>, <a href="../qtqml/qml-qtqml-qt.html#rect-method" translate="no">rect</a> -&gt; vec4</li>
+<li><a href="../qtcore/qpoint.html" translate="no">QPoint</a>, <a href="../qtcore/qpointf.html" translate="no">QPointF</a>, <a href="../qtqml/qml-qtqml-qt.html#point-method" translate="no">point</a>, <a href="../qtcore/qsize.html" translate="no">QSize</a>, <a href="../qtcore/qsizef.html" translate="no">QSizeF</a>, <a href="../qtqml/qml-qtqml-qt.html#size-method" translate="no">size</a> -&gt; vec2</li>
+<li><a href="../qtgui/qvector2d.html" translate="no">QVector2D</a>, <a href="../qtqml/qml-qtqml-qt.html#vector2d-method" translate="no">vector2d</a> -&gt; vec3</li>
+<li><a href="../qtgui/qvector3d.html" translate="no">QVector3D</a>, <a href="../qtqml/qml-qtqml-qt.html#vector3d-method" translate="no">vector3d</a> -&gt; vec3</li>
+<li><a href="../qtgui/qvector4d.html" translate="no">QVector4D</a>, <a href="../qtqml/qml-qtqml-qt.html#vector4d-method" translate="no">vector4d</a> -&gt; vec4</li>
+<li><a href="../qtgui/qmatrix4x4.html" translate="no">QMatrix4x4</a>, <a href="../qtqml/qml-qtqml-qt.html#matrix4x4-method" translate="no">matrix4x4</a> -&gt; mat4</li>
+<li><a href="../qtgui/qquaternion.html" translate="no">QQuaternion</a>, <a href="../qtqml/qml-qtqml-qt.html#quaternion-method" translate="no">quaternion</a> -&gt; vec4, scalar value is <code translate="no">w</code></li>
+<li><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a> -&gt; sampler2D or samplerCube, depending on whether <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> or <a href="qml-qtquick3d-cubemaptexture.html" translate="no">CubeMapTexture</a> is used in the texture property of the <a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a>. Setting the <a href="qml-qtquick3d-textureinput.html#enabled-prop" translate="no">enabled</a> property to false leads to exposing a dummy texture to the shader, meaning the shaders are still functional but will sample a texture with opaque black image content. Pay attention to the fact that properties for samplers must always reference a <a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a> object, not a <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> directly. When it comes to the <a href="qml-qtquick3d-texture.html" translate="no">Texture</a> properties, the source, tiling, and filtering related ones are the only ones that are taken into account implicitly with effects, as the rest (such as, UV transformations) is up to the custom shaders to implement as they see fit.</li>
+</ul>
+<div class="admonition note">
+<p><b>Note: </b>When a uniform referenced in the shader code does not have a corresponding property, it will cause a shader compilation error when processing the effect at run time. There are some exceptions to this, such as, sampler uniforms, that get a dummy texture bound when no corresponding QML property is present, but as a general rule, all uniforms and samplers must have a corresponding property declared in the Effect object.</p>
+</div>
+<h2 id="getting-started-with-user-defined-effects">Getting started with user-defined effects</h2>
+<p>A custom post-processing effect involves at minimum an Effect object and a fragment shader snippet. Some effects will also want a customized vertex shader as well.</p>
+<p>As a simple example, let's create an effect that combines the scene's content with an image, while further altering the red channel's value in an animated manner:</p>
+<div class="table"><table class="generic" width="70%">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-effect.html" translate="no">Effect</a></span> {
+     <span class="name">id</span>: <span class="name">simpleEffect</span>
+     property <span class="type"><a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a></span> <span class="name">tex</span>: <span class="name">TextureInput</span> {
+         <span class="name">texture</span>: <span class="name">Texture</span> { <span class="name">source</span>: <span class="string">&quot;image.png&quot;</span> }
+     }
+     property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">redLevel</span>
+     NumberAnimation on <span class="name">redLevel</span> { <span class="name">from</span>: <span class="number">0</span>; <span class="name">to</span>: <span class="number">1</span>; <span class="name">duration</span>: <span class="number">5000</span>; <span class="name">loops</span>: -<span class="number">1</span> }
+     <span class="name">passes</span>: <span class="name">Pass</span> {
+        <span class="name">shaders</span>: <span class="name">Shader</span> {
+            <span class="name">stage</span>: <span class="name">Shader</span>.<span class="name">Fragment</span>
+            <span class="name">shader</span>: <span class="string">&quot;effect.frag&quot;</span>
+        }
+     }
+ }
+</pre>
+</td><td ><pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec4 c = texture(tex, TEXTURE_UV);
+     c.r *= redLevel;
+     FRAGCOLOR = c * texture(INPUT, INPUT_UV);
+ }
+</pre>
+</td></tr>
+</table></div>
+<p>Here the texture with the image <code translate="no">image.png</code> is exposed to the shader under the name <code translate="no">tex</code>. The value of redLevel is available in the shader in a <code translate="no">float</code> uniform with the same name.</p>
+<p>The fragment shader must contain a function called <code translate="no">MAIN</code>. The final fragment color is determined by <code translate="no">FRAGCOLOR</code>. The main input texture, with the contents of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>'s scene, is accessible under a <code translate="no">sampler2D</code> with the name <code translate="no">INPUT</code>. The UV coordinates from the quad are in <code translate="no">INPUT_UV</code>. These UV values are always suitable for sampling <code translate="no">INPUT</code>, regardless of the underlying graphics API at run time (and so regardless of the Y axis direction in images since the necessary adjustments are applied automatically by Qt Quick 3D). Sampling the texture with our external image is done using <code translate="no">TEXTURE_UV</code>. <code translate="no">INPUT_UV</code> is not suitable in cross-platform applications since V needs to be flipped to cater for the coordinate system differences mentioned before, using a logic that is different for textures based on images and textures used as render targets. Fortunately this is all taken care of by the engine so the shader need no further logic for this.</p>
+<p>Once simpleEffect is available, it can be associated with the effects list of a the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>'s <a href="qml-qtquick3d-sceneenvironment.html" translate="no">SceneEnvironment</a>:</p>
+<pre class="qml" translate="no">
+ environment: SceneEnvironment {
+     effects: [ simpleEffect ]
+ }
+</pre>
+<p>The results would look something like the following, with the original scene on the left and with the effect applied on the right:</p>
+<div class="table"><table class="generic" width="70%">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/effect_intro_1.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/effect_intro_2.png" alt="" /></p></td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>The <code translate="no">shader</code> property value in Shader is a URL, as is the custom in QML and Qt Quick, referencing the file containing the shader snippet, and works very similarly to <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> or <a href="../qtquick/qml-qtquick-image.html#source-prop" translate="no">Image.source</a>. Only the <code translate="no">file</code> and <code translate="no">qrc</code> schemes are supported.. It is also possible to omit the <code translate="no">file</code> scheme, allowing to specify a relative path in a convenient way. Such a path is resolved relative to the component's (the <code translate="no">.qml</code> file's) location.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Shader code is always provided using Vulkan-style GLSL, regardless of the graphics API used by Qt at run time.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>The vertex and fragment shader code provided by the effect are not full, complete GLSL shaders on their own. Rather, they provide a <code translate="no">MAIN</code> function, and optionally a set of <code translate="no">VARYING</code> declarations, which are then amended with further shader code by the engine.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>The above example is not compatible with the optional multiview rendering mode that is used in some VR/AR applications. To make it function both with and without multiview mode, change MAIN() like this:</p>
+</div>
+<pre class="cpp plain" translate="no">
+ void MAIN()
+ {
+     vec4 c = texture(tex, TEXTURE_UV);
+     c.r *= redLevel;
+ #if QSHADER_VIEW_COUNT &gt;= 2
+     FRAGCOLOR = c * texture(INPUT, vec3(INPUT_UV, VIEW_INDEX));
+ #else
+     FRAGCOLOR = c * texture(INPUT, INPUT_UV);
+ #endif
+ }
+</pre>
+<h2 id="effects-with-vertex-shaders">Effects with vertex shaders</h2>
+<p>A vertex shader, when present, must provide a function called <code translate="no">MAIN</code>. In the vast majority of cases the custom vertex shader will not want to provide its own calculation of the homogenous vertex position, but it is possible using <code translate="no">POSITION</code>, <code translate="no">VERTEX</code>, and <code translate="no">MODELVIEWPROJECTION_MATRIX</code>. When <code translate="no">POSITION</code> is not present in the custom shader code, a statement equivalent to <code translate="no">POSITION = MODELVIEWPROJECTION_MATRIX * vec4(VERTEX, 1.0);</code> will be injected automatically by Qt Quick 3D.</p>
+<p>To pass data between the vertex and fragment shaders, use the VARYING keyword. Internally this will then be transformed into the appropriate vertex output or fragment input declaration. The fragment shader can use the same declaration, which then allows to read the interpolated value for the current fragment.</p>
+<p>Let's look at example, that is in effect very similar to the built-in DistortionSpiral effect:</p>
+<div class="table"><table class="generic" width="70%">
+ <tr valign="top" class="odd"><td ><pre class="cpp plain" translate="no">
+ VARYING vec2 center_vec;
+ void MAIN()
+ {
+     center_vec = INPUT_UV - vec2(0.5, 0.5);
+     center_vec.y *= INPUT_SIZE.y / INPUT_SIZE.x;
+ }
+</pre>
+</td><td ><pre class="cpp plain" translate="no">
+ VARYING vec2 center_vec;
+ void MAIN()
+ {
+     float radius = 0.25;
+     float dist_to_center = length(center_vec) / radius;
+     vec2 texcoord = INPUT_UV;
+     if (dist_to_center &lt;= 1.0) {
+         float rotation_amount = (1.0 - dist_to_center) * (1.0 - dist_to_center);
+         float r = radians(360.0) * rotation_amount / 4.0;
+         mat2 rotation = mat2(cos(r), sin(r), -sin(r), cos(r));
+         texcoord = vec2(0.5, 0.5) + rotation * (INPUT_UV - vec2(0.5, 0.5));
+     }
+     FRAGCOLOR = texture(INPUT, texcoord);
+ }
+</pre>
+</td></tr>
+</table></div>
+<p>The Effect object's <code translate="no">passes</code> list should now specify both the vertex and fragment snippets:</p>
+<pre class="qml" translate="no">
+ passes: Pass {
+    shaders: [
+        Shader {
+            stage: Shader.Vertex
+            shader: &quot;effect.vert&quot;
+        },
+        Shader {
+            stage: Shader.Fragment
+            shader: &quot;effect.frag&quot;
+        }
+     ]
+ }
+</pre>
+<p>The end result looks like the following:</p>
+<div class="table"><table class="generic" width="70%">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/effect_intro_1.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/effect_intro_3.png" alt="" /></p></td></tr>
+</table></div>
+<h2 id="special-keywords-in-effect-shaders">Special keywords in effect shaders</h2>
+<ul>
+<li><code translate="no">VARYING</code> - Declares a vertex output or fragment input, depending on the type of the current shader.</li>
+<li><code translate="no">MAIN</code> - This function must always be present in an effect shader.</li>
+<li><code translate="no">FRAGCOLOR</code> - <code translate="no">vec4</code> - The final fragment color; the output of the fragment shader. (fragment shader only)</li>
+<li><code translate="no">POSITION</code> - <code translate="no">vec4</code> - The homogenous position calculated in the vertex shader. (vertex shader only)</li>
+<li><code translate="no">MODELVIEWPROJECTION_MATRIX</code> - <code translate="no">mat4</code> - The transformation matrix for the screen quad.</li>
+<li><code translate="no">VERTEX</code> - <code translate="no">vec3</code> - The vertices of the quad; the input to the vertex shader. (vertex shader only)</li>
+<li><code translate="no">INPUT</code> - <code translate="no">sampler2D</code> or <code translate="no">sampler2DArray</code> - The sampler for the input texture with the scene rendered into it, unless a pass redirects its input via a <a href="qml-qtquick3d-bufferinput.html" translate="no">BufferInput</a> object, in which case <code translate="no">INPUT</code> refers to the additional color buffer's texture referenced by the <a href="qml-qtquick3d-bufferinput.html" translate="no">BufferInput</a>. With <a href="qt3dxr-multiview.html">multiview rendering</a> enabled, which can be relevant for VR/AR applications, this is a sampler2DArray, while the input texture becomes a 2D texture array.</li>
+<li><code translate="no">INPUT_UV</code> - <code translate="no">vec2</code> - UV coordinates for sampling <code translate="no">INPUT</code>.</li>
+<li><code translate="no">TEXTURE_UV</code> - <code translate="no">vec2</code> - UV coordinates suitable for sampling a Texture with contents loaded from an image file.</li>
+<li><code translate="no">INPUT_SIZE</code> - <code translate="no">vec2</code> - The size of the <code translate="no">INPUT</code> texture, in pixels.</li>
+<li><code translate="no">OUTPUT_SIZE</code> - <code translate="no">vec2</code> - The size of the output buffer, in pixels. Often the same as <code translate="no">INPUT_SIZE</code>, unless the pass outputs to an extra Buffer with a size multiplier on it.</li>
+<li><code translate="no">FRAME</code> - <code translate="no">float</code> - A frame counter, incremented after each frame in the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>.</li>
+<li><code translate="no">DEPTH_TEXTURE</code> - <code translate="no">sampler2D</code> - A depth texture with the depth buffer contents with the opaque objects in the scene. Like with <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>, the presence of this keyword in the shader triggers generating the depth texture automatically.</li>
+<li><code translate="no">VIEW_INDEX</code> - <code translate="no">uint</code> - With <a href="qt3dxr-multiview.html">multiview rendering</a> enabled, this is the current view index, available in both vertex and fragment shaders. Always 0 when multiview rendering is not used.</li>
+</ul>
+<h2 id="building-multi-pass-effects">Building multi-pass effects</h2>
+<p>A multi-pass effect often uses more than one set of shaders, and takes the <a href="qml-qtquick3d-pass.html#output-prop" translate="no">output</a> and <a href="qml-qtquick3d-pass.html#commands-prop" translate="no">commands</a> properties into use. Each entry in the passes list translates to a render pass drawing a quad into the pass's output texture, while sampling the effect's input texture and optionally other textures as well.</p>
+<p>The typical outline of a multi-pass Effect can look like the following:</p>
+<pre class="qml" translate="no">
+ passes: [
+     Pass {
+         shaders: [
+             Shader {
+                 stage: Shader.Vertex
+                 shader: &quot;pass1.vert&quot;
+             },
+             Shader {
+                 stage: Shader.Fragment
+                 shader: &quot;pass1.frag&quot;
+             }
+             // This pass outputs to the intermediate texture described
+             // by the Buffer object.
+             output: intermediateColorBuffer
+         ],
+     },
+     Pass {
+         shaders: [
+             Shader {
+                 stage: Shader.Vertex
+                 shader: &quot;pass2.vert&quot;
+             },
+             Shader {
+                 stage: Shader.Fragment
+                 shader: &quot;pass2.frag&quot;
+             }
+             // The output of the last pass needs no redirection, it is
+             // the final result of the effect.
+         ],
+         commands: [
+             // This pass reads from the intermediate texture, meaning
+             // INPUT in the shader will refer to the texture associated
+             // with the Buffer.
+             BufferInput {
+                 buffer: intermediateColorBuffer
+             }
+         ]
+     }
+ ]
+</pre>
+<p>What is <code translate="no">intermediateColorBuffer</code>?</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-buffer.html" translate="no">Buffer</a></span> {
+     <span class="name">id</span>: <span class="name">intermediateColorBuffer</span>
+     <span class="name">name</span>: <span class="string">&quot;tempBuffer&quot;</span>
+     <span class="comment">// format: Buffer.RGBA8</span>
+     <span class="comment">// textureFilterOperation: Buffer.Linear</span>
+     <span class="comment">// textureCoordOperation: Buffer.ClampToEdge</span>
+ }
+</pre>
+<p>The commented properties are not necessary if the desired values match the defaults.</p>
+<p>Internally the presence of this Buffer object and referencing it from the <code translate="no">output</code> property of a Pass leads to creating a texture with a size matching the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>, and so the size of the implicit input and output textures. When this is not desired, the <a href="qml-qtquick3d-buffer.html#sizeMultiplier-prop" translate="no">sizeMultiplier</a> property can be used to get an intermediate texture with a different size. This can lead to the <code translate="no">INPUT_SIZE</code> and <code translate="no">OUTPUT_SIZE</code> uniforms in the shader having different values.</p>
+<p>By default the Effect cannot count on textures preserving their contents between frames. When a new intermediate texture is created, it is cleared to <code translate="no">vec4(0.0)</code>. Afterwards, the same texture can be reused for another purpose. Therefore, effect passes should always write to the entire texture, without making assumptions about their content at the start of the pass. There is an exception to this: Buffer objects with <a href="qml-qtquick3d-buffer.html#bufferFlags-prop" translate="no">bufferFlags</a> set to Buffer.SceneLifetime. This indicates that the texture is permanently associated with a pass of the effect and it will not be reused for other purposes. The contents of such color buffers is preserved between frames. This is typically used in a ping-pong fashion in effects like motion blur: the first pass takes the persistent buffer as its input, in addition to the effects main input texture, outputting to another intermediate buffer, while the second pass outputs to the persistent buffer. This way in the first frame the first pass samples an empty (transparent) texture, whereas in subsequent frames it samples the output of the second pass from the previous frame. A third pass can then blend the effect's input and the second pass' output together.</p>
+<p>The <a href="qml-qtquick3d-bufferinput.html" translate="no">BufferInput</a> command type is used to expose custom texture buffers to the render pass.</p>
+<p>For instance, to access <code translate="no">someBuffer</code> in the render pass shaders under the name, <code translate="no">mySampler</code>, the following can be added to its command list:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-bufferinput.html" translate="no">BufferInput</a></span> { <span class="name">buffer</span>: <span class="name">someBuffer</span>; <span class="name">sampler</span>: <span class="string">&quot;mySampler&quot;</span> }
+</pre>
+<p>If the <code translate="no">sampler</code> name is not specified, <code translate="no">INPUT</code> will be used as default.</p>
+<p>Buffers can be useful to share intermediate results between render passes.</p>
+<p>To expose preloaded textures to the effect, <a href="qml-qtquick3d-textureinput.html" translate="no">TextureInput</a> should be used instead. These can be defined as properties of the Effect itself, and will automatically be accessible to the shaders by their property names.</p>
+<pre class="qml" translate="no">
+ property TextureInput tex: TextureInput {
+     texture: Texture { source: &quot;image.png&quot; }
+ }
+</pre>
+<p>Here <code translate="no">tex</code> is a valid sampler in all shaders of all the passes of the effect.</p>
+<p>When it comes to uniform values from properties, all passes in the Effect read the same values in their shaders. If necessary it is possible to override the value of a uniform just for a given pass. This is achieved by adding the <a href="qml-qtquick3d-setuniformvalue.html" translate="no">SetUniformValue</a> command to the list of commands for the pass.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="qml-qtquick3d-setuniformvalue.html#target-prop" translate="no">target</a> of the pass-specific uniform value setter can only refer to a name that is the name of a property of the effect. It can override the value for a property's corresponding uniform, but it cannot introduce new uniforms.</p>
+</div>
+<h2 id="performance-considerations">Performance considerations</h2>
+<p>Be aware of the increased resource usage and potentially reduced performance when using post-processing effects. Just like with Qt Quick layers and <a href="../qtquick/qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a>, rendering the scene into a texture and then using that to texture a quad is not a cheap operation, especially on low-end hardware with limited fragment processing power. The amount of additional graphics memory needed, as well as the increase in GPU load both depend on the size of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a> (which, on embedded devices without a windowing system, may often be as big as the screen resolution). Multi-pass effects, as well as applying multiple effects increase the resource and performance requirements further.</p>
+<p>Therefore, it is highly advisable to ensure early on in the development lifecycle that the targeted device and graphics stack is able to cope with the effects included in the design of the 3D scene at the final product's screen resolution.</p>
+<p>While unavoidable with techniques that need it, <code translate="no">DEPTH_TEXTURE</code> implies an additional rendering pass to generate the contents of that texture, which can also present a hit on less capable hardware. Therefore, use <code translate="no">DEPTH_TEXTURE</code> in the effect's shaders only when essential.</p>
+<p>The complexity of the operations in the shaders is also important. Just like with <a href="qml-qtquick3d-custommaterial.html" translate="no">CustomMaterial</a>, a sub-optimal fragment shader can easily lead to reduced rendering performance.</p>
+<p>Be cautious with <a href="qml-qtquick3d-buffer.html#sizeMultiplier-prop" translate="no">sizeMultiplier in Buffer</a> when values larger than 1 are involved. For example, a multiplier of 4 means creating and then rendering to a texture that is 4 times the size of the <a href="qml-qtquick3d-view3d.html" translate="no">View3D</a>. Just like with shadow maps and multi- or supersampling, the increased resource and performance costs can quickly outweigh the benefits from better quality on systems with limited GPU power.</p>
+<h2 id="vr-ar-considerations">VR/AR considerations</h2>
+<p>When developing applications for virtual or augmented reality by using Qt Quick 3D XR, postprocessing effects are functional and available to use. However, designers are developers should take special care to understand which and what kind of effects make sense in a virtual reality environment. Some effects, including some of the built-in ones in <a href="qml-qtquick3d-helpers-extendedsceneenvironment.html" translate="no">ExtendedSceneEnvironment</a> or the deprecated Effects module, do not lead to a good visual experience in a VR environment, possibly affecting the user physically even (causing, for example, motion sickness or dizziness).</p>
+<p>When the more efficient <a href="qt3dxr-multiview.html">multiview rendering mode</a> is enabled in a VR/AR application, there is no separate render pass for the left and right eye contents. Instead, it all happens in one pass, using a 2D texture array with two layers instead of two independent 2D textures. This also means that many intermediate buffers, meaning color or depth textures, will need to become texture arrays in this mode. This then has implications for custom materials and postprocessing effects. Textures such as the input texture (<code translate="no">INPUT</code>), the depth texture (<code translate="no">DEPTH_TEXTURE</code>), the screen texture (<code translate="no">SCREEN_TEXTURE</code>), and some others becomes 2D texture arrays, exposed in the shader as a <code translate="no">sampler2DArray</code> instead of <code translate="no">sampler2D</code>. This has implications for GLSL functions such as texture(), textureLod(), or textureSize(). The UV coordinate is then a vec3, not a vec2. Whereas textureSize() returns a vec3, not a vec2. Effects intended to function regardless of the rendering mode, can be written with an appropriate ifdef:</p>
+<pre class="cpp plain" translate="no">
+ #if QSHADER_VIEW_COUNT &gt;= 2
+     vec4 c = texture(INPUT, vec3(INPUT_UV, VIEW_INDEX));
+ #else
+     vec4 c = texture(INPUT, INPUT_UV);
+ #endif
+</pre>
+<p><b>See also </b><a href="qml-qtquick3d-shader.html" translate="no">Shader</a>, <a href="qml-qtquick3d-pass.html" translate="no">Pass</a>, <a href="qml-qtquick3d-buffer.html" translate="no">Buffer</a>, <a href="qml-qtquick3d-bufferinput.html" translate="no">BufferInput</a>, and <a href="qtquick3d-customeffect-example.html">Qt Quick 3D - Custom Effect Example</a>.</p>
+<!-- @@@Effect -->
+<h2>Property Documentation</h2>
+<!-- $$$passes -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="passes-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">passes</span> : <span class="type"><a href="../qtqml/qml-list.html" translate="no">list</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Contains a list of render <a href="qml-qtquick3d-pass.html" translate="no">passes</a> implemented by the effect.</p>
+</div></div><!-- @@@passes -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

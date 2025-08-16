@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickborderimage.cpp -->
+  <meta name="description" content="Paints a border based on an image.">
+  <title>BorderImage QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li>BorderImage</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#example-usage">Example Usage</a></li>
+<li class="level2"><a href="#image-loading">Image Loading</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">BorderImage QML Type</h1>
+<!-- $$$BorderImage-brief -->
+<p>Paints a border based on an image. <a href="#details">More...</a></p>
+<!-- @@@BorderImage -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-item.html" translate="no">Item</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-borderimage-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#asynchronous-prop" translate="no">asynchronous</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#border-prop" translate="no">border</a></b><ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#border.bottom-prop" translate="no">border.bottom</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#border.left-prop" translate="no">border.left</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#border.right-prop" translate="no">border.right</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#border.top-prop" translate="no">border.top</a></b> : int</li>
+</ul>
+</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#cache-prop" translate="no">cache</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#currentFrame-prop" translate="no">currentFrame</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#frameCount-prop" translate="no">frameCount</a></b> : int</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">horizontalTileMode</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#mirror-prop" translate="no">mirror</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#progress-prop" translate="no">progress</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#retainWhileLoading-prop" translate="no">retainWhileLoading</a></b> : bool <code class="summary extra" translate="no">(since 6.8)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#smooth-prop" translate="no">smooth</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#source-prop" translate="no">source</a></b> : url</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#sourceSize-prop" translate="no">sourceSize</a></b> : size</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#status-prop" translate="no">status</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">verticalTileMode</a></b> : enumeration</li>
+</ul>
+<!-- $$$BorderImage-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The BorderImage type is used to create borders out of images by scaling or tiling parts of each image.</p>
+<p>A BorderImage breaks a source image, specified using the <a href="qml-qtquick-borderimage.html#source-prop" translate="no">source</a> property, into 9 regions, as shown below:</p>
+<p class="centerAlign"><img src="images/declarative-scalegrid.png" alt="" /></p><p>When the image is scaled, regions of the source image are scaled or tiled to create the displayed border image in the following way:</p>
+<ul>
+<li>The corners (regions 1, 3, 7, and 9) are not scaled at all.</li>
+<li>Regions 2 and 8 are scaled according to <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">horizontalTileMode</a>.</li>
+<li>Regions 4 and 6 are scaled according to <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">verticalTileMode</a>.</li>
+<li>The middle (region 5) is scaled according to both <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">horizontalTileMode</a> and <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">verticalTileMode</a>.</li>
+</ul>
+<p>The regions of the image are defined using the <a href="qml-qtquick-borderimage.html#border-prop" translate="no">border</a> property group, which describes the distance from each edge of the source image to use as a border.</p>
+<h2 id="example-usage">Example Usage</h2>
+<p>The following examples show the effects of the different modes on an image. Guide lines are overlaid onto the image to show the different regions of the image as described above.</p>
+<div style="float: left; margin-right: 2em"><p class="centerAlign"><img src="images/qml-borderimage-normal-image.png" alt="" /></p></div><p>For comparison, an unscaled image is displayed using a simple Image item. Here we have overlaid lines to show how we'd like to break it up with BorderImage:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-image.html" translate="no">Image</a></span> {
+     <span class="name">source</span>: <span class="string">&quot;pics/borderframe.png&quot;</span>
+     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+ }
+</pre>
+<br style="clear: both" /><div style="float: left; margin-right: 2em"><p class="centerAlign"><img src="images/qml-borderimage-scaled.png" alt="" /></p></div><p>But when a BorderImage is used to display the image, the <a href="qml-qtquick-borderimage.html#border-prop" translate="no">border</a> property is used to determine the parts of the image that will lie inside the unscaled corner areas, and the parts that will be stretched horizontally and vertically. Then, you can give it a size that is larger than the original image. Since the <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">horizontalTileMode</a> property is set to <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">BorderImage.Stretch</a>, the parts of image in regions 2 and 8 are stretched horizontally. Since the <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">verticalTileMode</a> property is set to <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">BorderImage.Stretch</a>, the parts of image in regions 4 and 6 are stretched vertically:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a></span> {
+     <span class="type">anchors</span> { <span class="name">fill</span>: <span class="name">parent</span>; <span class="name">margins</span>: <span class="number">1</span> }
+     <span class="type">border</span> { <span class="name">left</span>: <span class="number">30</span>; <span class="name">top</span>: <span class="number">30</span>; <span class="name">right</span>: <span class="number">30</span>; <span class="name">bottom</span>: <span class="number">30</span> }
+     <span class="name">horizontalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Stretch</span>
+     <span class="name">verticalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Stretch</span>
+     <span class="name">source</span>: <span class="string">&quot;pics/borderframe.png&quot;</span>
+ }
+</pre>
+<br style="clear: both" /><div style="float: left; margin-right: 2em"><p class="centerAlign"><img src="images/qml-borderimage-tiled.png" alt="" /></p></div><p>Again, a large BorderImage is used to display the image. With the <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">horizontalTileMode</a> property set to <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">BorderImage.Repeat</a>, the parts of image in regions 2 and 8 are tiled so that they fill the space at the top and bottom of the item. Similarly, the <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">verticalTileMode</a> property is set to <a href="qml-qtquick-borderimage.html#verticalTileMode-prop" translate="no">BorderImage.Repeat</a>, so the parts of image in regions 4 and 6 are tiled to fill the space at the left and right of the item:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a></span> {
+     <span class="type">anchors</span> { <span class="name">fill</span>: <span class="name">parent</span>; <span class="name">margins</span>: <span class="number">1</span> }
+     <span class="type">border</span> { <span class="name">left</span>: <span class="number">30</span>; <span class="name">top</span>: <span class="number">30</span>; <span class="name">right</span>: <span class="number">30</span>; <span class="name">bottom</span>: <span class="number">30</span> }
+     <span class="name">horizontalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Repeat</span>
+     <span class="name">verticalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Repeat</span>
+     <span class="name">source</span>: <span class="string">&quot;pics/borderframe.png&quot;</span>
+ }
+</pre>
+<br style="clear: both" /><div style="float: left; margin-right: 2em"><p class="centerAlign"><img src="images/qml-borderimage-rounded.png" alt="" /></p></div><p>In some situations, the width of regions 2 and 8 may not be an exact multiple of the width of the corresponding regions in the source image. Similarly, the height of regions 4 and 6 may not be an exact multiple of the height of the corresponding regions. If you use <a href="qml-qtquick-borderimage.html#horizontalTileMode-prop" translate="no">BorderImage.Round</a> mode, it will choose an integer number of tiles and shrink them to fit:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a></span> {
+     <span class="type">anchors</span> { <span class="name">fill</span>: <span class="name">parent</span>; <span class="name">margins</span>: <span class="number">6</span> }
+     <span class="type">border</span> { <span class="name">left</span>: <span class="number">30</span>; <span class="name">top</span>: <span class="number">30</span>; <span class="name">right</span>: <span class="number">30</span>; <span class="name">bottom</span>: <span class="number">30</span> }
+     <span class="name">horizontalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Round</span>
+     <span class="name">verticalTileMode</span>: <span class="name">BorderImage</span>.<span class="name">Round</span>
+     <span class="name">source</span>: <span class="string">&quot;pics/borderframe.png&quot;</span>
+ }
+</pre>
+<br style="clear: both" /><p>The Border Image example in <a href="qtquick-imageelements-example.html">Qt Quick Examples - Image Elements</a> shows how a BorderImage can be used to simulate a shadow effect on a rectangular item.</p>
+<h2 id="image-loading">Image Loading</h2>
+<p>The source image may not be loaded instantaneously, depending on its original location. Loading progress can be monitored with the <a href="qml-qtquick-borderimage.html#progress-prop" translate="no">progress</a> property.</p>
+<p><b>See also </b><a href="qml-qtquick-image.html" translate="no">Image</a> and <a href="qml-qtquick-animatedimage.html" translate="no">AnimatedImage</a>.</p>
+<!-- @@@BorderImage -->
+<h2>Property Documentation</h2>
+<!-- $$$ -->
+<div class="qmlitem"><div class="fngroup">
+<div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="horizontalTileMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">horizontalTileMode</span> : <span class="type">enumeration</span></p></td></tr>
+<tr valign="top" class="odd" id="verticalTileMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">verticalTileMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+</div><div class="qmldoc"><p>This property describes how to repeat or stretch the middle parts of the border image.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Stretch</code></td><td class="topAlign">Scales the image to fit to the available area.</td></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Repeat</code></td><td class="topAlign">Tile the image until there is no more space. May crop the last image.</td></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Round</code></td><td class="topAlign">Like Repeat, but scales the images down to ensure that the last image is not cropped.</td></tr>
+</table></div>
+<p>The default tile mode for each property is <a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a>.Stretch.</p>
+</div></div><!-- @@@ -->
+<br/>
+<!-- $$$ -->
+<div class="qmlitem"><div class="fngroup">
+<div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="currentFrame-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">currentFrame</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+<tr valign="top" class="odd" id="frameCount-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">frameCount</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+</div><div class="qmldoc"><p><a href="qml-qtquick-borderimage.html#currentFrame-prop" translate="no">currentFrame</a> is the frame that is currently visible. The default is <code translate="no">0</code>. You can set it to a number between <code translate="no">0</code> and <code translate="no">frameCount - 1</code> to display a different frame, if the image contains multiple frames.</p>
+<p><a href="qml-qtquick-borderimage.html#frameCount-prop" translate="no">frameCount</a> is the number of frames in the image. Most images have only one frame.</p>
+</div></div><!-- @@@ -->
+<br/>
+<!-- $$$asynchronous -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="asynchronous-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">asynchronous</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies that images on the local filesystem should be loaded asynchronously in a separate thread. The default value is false, causing the user interface thread to block while the image is loaded. Setting <i translate="no">asynchronous</i> to true is useful where maintaining a responsive user interface is more desirable than having images immediately visible.</p>
+<p>Note that this property is only valid for images read from the local filesystem. Images loaded via a network resource (e.g. HTTP) are always loaded asynchronously.</p>
+</div></div><!-- @@@asynchronous -->
+<br/>
+<!-- $$$border -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="even" id="border-prop"><th class="centerAlign"><p><b>border group</b></p></th></tr>
+<tr valign="top" class="odd" id="border.bottom-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">border.bottom</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+<tr valign="top" class="odd" id="border.left-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">border.left</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+<tr valign="top" class="odd" id="border.right-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">border.right</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+<tr valign="top" class="odd" id="border.top-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">border.top</span> : <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>The 4 border lines (2 horizontal and 2 vertical) break the image into 9 sections, as shown below:</p>
+<p class="centerAlign"><img src="images/declarative-scalegrid.png" alt="" /></p><p>Each border line (left, right, top, and bottom) specifies an offset in pixels from the respective edge of the source image. By default, each border line has a value of 0.</p>
+<p>For example, the following definition sets the bottom line 10 pixels up from the bottom of the image:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a></span> {
+     <span class="name">border</span>.bottom: <span class="number">10</span>
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>The border lines can also be specified using a <a href="qml-qtquick-borderimage.html#source-prop" translate="no">.sci file</a>.</p>
+</div></div><!-- @@@border -->
+<br/>
+<!-- $$$cache -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cache-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cache</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies whether the image should be cached. The default value is true. Setting <i translate="no">cache</i> to false is useful when dealing with large images, to make sure that they aren't cached at the expense of small 'ui element' images.</p>
+</div></div><!-- @@@cache -->
+<br/>
+<!-- $$$mirror -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="mirror-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">mirror</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the image should be horizontally inverted (effectively displaying a mirrored image).</p>
+<p>The default value is false.</p>
+</div></div><!-- @@@mirror -->
+<br/>
+<!-- $$$progress -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="progress-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">progress</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the progress of image loading, from 0.0 (nothing loaded) to 1.0 (finished).</p>
+<p><b>See also </b><a href="qml-qtquick-borderimage.html#status-prop" translate="no">status</a>.</p>
+</div></div><!-- @@@progress -->
+<br/>
+<!-- $$$retainWhileLoading -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="retainWhileLoading-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">retainWhileLoading</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.8]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the behavior when the <a href="qml-qtquick-borderimage.html#source-prop" translate="no">source</a> property is changed and loading happens asynchronously. This is the case when the <a href="qml-qtquick-borderimage.html#asynchronous-prop" translate="no">asynchronous</a> property is set to <code translate="no">true</code>, or if the image is not on the local file system.</p>
+<p>If <code translate="no">retainWhileLoading</code> is <code translate="no">false</code> (the default), the old image is discarded immediately, and the component is cleared while the new image is being loaded. If set to <code translate="no">true</code>, the old image is retained and remains visible until the new one is ready.</p>
+<p>Enabling this property can avoid flickering in cases where loading the new image takes a long time. It comes at the cost of some extra memory use for double buffering while the new image is being loaded.</p>
+<p>This property was introduced in Qt 6.8.</p>
+</div></div><!-- @@@retainWhileLoading -->
+<br/>
+<!-- $$$smooth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="smooth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">smooth</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the image is smoothly filtered when scaled or transformed. Smooth filtering gives better visual quality, but it may be slower on some hardware. If the image is displayed at its natural size, this property has no visual or performance effect.</p>
+<p>By default, this property is set to true.</p>
+</div></div><!-- @@@smooth -->
+<br/>
+<!-- $$$source -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="source-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">source</span> : <span class="type"><a href="../qtqml/qml-url.html" translate="no">url</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the URL that refers to the source image.</p>
+<p><a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a> can handle any image format supported by Qt, loaded from any URL scheme supported by Qt.</p>
+<p>This property can also be used to refer to .sci files, which are written in a QML-specific, text-based format that specifies the borders, the image file and the tile rules for a given border image.</p>
+<p>The following .sci file sets the borders to 10 on each side for the image <code translate="no">picture.png</code>:</p>
+<pre class="cpp" translate="no">
+ border<span class="operator">.</span>left: <span class="number">10</span>
+ border<span class="operator">.</span>top: <span class="number">10</span>
+ border<span class="operator">.</span>bottom: <span class="number">10</span>
+ border<span class="operator">.</span>right: <span class="number">10</span>
+ source: <span class="string">&quot;picture.png&quot;</span>
+</pre>
+<p>The URL may be absolute, or relative to the URL of the component.</p>
+<p><b>See also </b><a href="qquickimageprovider.html" translate="no">QQuickImageProvider</a>.</p>
+</div></div><!-- @@@source -->
+<br/>
+<!-- $$$sourceSize -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="sourceSize-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">sourceSize</span> : <span class="type"><a href="../qtqml/qml-size.html" translate="no">size</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the actual width and height of the loaded image.</p>
+<p>In <a href="qml-qtquick-borderimage.html" translate="no">BorderImage</a>, this property is read-only.</p>
+<p><b>See also </b><a href="qml-qtquick-image.html#sourceSize-prop" translate="no">Image::sourceSize</a>.</p>
+</div></div><!-- @@@sourceSize -->
+<br/>
+<!-- $$$status -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="status-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">status</span> : <span class="type">enumeration</span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property describes the status of image loading. It can be one of:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Null</code></td><td class="topAlign">No image has been set</td></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Ready</code></td><td class="topAlign">The image has been loaded</td></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Loading</code></td><td class="topAlign">The image is currently being loaded</td></tr>
+<tr><td class="topAlign"><code translate="no">BorderImage.Error</code></td><td class="topAlign">An error occurred while loading the image</td></tr>
+</table></div>
+<p><b>See also </b><a href="qml-qtquick-borderimage.html#progress-prop" translate="no">progress</a>.</p>
+</div></div><!-- @@@status -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

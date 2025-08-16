@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-customize.qdoc -->
+  <meta name="description" content="A set of UI controls to create user interfaces in Qt Quick">
+  <title>Customizing Qt Quick Controls | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+<li>Customizing Qt Quick Controls</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquickcontrols-fluentwinui3.html" />
+  <link rel="next" href="qtquickcontrols-guidelines.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquickcontrols-fluentwinui3.html">FluentWinUI3 Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-guidelines.html">Controls</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#customizing-a-control">Customizing a Control</a></li>
+<li class="level1"><a href="#creating-a-custom-style">Creating a Custom Style</a></li>
+<li class="level2"><a href="#definition-of-a-style">Definition of a Style</a></li>
+<li class="level2"><a href="#style-specific-c-extensions">Style-specific C++ Extensions</a></li>
+<li class="level1"><a href="#customization-reference">Customization Reference</a></li>
+<li class="level2"><a href="#customizing-applicationwindow">Customizing ApplicationWindow</a></li>
+<li class="level2"><a href="#customizing-busyindicator">Customizing BusyIndicator</a></li>
+<li class="level2"><a href="#customizing-button">Customizing Button</a></li>
+<li class="level2"><a href="#customizing-checkbox">Customizing CheckBox</a></li>
+<li class="level2"><a href="#customizing-checkdelegate">Customizing CheckDelegate</a></li>
+<li class="level2"><a href="#customizing-combobox">Customizing ComboBox</a></li>
+<li class="level2"><a href="#customizing-delaybutton">Customizing DelayButton</a></li>
+<li class="level2"><a href="#customizing-dial">Customizing Dial</a></li>
+<li class="level2"><a href="#customizing-drawer">Customizing Drawer</a></li>
+<li class="level2"><a href="#customizing-frame">Customizing Frame</a></li>
+<li class="level2"><a href="#customizing-groupbox">Customizing GroupBox</a></li>
+<li class="level2"><a href="#customizing-itemdelegate">Customizing ItemDelegate</a></li>
+<li class="level2"><a href="#customizing-label">Customizing Label</a></li>
+<li class="level2"><a href="#customizing-menu">Customizing Menu</a></li>
+<li class="level2"><a href="#customizing-menubar">Customizing MenuBar</a></li>
+<li class="level2"><a href="#customizing-pageindicator">Customizing PageIndicator</a></li>
+<li class="level2"><a href="#customizing-pane">Customizing Pane</a></li>
+<li class="level2"><a href="#customizing-popup">Customizing Popup</a></li>
+<li class="level2"><a href="#customizing-progressbar">Customizing ProgressBar</a></li>
+<li class="level2"><a href="#customizing-radiobutton">Customizing RadioButton</a></li>
+<li class="level2"><a href="#customizing-radiodelegate">Customizing RadioDelegate</a></li>
+<li class="level2"><a href="#customizing-rangeslider">Customizing RangeSlider</a></li>
+<li class="level2"><a href="#customizing-roundbutton">Customizing RoundButton</a></li>
+<li class="level2"><a href="#customizing-scrollbar">Customizing ScrollBar</a></li>
+<li class="level2"><a href="#customizing-scrollindicator">Customizing ScrollIndicator</a></li>
+<li class="level2"><a href="#customizing-scrollview">Customizing ScrollView</a></li>
+<li class="level2"><a href="#customizing-slider">Customizing Slider</a></li>
+<li class="level2"><a href="#customizing-spinbox">Customizing SpinBox</a></li>
+<li class="level2"><a href="#customizing-splitview">Customizing SplitView</a></li>
+<li class="level2"><a href="#customizing-stackview">Customizing StackView</a></li>
+<li class="level2"><a href="#customizing-swipedelegate">Customizing SwipeDelegate</a></li>
+<li class="level2"><a href="#customizing-swipeview">Customizing SwipeView</a></li>
+<li class="level2"><a href="#customizing-switch">Customizing Switch</a></li>
+<li class="level2"><a href="#customizing-switchdelegate">Customizing SwitchDelegate</a></li>
+<li class="level2"><a href="#customizing-tabbar">Customizing TabBar</a></li>
+<li class="level2"><a href="#customizing-tabbutton">Customizing TabButton</a></li>
+<li class="level2"><a href="#customizing-textarea">Customizing TextArea</a></li>
+<li class="level2"><a href="#customizing-textfield">Customizing TextField</a></li>
+<li class="level2"><a href="#customizing-toolbar">Customizing ToolBar</a></li>
+<li class="level2"><a href="#customizing-toolbutton">Customizing ToolButton</a></li>
+<li class="level2"><a href="#customizing-toolseparator">Customizing ToolSeparator</a></li>
+<li class="level2"><a href="#customizing-tooltip">Customizing ToolTip</a></li>
+<li class="level2"><a href="#customizing-tumbler">Customizing Tumbler</a></li>
+<li class="level2"><a href="#customizing-tableviewdelegate">Customizing TableViewDelegate</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Customizing Qt Quick Controls</h1>
+<!-- $$$qtquickcontrols-customize.html-description -->
+<div class="descr" id="details">
+<p>Qt Quick Controls consist of a hierarchy (tree) of items. In order to provide a custom look and feel, the default QML implementation of each item can be replaced with a custom one.</p>
+<h2 id="customizing-a-control">Customizing a Control</h2>
+<p>Sometimes you'll want to create a &quot;one-off&quot; look for a specific part of your UI, and use a complete style everywhere else. Perhaps you're happy with the style you're using, but there's a certain button that has some special significance.</p>
+<p>The first way to create this button is to simply define it in-place, wherever it is needed. For example, perhaps you're not satisfied with the Basic style's Button having square corners. To make them rounded, you can override the <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item and set the radius property of Rectangle:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">width</span>: <span class="number">400</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">id</span>: <span class="name">button</span>
+         <span class="name">text</span>: <span class="string">&quot;A Special Button&quot;</span>
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">100</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="name">color</span>: <span class="name">button</span>.<span class="name">down</span> ? <span class="string">&quot;#d6d6d6&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#26282a&quot;</span>
+             <span class="name">border</span>.width: <span class="number">1</span>
+             <span class="name">radius</span>: <span class="number">4</span>
+         }
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>as the different items that make up a control in any given style are designed to work together, it may be necessary to override other items to get the look you're after. In addition, not all styles can be customized. See the note in <a href="qtquickcontrols-customize.html#customization-reference">Customization Reference</a> for more information.</p>
+</div>
+<p>The second way to create the button is good if you plan to use your rounded button in several places. It involves moving the code into its own QML file within your project.</p>
+<p>For this approach, we'll copy the background code from the Basic style's <code translate="no">Button.qml</code>. This file can be found in the following path in your Qt installation:</p>
+<p><code translate="no">$QTDIR/qml/QtQuick/Controls/Basic/Button.qml</code></p>
+<p>After doing that, we'll simply add the following line:</p>
+<pre class="cpp" translate="no">
+ radius: <span class="number">4</span>
+</pre>
+<p>To avoid confusion with the controls in the module itself, we'll call the file <code translate="no">MyButton.qml</code>. To use the control in your application, refer to it by its filename:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="type">MyButton</span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;A Special Button&quot;</span>)
+     }
+ }
+</pre>
+<p>The third way to create the button is a bit more structured, both in terms of where the file sits in the file system and how it is used in QML. First, copy an existing file as you did above, but this time, put it into a subfolder in your project named (for example) <code translate="no">controls</code>. To use the control, first import the folder into a namespace:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls.Basic
+ import &quot;controls&quot; as MyControls
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="type">MyControls</span>.Button {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;A Special Button&quot;</span>)
+     }
+ }
+</pre>
+<p>As you now have the <code translate="no">MyControls</code> namespace, you can name the controls after their actual counterparts in the Qt Quick Controls module. You can repeat this process for any control that you wish to add.</p>
+<p>An added benefit of these three methods is that it's not necessary to implement the template from scratch.</p>
+<div class="admonition note">
+<p><b>Note: </b>the three approaches mentioned here do not work for customizing the attached <a href="qml-qtquick-controls-tooltip.html" translate="no">ToolTip</a>, as that is a shared item created internally. To do a one-off customization of a <code translate="no">ToolTip</code>, see <a href="qml-qtquick-controls-tooltip.html#custom-tool-tips" translate="no">Custom Tool Tips</a>. To customize the attached <code translate="no">ToolTip</code>, it must be provided as part of <a href="qtquickcontrols-customize.html#creating-a-custom-style">your own style</a>.</p>
+</div>
+<h2 id="creating-a-custom-style">Creating a Custom Style</h2>
+<p>There are several ways to go about creating your own styles. Below, we'll explain the various approaches.</p>
+<h3 id="definition-of-a-style">Definition of a Style</h3>
+<p>In Qt Quick Controls, a style is essentially a set of QML files within a single directory. There are four requirements for a style to be <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">usable</a>:</p>
+<ul>
+<li>At least one QML file whose name matches a control (for example, <code translate="no">Button.qml</code>) must exist.</li>
+<li>Each QML file must contain the relevant type from the <a href="qtquicktemplates2-index.html">QtQuick.Templates</a> import as the root item. For example, Button.qml must contain a Button template as its root item.<p>If we instead used the corresponding type from the <a href="qtquickcontrols-index.html">QtQuick.Controls</a> import as we did in the previous section, it would not work: the control we were defining would try to derive from itself.</p>
+</li>
+<li>A <a href="../qtqml/qtqml-modules-qmldir.html">qmldir</a> file must exist alongside the QML file(s). Below is an example of a simple <code translate="no">qmldir</code> file for a style that provides a button:<pre class="cpp plain" translate="no">
+ module MyStyle
+ Button 2.15 Button.qml
+</pre>
+<p>If you're using <a href="qtquickcontrols-styles.html#compile-time-style-selection">compile-time style selection</a>, the qmldir should also import the fallback style:</p>
+<pre class="cpp plain" translate="no">
+ # ...
+ import QtQuick.Controls.Basic auto
+</pre>
+<p>This can also be done for <a href="qtquickcontrols-styles.html#run-time-style-selection">run-time style selection</a> instead of using, for example, <a href="qquickstyle.html#setFallbackStyle" translate="no">QQuickStyle::setFallbackStyle</a>().</p>
+<p>The directory structure for such a style looks like this:</p>
+<pre class="cpp plain" translate="no">
+ MyStyle
+ ├─── Button.qml
+ └─── qmldir
+</pre>
+</li>
+<li>The files must be in a directory that is findable via the <a href="../qtqml/qtqml-syntax-imports.html#qml-import-path">QML Import Path</a>.<p>For example, if the path to <i>MyStyle</i> directory mentioned above was <code translate="no">/home/user/MyApp/MyStyle</code>, then <code translate="no">/home/user/MyApp</code> must be added to the QML import path.</p>
+<p>To <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">use</a> <i>MyStyle</i> in <i>MyApp</i>, refer to it by name:</p>
+<ul>
+<li><code translate="no">./MyApp -style MyStyle</code></li>
+</ul>
+<p>The style name must match the casing of the style directory; passing <i>mystyle</i> or <i>MYSTYLE</i> is not supported.</p>
+</li>
+</ul>
+<p>By default, the styling system uses the Basic style as a fallback for controls that aren't implemented. To customize or extend any other built-in style, it is possible to specify a different fallback style using <a href="qquickstyle.html" translate="no">QQuickStyle</a>.</p>
+<p>What this means is that you can implement as many controls as you like for your custom style, and place them almost anywhere. It also allows users to create their own styles for your application.</p>
+<h4 id="previewing-custom-styles-in-qt-quick-designer">Previewing Custom Styles in Qt Quick Designer</h4>
+<p>Using the approach above, it is possible to preview a custom style in Qt Quick Designer. In order to do so, ensure that the project has a <a href="qtquickcontrols-configuration.html">qtquickcontrols2.conf</a> file, and that the following entry exists:</p>
+<pre class="cpp plain" translate="no">
+ [Controls]
+ Style=MyStyle
+</pre>
+<p>For more information, take a look at the <a href="qtquickcontrols-flatstyle-example.html">Flat Style example</a>.</p>
+<h3 id="style-specific-c-extensions">Style-specific C++ Extensions</h3>
+<p>Sometimes you may need to use C++ to extend your custom style.</p>
+<ul>
+<li>If the style that uses the type is the only style used by an application, register the type with the QML engine by adding the <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> macro and making the file part of your QML module: <br />
+ <br />
+<h4 id="using-cmake">Using CMake</h4>
+<pre class="cpp plain" translate="no">
+ qt_add_qml_module(ACoolItem
+     URI MyItems
+     VERSION 1.0
+     SOURCES
+         acoolcppitem.cpp acoolcppitem.h
+ )
+</pre>
+<h4 id="using-qmake">Using QMake</h4>
+<pre class="cpp" translate="no">
+ CONFIG <span class="operator">+</span><span class="operator">=</span> qmltypes
+ QML_IMPORT_NAME <span class="operator">=</span> MyItems
+ QML_IMPORT_MAJOR_VERSION <span class="operator">=</span> <span class="number">1</span>
+</pre>
+<p>If the header the class is declared in is not accessible from your project's include path, you may have to amend the include path so that the generated registration code can be compiled.</p>
+<pre class="cpp" translate="no">
+ INCLUDEPATH <span class="operator">+</span><span class="operator">=</span> MyItems
+</pre>
+<p>See <a href="../qtqml/qtqml-cppintegration-definetypes.html">Defining QML Types from C++</a> and Building a QML application for more information.</p>
+</li>
+<li>If the style that uses the type is one of many styles used by an application, consider putting each style into a separate module. The modules will then be loaded on demand.</li>
+</ul>
+<h4 id="considerations-for-custom-styles">Considerations for custom styles</h4>
+<p>When implementing your own style and customizing controls, there are some points to keep in mind to ensure that your application is as performant as possible.</p>
+<h5 id="avoid-assigning-an-id-to-styles-implementations-of-item-delegates">Avoid assigning an id to styles' implementations of item delegates</h5>
+<p>As explained in <a href="qtquickcontrols-customize.html#definition-of-a-style">Definition of a Style</a>, when you implement your own style for a control, you start off with the relevant template for that control. For example, a style's <code translate="no">Button.qml</code> will be structured similarly to this:</p>
+<pre class="qml" translate="no">
+ <span class="type">T</span>.Button {
+     <span class="comment">// ...</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="comment">// ...</span>
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="comment">// ...</span>
+     }
+
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>When you use a Button in your application, the <code translate="no">background</code> and <code translate="no">contentItem</code> items will be created and parented to the root <code translate="no">Button</code> item:</p>
+<pre class="qml" translate="no">
+ <span class="comment">// Creates the Button root item, the Rectangle background,</span>
+ <span class="comment">// and the Text contentItem.</span>
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Confirm&quot;</span>)
+ }
+</pre>
+<p>Suppose you then needed to do a one-off customization of the Button (as explained in <a href="qtquickcontrols-customize.html#customizing-a-control">Customizing a Control</a>):</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">width</span>: <span class="number">400</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">id</span>: <span class="name">button</span>
+         <span class="name">text</span>: <span class="string">&quot;A Special Button&quot;</span>
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">100</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="name">color</span>: <span class="name">button</span>.<span class="name">down</span> ? <span class="string">&quot;#d6d6d6&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#26282a&quot;</span>
+             <span class="name">border</span>.width: <span class="number">1</span>
+             <span class="name">radius</span>: <span class="number">4</span>
+         }
+     }
+ }
+</pre>
+<p>In QML, this would normally result in both the default <code translate="no">background</code> implementation and the one-off, custom <code translate="no">background</code> items being created. Qt Quick Controls uses a technique that avoids creating both items, and instead only creates the custom <code translate="no">background</code>, greatly improving the creation performance of controls.</p>
+<p>This technique relies on the absence of an <a href="../qtqml/qtqml-syntax-objectattributes.html#the-id-attribute">id</a> in the style's implementation of that item. If an id is assigned, the technique cannot work, and both items will be created. For example, it can be tempting to assign an id to the <code translate="no">background</code> or <code translate="no">contentItem</code> so that other objects within the file can refer to those items:</p>
+<pre class="qml" translate="no">
+ <span class="type">T</span>.Button {
+     <span class="comment">// ...</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">id</span>: <span class="name">backgroundRect</span>
+         <span class="comment">// ...</span>
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="comment">// Use backgroundRect in some way...</span>
+     }
+
+     <span class="comment">// ...</span>
+ }
+</pre>
+<p>With this code, every time a Button instance with a customized background is created, both backgrounds will be created, resulting in sub-optimal creation performance.</p>
+<p>Prior to Qt 5.15, the old, unused background would be deleted to release the resources associated with it. However, as the control does not own the items, it should not delete them. As of Qt 5.15, old items are no longer deleted, and so the <code translate="no">backgroundRect</code> item will live longer than it needs to&mdash;typically until the application exits. Although the old item will be hidden, visually unparented from the control, and removed from the accessibility tree, it is important to keep the creation time and memory usage of these unused items in mind when assigning an id in this context.</p>
+<h5 id="avoid-imperative-assignments-of-custom-items">Avoid imperative assignments of custom items</h5>
+<p>The technique mentioned in the section above only works when an item is <a href="../qtquick/qtquick-bestpractices.html#prefer-declarative-bindings-over-imperative-assignments">declaratively</a> assigned for the first time, and so imperative assignments will result in orphaned items. Always use declarative bindings to assign custom items when possible.</p>
+<h5 id="don-t-import-qtquick-controls-in-qml-implementations">Don't import QtQuick.Controls in QML implementations</h5>
+<p>When writing the QML for your style's implementation of a control, it's important not to import <code translate="no">QtQuick.Controls</code>. Doing so will prevent the QML from being compiled by the QML compiler.</p>
+<h5 id="implement-types-used-by-other-types">Implement types used by other types</h5>
+<p>Suppose you were using ScrollViews in your application, and decided that you want to customize their scroll bars. It is tempting to just implement a custom <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a>.qml and have <a href="qml-qtquick-controls-scrollview.html" translate="no">ScrollView</a> pick up the customized <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a> automatically. However, this will not work. You must implement both <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a>.qml <i>and</i> <a href="qml-qtquick-controls-scrollview.html" translate="no">ScrollView</a>.qml.</p>
+<h4 id="attached-properties">Attached properties</h4>
+<p>It is common for a style to have certain properties or attributes that apply to all controls. <a href="../qtqml/qtqml-syntax-objectattributes.html#attached-properties-and-attached-signal-handlers">Attached properties</a> are a great way of extending an item in QML without having to modify any existing C++ belonging to that item. For example, both the <a href="qtquickcontrols-material.html">Material</a> and <a href="qtquickcontrols-universal.html">Universal</a> styles have an attached theme property that controls whether an item and its children will be rendered in a light or dark theme.</p>
+<p>As an example, let's add an attached property that controls elevation. Our style will illustrate the elevation with a drop shadow; the higher the elevation, the larger the shadow.</p>
+<p>The first step is to create a new Qt Quick Controls application in Qt Creator. After that, we add a C++ type that stores the elevation. Since the type will be used for every control supported by our style, and because we may wish to add other attached properties later on, we'll call it MyStyle. Here is <code translate="no">MyStyle.h</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#ifndef MYSTYLE_H</span>
+ <span class="preprocessor">#define MYSTYLE_H</span>
+
+ <span class="preprocessor">#include &lt;QObject&gt;</span>
+ <span class="preprocessor">#include &lt;QtQml&gt;</span>
+
+ <span class="keyword">class</span> MyStyle : <span class="keyword">public</span> <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>
+ {
+     Q_OBJECT
+     Q_PROPERTY(<span class="type">int</span> elevation READ elevation WRITE setElevation NOTIFY elevationChanged)
+
+ <span class="keyword">public</span>:
+     <span class="keyword">explicit</span> MyStyle(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     <span class="keyword">static</span> MyStyle <span class="operator">*</span>qmlAttachedProperties(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>object);
+
+     <span class="type">int</span> elevation() <span class="keyword">const</span>;
+     <span class="type">void</span> setElevation(<span class="type">int</span> elevation);
+
+ <span class="keyword">signals</span>:
+     <span class="type">void</span> elevationChanged();
+
+ <span class="keyword">private</span>:
+     <span class="type">int</span> m_elevation;
+ };
+
+ QML_DECLARE_TYPEINFO(MyStyle<span class="operator">,</span> QML_HAS_ATTACHED_PROPERTIES)
+
+ <span class="preprocessor">#endif // MYSTYLE_H</span>
+</pre>
+<p><code translate="no">MyStyle.cpp</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &quot;mystyle.h&quot;</span>
+
+ MyStyle<span class="operator">::</span>MyStyle(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent) :
+     <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(parent)<span class="operator">,</span>
+     m_elevation(<span class="number">0</span>)
+ {
+ }
+
+ MyStyle <span class="operator">*</span>MyStyle<span class="operator">::</span>qmlAttachedProperties(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>object)
+ {
+     <span class="keyword">return</span> <span class="keyword">new</span> MyStyle(object);
+ }
+
+ <span class="type">int</span> MyStyle<span class="operator">::</span>elevation() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_elevation;
+ }
+
+ <span class="type">void</span> MyStyle<span class="operator">::</span>setElevation(<span class="type">int</span> elevation)
+ {
+     <span class="keyword">if</span> (elevation <span class="operator">=</span><span class="operator">=</span> m_elevation)
+         <span class="keyword">return</span>;
+
+     m_elevation <span class="operator">=</span> elevation;
+     <span class="keyword">emit</span> elevationChanged();
+ }
+</pre>
+<p>The <code translate="no">MyStyle</code> type is special in the sense that it shouldn't be instantiated, but rather used for its attached properties. For that reason, we register it in the following manner in <code translate="no">main.cpp</code>:</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+
+ <span class="preprocessor">#include &quot;mystyle.h&quot;</span>
+
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span> app(argc<span class="operator">,</span> argv);
+
+     qmlRegisterUncreatableType<span class="operator">&lt;</span>MyStyle<span class="operator">&gt;</span>(<span class="string">&quot;MyStyle&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;MyStyle&quot;</span><span class="operator">,</span> <span class="string">&quot;MyStyle is an attached property&quot;</span>);
+
+     <span class="type"><a href="../qtqml/qqmlapplicationengine.html" translate="no">QQmlApplicationEngine</a></span> engine;
+     <span class="comment">// Make the directory containing our style known to the QML engine.</span>
+     engine<span class="operator">.</span>addImportPath(<span class="string">&quot;:/&quot;</span>);
+     engine<span class="operator">.</span>load(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(QLatin1String(<span class="string">&quot;qrc:/main.qml&quot;</span>)));
+
+     <span class="keyword">return</span> app<span class="operator">.</span>exec();
+ }
+</pre>
+<p>We then copy <code translate="no">Button.qml</code> from the Basic style in <code translate="no">$QTDIR/qml/QtQuick/Controls/Basic/</code> into a new <code translate="no">myproject</code> folder in our project directory. Add the newly copied <code translate="no">Button.qml</code> to <code translate="no">qml.qrc</code>, which is the resource file that contains our QML files.</p>
+<p>Next, we add a drop shadow to the <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> delegate of the Button:</p>
+<pre class="qml" translate="no">
+ // ...
+ import QtQuick.Effects
+ import MyStyle
+ // ...
+
+ background: Rectangle {
+     // ...
+
+     layer.enabled: control.enabled &amp;&amp; control.MyStyle.elevation &gt; 0
+     layer.effect: MultiEffect {
+         shadowEnabled: true
+         shadowHorizontalOffset: 3
+         shadowVerticalOffset: 3
+         shadowColor: control.visualFocus ? &quot;#330066ff&quot; : &quot;#aaaaaa&quot;
+         shadowBlur: control.pressed ? 0.8 : 0.4
+     }
+ }
+</pre>
+<p>Note that we:</p>
+<ul>
+<li>Don't bother using the drop shadow when the elevation is <code translate="no">0</code></li>
+<li>Change the shadow's color depending on whether or not the button has focus</li>
+<li>Make the size of the shadow depend on the elevation</li>
+</ul>
+<p>To try out the attached property, we create a <a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a> with two Buttons in <code translate="no">main.qml</code>:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+
+ import MyStyle 1.0
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">id</span>: <span class="name">window</span>
+     <span class="name">width</span>: <span class="number">400</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+         <span class="name">spacing</span>: <span class="number">20</span>
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="string">&quot;Button 1&quot;</span>
+         }
+         <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+             <span class="name">text</span>: <span class="string">&quot;Button 2&quot;</span>
+             <span class="name">MyStyle</span>.elevation: <span class="number">10</span>
+         }
+     }
+ }
+</pre>
+<p>One button has no elevation, and the other has an elevation of <code translate="no">10</code>.</p>
+<p>With that in place, we can run our example. To tell the application to use our new style, we pass <code translate="no">-style MyStyle</code> as an application argument, but there are <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">many ways</a> to specify the style to use.</p>
+<p>The end result:</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-customize-buttons.png" alt="" /></p><p>Note that the <code translate="no">import MyStyle 1.0</code> statement is only necessary because we are using the attached property belonging to <code translate="no">MyStyle</code>. Both buttons will use our custom style, even if we were to remove the import.</p>
+<h2 id="customization-reference">Customization Reference</h2>
+<p>The following snippets present examples where the Basic style's controls have been customized using the same approach as the <a href="qtquickcontrols-customize.html#customizing-a-control">Customizing a Control</a> section. The code can be used as a starting point to implement a custom look and feel.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <a href="qtquickcontrols-macos.html">macOS</a> and <a href="qtquickcontrols-windows.html">Windows</a> styles are not suitable for customizing. It is instead recommended to always base a customized control on top of a single style that is available on all platforms, e.g <a href="qtquickcontrols-basic.html">Basic Style</a>, <a href="qtquickcontrols-fusion.html">Fusion Style</a>, <a href="qtquickcontrols-imagine.html">Imagine Style</a>, <a href="qtquickcontrols-material.html">Material Style</a>, <a href="qtquickcontrols-universal.html">Universal Style</a>. By doing so, you are guaranteed that it will always look the same, regardless of which style the application is run with. To learn how to use a different style, see <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>. Alternatively, you can <a href="qtquickcontrols-customize.html#creating-a-custom-style">create your own style</a>.</p>
+</div>
+<h3 id="customizing-applicationwindow">Customizing ApplicationWindow</h3>
+<p><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a> consists of one visual item: <a href="qml-qtquick-controls-applicationwindow.html#background-prop" translate="no">background</a>.</p>
+<pre class="cpp" translate="no">
+ import <span class="type"><a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a></span>
+ import <span class="type"><a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a></span><span class="operator">.</span>Controls<span class="operator">.</span>Basic
+
+ ApplicationWindow {
+     visible: <span class="keyword">true</span>
+
+     background: Rectangle {
+         gradient: Gradient {
+             GradientStop { position: <span class="number">0</span>; color: <span class="string">&quot;#ffffff&quot;</span> }
+             GradientStop { position: <span class="number">1</span>; color: <span class="string">&quot;#c1bbf9&quot;</span> }
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-busyindicator">Customizing BusyIndicator</h3>
+<p><a href="qml-qtquick-controls-busyindicator.html" translate="no">BusyIndicator</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-busyindicator-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-busyindicator.html" translate="no">BusyIndicator</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">contentItem</span>: <span class="name">Item</span> {
+         <span class="name">implicitWidth</span>: <span class="number">64</span>
+         <span class="name">implicitHeight</span>: <span class="number">64</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+             <span class="name">id</span>: <span class="name">item</span>
+             <span class="name">x</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">32</span>
+             <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">32</span>
+             <span class="name">width</span>: <span class="number">64</span>
+             <span class="name">height</span>: <span class="number">64</span>
+             <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">running</span> ? <span class="number">1</span> : <span class="number">0</span>
+
+             Behavior on <span class="name">opacity</span> {
+                 <span class="type"><a href="../qtquick/qml-qtquick-opacityanimator.html" translate="no">OpacityAnimator</a></span> {
+                     <span class="name">duration</span>: <span class="number">250</span>
+                 }
+             }
+
+             <span class="type"><a href="../qtquick/qml-qtquick-rotationanimator.html" translate="no">RotationAnimator</a></span> {
+                 <span class="name">target</span>: <span class="name">item</span>
+                 <span class="name">running</span>: <span class="name">control</span>.<span class="name">visible</span> <span class="operator">&amp;&amp;</span> <span class="name">control</span>.<span class="name">running</span>
+                 <span class="name">from</span>: <span class="number">0</span>
+                 <span class="name">to</span>: <span class="number">360</span>
+                 <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+                 <span class="name">duration</span>: <span class="number">1250</span>
+             }
+
+             <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+                 <span class="name">id</span>: <span class="name">repeater</span>
+                 <span class="name">model</span>: <span class="number">6</span>
+
+                 <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                     <span class="name">id</span>: <span class="name">delegate</span>
+                     <span class="name">x</span>: <span class="name">item</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+                     <span class="name">y</span>: <span class="name">item</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+                     <span class="name">implicitWidth</span>: <span class="number">10</span>
+                     <span class="name">implicitHeight</span>: <span class="number">10</span>
+                     <span class="name">radius</span>: <span class="number">5</span>
+                     <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+
+                     required property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">index</span>
+
+                     <span class="name">transform</span>: [
+                         <span class="type"><a href="../qtquick/qml-qtquick-translate.html" translate="no">Translate</a></span> {
+                             <span class="name">y</span>: -<span class="name">Math</span>.<span class="name">min</span>(<span class="name">item</span>.<span class="name">width</span>, <span class="name">item</span>.<span class="name">height</span>) <span class="operator">*</span> <span class="number">0.5</span> <span class="operator">+</span> <span class="number">5</span>
+                         },
+                         <span class="type"><a href="../qtquick/qml-qtquick-rotation.html" translate="no">Rotation</a></span> {
+                             <span class="name">angle</span>: <span class="name">delegate</span>.<span class="name">index</span> <span class="operator">/</span> <span class="name">repeater</span>.<span class="name">count</span> <span class="operator">*</span> <span class="number">360</span>
+                             <span class="name">origin</span>.x: <span class="number">5</span>
+                             <span class="name">origin</span>.y: <span class="number">5</span>
+                         }
+                     ]
+                 }
+             }
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-button">Customizing Button</h3>
+<p>Button consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-button-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">border</span>.width: <span class="number">1</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+     }
+ }
+</pre>
+<h3 id="customizing-checkbox">Customizing CheckBox</h3>
+<p><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-checkbox-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;CheckBox&quot;</span>)
+     <span class="name">checked</span>: <span class="number">true</span>
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">3</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="number">14</span>
+             <span class="name">height</span>: <span class="number">14</span>
+             <span class="name">x</span>: <span class="number">6</span>
+             <span class="name">y</span>: <span class="number">6</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">visible</span>: <span class="name">control</span>.<span class="name">checked</span>
+         }
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">leftPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+     }
+ }
+</pre>
+<h3 id="customizing-checkdelegate">Customizing CheckDelegate</h3>
+<p><a href="qml-qtquick-controls-checkdelegate.html" translate="no">CheckDelegate</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-checkdelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-checkdelegate.html" translate="no">CheckDelegate</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;CheckDelegate&quot;</span>)
+     <span class="name">checked</span>: <span class="number">true</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">rightPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">rightPadding</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">3</span>
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="number">14</span>
+             <span class="name">height</span>: <span class="number">14</span>
+             <span class="name">x</span>: <span class="number">6</span>
+             <span class="name">y</span>: <span class="number">6</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">visible</span>: <span class="name">control</span>.<span class="name">checked</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">visible</span>: <span class="name">control</span>.<span class="name">down</span> <span class="operator">||</span> <span class="name">control</span>.<span class="name">highlighted</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#bdbebf&quot;</span> : <span class="string">&quot;#eeeeee&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-combobox">Customizing ComboBox</h3>
+<p><a href="qml-qtquick-controls-combobox.html" translate="no">ComboBox</a> consists of <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>, <a href="qml-qtquick-controls-combobox.html#popup-prop" translate="no">popup</a>, <a href="qml-qtquick-controls-combobox.html#indicator-prop" translate="no">indicator</a>, and <a href="qml-qtquick-controls-combobox.html#delegate-prop" translate="no">delegate</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-combobox-custom.png" alt="" /></p><pre class="qml" translate="no">
+ pragma ComponentBehavior: Bound
+
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-combobox.html" translate="no">ComboBox</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">model</span>: [<span class="string">&quot;First&quot;</span>, <span class="string">&quot;Second&quot;</span>, <span class="string">&quot;Third&quot;</span>]
+
+     <span class="name">delegate</span>: <span class="name">ItemDelegate</span> {
+         <span class="name">id</span>: <span class="name">delegate</span>
+
+         required property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">model</span>
+         required property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">index</span>
+
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">width</span>
+         <span class="name">contentItem</span>: <span class="name">Text</span> {
+             <span class="name">text</span>: <span class="name">delegate</span>.<span class="name">model</span>[<span class="name">control</span>.<span class="name">textRole</span>]
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+             <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+             <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         }
+         <span class="name">highlighted</span>: <span class="name">control</span>.<span class="name">highlightedIndex</span> <span class="operator">===</span> <span class="name">index</span>
+     }
+
+     <span class="name">indicator</span>: <span class="name">Canvas</span> {
+         <span class="name">id</span>: <span class="name">canvas</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">rightPadding</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> (<span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">-</span> <span class="name">height</span>) <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">width</span>: <span class="number">12</span>
+         <span class="name">height</span>: <span class="number">8</span>
+         <span class="name">contextType</span>: <span class="string">&quot;2d&quot;</span>
+
+         <span class="type"><a href="../qtqml/qml-qtqml-connections.html" translate="no">Connections</a></span> {
+             <span class="name">target</span>: <span class="name">control</span>
+             <span class="keyword">function</span> <span class="name">onPressedChanged</span>() { <span class="name">canvas</span>.<span class="name">requestPaint</span>(); }
+         }
+
+         <span class="name">onPaint</span>: {
+             <span class="name">context</span>.<span class="name">reset</span>();
+             <span class="name">context</span>.<span class="name">moveTo</span>(<span class="number">0</span>, <span class="number">0</span>);
+             <span class="name">context</span>.<span class="name">lineTo</span>(<span class="name">width</span>, <span class="number">0</span>);
+             <span class="name">context</span>.<span class="name">lineTo</span>(<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>, <span class="name">height</span>);
+             <span class="name">context</span>.<span class="name">closePath</span>();
+             <span class="name">context</span>.<span class="name">fillStyle</span> <span class="operator">=</span> <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>;
+             <span class="name">context</span>.<span class="name">fill</span>();
+         }
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">leftPadding</span>: <span class="number">0</span>
+         <span class="name">rightPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">displayText</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">120</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">border</span>.width: <span class="name">control</span>.<span class="name">visualFocus</span> ? <span class="number">2</span> : <span class="number">1</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+     }
+
+     <span class="name">popup</span>: <span class="name">Popup</span> {
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">height</span> <span class="operator">-</span> <span class="number">1</span>
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">Math</span>.<span class="name">min</span>(<span class="name">contentItem</span>.<span class="name">implicitHeight</span>, <span class="name">control</span>.<span class="name">Window</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">topMargin</span> <span class="operator">-</span> <span class="name">bottomMargin</span>)
+         <span class="name">padding</span>: <span class="number">1</span>
+
+         <span class="name">contentItem</span>: <span class="name">ListView</span> {
+             <span class="name">clip</span>: <span class="number">true</span>
+             <span class="name">implicitHeight</span>: <span class="name">contentHeight</span>
+             <span class="name">model</span>: <span class="name">control</span>.<span class="name">popup</span>.<span class="name">visible</span> ? <span class="name">control</span>.<span class="name">delegateModel</span> : <span class="number">null</span>
+             <span class="name">currentIndex</span>: <span class="name">control</span>.<span class="name">highlightedIndex</span>
+
+             <span class="name">ScrollIndicator</span>.vertical: <span class="name">ScrollIndicator</span> { }
+         }
+
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+         }
+     }
+ }
+</pre>
+<p>As explained in <a href="qml-qtquick-controls-combobox.html#combobox-model-roles" translate="no">ComboBox Model Roles</a>, <a href="qml-qtquick-controls-combobox.html" translate="no">ComboBox</a> supports multiple types of models.</p>
+<p>Since <a href="../qtquick/qtquick-modelviewsdata-modelview.html#qml-data-models">all the models provide an anonymous property</a> with <code translate="no">modelData</code>, the following expression retrieves the right text in all cases:</p>
+<pre class="cpp" translate="no">
+ text: model<span class="operator">[</span>control<span class="operator">.</span>textRole<span class="operator">]</span>
+</pre>
+<p>When you provide a specific <code translate="no">textRole</code> and a model with structured data that provides the selected role, this is expression is a regular property lookup. When you provide a model with singular data, such as a list of strings, and an empty <code translate="no">textRole</code>, this expression retrieves the <code translate="no">modelData</code>.</p>
+<h3 id="customizing-delaybutton">Customizing DelayButton</h3>
+<p><a href="qml-qtquick-controls-delaybutton.html" translate="no">DelayButton</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-delaybutton-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-delaybutton.html" translate="no">DelayButton</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">checked</span>: <span class="number">true</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Delay\nButton&quot;</span>)
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="string">&quot;white&quot;</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">100</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">radius</span>: <span class="name">size</span> <span class="operator">/</span> <span class="number">2</span>
+
+         readonly property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">size</span>: <span class="name">Math</span>.<span class="name">min</span>(<span class="name">control</span>.<span class="name">width</span>, <span class="name">control</span>.<span class="name">height</span>)
+         <span class="name">width</span>: <span class="name">size</span>
+         <span class="name">height</span>: <span class="name">size</span>
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-canvas.html" translate="no">Canvas</a></span> {
+             <span class="name">id</span>: <span class="name">canvas</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+             <span class="type"><a href="../qtqml/qml-qtqml-connections.html" translate="no">Connections</a></span> {
+                 <span class="name">target</span>: <span class="name">control</span>
+                 <span class="keyword">function</span> <span class="name">onProgressChanged</span>() { <span class="name">canvas</span>.<span class="name">requestPaint</span>(); }
+             }
+
+             <span class="name">onPaint</span>: {
+                 var ctx = <span class="name">getContext</span>(<span class="string">&quot;2d&quot;</span>)
+                 <span class="name">ctx</span>.<span class="name">clearRect</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="name">width</span>, <span class="name">height</span>)
+                 <span class="name">ctx</span>.<span class="name">strokeStyle</span> <span class="operator">=</span> <span class="string">&quot;white&quot;</span>
+                 <span class="name">ctx</span>.<span class="name">lineWidth</span> <span class="operator">=</span> <span class="name">parent</span>.<span class="name">size</span> <span class="operator">/</span> <span class="number">20</span>
+                 <span class="name">ctx</span>.<span class="name">beginPath</span>()
+                 var startAngle = <span class="name">Math</span>.<span class="name">PI</span> <span class="operator">/</span> <span class="number">5</span> <span class="operator">*</span> <span class="number">3</span>
+                 var endAngle = <span class="name">startAngle</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">progress</span> <span class="operator">*</span> <span class="name">Math</span>.<span class="name">PI</span> <span class="operator">/</span> <span class="number">5</span> <span class="operator">*</span> <span class="number">9</span>
+                 <span class="name">ctx</span>.<span class="name">arc</span>(<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>, <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>, <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">ctx</span>.<span class="name">lineWidth</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="number">2</span>, <span class="name">startAngle</span>, <span class="name">endAngle</span>)
+                 <span class="name">ctx</span>.<span class="name">stroke</span>()
+             }
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-dial">Customizing Dial</h3>
+<p>Dial consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-dial.html#handle-prop" translate="no">handle</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-dial-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-dial.html" translate="no">Dial</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">140</span>
+         <span class="name">implicitHeight</span>: <span class="number">140</span>
+         <span class="name">width</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="number">64</span>, <span class="name">Math</span>.<span class="name">min</span>(<span class="name">control</span>.<span class="name">width</span>, <span class="name">control</span>.<span class="name">height</span>))
+         <span class="name">height</span>: <span class="name">width</span>
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="name">radius</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+     }
+
+     <span class="name">handle</span>: <span class="name">Rectangle</span> {
+         <span class="name">id</span>: <span class="name">handleItem</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">background</span>.<span class="name">x</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">background</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">background</span>.<span class="name">y</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">background</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">width</span>: <span class="number">16</span>
+         <span class="name">height</span>: <span class="number">16</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">radius</span>: <span class="number">8</span>
+         <span class="name">antialiasing</span>: <span class="number">true</span>
+         <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">transform</span>: [
+             <span class="type"><a href="../qtquick/qml-qtquick-translate.html" translate="no">Translate</a></span> {
+                 <span class="name">y</span>: -<span class="name">Math</span>.<span class="name">min</span>(<span class="name">control</span>.<span class="name">background</span>.<span class="name">width</span>, <span class="name">control</span>.<span class="name">background</span>.<span class="name">height</span>) <span class="operator">*</span> <span class="number">0.4</span> <span class="operator">+</span> <span class="name">handleItem</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+             },
+             <span class="type"><a href="../qtquick/qml-qtquick-rotation.html" translate="no">Rotation</a></span> {
+                 <span class="name">angle</span>: <span class="name">control</span>.<span class="name">angle</span>
+                 <span class="name">origin</span>.x: <span class="name">handleItem</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+                 <span class="name">origin</span>.y: <span class="name">handleItem</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+             }
+         ]
+     }
+ }
+</pre>
+<h3 id="customizing-drawer">Customizing Drawer</h3>
+<p>Drawer can have a visual <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item.</p>
+<pre class="cpp" translate="no">
+ background: Rectangle {
+     Rectangle {
+         x: parent<span class="operator">.</span>width <span class="operator">-</span> <span class="number">1</span>
+         width: <span class="number">1</span>
+         height: parent<span class="operator">.</span>height
+         color: <span class="string">&quot;#21be2b&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-frame">Customizing Frame</h3>
+<p>Frame consists of one visual item: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-frame-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-frame.html" translate="no">Frame</a></span> {
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Content goes here!&quot;</span>)
+     }
+ }
+</pre>
+<h3 id="customizing-groupbox">Customizing GroupBox</h3>
+<p><a href="qml-qtquick-controls-groupbox.html" translate="no">GroupBox</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-groupbox.html#label-prop" translate="no">label</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-groupbox-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-groupbox.html" translate="no">GroupBox</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;GroupBox&quot;</span>)
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">bottomPadding</span>
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">bottomPadding</span>
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+     }
+
+     <span class="name">label</span>: <span class="name">Label</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">availableWidth</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">title</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Content goes here!&quot;</span>)
+     }
+ }
+</pre>
+<h3 id="customizing-itemdelegate">Customizing ItemDelegate</h3>
+<p><a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-itemdelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;ItemDelegate&quot;</span>)
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">rightPadding</span>: <span class="name">control</span>.<span class="name">spacing</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">enabled</span> ? (<span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>) : <span class="string">&quot;#bdbebf&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#dddedf&quot;</span> : <span class="string">&quot;#eeeeee&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="number">1</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-label">Customizing Label</h3>
+<p>Label can have a visual <a href="qml-qtquick-controls-label.html#background-prop" translate="no">background</a> item.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-label-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Label&quot;</span>)
+     <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+ }
+</pre>
+<h3 id="customizing-menu">Customizing Menu</h3>
+<ul>
+<li><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a> consists of a visual <a href="qml-qtquick-controls-popup.html#background-prop" translate="no">background</a> item.</li>
+<li><a href="qml-qtquick-controls-menuitem.html" translate="no">MenuItem</a> consists of four visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>, <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>, and <a href="qml-qtquick-controls-menuitem.html#arrow-prop" translate="no">arrow</a>.</li>
+<li><a href="qml-qtquick-controls-menuseparator.html" translate="no">MenuSeparator</a> consists of a visual <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</li>
+</ul>
+<p class="centerAlign"><img src="images/qtquickcontrols-menu-custom.png" alt="" /></p><pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+     <span class="name">id</span>: <span class="name">menu</span>
+
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Tool Bar&quot;</span>); <span class="name">checkable</span>: <span class="number">true</span> }
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Side Bar&quot;</span>); <span class="name">checkable</span>: <span class="number">true</span>; <span class="name">checked</span>: <span class="number">true</span> }
+     <span class="type"><a href="qml-qtquick-controls-action.html" translate="no">Action</a></span> { <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Status Bar&quot;</span>); <span class="name">checkable</span>: <span class="number">true</span>; <span class="name">checked</span>: <span class="number">true</span> }
+
+     <span class="type"><a href="qml-qtquick-controls-menuseparator.html" translate="no">MenuSeparator</a></span> {
+         <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">200</span>
+             <span class="name">implicitHeight</span>: <span class="number">1</span>
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+         }
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> {
+         <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Advanced&quot;</span>)
+         <span class="comment">// ...</span>
+     }
+
+     <span class="name">topPadding</span>: <span class="number">2</span>
+     <span class="name">bottomPadding</span>: <span class="number">2</span>
+
+     <span class="name">delegate</span>: <span class="name">MenuItem</span> {
+         <span class="name">id</span>: <span class="name">menuItem</span>
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+
+         <span class="name">arrow</span>: <span class="name">Canvas</span> {
+             <span class="name">x</span>: <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span>
+             <span class="name">implicitWidth</span>: <span class="number">40</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="name">visible</span>: <span class="name">menuItem</span>.<span class="name">subMenu</span>
+             <span class="name">onPaint</span>: {
+                 var ctx = <span class="name">getContext</span>(<span class="string">&quot;2d&quot;</span>)
+                 <span class="name">ctx</span>.<span class="name">fillStyle</span> <span class="operator">=</span> <span class="name">menuItem</span>.<span class="name">highlighted</span> ? <span class="string">&quot;#ffffff&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+                 <span class="name">ctx</span>.<span class="name">moveTo</span>(<span class="number">15</span>, <span class="number">15</span>)
+                 <span class="name">ctx</span>.<span class="name">lineTo</span>(<span class="name">width</span> <span class="operator">-</span> <span class="number">15</span>, <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>)
+                 <span class="name">ctx</span>.<span class="name">lineTo</span>(<span class="number">15</span>, <span class="name">height</span> <span class="operator">-</span> <span class="number">15</span>)
+                 <span class="name">ctx</span>.<span class="name">closePath</span>()
+                 <span class="name">ctx</span>.<span class="name">fill</span>()
+             }
+         }
+
+         <span class="name">indicator</span>: <span class="name">Item</span> {
+             <span class="name">implicitWidth</span>: <span class="number">40</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                 <span class="name">width</span>: <span class="number">26</span>
+                 <span class="name">height</span>: <span class="number">26</span>
+                 <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                 <span class="name">visible</span>: <span class="name">menuItem</span>.<span class="name">checkable</span>
+                 <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+                 <span class="name">radius</span>: <span class="number">3</span>
+                 <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                     <span class="name">width</span>: <span class="number">14</span>
+                     <span class="name">height</span>: <span class="number">14</span>
+                     <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+                     <span class="name">visible</span>: <span class="name">menuItem</span>.<span class="name">checked</span>
+                     <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+                     <span class="name">radius</span>: <span class="number">2</span>
+                 }
+             }
+         }
+
+         <span class="name">contentItem</span>: <span class="name">Text</span> {
+             <span class="name">leftPadding</span>: <span class="name">menuItem</span>.<span class="name">indicator</span>.<span class="name">width</span>
+             <span class="name">rightPadding</span>: <span class="name">menuItem</span>.<span class="name">arrow</span>.<span class="name">width</span>
+             <span class="name">text</span>: <span class="name">menuItem</span>.<span class="name">text</span>
+             <span class="name">font</span>: <span class="name">menuItem</span>.<span class="name">font</span>
+             <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+             <span class="name">color</span>: <span class="name">menuItem</span>.<span class="name">highlighted</span> ? <span class="string">&quot;#ffffff&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignLeft</span>
+             <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+             <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         }
+
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">200</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+             <span class="name">color</span>: <span class="name">menuItem</span>.<span class="name">highlighted</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;transparent&quot;</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="string">&quot;#ffffff&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+     }
+ }
+</pre>
+<h3 id="customizing-menubar">Customizing MenuBar</h3>
+<p><a href="qml-qtquick-controls-menubar.html" translate="no">MenuBar</a> can have a visual <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item, and <a href="qml-qtquick-controls-menubaritem.html" translate="no">MenuBarItem</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-menubar-custom.png" alt="" /></p><pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="name">MenuBar</span> {
+     <span class="name">id</span>: <span class="name">menuBar</span>
+
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> { <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;File&quot;</span>) }
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> { <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Edit&quot;</span>) }
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> { <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;View&quot;</span>) }
+     <span class="type"><a href="qml-qtquick-controls-menu.html" translate="no">Menu</a></span> { <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Help&quot;</span>) }
+
+     <span class="name">delegate</span>: <span class="name">MenuBarItem</span> {
+         <span class="name">id</span>: <span class="name">menuBarItem</span>
+
+         <span class="name">contentItem</span>: <span class="name">Text</span> {
+             <span class="name">text</span>: <span class="name">menuBarItem</span>.<span class="name">text</span>
+             <span class="name">font</span>: <span class="name">menuBarItem</span>.<span class="name">font</span>
+             <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+             <span class="name">color</span>: <span class="name">menuBarItem</span>.<span class="name">highlighted</span> ? <span class="string">&quot;#ffffff&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignLeft</span>
+             <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+             <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         }
+
+         <span class="name">background</span>: <span class="name">Rectangle</span> {
+             <span class="name">implicitWidth</span>: <span class="number">40</span>
+             <span class="name">implicitHeight</span>: <span class="number">40</span>
+             <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+             <span class="name">color</span>: <span class="name">menuBarItem</span>.<span class="name">highlighted</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;transparent&quot;</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">40</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="string">&quot;#ffffff&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="number">1</span>
+             <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-pageindicator">Customizing PageIndicator</h3>
+<p><a href="qml-qtquick-controls-pageindicator.html" translate="no">PageIndicator</a> consists of a <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>, and <a href="qml-qtquick-controls-pageindicator.html#delegate-prop" translate="no">delegate</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-pageindicator-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-pageindicator.html" translate="no">PageIndicator</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">count</span>: <span class="number">5</span>
+     <span class="name">currentIndex</span>: <span class="number">2</span>
+
+     <span class="name">delegate</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">8</span>
+         <span class="name">implicitHeight</span>: <span class="number">8</span>
+
+         <span class="name">radius</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+
+         <span class="name">opacity</span>: <span class="name">index</span> <span class="operator">===</span> <span class="name">control</span>.<span class="name">currentIndex</span> ? <span class="number">0.95</span> : <span class="name">pressed</span> ? <span class="number">0.7</span> : <span class="number">0.45</span>
+
+         required property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">index</span>
+
+         Behavior on <span class="name">opacity</span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-opacityanimator.html" translate="no">OpacityAnimator</a></span> {
+                 <span class="name">duration</span>: <span class="number">100</span>
+             }
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-pane">Customizing Pane</h3>
+<p>Pane consists of a <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-pane-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">color</span>: <span class="string">&quot;#eeeeee&quot;</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Content goes here!&quot;</span>)
+     }
+ }
+</pre>
+<h3 id="customizing-popup">Customizing Popup</h3>
+<p>Popup consists of a <a href="qml-qtquick-controls-popup.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-popup.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-popup-custom.png" alt="" /></p><pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-popup.html" translate="no">Popup</a></span> {
+     <span class="name">id</span>: <span class="name">popup</span>
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">200</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#444&quot;</span>
+     }
+     <span class="name">contentItem</span>: <span class="name">Column</span> {}
+ }
+</pre>
+<h3 id="customizing-progressbar">Customizing ProgressBar</h3>
+<p><a href="qml-qtquick-controls-progressbar.html" translate="no">ProgressBar</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-progressbar-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-progressbar.html" translate="no">ProgressBar</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">value</span>: <span class="number">0.5</span>
+     <span class="name">padding</span>: <span class="number">2</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">6</span>
+         <span class="name">color</span>: <span class="string">&quot;#e6e6e6&quot;</span>
+         <span class="name">radius</span>: <span class="number">3</span>
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Item</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">4</span>
+
+         <span class="comment">// Progress indicator for determinate state.</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="name">control</span>.<span class="name">visualPosition</span> <span class="operator">*</span> <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+             <span class="name">color</span>: <span class="string">&quot;#17a81a&quot;</span>
+             <span class="name">visible</span>: !<span class="name">control</span>.<span class="name">indeterminate</span>
+         }
+
+         <span class="comment">// Scrolling animation for indeterminate state.</span>
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">visible</span>: <span class="name">control</span>.<span class="name">indeterminate</span>
+             <span class="name">clip</span>: <span class="number">true</span>
+
+             <span class="type"><a href="../qtquick/qml-qtquick-row.html" translate="no">Row</a></span> {
+                 <span class="name">spacing</span>: <span class="number">20</span>
+
+                 <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+                     <span class="name">model</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">40</span> <span class="operator">+</span> <span class="number">1</span>
+
+                     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+                         <span class="name">color</span>: <span class="string">&quot;#17a81a&quot;</span>
+                         <span class="name">width</span>: <span class="number">20</span>
+                         <span class="name">height</span>: <span class="name">control</span>.<span class="name">height</span>
+                     }
+                 }
+                 XAnimator on <span class="name">x</span> {
+                     <span class="name">from</span>: <span class="number">0</span>
+                     <span class="name">to</span>: -<span class="number">40</span>
+                     <span class="name">loops</span>: <span class="name">Animation</span>.<span class="name">Infinite</span>
+                     <span class="name">running</span>: <span class="name">control</span>.<span class="name">indeterminate</span>
+                 }
+             }
+         }
+     }
+ }
+</pre>
+<p>Above, the content item is also animated to represent an <a href="qml-qtquick-controls-progressbar.html#indeterminate-prop" translate="no">indeterminate</a> progress bar state.</p>
+<h3 id="customizing-radiobutton">Customizing RadioButton</h3>
+<p><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-radiobutton-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;RadioButton&quot;</span>)
+     <span class="name">checked</span>: <span class="number">true</span>
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="number">14</span>
+             <span class="name">height</span>: <span class="number">14</span>
+             <span class="name">x</span>: <span class="number">6</span>
+             <span class="name">y</span>: <span class="number">6</span>
+             <span class="name">radius</span>: <span class="number">7</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">visible</span>: <span class="name">control</span>.<span class="name">checked</span>
+         }
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">leftPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+     }
+ }
+</pre>
+<h3 id="customizing-radiodelegate">Customizing RadioDelegate</h3>
+<p><a href="qml-qtquick-controls-radiodelegate.html" translate="no">RadioDelegate</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-radiodelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-radiodelegate.html" translate="no">RadioDelegate</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;RadioDelegate&quot;</span>)
+     <span class="name">checked</span>: <span class="number">true</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">rightPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">rightPadding</span>
+         <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="number">14</span>
+             <span class="name">height</span>: <span class="number">14</span>
+             <span class="name">x</span>: <span class="number">6</span>
+             <span class="name">y</span>: <span class="number">6</span>
+             <span class="name">radius</span>: <span class="number">7</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">visible</span>: <span class="name">control</span>.<span class="name">checked</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">visible</span>: <span class="name">control</span>.<span class="name">down</span> <span class="operator">||</span> <span class="name">control</span>.<span class="name">highlighted</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#bdbebf&quot;</span> : <span class="string">&quot;#eeeeee&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-rangeslider">Customizing RangeSlider</h3>
+<p><a href="qml-qtquick-controls-rangeslider.html" translate="no">RangeSlider</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-rangeslider.html#first-prop" translate="no">first.handle</a> and <a href="qml-qtquick-controls-rangeslider.html#second.handle-prop" translate="no">second.handle</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-rangeslider-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-rangeslider.html" translate="no">RangeSlider</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">first</span>.value: <span class="number">0.25</span>
+     <span class="name">second</span>.value: <span class="number">0.75</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">4</span>
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">availableWidth</span>
+         <span class="name">height</span>: <span class="name">implicitHeight</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+         <span class="name">color</span>: <span class="string">&quot;#bdbebf&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">x</span>: <span class="name">control</span>.<span class="name">first</span>.<span class="name">visualPosition</span> <span class="operator">*</span> <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">width</span>: <span class="name">control</span>.<span class="name">second</span>.<span class="name">visualPosition</span> <span class="operator">*</span> <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">x</span>
+             <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+         }
+     }
+
+     <span class="name">first</span>.handle: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">first</span>.<span class="name">visualPosition</span> <span class="operator">*</span> (<span class="name">control</span>.<span class="name">availableWidth</span> <span class="operator">-</span> <span class="name">width</span>)
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">first</span>.<span class="name">pressed</span> ? <span class="string">&quot;#f0f0f0&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#bdbebf&quot;</span>
+     }
+
+     <span class="name">second</span>.handle: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">second</span>.<span class="name">visualPosition</span> <span class="operator">*</span> (<span class="name">control</span>.<span class="name">availableWidth</span> <span class="operator">-</span> <span class="name">width</span>)
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">second</span>.<span class="name">pressed</span> ? <span class="string">&quot;#f0f0f0&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#bdbebf&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-roundbutton">Customizing RoundButton</h3>
+<p><a href="qml-qtquick-controls-roundbutton.html" translate="no">RoundButton</a> can be customized in the same manner as <a href="qtquickcontrols-customize.html#customizing-button">Button</a>.</p>
+<h3 id="customizing-scrollbar">Customizing ScrollBar</h3>
+<p><a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-scrollbar-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">size</span>: <span class="number">0.3</span>
+     <span class="name">position</span>: <span class="number">0.2</span>
+     <span class="name">active</span>: <span class="number">true</span>
+     <span class="name">orientation</span>: <span class="name">Qt</span>.<span class="name">Vertical</span>
+
+     <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">6</span>
+         <span class="name">implicitHeight</span>: <span class="number">100</span>
+         <span class="name">radius</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#81e889&quot;</span> : <span class="string">&quot;#c2f4c6&quot;</span>
+         <span class="comment">// Hide the ScrollBar when it's not needed.</span>
+         <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">policy</span> <span class="operator">===</span> <span class="name">ScrollBar</span>.<span class="name">AlwaysOn</span> <span class="operator">||</span> (<span class="name">control</span>.<span class="name">active</span> <span class="operator">&amp;&amp;</span> <span class="name">control</span>.<span class="name">size</span> <span class="operator">&lt;</span> <span class="number">1.0</span>) ? <span class="number">0.75</span> : <span class="number">0</span>
+
+         <span class="comment">// Animate the changes in opacity (default duration is 250 ms).</span>
+         Behavior on <span class="name">opacity</span> {
+             <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> {}
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-scrollindicator">Customizing ScrollIndicator</h3>
+<p><a href="qml-qtquick-controls-scrollindicator.html" translate="no">ScrollIndicator</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-scrollindicator-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-scrollindicator.html" translate="no">ScrollIndicator</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">size</span>: <span class="number">0.3</span>
+     <span class="name">position</span>: <span class="number">0.2</span>
+     <span class="name">active</span>: <span class="number">true</span>
+     <span class="name">orientation</span>: <span class="name">Qt</span>.<span class="name">Vertical</span>
+
+     <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">2</span>
+         <span class="name">implicitHeight</span>: <span class="number">100</span>
+         <span class="name">color</span>: <span class="string">&quot;#c2f4c6&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-scrollview">Customizing ScrollView</h3>
+<p><a href="qml-qtquick-controls-scrollview.html" translate="no">ScrollView</a> consists of a <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item, and horizontal and vertical scroll bars.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-scrollview-custom.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-scrollview.html" translate="no">ScrollView</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">width</span>: <span class="number">200</span>
+     <span class="name">height</span>: <span class="number">200</span>
+     <span class="name">focus</span>: <span class="number">true</span>
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">text</span>: <span class="string">&quot;ABC&quot;</span>
+         <span class="name">font</span>.pixelSize: <span class="number">224</span>
+     }
+
+     <span class="name">ScrollBar</span>.vertical: <span class="name">ScrollBar</span> {
+         <span class="name">parent</span>: <span class="name">control</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">mirrored</span> ? <span class="number">0</span> : <span class="name">control</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span>
+         <span class="name">height</span>: <span class="name">control</span>.<span class="name">availableHeight</span>
+         <span class="name">active</span>: <span class="name">control</span>.<span class="name">ScrollBar</span>.<span class="name">horizontal</span>.<span class="name">active</span>
+     }
+
+     <span class="name">ScrollBar</span>.horizontal: <span class="name">ScrollBar</span> {
+         <span class="name">parent</span>: <span class="name">control</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">height</span> <span class="operator">-</span> <span class="name">height</span>
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">availableWidth</span>
+         <span class="name">active</span>: <span class="name">control</span>.<span class="name">ScrollBar</span>.<span class="name">vertical</span>.<span class="name">active</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">activeFocus</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;#bdbebf&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-slider">Customizing Slider</h3>
+<p>Slider consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, and <a href="qml-qtquick-controls-slider.html#handle-prop" translate="no">handle</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-slider-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-slider.html" translate="no">Slider</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">value</span>: <span class="number">0.5</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">4</span>
+         <span class="name">width</span>: <span class="name">control</span>.<span class="name">availableWidth</span>
+         <span class="name">height</span>: <span class="name">implicitHeight</span>
+         <span class="name">radius</span>: <span class="number">2</span>
+         <span class="name">color</span>: <span class="string">&quot;#bdbebf&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="name">control</span>.<span class="name">visualPosition</span> <span class="operator">*</span> <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">radius</span>: <span class="number">2</span>
+         }
+     }
+
+     <span class="name">handle</span>: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">visualPosition</span> <span class="operator">*</span> (<span class="name">control</span>.<span class="name">availableWidth</span> <span class="operator">-</span> <span class="name">width</span>)
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">topPadding</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">implicitWidth</span>: <span class="number">26</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">pressed</span> ? <span class="string">&quot;#f0f0f0&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#bdbebf&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-spinbox">Customizing SpinBox</h3>
+<p><a href="qml-qtquick-controls-spinbox.html" translate="no">SpinBox</a> consists of four visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>, <a href="qml-qtquick-controls-spinbox.html#up.indicator-prop" translate="no">up indicator</a>, and <a href="qml-qtquick-controls-spinbox.html#down.indicator-prop" translate="no">down indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-spinbox-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-spinbox.html" translate="no">SpinBox</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">value</span>: <span class="number">50</span>
+     <span class="name">editable</span>: <span class="number">true</span>
+
+     <span class="name">contentItem</span>: <span class="name">TextInput</span> {
+         <span class="name">z</span>: <span class="number">2</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">textFromValue</span>(<span class="name">control</span>.<span class="name">value</span>, <span class="name">control</span>.<span class="name">locale</span>)
+
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">selectionColor</span>: <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">selectedTextColor</span>: <span class="string">&quot;#ffffff&quot;</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Qt</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Qt</span>.<span class="name">AlignVCenter</span>
+
+         <span class="name">readOnly</span>: !<span class="name">control</span>.<span class="name">editable</span>
+         <span class="name">validator</span>: <span class="name">control</span>.<span class="name">validator</span>
+         <span class="name">inputMethodHints</span>: <span class="name">Qt</span>.<span class="name">ImhFormattedNumbersOnly</span>
+     }
+
+     <span class="name">up</span>.indicator: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">mirrored</span> ? <span class="number">0</span> : <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+         <span class="name">implicitWidth</span>: <span class="number">40</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">up</span>.<span class="name">pressed</span> ? <span class="string">&quot;#e4e4e4&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+         <span class="name">border</span>.color: <span class="name">enabled</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;#bdbebf&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+             <span class="name">text</span>: <span class="string">&quot;+&quot;</span>
+             <span class="name">font</span>.pixelSize: <span class="name">control</span>.<span class="name">font</span>.<span class="name">pixelSize</span> <span class="operator">*</span> <span class="number">2</span>
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">fontSizeMode</span>: <span class="name">Text</span>.<span class="name">Fit</span>
+             <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+             <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         }
+     }
+
+     <span class="name">down</span>.indicator: <span class="name">Rectangle</span> {
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">mirrored</span> ? <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> : <span class="number">0</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+         <span class="name">implicitWidth</span>: <span class="number">40</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span>.<span class="name">pressed</span> ? <span class="string">&quot;#e4e4e4&quot;</span> : <span class="string">&quot;#f6f6f6&quot;</span>
+         <span class="name">border</span>.color: <span class="name">enabled</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;#bdbebf&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+             <span class="name">text</span>: <span class="string">&quot;-&quot;</span>
+             <span class="name">font</span>.pixelSize: <span class="name">control</span>.<span class="name">font</span>.<span class="name">pixelSize</span> <span class="operator">*</span> <span class="number">2</span>
+             <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">fontSizeMode</span>: <span class="name">Text</span>.<span class="name">Fit</span>
+             <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+             <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">140</span>
+         <span class="name">border</span>.color: <span class="string">&quot;#bdbebf&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-splitview">Customizing SplitView</h3>
+<p><a href="qml-qtquick-controls-splitview.html" translate="no">SplitView</a> consists of a visual <a href="qml-qtquick-controls-splitview.html#handle-prop" translate="no">handle</a> delegate.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-splitview-custom.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-splitview.html" translate="no">SplitView</a></span> {
+     <span class="name">id</span>: <span class="name">splitView</span>
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+     <span class="name">handle</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">4</span>
+         <span class="name">implicitHeight</span>: <span class="number">4</span>
+         <span class="name">color</span>: <span class="name">SplitHandle</span>.<span class="name">pressed</span> ? <span class="string">&quot;#81e889&quot;</span>
+             : (<span class="name">SplitHandle</span>.<span class="name">hovered</span> ? <span class="name">Qt</span>.<span class="name">lighter</span>(<span class="string">&quot;#c2f4c6&quot;</span>, <span class="number">1.1</span>) : <span class="string">&quot;#c2f4c6&quot;</span>)
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">implicitWidth</span>: <span class="number">150</span>
+         <span class="name">color</span>: <span class="string">&quot;#444&quot;</span>
+     }
+     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">implicitWidth</span>: <span class="number">50</span>
+         <span class="name">color</span>: <span class="string">&quot;#666&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-stackview">Customizing StackView</h3>
+<p><a href="qml-qtquick-controls-stackview.html" translate="no">StackView</a> can have a visual <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item, and it allows customizing the transitions that are used for push, pop, and replace operations.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-stackview.html" translate="no">StackView</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">popEnter</span>: <span class="name">Transition</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-xanimator.html" translate="no">XAnimator</a></span> {
+             <span class="name">from</span>: (<span class="name">control</span>.<span class="name">mirrored</span> ? -<span class="number">1</span> : <span class="number">1</span>) <span class="operator">*</span> -<span class="name">control</span>.<span class="name">width</span>
+             <span class="name">to</span>: <span class="number">0</span>
+             <span class="name">duration</span>: <span class="number">400</span>
+             <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutCubic</span>
+         }
+     }
+
+     <span class="name">popExit</span>: <span class="name">Transition</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-xanimator.html" translate="no">XAnimator</a></span> {
+             <span class="name">from</span>: <span class="number">0</span>
+             <span class="name">to</span>: (<span class="name">control</span>.<span class="name">mirrored</span> ? -<span class="number">1</span> : <span class="number">1</span>) <span class="operator">*</span> <span class="name">control</span>.<span class="name">width</span>
+             <span class="name">duration</span>: <span class="number">400</span>
+             <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">OutCubic</span>
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-swipedelegate">Customizing SwipeDelegate</h3>
+<p><a href="qml-qtquick-controls-swipedelegate.html" translate="no">SwipeDelegate</a> consists of six visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>, <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>, <code translate="no">swipe.left</code>, <code translate="no">swipe.right</code>, and <code translate="no">swipe.behind</code>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-swipedelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-swipedelegate.html" translate="no">SwipeDelegate</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;SwipeDelegate&quot;</span>)
+
+     <span class="type"><a href="../qtqml/qml-qtqml-component.html" translate="no">Component</a></span> {
+         <span class="name">id</span>: <span class="name">component</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">color</span>: <span class="name">SwipeDelegate</span>.<span class="name">pressed</span> ? <span class="string">&quot;#333&quot;</span> : <span class="string">&quot;#444&quot;</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+             <span class="name">clip</span>: <span class="number">true</span>
+
+             <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+                 <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Press me!&quot;</span>)
+                 <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+                 <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+             }
+         }
+     }
+
+     <span class="name">swipe</span>.left: <span class="name">component</span>
+     <span class="name">swipe</span>.right: <span class="name">component</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">enabled</span> ? (<span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>) : <span class="string">&quot;#bdbebf&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+
+         Behavior on <span class="name">x</span> {
+             <span class="name">enabled</span>: !<span class="name">control</span>.<span class="name">down</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-numberanimation.html" translate="no">NumberAnimation</a></span> {
+                 <span class="name">easing</span>.type: <span class="name">Easing</span>.<span class="name">InOutCubic</span>
+                 <span class="name">duration</span>: <span class="number">400</span>
+             }
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-swipeview">Customizing SwipeView</h3>
+<p><a href="qml-qtquick-controls-swipeview.html" translate="no">SwipeView</a> can have a visual <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item. The navigation is implemented by the <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-swipeview.html" translate="no">SwipeView</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">color</span>: <span class="string">&quot;#eeeeee&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-switch">Customizing Switch</h3>
+<p>Switch consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-switch-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Switch&quot;</span>)
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">48</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">leftPadding</span>
+         <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">checked</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#ffffff&quot;</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">checked</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#cccccc&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">x</span>: <span class="name">control</span>.<span class="name">checked</span> ? <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> : <span class="number">0</span>
+             <span class="name">width</span>: <span class="number">26</span>
+             <span class="name">height</span>: <span class="number">26</span>
+             <span class="name">radius</span>: <span class="number">13</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#cccccc&quot;</span> : <span class="string">&quot;#ffffff&quot;</span>
+             <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">checked</span> ? (<span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>) : <span class="string">&quot;#999999&quot;</span>
+         }
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">leftPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+     }
+ }
+</pre>
+<h3 id="customizing-switchdelegate">Customizing SwitchDelegate</h3>
+<p><a href="qml-qtquick-controls-switchdelegate.html" translate="no">SwitchDelegate</a> consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> and <a href="qml-qtquick-controls-abstractbutton.html#indicator-prop" translate="no">indicator</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-switchdelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-switchdelegate.html" translate="no">SwitchDelegate</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;SwitchDelegate&quot;</span>)
+     <span class="name">checked</span>: <span class="number">true</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">rightPadding</span>: <span class="name">control</span>.<span class="name">indicator</span>.<span class="name">width</span> <span class="operator">+</span> <span class="name">control</span>.<span class="name">spacing</span>
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+
+     <span class="name">indicator</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">48</span>
+         <span class="name">implicitHeight</span>: <span class="number">26</span>
+         <span class="name">x</span>: <span class="name">control</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> <span class="operator">-</span> <span class="name">control</span>.<span class="name">rightPadding</span>
+         <span class="name">y</span>: <span class="name">parent</span>.<span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span>
+         <span class="name">radius</span>: <span class="number">13</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">checked</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;transparent&quot;</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">checked</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#cccccc&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">x</span>: <span class="name">control</span>.<span class="name">checked</span> ? <span class="name">parent</span>.<span class="name">width</span> <span class="operator">-</span> <span class="name">width</span> : <span class="number">0</span>
+             <span class="name">width</span>: <span class="number">26</span>
+             <span class="name">height</span>: <span class="number">26</span>
+             <span class="name">radius</span>: <span class="number">13</span>
+             <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#cccccc&quot;</span> : <span class="string">&quot;#ffffff&quot;</span>
+             <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">checked</span> ? (<span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>) : <span class="string">&quot;#999999&quot;</span>
+         }
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">visible</span>: <span class="name">control</span>.<span class="name">down</span> <span class="operator">||</span> <span class="name">control</span>.<span class="name">highlighted</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#bdbebf&quot;</span> : <span class="string">&quot;#eeeeee&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-tabbar">Customizing TabBar</h3>
+<p><a href="qml-qtquick-controls-tabbar.html" translate="no">TabBar</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-tabbar-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-tabbar.html" translate="no">TabBar</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">color</span>: <span class="string">&quot;#eeeeee&quot;</span>
+     }
+
+     <span class="type"><a href="qml-qtquick-controls-tabbutton.html" translate="no">TabButton</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Home&quot;</span>)
+     }
+     <span class="type"><a href="qml-qtquick-controls-tabbutton.html" translate="no">TabButton</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Discover&quot;</span>)
+     }
+     <span class="type"><a href="qml-qtquick-controls-tabbutton.html" translate="no">TabButton</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Activity&quot;</span>)
+     }
+ }
+</pre>
+<h3 id="customizing-tabbutton">Customizing TabButton</h3>
+<p><a href="qml-qtquick-controls-tabbutton.html" translate="no">TabButton</a> can be customized in the same manner as <a href="qtquickcontrols-customize.html#customizing-button">Button</a>.</p>
+<h3 id="customizing-textarea">Customizing TextArea</h3>
+<p><a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> consists of a <a href="qml-qtquick-controls-textarea.html#background-prop" translate="no">background</a> item.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-textarea-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">placeholderText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enter description&quot;</span>)
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;transparent&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-textfield">Customizing TextField</h3>
+<p><a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a> consists of a <a href="qml-qtquick-controls-textfield.html#background-prop" translate="no">background</a> item.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-textfield-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">placeholderText</span>: <span class="name">qsTr</span>(<span class="string">&quot;Enter description&quot;</span>)
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">200</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="string">&quot;transparent&quot;</span> : <span class="string">&quot;#353637&quot;</span>
+         <span class="name">border</span>.color: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="string">&quot;#21be2b&quot;</span> : <span class="string">&quot;transparent&quot;</span>
+     }
+ }
+</pre>
+<h3 id="customizing-toolbar">Customizing ToolBar</h3>
+<p><a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a> consists of one visual item: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-toolbar-custom.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="string">&quot;#eeeeee&quot;</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="number">1</span>
+             <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+             <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+         }
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-layouts-rowlayout.html" translate="no">RowLayout</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Undo&quot;</span>)
+         }
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Redo&quot;</span>)
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-toolbutton">Customizing ToolButton</h3>
+<p><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-toolbutton-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;ToolButton&quot;</span>)
+     <span class="name">width</span>: <span class="number">120</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1.0</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#17a81a&quot;</span> : <span class="string">&quot;#21be2b&quot;</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">elide</span>: <span class="name">Text</span>.<span class="name">ElideRight</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">40</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">color</span>: <span class="name">Qt</span>.<span class="name">darker</span>(<span class="string">&quot;#33333333&quot;</span>, <span class="name">control</span>.<span class="name">enabled</span> <span class="operator">&amp;&amp;</span> (<span class="name">control</span>.<span class="name">checked</span> <span class="operator">||</span> <span class="name">control</span>.<span class="name">highlighted</span>) ? <span class="number">1.5</span> : <span class="number">1.0</span>)
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">visible</span>: <span class="name">control</span>.<span class="name">down</span> <span class="operator">||</span> (<span class="name">control</span>.<span class="name">enabled</span> <span class="operator">&amp;&amp;</span> (<span class="name">control</span>.<span class="name">checked</span> <span class="operator">||</span> <span class="name">control</span>.<span class="name">highlighted</span>))
+     }
+ }
+</pre>
+<h3 id="customizing-toolseparator">Customizing ToolSeparator</h3>
+<p><a href="qml-qtquick-controls-toolseparator.html" translate="no">ToolSeparator</a> consists of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">content item</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-toolseparator-custom.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a></span> {
+     <span class="type"><a href="../qtquick/qml-qtquick-layouts-rowlayout.html" translate="no">RowLayout</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Action 1&quot;</span>)
+         }
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Action 2&quot;</span>)
+         }
+
+         <span class="type"><a href="qml-qtquick-controls-toolseparator.html" translate="no">ToolSeparator</a></span> {
+             <span class="name">padding</span>: <span class="name">vertical</span> ? <span class="number">10</span> : <span class="number">2</span>
+             <span class="name">topPadding</span>: <span class="name">vertical</span> ? <span class="number">2</span> : <span class="number">10</span>
+             <span class="name">bottomPadding</span>: <span class="name">vertical</span> ? <span class="number">2</span> : <span class="number">10</span>
+
+             <span class="name">contentItem</span>: <span class="name">Rectangle</span> {
+                 <span class="name">implicitWidth</span>: <span class="name">parent</span>.<span class="name">vertical</span> ? <span class="number">1</span> : <span class="number">24</span>
+                 <span class="name">implicitHeight</span>: <span class="name">parent</span>.<span class="name">vertical</span> ? <span class="number">24</span> : <span class="number">1</span>
+                 <span class="name">color</span>: <span class="string">&quot;#c3c3c3&quot;</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Action 3&quot;</span>)
+         }
+         <span class="type"><a href="qml-qtquick-controls-toolbutton.html" translate="no">ToolButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Action 4&quot;</span>)
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+         }
+     }
+ }
+</pre>
+<h3 id="customizing-tooltip">Customizing ToolTip</h3>
+<p><a href="qml-qtquick-controls-tooltip.html" translate="no">ToolTip</a> consists of two visual items: <a href="qml-qtquick-controls-popup.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-popup.html#contentItem-prop" translate="no">content item</a>.</p>
+<pre class="cpp" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-tooltip.html" translate="no">ToolTip</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;A descriptive tool tip of what the button does&quot;</span>)
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+     }
+
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">border</span>.color: <span class="string">&quot;#21be2b&quot;</span>
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>to customize the <a href="qml-qtquick-controls-tooltip.html#attached-tool-tips" translate="no">attached ToolTip</a>, it must be provided as part of <a href="qtquickcontrols-customize.html#creating-a-custom-style">your own style</a>. To do a one-off customization of a <code translate="no">ToolTip</code>, see <a href="qml-qtquick-controls-tooltip.html#custom-tool-tips" translate="no">Custom Tool Tips</a>.</p>
+</div>
+<h3 id="customizing-tumbler">Customizing Tumbler</h3>
+<p>Tumbler consists of three visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a>, <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>, and <a href="qml-qtquick-controls-tumbler.html#delegate-prop" translate="no">delegate</a>.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-tumbler-custom.png" alt="" /></p><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls.Basic
+
+ <span class="type"><a href="qml-qtquick-controls-tumbler.html" translate="no">Tumbler</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">model</span>: <span class="number">15</span>
+
+     <span class="name">background</span>: <span class="name">Item</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="number">0.2</span> : <span class="number">0.1</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#000000&quot;</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="number">1</span>
+             <span class="name">anchors</span>.top: <span class="name">parent</span>.<span class="name">top</span>
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">opacity</span>: <span class="name">control</span>.<span class="name">enabled</span> ? <span class="number">0.2</span> : <span class="number">0.1</span>
+             <span class="name">border</span>.color: <span class="string">&quot;#000000&quot;</span>
+             <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+             <span class="name">height</span>: <span class="number">1</span>
+             <span class="name">anchors</span>.bottom: <span class="name">parent</span>.<span class="name">bottom</span>
+         }
+     }
+
+     <span class="name">delegate</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Item %1&quot;</span>).<span class="name">arg</span>(<span class="name">modelData</span> <span class="operator">+</span> <span class="number">1</span>)
+         <span class="name">font</span>: <span class="name">control</span>.<span class="name">font</span>
+         <span class="name">horizontalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignHCenter</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+         <span class="name">opacity</span>: <span class="number">1.0</span> <span class="operator">-</span> <span class="name">Math</span>.<span class="name">abs</span>(<span class="name">Tumbler</span>.<span class="name">displacement</span>) <span class="operator">/</span> (<span class="name">control</span>.<span class="name">visibleItemCount</span> <span class="operator">/</span> <span class="number">2</span>)
+
+         required property <span class="type"><a href="../qtqml/qml-var.html" translate="no">var</a></span> <span class="name">modelData</span>
+         required property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">index</span>
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">anchors</span>.horizontalCenter: <span class="name">control</span>.<span class="name">horizontalCenter</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.4</span>
+         <span class="name">width</span>: <span class="number">40</span>
+         <span class="name">height</span>: <span class="number">1</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+     }
+
+     <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+         <span class="name">anchors</span>.horizontalCenter: <span class="name">control</span>.<span class="name">horizontalCenter</span>
+         <span class="name">y</span>: <span class="name">control</span>.<span class="name">height</span> <span class="operator">*</span> <span class="number">0.6</span>
+         <span class="name">width</span>: <span class="number">40</span>
+         <span class="name">height</span>: <span class="number">1</span>
+         <span class="name">color</span>: <span class="string">&quot;#21be2b&quot;</span>
+     }
+ }
+</pre>
+<p>If you want to define your own contentItem, use either a <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a> or <a href="../qtquick/qml-qtquick-pathview.html" translate="no">PathView</a> as the root item. For a wrapping Tumbler, use <a href="../qtquick/qml-qtquick-pathview.html" translate="no">PathView</a>:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-tumbler.html" translate="no">Tumbler</a></span> {
+     <span class="name">id</span>: <span class="name">tumbler</span>
+
+     <span class="name">contentItem</span>: <span class="name">PathView</span> {
+         <span class="name">id</span>: <span class="name">pathView</span>
+         <span class="name">model</span>: <span class="name">tumbler</span>.<span class="name">model</span>
+         <span class="name">delegate</span>: <span class="name">tumbler</span>.<span class="name">delegate</span>
+         <span class="name">clip</span>: <span class="number">true</span>
+         <span class="name">pathItemCount</span>: <span class="name">tumbler</span>.<span class="name">visibleItemCount</span> <span class="operator">+</span> <span class="number">1</span>
+         <span class="name">preferredHighlightBegin</span>: <span class="number">0.5</span>
+         <span class="name">preferredHighlightEnd</span>: <span class="number">0.5</span>
+         <span class="name">dragMargin</span>: <span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+
+         <span class="name">path</span>: <span class="name">Path</span> {
+             <span class="name">startX</span>: <span class="name">pathView</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+             <span class="name">startY</span>: -<span class="name">pathView</span>.<span class="name">delegateHeight</span> <span class="operator">/</span> <span class="number">2</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-pathline.html" translate="no">PathLine</a></span> {
+                 <span class="name">x</span>: <span class="name">pathView</span>.<span class="name">width</span> <span class="operator">/</span> <span class="number">2</span>
+                 <span class="name">y</span>: <span class="name">pathView</span>.<span class="name">pathItemCount</span> <span class="operator">*</span> <span class="name">pathView</span>.<span class="name">delegateHeight</span> <span class="operator">-</span> <span class="name">pathView</span>.<span class="name">delegateHeight</span> <span class="operator">/</span> <span class="number">2</span>
+             }
+         }
+
+         property <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <span class="name">delegateHeight</span>: <span class="name">tumbler</span>.<span class="name">availableHeight</span> <span class="operator">/</span> <span class="name">tumbler</span>.<span class="name">visibleItemCount</span>
+     }
+ }
+</pre>
+<p>For a non-wrapping Tumbler, use <a href="../qtquick/qml-qtquick-listview.html" translate="no">ListView</a>:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-tumbler.html" translate="no">Tumbler</a></span> {
+     <span class="name">id</span>: <span class="name">tumbler</span>
+
+     <span class="name">contentItem</span>: <span class="name">ListView</span> {
+         <span class="name">model</span>: <span class="name">tumbler</span>.<span class="name">model</span>
+         <span class="name">delegate</span>: <span class="name">tumbler</span>.<span class="name">delegate</span>
+
+         <span class="name">snapMode</span>: <span class="name">ListView</span>.<span class="name">SnapToItem</span>
+         <span class="name">highlightRangeMode</span>: <span class="name">ListView</span>.<span class="name">StrictlyEnforceRange</span>
+         <span class="name">preferredHighlightBegin</span>: <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">-</span> (<span class="name">height</span> <span class="operator">/</span> <span class="name">tumbler</span>.<span class="name">visibleItemCount</span> <span class="operator">/</span> <span class="number">2</span>)
+         <span class="name">preferredHighlightEnd</span>: <span class="name">height</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> (<span class="name">height</span> <span class="operator">/</span> <span class="name">tumbler</span>.<span class="name">visibleItemCount</span> <span class="operator">/</span> <span class="number">2</span>)
+         <span class="name">clip</span>: <span class="number">true</span>
+     }
+ }
+</pre>
+<h3 id="customizing-tableviewdelegate">Customizing TableViewDelegate</h3>
+<p><a href="qml-qtquick-controls-tableviewdelegate.html" translate="no">TableViewDelegate</a> inherits <a href="qml-qtquick-controls-itemdelegate.html" translate="no">ItemDelegate</a>, which means that it's composed of two visual items: <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> and <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>.</p>
+<p>You can always assign your own custom edit delegate to <a href="../qtquick/qml-qtquick-tableview.html#editDelegate-attached-prop" translate="no">editDelegate</a> if you have needs outside what the default edit delegate offers.</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-tableviewdelegate-custom.png" alt="" /></p><pre class="qml" translate="no">
+ <span class="name">delegate</span>: <span class="name">TableViewDelegate</span> {
+     <span class="name">id</span>: <span class="name">tableCell</span>
+
+     <span class="name">checked</span>: <span class="name">column</span> <span class="operator">===</span> <span class="number">0</span> ? <span class="name">checkBox</span>.<span class="name">checked</span> : <span class="name">tableView</span>.<span class="name">itemAtIndex</span>(<span class="name">tableView</span>.<span class="name">index</span>(<span class="name">row</span>, <span class="number">0</span>)).<span class="name">checked</span>
+     <span class="name">selected</span>: <span class="name">checked</span>
+
+     <span class="name">background</span>: <span class="name">Item</span> {
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">anchors</span>.margins: <span class="name">tableCell</span>.<span class="name">current</span> ? <span class="number">3</span> : <span class="number">1</span>
+             <span class="name">color</span>: <span class="name">tableCell</span>.<span class="name">selected</span> ? <span class="string">&quot;blue&quot;</span> : <span class="string">&quot;white&quot;</span>
+         }
+
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">color</span>: <span class="string">&quot;transparent&quot;</span>
+             <span class="name">border</span>.color: <span class="string">&quot;darkblue&quot;</span>
+             <span class="name">border</span>.width: <span class="name">tableCell</span>.<span class="name">current</span> ? <span class="number">2</span> : <span class="number">0</span>
+         }
+     }
+
+     <span class="name">contentItem</span>: <span class="name">Item</span> {
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">visible</span>: !<span class="name">tableCell</span>.<span class="name">editing</span>
+
+         <span class="type"><a href="../qtquick/qml-qtquick-layouts-rowlayout.html" translate="no">RowLayout</a></span> {
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+             <span class="type"><a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a></span> {
+                 <span class="name">id</span>: <span class="name">checkBox</span>
+                 <span class="name">implicitWidth</span>: <span class="name">height</span>
+                 <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+                 <span class="name">checked</span>: <span class="number">false</span>
+                 <span class="name">visible</span>: <span class="name">tableCell</span>.<span class="name">column</span> <span class="operator">===</span> <span class="number">0</span>
+             }
+
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+                 <span class="name">Layout</span>.leftMargin: <span class="number">4</span>
+                 <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+                 <span class="name">Layout</span>.fillHeight: <span class="number">true</span>
+                 <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+                 <span class="name">color</span>: <span class="name">tableCell</span>.<span class="name">selected</span> ? <span class="string">&quot;white&quot;</span> : <span class="string">&quot;black&quot;</span>
+                 <span class="name">text</span>: <span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">display</span>
+             }
+         }
+     }
+
+     <span class="name">TableView</span>.editDelegate: <span class="name">FocusScope</span> {
+         <span class="name">width</span>: <span class="name">parent</span>.<span class="name">width</span>
+         <span class="name">height</span>: <span class="name">parent</span>.<span class="name">height</span>
+
+         <span class="name">TableView</span>.onCommit: {
+             let qaim = <span class="name">tableCell</span>.<span class="name">tableView</span>.<span class="name">model</span>
+             <span class="keyword">if</span> (!<span class="name">qaim</span>)
+                 <span class="keyword">return</span>
+             const index = <span class="name">qaim</span>.<span class="name">index</span>(<span class="name">tableCell</span>.<span class="name">row</span>, <span class="name">tableCell</span>.<span class="name">column</span>)
+             <span class="comment">// instead of the edit role, any custom role supported by the model can be checked</span>
+             <span class="comment">// e.g. if (!tableCell.checked || !tableCell.model.customRole)</span>
+             <span class="keyword">if</span> (!<span class="name">tableCell</span>.<span class="name">checked</span> <span class="operator">||</span> !<span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">edit</span>)
+                 <span class="keyword">return</span>
+             <span class="comment">// instead of the edit role, any custom role supported by the model can be set</span>
+             <span class="comment">// e.g. tableCell.model.customRole = textField.text</span>
+             <span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">edit</span> <span class="operator">=</span> <span class="name">textField</span>.<span class="name">text</span>
+             <span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">display</span> <span class="operator">=</span> <span class="name">textField</span>.<span class="name">text</span>
+         }
+
+         <span class="name">Component</span>.onCompleted: <span class="name">textField</span>.<span class="name">selectAll</span>()
+
+         <span class="type"><a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a></span> {
+             <span class="name">id</span>: <span class="name">textField</span>
+             <span class="name">anchors</span>.fill: <span class="name">parent</span>
+             <span class="name">text</span>: <span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">edit</span> <span class="operator">??</span> <span class="name">tableCell</span>.<span class="name">model</span>.<span class="name">display</span> <span class="operator">??</span> <span class="string">&quot;&quot;</span>
+             <span class="name">focus</span>: <span class="number">true</span>
+         }
+     }
+ }
+</pre>
+</div>
+<!-- @@@qtquickcontrols-customize.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquickcontrols-fluentwinui3.html">FluentWinUI3 Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-guidelines.html">Controls</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

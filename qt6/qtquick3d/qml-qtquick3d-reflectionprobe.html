@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3dreflectionprobe.cpp -->
+  <meta name="description" content="Defines a reflection probe in the scene.">
+  <title>ReflectionProbe QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li>ReflectionProbe</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#methods">Methods</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">ReflectionProbe QML Type</h1>
+<!-- $$$ReflectionProbe-brief -->
+<p>Defines a reflection probe in the scene. <a href="#details">More...</a></p>
+<!-- @@@ReflectionProbe -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-reflectionprobe-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#boxOffset-prop" translate="no">boxOffset</a></b> : vector3d</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#boxSize-prop" translate="no">boxSize</a></b> : vector3d</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#clearColor-prop" translate="no">clearColor</a></b> : Color</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#debugView-prop" translate="no">debugView</a></b> : bool <code class="summary extra" translate="no">(since 6.4)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#parallaxCorrection-prop" translate="no">parallaxCorrection</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#quality-prop" translate="no">quality</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#refreshMode-prop" translate="no">refreshMode</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#texture-prop" translate="no">texture</a></b> : CubeMapTexture <code class="summary extra" translate="no">(since 6.5)</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#timeSlicing-prop" translate="no">timeSlicing</a></b> : enumeration</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-reflectionprobe.html#scheduleUpdate-method" translate="no">scheduleUpdate</a></b>()</li>
+</ul>
+<!-- $$$ReflectionProbe-description -->
+<h2 id="details">Detailed Description</h2>
+<p>A reflection probe is used to provide reflections of the current scene to the objects. The probe provides properties to the runtime which are then used to render the scene to a cube map. The cube map is then used as the reflection information for the reflecting objects.</p>
+<p><b>See also </b><a href="qtquick3d-reflectionprobes-example.html">Qt Quick 3D - Reflection Probes Example</a>.</p>
+<!-- @@@ReflectionProbe -->
+<h2>Property Documentation</h2>
+<!-- $$$boxOffset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="boxOffset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">boxOffset</span> : <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Box offset is used to move the box relative to the reflection probe position. Since the probe captures the environment from its position, this property can be used to move the box around without affecting the position where the probe capture the environment. This property alongside with <a href="qml-qtquick3d-reflectionprobe.html#boxSize-prop" translate="no">ReflectionProbe::boxSize</a> will be used to determine the object that fall inside the box. With <a href="qml-qtquick3d-reflectionprobe.html#parallaxCorrection-prop" translate="no">ReflectionProbe::parallaxCorrection</a> turned on, this property can be used to position the box to get more accurate reflections.</p>
+<p><b>See also </b><a href="qml-qtquick3d-reflectionprobe.html#parallaxCorrection-prop" translate="no">parallaxCorrection</a>.</p>
+</div></div><!-- @@@boxOffset -->
+<br/>
+<!-- $$$boxSize -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="boxSize-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">boxSize</span> : <span class="type"><a href="../qtquick/qml-vector3d.html" translate="no">vector3d</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Box size is used to determine which objects get their reflections from this <a href="qml-qtquick3d-reflectionprobe.html" translate="no">ReflectionProbe</a>. Objects that are inside the box are under the influence of this <a href="qml-qtquick3d-reflectionprobe.html" translate="no">ReflectionProbe</a>. If an object lies inside more than one reflection probe at the same time, the object is considered to be inside the nearest reflection probe. With <a href="qml-qtquick3d-reflectionprobe.html#parallaxCorrection-prop" translate="no">ReflectionProbe::parallaxCorrection</a> turned on the size is also used to calculate the distance of the reflections in the cube map.</p>
+<p><b>See also </b><a href="qml-qtquick3d-reflectionprobe.html#parallaxCorrection-prop" translate="no">parallaxCorrection</a>.</p>
+</div></div><!-- @@@boxSize -->
+<br/>
+<!-- $$$clearColor -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="clearColor-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">clearColor</span> : <span class="type">Color</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Clear color is the color used to clear the cube map prior rendering the scene.</p>
+</div></div><!-- @@@clearColor -->
+<br/>
+<!-- $$$debugView -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="debugView-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">debugView</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[since 6.4]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>If this property is set to true, a wireframe is rendered to visualize the reflection probe box.</p>
+<p>This property was introduced in Qt 6.4.</p>
+</div></div><!-- @@@debugView -->
+<br/>
+<!-- $$$parallaxCorrection -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="parallaxCorrection-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">parallaxCorrection</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>By default the reflections provided by the reflection probe are assumed to be from an infinite distance similar to the skybox. This works fine for environmental reflections but for tight spaces this causes perspective errors in the reflections. To fix this parallax correction can be turned on. The distance of the reflection is then determined by the <a href="qml-qtquick3d-reflectionprobe.html#boxSize-prop" translate="no">ReflectionProbe::boxSize</a> property.</p>
+<p><b>See also </b><a href="qml-qtquick3d-reflectionprobe.html#boxSize-prop" translate="no">boxSize</a>.</p>
+</div></div><!-- @@@parallaxCorrection -->
+<br/>
+<!-- $$$quality -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="quality-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">quality</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Quality determines the resolution of the cube map.</p>
+<p>Possible values are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.VeryLow</code></td><td class="topAlign">Renders a reflection map using a 128x128 texture.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.Low</code></td><td class="topAlign">Renders a reflection map using a 256x256 texture.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.Medium</code></td><td class="topAlign">Renders a reflection map using a 512x512 texture.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.High</code></td><td class="topAlign">Renders a reflection map using a 1024x1024 texture.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.VeryHigh</code></td><td class="topAlign">Renders a reflection map using a 2048x2048 texture.</td></tr>
+</table></div>
+<p>The default value is <code translate="no">ReflectionProbe.Low</code></p>
+</div></div><!-- @@@quality -->
+<br/>
+<!-- $$$refreshMode -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="refreshMode-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">refreshMode</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Refresh mode tells the runtime how often the cube map should be updated.</p>
+<p>Possible values are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.FirstFrame</code></td><td class="topAlign">Renders the scene on the first frame.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.EveryFrame</code></td><td class="topAlign">Renders the scene every frame.</td></tr>
+</table></div>
+<p>The default value is <code translate="no">ReflectionProbe.EveryFrame</code></p>
+<div class="admonition note">
+<p><b>Note: </b>Use <code translate="no">ReflectionProbe.FirstFrame</code> for improved performance.</p>
+</div>
+</div></div><!-- @@@refreshMode -->
+<br/>
+<!-- $$$texture -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="texture-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">texture</span> : <span class="type"><a href="qml-qtquick3d-cubemaptexture.html" translate="no">CubeMapTexture</a></span> <code class="details extra" translate="no">[since 6.5]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Instead of rendering the scene, this cube map texture is used to show reflections in objects affected by this reflection probe.</p>
+<p>This property was introduced in Qt 6.5.</p>
+<p><b>See also </b><a href="qml-qtquick3d-cubemaptexture.html" translate="no">CubeMapTexture</a>.</p>
+</div></div><!-- @@@texture -->
+<br/>
+<!-- $$$timeSlicing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="timeSlicing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">timeSlicing</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Time slicing determines how the cube map render is timed.</p>
+<p>Possible values are:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.None</code></td><td class="topAlign">All faces of the cube map are rendered and prefiltered during one frame.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.AllFacesAtOnce</code></td><td class="topAlign">All faces are rendered during one frame but the prefiltering is divided to subsquent frames with each mip level handled on their own frame. Rough surface reflections are thus refreshed every sixth frame while smooth surfaces have reflections that refresh every frame.</td></tr>
+<tr><td class="topAlign"><code translate="no">ReflectionProbe.IndividualFaces</code></td><td class="topAlign">Each face is rendered and prefiltered in a separate frame. Thus all reflections are refreshed every sixth frame.</td></tr>
+</table></div>
+<p>The default value is <code translate="no">ReflectionProbe.None</code></p>
+<div class="admonition note">
+<p><b>Note: </b>Use <code translate="no">ReflectionProbe.AllFacesAtOnce</code> or <code translate="no">ReflectionProbe.IndividualFaces</code> to increase performance.</p>
+</div>
+</div></div><!-- @@@timeSlicing -->
+<br/>
+<h2>Method Documentation</h2>
+<!-- $$$scheduleUpdate[overload1]$$$scheduleUpdate -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="scheduleUpdate-method">
+<td class="tblQmlFuncNode"><p>
+<span class="name">scheduleUpdate</span>()</p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Updates the reflection probe render when called while <a href="qml-qtquick3d-reflectionprobe.html#refreshMode-prop" translate="no">ReflectionProbe::refreshMode</a> is set as <code translate="no">ReflectionProbe.FirstFrame</code>.</p>
+</div></div><!-- @@@scheduleUpdate -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

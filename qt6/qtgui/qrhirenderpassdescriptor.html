@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qrhi.cpp -->
+  <meta name="description" content="Render pass resource.">
+  <title>QRhiRenderPassDescriptor Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li><a href="qtguiprivate-module.html" translate="no">QtGuiPrivate</a></li>
+<li>QRhiRenderPassDescriptor</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QRhiRenderPassDescriptor Class</h1>
+<!-- $$$QRhiRenderPassDescriptor-brief -->
+<p>Render pass resource. <a href="#details">More...</a></p>
+<!-- @@@QRhiRenderPassDescriptor -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;rhi/qrhi.h&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::GuiPrivate)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui-private</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.6</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qrhiresource.html" translate="no">QRhiResource</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qrhirenderpassdescriptor-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">isCompatible</a></b>(const QRhiRenderPassDescriptor *<i>other</i>) const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual const QRhiNativeHandles *</td><td class="memItemRight bottomAlign"><b><a href="qrhirenderpassdescriptor.html#nativeHandles" translate="no">nativeHandles</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QRhiRenderPassDescriptor *</td><td class="memItemRight bottomAlign"><b><a href="qrhirenderpassdescriptor.html#newCompatibleRenderPassDescriptor" translate="no">newCompatibleRenderPassDescriptor</a></b>() const = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QVector&lt;quint32&gt; </td><td class="memItemRight bottomAlign"><b><a href="qrhirenderpassdescriptor.html#serializedFormat" translate="no">serializedFormat</a></b>() const = 0</td></tr>
+</table></div>
+<h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QRhiResource::Type </td><td class="memItemRight bottomAlign"><b><a href="qrhirenderpassdescriptor.html#resourceType" translate="no">resourceType</a></b>() const override</td></tr>
+</table></div>
+<!-- $$$QRhiRenderPassDescriptor-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A render pass, if such a concept exists in the underlying graphics API, is a collection of attachments (color, depth, stencil) and describes how those attachments are used.</p>
+<div class="admonition note">
+<p><b>Note: </b>This is a RHI API with limited compatibility guarantees, see <a href="qrhi.html" translate="no">QRhi</a> for details.</p>
+</div>
+</div>
+<!-- @@@QRhiRenderPassDescriptor -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$isCompatible[overload1]$$$isCompatibleconstQRhiRenderPassDescriptor* -->
+<h3 class="fn" translate="no" id="isCompatible"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">bool</span> QRhiRenderPassDescriptor::<span class="name">isCompatible</span>(const <span class="type">QRhiRenderPassDescriptor</span> *<i>other</i>) const</h3>
+<p>Returns true if the <i translate="no">other</i> <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> is compatible with this one, meaning <code translate="no">this</code> and <i translate="no">other</i> can be used interchangebly in <a href="qrhigraphicspipeline.html#setRenderPassDescriptor" translate="no">QRhiGraphicsPipeline::setRenderPassDescriptor</a>().</p>
+<p>The concept of the compatibility of renderpass descriptors is similar to the <a href="qrhishaderresourcebindings.html#isLayoutCompatible" translate="no">layout compatibility</a> of <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a> instances. They allow better reuse of <a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a> instances: for example, a <a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a> instance cache is expected to use these functions to look for a matching pipeline, instead of just comparing pointers, thus allowing a different <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> and <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a> to be used in combination with the pipeline, as long as they are compatible.</p>
+<p>The exact details of compatibility depend on the underlying graphics API. Two renderpass descriptors <a href="qrhitexturerendertarget.html#newCompatibleRenderPassDescriptor" translate="no">created</a> from the same <a href="qrhitexturerendertarget.html" translate="no">QRhiTextureRenderTarget</a> are always compatible.</p>
+<p>Similarly to <a href="qrhishaderresourcebindings.html" translate="no">QRhiShaderResourceBindings</a>, compatibility can also be tested without having two existing objects available. Extracting the opaque blob by calling <a href="qrhirenderpassdescriptor.html#serializedFormat" translate="no">serializedFormat</a>() allows testing for compatibility by comparing the returned vector to another <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a>'s <a href="qrhirenderpassdescriptor.html#serializedFormat" translate="no">serializedFormat</a>(). This has benefits in certain situations, because it allows testing the compatibility of a <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> with a <a href="qrhigraphicspipeline.html" translate="no">QRhiGraphicsPipeline</a> even when the <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> the pipeline was originally built was is no longer available (but the data returned from its <a href="qrhirenderpassdescriptor.html#serializedFormat" translate="no">serializedFormat</a>() still is).</p>
+<p><b>See also </b><a href="qrhirenderpassdescriptor.html#newCompatibleRenderPassDescriptor" translate="no">newCompatibleRenderPassDescriptor</a>() and <a href="qrhirenderpassdescriptor.html#serializedFormat" translate="no">serializedFormat</a>().</p>
+<!-- @@@isCompatible -->
+<!-- $$$nativeHandles[overload1]$$$nativeHandles -->
+<h3 class="fn" translate="no" id="nativeHandles"><code class="details extra" translate="no">[virtual]</code> const <span class="type"><a href="qrhinativehandles.html" translate="no">QRhiNativeHandles</a></span> *QRhiRenderPassDescriptor::<span class="name">nativeHandles</span>()</h3>
+<p>Returns a pointer to a backend-specific <a href="qrhinativehandles.html" translate="no">QRhiNativeHandles</a> subclass, such as <a href="qrhivulkanrenderpassnativehandles.html" translate="no">QRhiVulkanRenderPassNativeHandles</a>. The returned value is <code translate="no">nullptr</code> when exposing the underlying native resources is not supported by the backend.</p>
+<p><b>See also </b><a href="qrhivulkanrenderpassnativehandles.html" translate="no">QRhiVulkanRenderPassNativeHandles</a>.</p>
+<!-- @@@nativeHandles -->
+<!-- $$$newCompatibleRenderPassDescriptor[overload1]$$$newCompatibleRenderPassDescriptor -->
+<h3 class="fn" translate="no" id="newCompatibleRenderPassDescriptor"><code class="details extra" translate="no">[pure virtual]</code> <span class="type">QRhiRenderPassDescriptor</span> *QRhiRenderPassDescriptor::<span class="name">newCompatibleRenderPassDescriptor</span>() const</h3>
+<p>Returns a new <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> that is <a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">compatible</a> with this one.</p>
+<p>This function allows cloning a <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a>. The returned object is ready to be used, and the ownership is transferred to the caller. Cloning a <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> object can become useful in situations where the object is stored in data structures related to graphics pipelines (in order to allow creating new pipelines which in turn requires a renderpass descriptor object), and the lifetime of the renderpass descriptor created from a render target may be shorter than the pipelines. (for example, because the engine manages and destroys renderpasses together with the textures and render targets it was created from) In such a situation, it can be beneficial to store a cloned version in the data structures, and thus transferring ownership as well.</p>
+<p><b>See also </b><a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">isCompatible</a>().</p>
+<!-- @@@newCompatibleRenderPassDescriptor -->
+<!-- $$$resourceType[overload1]$$$resourceType -->
+<h3 class="fn" translate="no" id="resourceType"><code class="details extra" translate="no">[override virtual]</code> <span class="type"><a href="qrhiresource.html#Type-enum" translate="no">QRhiResource::Type</a></span> QRhiRenderPassDescriptor::<span class="name">resourceType</span>() const</h3>
+<p>Reimplements: <a href="qrhiresource.html#resourceType" translate="no">QRhiResource::resourceType</a>() const.</p>
+<p>Returns the resource type.</p>
+<!-- @@@resourceType -->
+<!-- $$$serializedFormat[overload1]$$$serializedFormat -->
+<h3 class="fn" translate="no" id="serializedFormat"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="../qtcore/qvector.html" translate="no">QVector</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span>&gt; QRhiRenderPassDescriptor::<span class="name">serializedFormat</span>() const</h3>
+<p>Returns a vector of integers containing an opaque blob describing the data relevant for <a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">compatibility</a>.</p>
+<p>Given two <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> objects <code translate="no">rp1</code> and <code translate="no">rp2</code>, if the data returned from this function is identical, then <code translate="no">rp1-&gt;isCompatible(rp2)</code>, and vice versa hold true as well.</p>
+<div class="admonition note">
+<p><b>Note: </b>The returned data is meant to be used for storing in memory and comparisons during the lifetime of the <a href="qrhi.html" translate="no">QRhi</a> the object belongs to. It is not meant for storing on disk, reusing between processes, or using with multiple <a href="qrhi.html" translate="no">QRhi</a> instances with potentially different backends.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Calling this function is expected to be a cheap operation since the backends are not supposed to calculate the data in this function, but rather return an already calculated series of data.</p>
+</div>
+<p>When creating reusable components as part of a library, where graphics pipelines are created and maintained while targeting a <a href="qrhirendertarget.html" translate="no">QRhiRenderTarget</a> (be it a swapchain or a texture) managed by the client of the library, the components must be able to deal with a changing <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a>. For example, because the render target changes and so invalidates the previously <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a> (with regards to the new render target at least) due to having a potentially different color format and attachments now. Or because <a href="qrhishadingratemap.html" translate="no">variable rate shading</a> is taken into use dynamically. A simple pattern that helps dealing with this is performing the following check on every frame, to recognize the case when the pipeline needs to be associated with a new <a href="qrhirenderpassdescriptor.html" translate="no">QRhiRenderPassDescriptor</a>, because something is different about the render target now, compared to earlier frames:</p>
+<pre class="cpp" translate="no">
+ <span class="type">QRhiRenderPassDescriptor</span> <span class="operator">*</span>rp <span class="operator">=</span> m_renderTarget<span class="operator">-</span><span class="operator">&gt;</span>renderPassDescriptor();
+ <span class="keyword">if</span> (m_pipeline <span class="operator">&amp;</span><span class="operator">&amp;</span> rp<span class="operator">-</span><span class="operator">&gt;</span>serializedFormat() <span class="operator">!</span><span class="operator">=</span> m_renderPassFormat) {
+     m_pipeline<span class="operator">-</span><span class="operator">&gt;</span>setRenderPassDescriptor(rp);
+     m_renderPassFormat <span class="operator">=</span> rp<span class="operator">-</span><span class="operator">&gt;</span>serializedFormat();
+     m_pipeline<span class="operator">-</span><span class="operator">&gt;</span>create();
+ }
+ <span class="comment">// remember to store m_renderPassFormat also when creating m_pipeline the first time</span>
+</pre>
+<p><b>See also </b><a href="qrhirenderpassdescriptor.html#isCompatible" translate="no">isCompatible</a>().</p>
+<!-- @@@serializedFormat -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

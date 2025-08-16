@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qjnienvironment.cpp -->
+  <meta name="description" content="The QJniEnvironment class provides access to the JNI Environment (JNIEnv).">
+  <title>Obsolete Members for QJniEnvironment | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QJniEnvironment</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Obsolete Members for QJniEnvironment</h1>
+<p><b>The following members of class <a href="qjnienvironment.html" translate="no">QJniEnvironment</a> are deprecated.</b> They are provided to keep old source code working. We strongly advise against using them in new code.</p>
+<h2>Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(deprecated in 6.2)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qjnienvironment-obsolete.html#registerNativeMethods-3" translate="no">registerNativeMethods</a></b>(const char *<i>className</i>, JNINativeMethod[] <i>methods</i>, int <i>size</i>)</td></tr>
+</table></div>
+<h2>Member Function Documentation</h2>
+<!-- $$$registerNativeMethods$$$registerNativeMethodsconstchar*JNINativeMethod[]int -->
+<h3 class="fn" translate="no" id="registerNativeMethods-3"><code class="details extra" translate="no">[deprecated in 6.2]</code> <span class="type">bool</span> QJniEnvironment::<span class="name">registerNativeMethods</span>(const <span class="type">char</span> *<i>className</i>, <span class="type">JNINativeMethod</span>[] <i>methods</i>, <span class="type">int</span> <i>size</i>)</h3>
+<p>This function is deprecated since 6.2. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use the overload with a const JNINativeMethod[] instead.</p>
+<p>Registers the Java methods in the array <i translate="no">methods</i> of size <i translate="no">size</i>, each of which can call native C++ functions from class <i translate="no">className</i>. These methods must be registered before any attempt to call them.</p>
+<p>Returns <code translate="no">true</code> if the registration is successful, otherwise <code translate="no">false</code>.</p>
+<p>Each element in the methods array consists of:</p>
+<ul>
+<li>The Java method name</li>
+<li>Method signature</li>
+<li>The C++ functions that will be executed</li>
+</ul>
+<pre class="cpp" translate="no">
+ JNINativeMethod methods<span class="operator">[</span><span class="operator">]</span> <span class="operator">=</span> {{<span class="string">&quot;callNativeOne&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="type">void</span> <span class="operator">*</span><span class="operator">&gt;</span>(fromJavaOne)}<span class="operator">,</span>
+                              {<span class="string">&quot;callNativeTwo&quot;</span><span class="operator">,</span> <span class="string">&quot;(I)V&quot;</span><span class="operator">,</span> <span class="keyword">reinterpret_cast</span><span class="operator">&lt;</span><span class="type">void</span> <span class="operator">*</span><span class="operator">&gt;</span>(fromJavaTwo)}};
+ <span class="type"><a href="qjnienvironment.html#QJniEnvironment" translate="no">QJniEnvironment</a></span> env;
+ env<span class="operator">.</span>registerNativeMethods(<span class="string">&quot;org/qtproject/android/TestJavaClass&quot;</span><span class="operator">,</span> methods<span class="operator">,</span> <span class="number">2</span>);
+</pre>
+<!-- @@@registerNativeMethods -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

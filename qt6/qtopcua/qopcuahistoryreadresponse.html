@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuahistoryreadresponse.cpp -->
+  <meta name="description" content="This class is used for requesting historical data and storing the results.">
+  <title>QOpcUaHistoryReadResponse Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaHistoryReadResponse</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaHistoryReadResponse Class</h1>
+<!-- $$$QOpcUaHistoryReadResponse-brief -->
+<p>This class is used for requesting historical data and storing the results. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaHistoryReadResponse -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaHistoryReadResponse&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.3</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuahistoryreadresponse-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum class </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#State-enum" translate="no">State</a></b> { Unknown, Reading, Finished, MoreDataAvailable, Error }</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#dtor.QOpcUaHistoryReadResponse" translate="no">~QOpcUaHistoryReadResponse</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QOpcUaHistoryData&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#data" translate="no">data</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QList&lt;QOpcUaHistoryEvent&gt; </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#events" translate="no">events</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#hasMoreData" translate="no">hasMoreData</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#readMoreData" translate="no">readMoreData</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#releaseContinuationPoints" translate="no">releaseContinuationPoints</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::UaStatusCode </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#serviceResult" translate="no">serviceResult</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaHistoryReadResponse::State </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#state" translate="no">state</a></b>() const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#readHistoryDataFinished" translate="no">readHistoryDataFinished</a></b>(const QList&lt;QOpcUaHistoryData&gt; &amp;<i>results</i>, QOpcUa::UaStatusCode <i>serviceResult</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#readHistoryEventsFinished" translate="no">readHistoryEventsFinished</a></b>(const QList&lt;QOpcUaHistoryEvent&gt; &amp;<i>results</i>, QOpcUa::UaStatusCode <i>serviceResult</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuahistoryreadresponse.html#stateChanged" translate="no">stateChanged</a></b>(QOpcUaHistoryReadResponse::State <i>state</i>)</td></tr>
+</table></div>
+<!-- $$$QOpcUaHistoryReadResponse-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>A historical data request to an OPC UA server can be specified by a <a href="qopcuahistoryreadrawrequest.html" translate="no">QOpcUaHistoryReadRawRequest</a> or <a href="qopcuahistoryreadeventrequest.html" translate="no">QOpcUaHistoryReadEventRequest</a>.</p>
+<p>Objects of this class and the statuscode of the request are returned in the <a href="qopcuahistoryreadresponse.html#readHistoryDataFinished" translate="no">QOpcUaHistoryReadResponse::readHistoryDataFinished</a>(const QList&lt;QOpcUaHistoryData&gt; &amp;results, QOpcUa::UaStatusCode serviceResult) or <a href="qopcuahistoryreadresponse.html#readHistoryEventsFinished" translate="no">QOpcUaHistoryReadResponse::readHistoryEventsFinished</a>(const QList&lt;QOpcUaHistoryEvent&gt; &amp;results, QOpcUa::UaStatusCode serviceResult) signal depending on the request type and contain the result of a request.</p>
+</div>
+<!-- @@@QOpcUaHistoryReadResponse -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$State$$$Unknown$$$Reading$$$Finished$$$MoreDataAvailable$$$Error -->
+<h3 class="fn" translate="no" id="State-enum">enum class QOpcUaHistoryReadResponse::<span class="name">State</span></h3>
+<p>This enum specifies the state the response is in.</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaHistoryReadResponse::State::Unknown</code></td><td class="topAlign tblval"><code translate="no">0</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaHistoryReadResponse::State::Reading</code></td><td class="topAlign tblval"><code translate="no">1</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaHistoryReadResponse::State::Finished</code></td><td class="topAlign tblval"><code translate="no">2</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaHistoryReadResponse::State::MoreDataAvailable</code></td><td class="topAlign tblval"><code translate="no">3</code></td></tr>
+<tr><td class="topAlign"><code translate="no">QOpcUaHistoryReadResponse::State::Error</code></td><td class="topAlign tblval"><code translate="no">4</code></td></tr>
+</table></div>
+<!-- @@@State -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$~QOpcUaHistoryReadResponse[overload1]$$$~QOpcUaHistoryReadResponse -->
+<h3 class="fn" translate="no" id="dtor.QOpcUaHistoryReadResponse"><code class="details extra" translate="no">[virtual noexcept]</code> QOpcUaHistoryReadResponse::<span class="name">~QOpcUaHistoryReadResponse</span>()</h3>
+<p>The destructor for <a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></p>
+<!-- @@@~QOpcUaHistoryReadResponse -->
+<!-- $$$data[overload1]$$$data -->
+<h3 class="fn" translate="no" id="data"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuahistorydata.html" translate="no">QOpcUaHistoryData</a></span>&gt; QOpcUaHistoryReadResponse::<span class="name">data</span>() const</h3>
+<p>Returns a list which contains the requested historic data.</p>
+<!-- @@@data -->
+<!-- $$$events[overload1]$$$events -->
+<h3 class="fn" translate="no" id="events"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuahistoryevent.html" translate="no">QOpcUaHistoryEvent</a></span>&gt; QOpcUaHistoryReadResponse::<span class="name">events</span>() const</h3>
+<p>Returns a list of <a href="qopcuahistoryevent.html" translate="no">QOpcUaHistoryEvent</a> containing a list of events for every node to read in the request.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@events -->
+<!-- $$$hasMoreData[overload1]$$$hasMoreData -->
+<h3 class="fn" translate="no" id="hasMoreData"><span class="type">bool</span> QOpcUaHistoryReadResponse::<span class="name">hasMoreData</span>() const</h3>
+<p>Returns <code translate="no">true</code> if there are more values available from the historic data request.</p>
+<!-- @@@hasMoreData -->
+<!-- $$$readHistoryDataFinished[overload1]$$$readHistoryDataFinishedconstQList<QOpcUaHistoryData>&QOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="readHistoryDataFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaHistoryReadResponse::<span class="name">readHistoryDataFinished</span>(const <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuahistorydata.html" translate="no">QOpcUaHistoryData</a></span>&gt; &amp;<i>results</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>serviceResult</i>)</h3>
+<p>This signal is emitted when a historical data request is finished. It adds to <i translate="no">results</i> and sets <i translate="no">serviceResult</i> to indicate the state of the result.</p>
+<p><b>See also </b><a href="qopcuahistoryreadresponse.html#data" translate="no">data</a>() and <a href="qopcuahistoryreadresponse.html#serviceResult" translate="no">serviceResult</a>().</p>
+<!-- @@@readHistoryDataFinished -->
+<!-- $$$readHistoryEventsFinished[overload1]$$$readHistoryEventsFinishedconstQList<QOpcUaHistoryEvent>&QOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="readHistoryEventsFinished"><code class="details extra" translate="no">[signal, since 6.7]</code> <span class="type">void</span> QOpcUaHistoryReadResponse::<span class="name">readHistoryEventsFinished</span>(const <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuahistoryevent.html" translate="no">QOpcUaHistoryEvent</a></span>&gt; &amp;<i>results</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>serviceResult</i>)</h3>
+<p>This signal is emitted when a historical event request is finished. The new history data and any previous data is returned in <i translate="no">results</i> and <i translate="no">serviceResult</i> indicates the state of the result.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuahistoryreadresponse.html#events" translate="no">events</a>() and <a href="qopcuahistoryreadresponse.html#serviceResult" translate="no">serviceResult</a>().</p>
+<!-- @@@readHistoryEventsFinished -->
+<!-- $$$readMoreData[overload1]$$$readMoreData -->
+<h3 class="fn" translate="no" id="readMoreData"><span class="type">bool</span> QOpcUaHistoryReadResponse::<span class="name">readMoreData</span>()</h3>
+<p>Returns <code translate="no">true</code> if a read request for more historic values is successfully dispatched.</p>
+<!-- @@@readMoreData -->
+<!-- $$$releaseContinuationPoints[overload1]$$$releaseContinuationPoints -->
+<h3 class="fn" translate="no" id="releaseContinuationPoints"><span class="type">bool</span> QOpcUaHistoryReadResponse::<span class="name">releaseContinuationPoints</span>()</h3>
+<p>Releases the continuation points and sets the request as finished. Returns <code translate="no">true</code> if the pending request has been successfully finished; otherwise returns false.</p>
+<!-- @@@releaseContinuationPoints -->
+<!-- $$$serviceResult[overload1]$$$serviceResult -->
+<h3 class="fn" translate="no" id="serviceResult"><span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> QOpcUaHistoryReadResponse::<span class="name">serviceResult</span>() const</h3>
+<p>Returns the serviceresult of the historic data request.</p>
+<!-- @@@serviceResult -->
+<!-- $$$state[overload1]$$$state -->
+<h3 class="fn" translate="no" id="state"><span class="type"><a href="qopcuahistoryreadresponse.html#State-enum" translate="no">QOpcUaHistoryReadResponse::State</a></span> QOpcUaHistoryReadResponse::<span class="name">state</span>() const</h3>
+<p>Returns the current state of historic data request.</p>
+<!-- @@@state -->
+<!-- $$$stateChanged[overload1]$$$stateChangedQOpcUaHistoryReadResponse::State -->
+<h3 class="fn" translate="no" id="stateChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaHistoryReadResponse::<span class="name">stateChanged</span>(<span class="type"><a href="qopcuahistoryreadresponse.html#State-enum" translate="no">QOpcUaHistoryReadResponse::State</a></span> <i>state</i>)</h3>
+<p>This signal is emitted when the of a historical data request is changed. It sets <i translate="no">state</i> to indicate the state of the change.</p>
+<!-- @@@stateChanged -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qabstracthttpserver.cpp -->
+  <meta name="description" content="API to subclass to implement an HTTP server.">
+  <title>QAbstractHttpServer Class | Qt HTTP Server | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qthttpserver-index.html">Qt HTTP Server</a></li>
+<li><a href="qthttpserver-module.html" translate="no">C++ Classes</a></li>
+<li>QAbstractHttpServer</li>
+<li id="buildversion"><a href="qthttpserver-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#protected-functions">Protected Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QAbstractHttpServer Class</h1>
+<!-- $$$QAbstractHttpServer-brief -->
+<p>API to subclass to implement an HTTP server. <a href="#details">More...</a></p>
+<!-- @@@QAbstractHttpServer -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QAbstractHttpServer&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS HttpServer)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::HttpServer)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += httpserver</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.4</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qhttpserver.html" translate="no">QHttpServer</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qabstracthttpserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#QAbstractHttpServer" translate="no">QAbstractHttpServer</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#dtor.QAbstractHttpServer" translate="no">~QAbstractHttpServer</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#addWebSocketUpgradeVerifier" translate="no">addWebSocketUpgradeVerifier</a></b>(const QObject *<i>context</i>, Handler &amp;&amp;<i>func</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#bind" translate="no">bind</a></b>(QLocalServer *<i>server</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#bind-1" translate="no">bind</a></b>(QTcpServer *<i>server</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> QHttpServerConfiguration </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#configuration" translate="no">configuration</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#hasPendingWebSocketConnections" translate="no">hasPendingWebSocketConnections</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> QHttp2Configuration </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#http2Configuration" translate="no">http2Configuration</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QLocalServer *&gt; </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#localServers" translate="no">localServers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> std::unique_ptr&lt;QWebSocket&gt; </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#nextPendingWebSocketConnection" translate="no">nextPendingWebSocketConnection</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;quint16&gt; </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#serverPorts" translate="no">serverPorts</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QTcpServer *&gt; </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#servers" translate="no">servers</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.9)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#setConfiguration" translate="no">setConfiguration</a></b>(const QHttpServerConfiguration &amp;<i>config</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.8)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#setHttp2Configuration" translate="no">setHttp2Configuration</a></b>(const QHttp2Configuration &amp;<i>configuration</i>)</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#newWebSocketConnection" translate="no">newWebSocketConnection</a></b>()</td></tr>
+</table></div>
+<h2 id="protected-functions">Protected Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual bool </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a></b>(const QHttpServerRequest &amp;<i>request</i>, QHttpServerResponder &amp;<i>responder</i>) = 0</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qabstracthttpserver.html#missingHandler" translate="no">missingHandler</a></b>(const QHttpServerRequest &amp;<i>request</i>, QHttpServerResponder &amp;<i>responder</i>) = 0</td></tr>
+</table></div>
+<!-- $$$QAbstractHttpServer-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Subclass this class and override <a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a>() and <a href="qabstracthttpserver.html#missingHandler" translate="no">missingHandler</a>() to create an HTTP server. Use <a href="qabstracthttpserver.html#bind" translate="no">bind</a>() to start listening to all the incoming connections to a server.</p>
+<p>This is a low level API, see <a href="qhttpserver.html" translate="no">QHttpServer</a> for a higher level API to implement an HTTP server.</p>
+</div>
+<!-- @@@QAbstractHttpServer -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QAbstractHttpServer[overload1]$$$QAbstractHttpServerQObject* -->
+<h3 class="fn" translate="no" id="QAbstractHttpServer"><code class="details extra" translate="no">[explicit]</code> QAbstractHttpServer::<span class="name">QAbstractHttpServer</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Creates an instance of QAbstractHttpServer with the parent <i translate="no">parent</i>.</p>
+<!-- @@@QAbstractHttpServer -->
+<!-- $$$~QAbstractHttpServer[overload1]$$$~QAbstractHttpServer -->
+<h3 class="fn" translate="no" id="dtor.QAbstractHttpServer"><code class="details extra" translate="no">[override virtual noexcept]</code> QAbstractHttpServer::<span class="name">~QAbstractHttpServer</span>()</h3>
+<p>Destroys an instance of <a href="qabstracthttpserver.html" translate="no">QAbstractHttpServer</a>.</p>
+<!-- @@@~QAbstractHttpServer -->
+<!-- $$$addWebSocketUpgradeVerifier[overload1]$$$addWebSocketUpgradeVerifierconstQObject*Handler&& -->
+<h3 class="fn" translate="no" id="addWebSocketUpgradeVerifier"><code class="details extra" translate="no">[since 6.8]</code> template &lt;typename Handler&gt; <span class="type">void</span> QAbstractHttpServer::<span class="name">addWebSocketUpgradeVerifier</span>(const <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>context</i>, <span class="type">Handler</span> &amp;&amp;<i>func</i>)</h3>
+<p>Adds a callback function <i translate="no">func</i> that verifies incoming WebSocket upgrades. It is called using the provided <i translate="no">context</i> object. An upgrade succeeds if at least one registered callback returns <a href="qhttpserverwebsocketupgraderesponse.html#ResponseType-enum" translate="no">Accept</a> and no prior callback has returned <a href="qhttpserverwebsocketupgraderesponse.html#ResponseType-enum" translate="no">Deny</a>. If no callbacks are registered, or all return <a href="qhttpserverwebsocketupgraderesponse.html#ResponseType-enum" translate="no">PassToNext</a>, the <a href="qabstracthttpserver.html#missingHandler" translate="no">missingHandler</a>() function is called. Callbacks are executed in the order they were registered, and they cannot call this function themselves.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <i translate="no">func</i> has to implement the signature <code translate="no">QHttpServerWebSocketUpgradeResponse (*)(const QHttpServerRequest &amp;)</code>.</p>
+</div>
+<pre class="cpp" translate="no">
+ server<span class="operator">.</span>addWebSocketUpgradeVerifier(
+         <span class="operator">&amp;</span>server<span class="operator">,</span> <span class="operator">[</span><span class="operator">]</span>(<span class="keyword">const</span> <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> <span class="operator">&amp;</span>request) {
+             <span class="keyword">if</span> (request<span class="operator">.</span>url()<span class="operator">.</span>path() <span class="operator">=</span><span class="operator">=</span> <span class="string">&quot;/allowed&quot;</span>_L1)
+                 <span class="keyword">return</span> <span class="type"><a href="qhttpserverwebsocketupgraderesponse.html" translate="no">QHttpServerWebSocketUpgradeResponse</a></span><span class="operator">::</span>accept();
+             <span class="keyword">else</span>
+                 <span class="keyword">return</span> <span class="type"><a href="qhttpserverwebsocketupgraderesponse.html" translate="no">QHttpServerWebSocketUpgradeResponse</a></span><span class="operator">::</span>passToNext();
+         });
+</pre>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a>, <a href="qhttpserverwebsocketupgraderesponse.html" translate="no">QHttpServerWebSocketUpgradeResponse</a>, <a href="qabstracthttpserver.html#hasPendingWebSocketConnections" translate="no">hasPendingWebSocketConnections</a>(), <a href="qabstracthttpserver.html#nextPendingWebSocketConnection" translate="no">nextPendingWebSocketConnection</a>(), <a href="qabstracthttpserver.html#newWebSocketConnection" translate="no">newWebSocketConnection</a>(), and <a href="qabstracthttpserver.html#missingHandler" translate="no">missingHandler</a>().</p>
+<!-- @@@addWebSocketUpgradeVerifier -->
+<!-- $$$bind[overload1]$$$bindQLocalServer* -->
+<h3 class="fn" translate="no" id="bind"><span class="type">bool</span> QAbstractHttpServer::<span class="name">bind</span>(<span class="type"><a href="../qtnetwork/qlocalserver.html" translate="no">QLocalServer</a></span> *<i>server</i>)</h3>
+<p>Bind the given <a href="../qtnetwork/qlocalserver.html" translate="no">QLocalServer</a> <i translate="no">server</i>, over which the transmission happens, to the HTTP server. It is possible to call this function multiple times with different instances of <i translate="no">server</i> to handle multiple connections.</p>
+<p>After calling this function, every <i>new</i> connection will be handled and forwarded by the HTTP server.</p>
+<p>It is the user's responsibility to call <a href="../qtnetwork/qlocalserver.html#listen" translate="no">QLocalServer::listen</a>() on the <i translate="no">server</i> before calling this function. If <i translate="no">server</i> is not listening, nothing will happen and <code translate="no">false</code> will be returned.</p>
+<p>If the <i translate="no">server</i> is nullptr false is returned.</p>
+<p>If successful the <i translate="no">server</i> will be parented to this HTTP server and <code translate="no">true</code> is returned.</p>
+<p><b>See also </b><a href="../qtnetwork/qlocalserver.html" translate="no">QLocalServer</a> and <a href="../qtnetwork/qlocalserver.html#listen" translate="no">QLocalServer::listen</a>().</p>
+<!-- @@@bind -->
+<!-- $$$bind$$$bindQTcpServer* -->
+<h3 class="fn" translate="no" id="bind-1"><span class="type">bool</span> QAbstractHttpServer::<span class="name">bind</span>(<span class="type"><a href="../qtnetwork/qtcpserver.html" translate="no">QTcpServer</a></span> *<i>server</i>)</h3>
+<p>Bind the given TCP <i translate="no">server</i>, over which the transmission happens, to the HTTP server. It is possible to call this function multiple times with different instances of TCP <i translate="no">server</i> to handle multiple connections and ports, for example both SSL and non-encrypted connections.</p>
+<p>After calling this function, every <i>new</i> connection will be handled and forwarded by the HTTP server.</p>
+<p>It is the user's responsibility to call <a href="../qtnetwork/qtcpserver.html#listen" translate="no">QTcpServer::listen</a>() on the <i translate="no">server</i> before calling this function. If <i translate="no">server</i> is not listening, nothing will happen and <code translate="no">false</code> will be returned.</p>
+<p>If successful the <i translate="no">server</i> will be parented to this HTTP server and <code translate="no">true</code> is returned.</p>
+<p>To allow usage of HTTP 2, bind to a <a href="../qtnetwork/qsslserver.html" translate="no">QSslServer</a> where <a href="../qtnetwork/qsslconfiguration.html#setAllowedNextProtocols" translate="no">QSslConfiguration::setAllowedNextProtocols</a>() has been called with the arguments <code translate="no">{ QSslConfiguration::ALPNProtocolHTTP2 }</code>.</p>
+<p><b>See also </b><a href="../qtnetwork/qtcpserver.html" translate="no">QTcpServer</a>, <a href="../qtnetwork/qtcpserver.html#listen" translate="no">QTcpServer::listen</a>(), and <a href="../qtnetwork/qsslconfiguration.html#setAllowedNextProtocols" translate="no">QSslConfiguration::setAllowedNextProtocols</a>().</p>
+<!-- @@@bind -->
+<!-- $$$configuration[overload1]$$$configuration -->
+<h3 class="fn" translate="no" id="configuration"><code class="details extra" translate="no">[since 6.9]</code> <span class="type"><a href="qhttpserverconfiguration.html" translate="no">QHttpServerConfiguration</a></span> QAbstractHttpServer::<span class="name">configuration</span>() const</h3>
+<p>Returns this server's general configuration parameters.</p>
+<p>This function was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#setConfiguration" translate="no">setConfiguration</a>().</p>
+<!-- @@@configuration -->
+<!-- $$$handleRequest[overload1]$$$handleRequestconstQHttpServerRequest&QHttpServerResponder& -->
+<h3 class="fn" translate="no" id="handleRequest"><code class="details extra" translate="no">[pure virtual protected]</code> <span class="type">bool</span> QAbstractHttpServer::<span class="name">handleRequest</span>(const <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> &amp;<i>request</i>, <span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span> &amp;<i>responder</i>)</h3>
+<p>Override this function to handle each incoming <i translate="no">request</i>, by examining the <i translate="no">request</i> and sending the appropriate response back to <i translate="no">responder</i>. Return <code translate="no">true</code> if the <i translate="no">request</i> was handled successfully. If this method returns <code translate="no">false</code>, <a href="qabstracthttpserver.html#missingHandler" translate="no">missingHandler</a>() will be called afterwards.</p>
+<!-- @@@handleRequest -->
+<!-- $$$hasPendingWebSocketConnections[overload1]$$$hasPendingWebSocketConnections -->
+<h3 class="fn" translate="no" id="hasPendingWebSocketConnections"><span class="type">bool</span> QAbstractHttpServer::<span class="name">hasPendingWebSocketConnections</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the server has pending WebSocket connections; otherwise returns <code translate="no">false</code>.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#newWebSocketConnection" translate="no">newWebSocketConnection</a>(), <a href="qabstracthttpserver.html#nextPendingWebSocketConnection" translate="no">nextPendingWebSocketConnection</a>(), and <a href="qabstracthttpserver.html#addWebSocketUpgradeVerifier" translate="no">addWebSocketUpgradeVerifier</a>().</p>
+<!-- @@@hasPendingWebSocketConnections -->
+<!-- $$$http2Configuration[overload1]$$$http2Configuration -->
+<h3 class="fn" translate="no" id="http2Configuration"><code class="details extra" translate="no">[since 6.8]</code> <span class="type"><a href="../qtnetwork/qhttp2configuration.html" translate="no">QHttp2Configuration</a></span> QAbstractHttpServer::<span class="name">http2Configuration</span>() const</h3>
+<p>Returns server's HTTP/2 configuration parameters.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#setHttp2Configuration" translate="no">setHttp2Configuration</a>().</p>
+<!-- @@@http2Configuration -->
+<!-- $$$localServers[overload1]$$$localServers -->
+<h3 class="fn" translate="no" id="localServers"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="../qtnetwork/qlocalserver.html" translate="no">QLocalServer</a></span> *&gt; QAbstractHttpServer::<span class="name">localServers</span>() const</h3>
+<p>Returns the local servers of this HTTP server.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#serverPorts" translate="no">serverPorts</a>().</p>
+<!-- @@@localServers -->
+<!-- $$$missingHandler[overload1]$$$missingHandlerconstQHttpServerRequest&QHttpServerResponder& -->
+<h3 class="fn" translate="no" id="missingHandler"><code class="details extra" translate="no">[pure virtual protected]</code> <span class="type">void</span> QAbstractHttpServer::<span class="name">missingHandler</span>(const <span class="type"><a href="qhttpserverrequest.html" translate="no">QHttpServerRequest</a></span> &amp;<i>request</i>, <span class="type"><a href="qhttpserverresponder.html" translate="no">QHttpServerResponder</a></span> &amp;<i>responder</i>)</h3>
+<p>Override this function to handle each incoming <i translate="no">request</i> that was not handled by <a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a>(). This function is called whenever <a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a>() returns <code translate="no">false</code>, or if there is a WebSocket upgrade attempt and either there are no connections to <a href="qabstracthttpserver.html#newWebSocketConnection" translate="no">newWebSocketConnection</a>() or there are no matching WebSocket verifiers. The <i translate="no">request</i> and <i translate="no">responder</i> parameters are the same as <a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a>() was called with.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#handleRequest" translate="no">handleRequest</a>() and <a href="qabstracthttpserver.html#addWebSocketUpgradeVerifier" translate="no">addWebSocketUpgradeVerifier</a>().</p>
+<!-- @@@missingHandler -->
+<!-- $$$newWebSocketConnection[overload1]$$$newWebSocketConnection -->
+<h3 class="fn" translate="no" id="newWebSocketConnection"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QAbstractHttpServer::<span class="name">newWebSocketConnection</span>()</h3>
+<p>This signal is emitted every time a new WebSocket connection is available.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#hasPendingWebSocketConnections" translate="no">hasPendingWebSocketConnections</a>(), <a href="qabstracthttpserver.html#nextPendingWebSocketConnection" translate="no">nextPendingWebSocketConnection</a>(), and <a href="qabstracthttpserver.html#addWebSocketUpgradeVerifier" translate="no">addWebSocketUpgradeVerifier</a>().</p>
+<!-- @@@newWebSocketConnection -->
+<!-- $$$nextPendingWebSocketConnection[overload1]$$$nextPendingWebSocketConnection -->
+<h3 class="fn" translate="no" id="nextPendingWebSocketConnection"><span class="type">std::unique_ptr</span>&lt;<span class="type"><a href="../qtwebsockets/qwebsocket.html" translate="no">QWebSocket</a></span>&gt; QAbstractHttpServer::<span class="name">nextPendingWebSocketConnection</span>()</h3>
+<p>Returns the next pending connection as a connected <a href="../qtwebsockets/qwebsocket.html" translate="no">QWebSocket</a> object. <code translate="no">nullptr</code> is returned if this function is called when there are no pending connections.</p>
+<div class="admonition note">
+<p><b>Note: </b>The returned <a href="../qtwebsockets/qwebsocket.html" translate="no">QWebSocket</a> object cannot be used from another thread.</p>
+</div>
+<p><b>See also </b><a href="qabstracthttpserver.html#newWebSocketConnection" translate="no">newWebSocketConnection</a>(), <a href="qabstracthttpserver.html#hasPendingWebSocketConnections" translate="no">hasPendingWebSocketConnections</a>(), and <a href="qabstracthttpserver.html#addWebSocketUpgradeVerifier" translate="no">addWebSocketUpgradeVerifier</a>().</p>
+<!-- @@@nextPendingWebSocketConnection -->
+<!-- $$$serverPorts[overload1]$$$serverPorts -->
+<h3 class="fn" translate="no" id="serverPorts"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>&gt; QAbstractHttpServer::<span class="name">serverPorts</span>() const</h3>
+<p>Returns the list of ports this instance of <a href="qabstracthttpserver.html" translate="no">QAbstractHttpServer</a> is listening to.</p>
+<p>This function has the same guarantee as <a href="../qtcore/qobject.html#children" translate="no">QObject::children</a>, the latest server added is the last entry in the vector.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#servers" translate="no">servers</a>().</p>
+<!-- @@@serverPorts -->
+<!-- $$$servers[overload1]$$$servers -->
+<h3 class="fn" translate="no" id="servers"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="../qtnetwork/qtcpserver.html" translate="no">QTcpServer</a></span> *&gt; QAbstractHttpServer::<span class="name">servers</span>() const</h3>
+<p>Returns the TCP and SSL servers this HTTP server will handle connections from.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#serverPorts" translate="no">serverPorts</a>().</p>
+<!-- @@@servers -->
+<!-- $$$setConfiguration[overload1]$$$setConfigurationconstQHttpServerConfiguration& -->
+<h3 class="fn" translate="no" id="setConfiguration"><code class="details extra" translate="no">[since 6.9]</code> <span class="type">void</span> QAbstractHttpServer::<span class="name">setConfiguration</span>(const <span class="type"><a href="qhttpserverconfiguration.html" translate="no">QHttpServerConfiguration</a></span> &amp;<i>config</i>)</h3>
+<p>Sets this server's general configuration parameters to <i translate="no">config</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The new configuration will be applied both to already established connections and all next connections.</p>
+</div>
+<p>This function was introduced in Qt 6.9.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#configuration" translate="no">configuration</a>().</p>
+<!-- @@@setConfiguration -->
+<!-- $$$setHttp2Configuration[overload1]$$$setHttp2ConfigurationconstQHttp2Configuration& -->
+<h3 class="fn" translate="no" id="setHttp2Configuration"><code class="details extra" translate="no">[since 6.8]</code> <span class="type">void</span> QAbstractHttpServer::<span class="name">setHttp2Configuration</span>(const <span class="type"><a href="../qtnetwork/qhttp2configuration.html" translate="no">QHttp2Configuration</a></span> &amp;<i>configuration</i>)</h3>
+<p>Sets server's HTTP/2 configuration parameters.</p>
+<p>The next HTTP/2 connection will use the given <i translate="no">configuration</i>.</p>
+<p>This function was introduced in Qt 6.8.</p>
+<p><b>See also </b><a href="qabstracthttpserver.html#http2Configuration" translate="no">http2Configuration</a>().</p>
+<!-- @@@setHttp2Configuration -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

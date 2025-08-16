@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt6-changes.qdoc -->
+  <meta name="description" content="Migrate Qt Quick Controls to Qt 6.">
+  <title>Changes to Qt Quick Controls | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li>Changes to Qt Quick Controls</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquickcontrols-gettingstarted.html" />
+  <link rel="next" href="qtquickcontrols-configuration.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquickcontrols-gettingstarted.html">Getting Started</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-configuration.html">Configuration File</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#migrating-from-qt-quick-controls-1">Migrating from Qt Quick Controls 1</a></li>
+<li class="level1"><a href="#type-registration-changes">Type registration changes</a></li>
+<li class="level2"><a href="#custom-styles-are-now-proper-qml-modules">Custom styles are now proper QML modules</a></li>
+<li class="level2"><a href="#runtime-and-compile-time-style-selection">Runtime and compile time style selection</a></li>
+<li class="level1"><a href="#default-style">Default Style</a></li>
+<li class="level1"><a href="#palette">Palette</a></li>
+<li class="level1"><a href="#controls">Controls</a></li>
+<li class="level2"><a href="#changes-to-applicationwindow">Changes to ApplicationWindow</a></li>
+<li class="level2"><a href="#changes-to-combobox">Changes to ComboBox</a></li>
+<li class="level2"><a href="#changes-to-container">Changes to Container</a></li>
+<li class="level2"><a href="#changes-to-dialog">Changes to Dialog</a></li>
+<li class="level2"><a href="#changes-to-menu">Changes to Menu</a></li>
+<li class="level2"><a href="#changes-to-tooltip">Changes to ToolTip</a></li>
+<li class="level2"><a href="#changes-to-stackview">Changes to StackView</a></li>
+<li class="level2"><a href="#changes-to-tumbler">Changes to Tumbler</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Changes to Qt Quick Controls</h1>
+<!-- $$$qtquickcontrols-changes-qt6.html-description -->
+<div class="descr" id="details">
+<p>Qt 6 is a result of the conscious effort to make the framework more efficient and easy to use.</p>
+<p>We try to maintain compatibility for all the public APIs in each release. Some changes were inevitable in an effort to make Qt a better framework.</p>
+<p>In this topic we summarize those changes in Qt Quick Controls, and provide guidance to handle them.</p>
+<h2 id="migrating-from-qt-quick-controls-1">Migrating from Qt Quick Controls 1</h2>
+<p>Qt Quick Controls 1 was deprecated in Qt 5.11 and is removed from Qt 6.0. Use Qt Quick Controls (previously known as Qt Quick Controls 2) instead. For more information, refer to the <a href="https://doc.qt.io/qt-5/qtquickcontrols2-differences.html">Qt 5.15: Qt Quick Controls vs Qt Quick Controls 1</a> topic in the Qt 5 documentation.</p>
+<h2 id="type-registration-changes">Type registration changes</h2>
+<p>Qt Quick Controls has undergone some large, mostly internal changes in Qt 6. By making use of the improved type registration introduced in Qt 5.15, we pave the way for compilation of the module's QML files to C++ and enable tooling to become more effective. In particular, Qt Creator's QML code model should have a more complete picture of types, making its completion and error checking of Qt Quick Controls code more reliable. Static analysis tools like qmllint and qmlformat also benefit by becoming aware of the types that are now declared at compile time in C++.</p>
+<p>As a result of these changes, some things are done a little differently.</p>
+<h3 id="custom-styles-are-now-proper-qml-modules">Custom styles are now proper QML modules</h3>
+<p>To enable compile time type registration, each Qt Quick Controls style is now a proper QML module. Previously, a single <code translate="no">Button.qml</code> was sufficient to create your own style. While convenient, this required some non-standard API, which in turn required adaptation in tooling like Qt Designer.</p>
+<p>Now, all QML types that a style implements must be declared in that style's qmldir file:</p>
+<pre class="cpp" translate="no">
+ module MyStyle
+ Button <span class="number">1.0</span> Button<span class="operator">.</span>qml
+</pre>
+<p>By unifying this with the rest of the QML world, styles become more familiar to developers and hopefully easier to understand for beginners. As a consequence, the following API had to be removed:</p>
+<ul>
+<li>QQuickStyle::addStylePath()</li>
+<li>QQuickStyle::availableStyles()</li>
+<li>QQuickStyle::path()</li>
+<li>QQuickStyle::stylePathList()</li>
+<li>QT_QUICK_CONTROLS_STYLE_PATH</li>
+</ul>
+<p>Now that the styles are required to be found in the QML engine's import path like any other QML module, it is no longer necessary or possible to support this API.</p>
+<h4 id="style-names">Style names</h4>
+<p>In addition, there is now only one valid, case-sensitive form for style names: &quot;Material&quot;, &quot;MyStyle&quot;, and so on. That is: the style name must exactly match the name of the QML module. This also applies to file selectors, where previously, all style names were lower case. For example, where the following was a valid structure for a Qt 5 project:</p>
+<pre class="cpp plain" translate="no">
+ MyProject
+ ├── main.qml
+ ├── HomePage.qml
+ └── +material
+     └───HomePage.qml
+</pre>
+<p>In Qt 6, <code translate="no">+material</code> becomes <code translate="no">+Material</code>:</p>
+<pre class="cpp plain" translate="no">
+ MyProject
+ ├── main.qml
+ ├── HomePage.qml
+ └── +Material
+     └───HomePage.qml
+</pre>
+<p>All of the existing ways to <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">run an application with a specific style</a> are still supported.</p>
+<h3 id="runtime-and-compile-time-style-selection">Runtime and compile time style selection</h3>
+<p>Importing a style now has extra meaning due to the way that imports work internally. Previously, importing <code translate="no">QtQuick.Controls</code> would register the control types from the current style with the QML engine:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls
+</pre>
+<p>We refer to this as runtime style selection, as the style is selected at runtime.</p>
+<p>Explicitly importing <code translate="no">QtQuick.Controls.Material</code> would then simply expose any extra API provided by that style (for example, the attached Material type):</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls.Material
+</pre>
+<p>Now, explicitly importing a style does both.</p>
+<p>This effectively means that the control types (like Button) from the last imported style will be used. We refer to this as compile time style selection.</p>
+<p>This has implications for existing code. Namely, if your application supports more than one style, move these imports into their own QML files that are file-selected.</p>
+<p>For example, if you have the following <code translate="no">main.qml</code>:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls
+ import QtQuick.Controls.Material
+ import QtQuick.Controls.Universal
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">width</span>: <span class="number">600</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="name">Material</span>.theme: <span class="name">darkMode</span> ? <span class="name">Material</span>.<span class="name">Dark</span> : <span class="name">Material</span>.<span class="name">Light</span>
+     <span class="name">Universal</span>.theme: <span class="name">darkMode</span> ? <span class="name">Universal</span>.<span class="name">Dark</span> : <span class="name">Universal</span>.<span class="name">Light</span>
+
+     <span class="comment">// Child items, etc.</span>
+ }
+</pre>
+<p>You can move the common code into a &quot;base&quot; component:</p>
+<pre class="qml" translate="no">
+ <span class="comment">// MainWindow.qml</span>
+
+ import QtQuick.Controls
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {}
+</pre>
+<p>Then, add a <code translate="no">+Material</code> subdirectory, and in it, add the Material-specific code into <code translate="no">MainWindow.qml</code>:</p>
+<pre class="qml" translate="no">
+ <span class="comment">// +Material/MainWindow.qml</span>
+
+ import QtQuick.Controls.Material
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">Material</span>.theme: <span class="name">darkMode</span> ? <span class="name">Material</span>.<span class="name">Dark</span> : <span class="name">Material</span>.<span class="name">Light</span>
+ }
+</pre>
+<p>Do the same for Universal:</p>
+<pre class="qml" translate="no">
+ <span class="comment">// +Universal/MainWindow.qml</span>
+
+ import QtQuick.Controls.Universal
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">Universal</span>.theme: <span class="name">darkMode</span> ? <span class="name">Universal</span>.<span class="name">Dark</span> : <span class="name">Universal</span>.<span class="name">Light</span>
+ }
+</pre>
+<p>Then, in <code translate="no">main.qml</code>:</p>
+<pre class="qml" translate="no">
+ import QtQuick.Controls
+
+ <span class="type">MainWindow</span> {
+     <span class="name">width</span>: <span class="number">600</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="comment">// Child items, etc.</span>
+ }
+</pre>
+<p>See also: <a href="qtquickcontrols-fileselectors.html">Using File Selectors with Qt Quick Controls</a>.</p>
+<h2 id="default-style">Default Style</h2>
+<p>The Default style was renamed to &quot;Basic&quot;, as it is no longer the default style. Instead, the default style is now chosen based on the platform that Qt was built for:</p>
+<ul>
+<li>Android: <a href="qtquickcontrols-material.html">Material Style</a></li>
+<li>Linux: <a href="qtquickcontrols-fusion.html">Fusion Style</a></li>
+<li>macOS: <a href="qtquickcontrols-macos.html">macos Style</a></li>
+<li>Windows: <a href="qtquickcontrols-windows.html">Windows Style</a></li>
+<li>All other platforms: <a href="qtquickcontrols-basic.html">Basic Style</a></li>
+</ul>
+<p>Therefore, applications that didn't specify a style in Qt 5 and have customized controls should <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">explicitly specify</a> the Basic style in Qt 6 to ensure that those controls look and behave as they did with Qt 5.</p>
+<h2 id="palette">Palette</h2>
+<p>The palette API was moved to <a href="../qtquick/qquickitem.html" translate="no">QQuickItem</a>. The various APIs that use palettes in Qt Quick Controls are unchanged.</p>
+<h2 id="controls">Controls</h2>
+<h3 id="changes-to-applicationwindow">Changes to ApplicationWindow</h3>
+<p>The deprecated overlay properties and attached API were removed. Use the <a href="qml-qtquick-controls-overlay.html" translate="no">Overlay</a> attached type instead.</p>
+<h3 id="changes-to-combobox">Changes to ComboBox</h3>
+<p>The <a href="qml-qtquick-controls-combobox.html#pressed-prop" translate="no">pressed</a> property is now read-only. To modify the visual pressed state of a <a href="qml-qtquick-controls-combobox.html" translate="no">ComboBox</a>, use the <a href="qml-qtquick-controls-combobox.html#down-prop" translate="no">down</a> property instead.</p>
+<h3 id="changes-to-container">Changes to Container</h3>
+<p>The deprecated <code translate="no">removeItem(var)</code> function was removed. <a href="qml-qtquick-controls-container.html#removeItem-method" translate="no">removeItem</a>(Item) or <a href="qml-qtquick-controls-container.html#takeItem-method" translate="no">takeItem</a>(int) can be used instead.</p>
+<h3 id="changes-to-dialog">Changes to Dialog</h3>
+<p><a href="qml-qtquick-controls-dialog.html" translate="no">Dialog</a>'s <a href="qml-qtquick-controls-dialog.html#accepted-signal" translate="no">accepted</a>() and <a href="qml-qtquick-controls-dialog.html#rejected-signal" translate="no">rejected</a>() signals are now emitted before <a href="qml-qtquick-controls-popup.html#closed-signal" translate="no">closed</a>() when calling <a href="qml-qtquick-controls-dialog.html#done-method" translate="no">done</a>(), <a href="qml-qtquick-controls-dialog.html#accept-method" translate="no">accept</a>() and <a href="qml-qtquick-controls-dialog.html#reject-method" translate="no">reject</a>().</p>
+<h3 id="changes-to-menu">Changes to Menu</h3>
+<p>The deprecated <code translate="no">removeItem(var)</code> function was removed. <a href="qml-qtquick-controls-menu.html#removeItem-method" translate="no">removeItem</a>(Item) or <a href="qml-qtquick-controls-menu.html#takeItem-method" translate="no">takeItem</a>(int) can be used instead.</p>
+<h3 id="changes-to-tooltip">Changes to ToolTip</h3>
+<p><a href="qml-qtquick-controls-tooltip.html" translate="no">ToolTip</a>'s timeout now begins only after <a href="qml-qtquick-controls-popup.html#opened-signal" translate="no">opened</a>() has been emitted. This results in tooltips with enter transitions being visible for the entire duration of the timeout property. This means that they are visible slightly longer than they were before, so it may be worthwhile to visually check tooltips in your application and adjust timeouts if necessary.</p>
+<h3 id="changes-to-stackview">Changes to StackView</h3>
+<p>The <a href="qml-qtquick-controls-stackview.html" translate="no">StackView</a>.Transition enum value was deprecated. The operation argument can be omitted in order to use the default transition for any given operation.</p>
+<h3 id="changes-to-tumbler">Changes to Tumbler</h3>
+<p><a href="../qtquick/qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a> and <a href="../qtquick/qml-qtquick-item.html#implicitHeight-prop" translate="no">implicitHeight</a> must now be provided for <a href="qml-qtquick-controls-tumbler.html" translate="no">Tumbler</a>'s <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a>, making it consistent with all other controls.</p>
+</div>
+<!-- @@@qtquickcontrols-changes-qt6.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquickcontrols-gettingstarted.html">Getting Started</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-configuration.html">Configuration File</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

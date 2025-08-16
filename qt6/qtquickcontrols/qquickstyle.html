@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickstyle.cpp -->
+  <meta name="description" content="The QQuickStyle class allows configuring the application style.">
+  <title>QQuickStyle Class | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols2-module.html" translate="no">C++ Classes</a></li>
+<li>QQuickStyle</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QQuickStyle Class</h1>
+<!-- $$$QQuickStyle-brief -->
+<p>The QQuickStyle class allows configuring the application style. <a href="#details">More...</a></p>
+<!-- @@@QQuickStyle -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QQuickStyle&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS QuickControls2)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::QuickControls2)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += quickcontrols2</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qquickstyle-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qquickstyle.html#name" translate="no">name</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickstyle.html#setFallbackStyle" translate="no">setFallbackStyle</a></b>(const QString &amp;<i>style</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquickstyle.html#setStyle" translate="no">setStyle</a></b>(const QString &amp;<i>style</i>)</td></tr>
+</table></div>
+<!-- $$$QQuickStyle-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QQuickStyle provides API for querying and configuring the application <a href="qtquickcontrols-styles.html">styles</a> of Qt Quick Controls.</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor">#include &lt;QGuiApplication&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlApplicationEngine&gt;</span>
+ <span class="preprocessor">#include &lt;QQuickStyle&gt;</span>
+
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span>argv<span class="operator">[</span><span class="operator">]</span>)
+ {
+     <span class="type"><a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a></span> app(argc<span class="operator">,</span> argv);
+
+     <span class="type"><a href="qquickstyle.html" translate="no">QQuickStyle</a></span><span class="operator">::</span>setStyle(<span class="string">&quot;Material&quot;</span>);
+
+     <span class="type"><a href="../qtqml/qqmlapplicationengine.html" translate="no">QQmlApplicationEngine</a></span> engine;
+     engine<span class="operator">.</span>load(<span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span>(<span class="string">&quot;qrc:/main.qml&quot;</span>));
+
+     <span class="keyword">return</span> app<span class="operator">.</span>exec();
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The style must be configured <b>before</b> loading QML that imports Qt Quick Controls. It is not possible to change the style after the QML types have been registered.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>QQuickStyle is not supported when using <a href="qtquickcontrols-styles.html#compile-time-style-selection">compile-time style selection</a>.</p>
+</div>
+<p>To create your own custom style, see <a href="qtquickcontrols-customize.html#creating-a-custom-style">Creating a Custom Style</a>. Custom styles do not need to implement all controls. By default, the styling system uses the <a href="qtquickcontrols-basic.html">Basic style</a> as a fallback for controls that a custom style does not provide. It is possible to specify a different fallback style to customize or extend one of the built-in styles.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qquickstyle.html" translate="no">QQuickStyle</a></span><span class="operator">::</span>setStyle(<span class="string">&quot;MyStyle&quot;</span>);
+ <span class="type"><a href="qquickstyle.html" translate="no">QQuickStyle</a></span><span class="operator">::</span>setFallbackStyle(<span class="string">&quot;Material&quot;</span>);
+</pre>
+</div>
+<p><b>See also </b><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a>.</p>
+<!-- @@@QQuickStyle -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$name[overload1]$$$name -->
+<h3 class="fn" translate="no" id="name"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QQuickStyle::<span class="name">name</span>()</h3>
+<p>Returns the name of the application style.</p>
+<div class="admonition note">
+<p><b>Note: </b>The application style can be specified by passing a <code translate="no">-style</code> command line argument. Therefore <code translate="no">name()</code> may not return a fully resolved value if called before constructing a <a href="../qtgui/qguiapplication.html" translate="no">QGuiApplication</a>.</p>
+</div>
+<!-- @@@name -->
+<!-- $$$setFallbackStyle[overload1]$$$setFallbackStyleconstQString& -->
+<h3 class="fn" translate="no" id="setFallbackStyle"><code class="details extra" translate="no">[static]</code> <span class="type">void</span> QQuickStyle::<span class="name">setFallbackStyle</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>style</i>)</h3>
+<p>Sets the application fallback style to <i translate="no">style</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The fallback style must be the name of one of the built-in Qt Quick Controls styles, e.g. &quot;Material&quot;.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>The style must be configured <b>before</b> loading QML that imports Qt Quick Controls. It is not possible to change the style after the QML types have been registered.</p>
+</div>
+<p>The fallback style can be also specified by setting the <code translate="no">QT_QUICK_CONTROLS_FALLBACK_STYLE</code> <a href="qtquickcontrols-environment.html">environment variable</a>.</p>
+<p><b>See also </b><a href="qquickstyle.html#setStyle" translate="no">setStyle</a>() and <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>.</p>
+<!-- @@@setFallbackStyle -->
+<!-- $$$setStyle[overload1]$$$setStyleconstQString& -->
+<h3 class="fn" translate="no" id="setStyle"><code class="details extra" translate="no">[static]</code> <span class="type">void</span> QQuickStyle::<span class="name">setStyle</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>style</i>)</h3>
+<p>Sets the application style to <i translate="no">style</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The style must be configured <b>before</b> loading QML that imports Qt Quick Controls. It is not possible to change the style after the QML types have been registered.</p>
+</div>
+<p><b>See also </b><a href="qquickstyle.html#setFallbackStyle" translate="no">setFallbackStyle</a>() and <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>.</p>
+<!-- @@@setStyle -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

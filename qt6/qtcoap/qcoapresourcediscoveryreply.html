@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qcoapresourcediscoveryreply.cpp -->
+  <meta name="description" content="The QCoapResourceDiscoveryReply class holds the data of a CoAP reply for a resource discovery request.">
+  <title>QCoapResourceDiscoveryReply Class | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-module.html" translate="no">C++ Classes</a></li>
+<li>QCoapResourceDiscoveryReply</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QCoapResourceDiscoveryReply Class</h1>
+<!-- $$$QCoapResourceDiscoveryReply-brief -->
+<p>The QCoapResourceDiscoveryReply class holds the data of a CoAP reply for a resource discovery request. <a href="#details">More...</a></p>
+<!-- @@@QCoapResourceDiscoveryReply -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QCoapResourceDiscoveryReply&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Coap)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Coap)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += coap</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qcoapreply.html" translate="no">QCoapReply</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qcoapresourcediscoveryreply-members.html">List of all members, including inherited members</a></li>
+</ul>
+<p><b>Note:</b> All functions in this class are reentrant.</p>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QList&lt;QCoapResource&gt; </td><td class="memItemRight bottomAlign"><b><a href="qcoapresourcediscoveryreply.html#resources" translate="no">resources</a></b>() const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qcoapresourcediscoveryreply.html#discovered" translate="no">discovered</a></b>(QCoapResourceDiscoveryReply *<i>reply</i>, QList&lt;QCoapResource&gt; <i>resources</i>)</td></tr>
+</table></div>
+<!-- $$$QCoapResourceDiscoveryReply-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>This class is used for discovery requests. It emits the <a href="qcoapresourcediscoveryreply.html#discovered" translate="no">discovered</a>() signal if and when resources are discovered. When using a multicast address for discovery, the <a href="qcoapresourcediscoveryreply.html#discovered" translate="no">discovered</a>() signal will be emitted once for each response received.</p>
+<div class="admonition note">
+<p><b>Note: </b>A QCoapResourceDiscoveryReply is a <a href="qcoapreply.html" translate="no">QCoapReply</a> that stores also a list of QCoapResources.</p>
+</div>
+</div>
+<p><b>See also </b><a href="qcoapclient.html" translate="no">QCoapClient</a>, <a href="qcoaprequest.html" translate="no">QCoapRequest</a>, <a href="qcoapreply.html" translate="no">QCoapReply</a>, and <a href="qcoapresource.html" translate="no">QCoapResource</a>.</p>
+<!-- @@@QCoapResourceDiscoveryReply -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$discovered[overload1]$$$discoveredQCoapResourceDiscoveryReply*QList<QCoapResource> -->
+<h3 class="fn" translate="no" id="discovered"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QCoapResourceDiscoveryReply::<span class="name">discovered</span>(<span class="type">QCoapResourceDiscoveryReply</span> *<i>reply</i>, <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span>&gt; <i>resources</i>)</h3>
+<p>This signal is emitted whenever a CoAP resource is discovered.</p>
+<p>The <i translate="no">reply</i> parameter contains a pointer to the reply that has just been received, and <i translate="no">resources</i> contains a list of resources that were discovered.</p>
+<p><b>See also </b><a href="qcoapreply.html#finished" translate="no">QCoapReply::finished</a>().</p>
+<!-- @@@discovered -->
+<!-- $$$resources[overload1]$$$resources -->
+<h3 class="fn" translate="no" id="resources"><span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span>&gt; QCoapResourceDiscoveryReply::<span class="name">resources</span>() const</h3>
+<p>Returns the list of resources.</p>
+<!-- @@@resources -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

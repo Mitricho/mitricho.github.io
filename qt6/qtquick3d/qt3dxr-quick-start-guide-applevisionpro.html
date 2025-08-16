@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qt3dxr-apple-vision-pro-quick-start.qdoc -->
+  <meta name="description" content="This topic provides instructions on how to get up and running with Qt Quick 3D Xr on a visionOS device or simulator.">
+  <title>Getting Started With Apple Vision Pro | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qt-quick-3d-xr.html">Qt Quick 3D Xr</a></li>
+<li>Getting Started With Apple Vision Pro</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qt3dxr-quest-quick-start.html" />
+  <link rel="next" href="qtquick3d-xr-qmlmodule.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qt3dxr-quest-quick-start.html">Getting Started With Meta Quest 3</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-xr-qmlmodule.html">Qt Quick 3D Xr QML Types</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#deploying-a-low-immersion-application">Deploying a low-immersion application</a></li>
+<li class="level1"><a href="#building-qt-for-visionos">Building Qt for visionOS</a></li>
+<li class="level2"><a href="#configuring-and-building-for-the-simulator">Configuring and building for the simulator</a></li>
+<li class="level2"><a href="#configuring-and-building-for-the-device">Configuring and building for the device</a></li>
+<li class="level2"><a href="#deploying-a-visionos-application">Deploying a visionOS application</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Getting Started With Apple Vision Pro</h1>
+<!-- $$$qt3dxr-quick-start-guide-applevisionpro.html-description -->
+<div class="descr" id="details">
+<h2 id="introduction">Introduction</h2>
+<p>This guide will get you started developing applications for <span translate="no">visionOS&#8482;</span>.</p>
+<p>Before starting, it is crucial to understand that there are two ways to develop applications for visionOS. The first method we'll refer to produces &quot;low-immersion&quot; applications. These applications can be developed as any regular iPad/iOS application and deployed to visionOS, these applications run in windowed mode and look like a regular iPad application floating in your VR environment.</p>
+<div class="admonition note">
+<p><b>Note: </b>visionOS specific applications can also be placed in the <i>low-immersion</i> mode and will essentially work the same as an iPad/iOS application.</p>
+</div>
+<p>We'll refer to the second method as producing <i>high-immersion</i> applications. These applications are developed using the visionOS SDK and are run in &quot;full screen&quot; mode, meaning <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a> takes complete control of the rendering, with some exceptions (Like pass-through video of the hands).</p>
+<div class="admonition note">
+<p><b>Note: </b>visionOS supports applications transitioning between these two states, but this is not supported by <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a>.Xr.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Developing for visionOS requires Apple hardware with Apple Silicon.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>There is no binary build of Qt for visionOS. You will need to build Qt from source. See <a href="qt3dxr-quick-start-guide-applevisionpro.html#building-qt-for-visionos">Building Qt for visionOS</a> for more information.</p>
+</div>
+<h2 id="deploying-a-low-immersion-application">Deploying a low-immersion application</h2>
+<p>To deploy an iPad/iOS application to visionOS, build and deploy the application as you would normally for iOS/iPad.</p>
+<h2 id="building-qt-for-visionos">Building Qt for visionOS</h2>
+<p>To build Qt for visionOS, you will need the Qt source code with Qt Quick3D; see Building Qt Sources for more information on getting the source code.</p>
+<h3 id="configuring-and-building-for-the-simulator">Configuring and building for the simulator</h3>
+<p>A minimal configure command for building Qt for the visionOS simulator would look like this:</p>
+<pre class="cpp plain" translate="no">
+ [QT_SOURCE_DIR]/configure -qt-host-path [PATH_TO_QT_HOST_BUILD] -platform macx-visionos-clang -sdk xrsimulator -submodules qtquick3d
+</pre>
+<p>After configuring, you can build using your build tool, for example, CMake.</p>
+<h3 id="configuring-and-building-for-the-device">Configuring and building for the device</h3>
+<p>A minimal configure command for building Qt for the visionOS device would look like this:</p>
+<pre class="cpp plain" translate="no">
+ [QT_SOURCE_DIR]/configure -qt-host-path [PATH_TO_QT_HOST_BUILD] -platform macx-visionos-clang -sdk xros -submodules qtquick3d
+</pre>
+<p>After configuring, you can build using your build tool.</p>
+<h3 id="deploying-a-visionos-application">Deploying a visionOS application</h3>
+<p>To deploy a visionOS application, you will need Xcode with the visionOS SDK components installed and, optionally, the visionOS simulator. See supported versions for more information.</p>
+<div class="admonition note">
+<p><b>Note: </b>Unlike the iOS/iPad applications, visionOS applications are not deployed using Qt Creator, but instead using Xcode.</p>
+</div>
+<p>To build one of Qt's examples for visionOS, you can use the following command:</p>
+<pre class="cpp plain" translate="no">
+ [QT_VISIONOS_BUILD]/bin/qt-cmake -B [EXAMPLE_BUILD_DIR] -S [EXAMPLE_SOURCE_DIR]
+</pre>
+<p>Running this command produces an Xcode project that you can open in Xcode and deploy to the device.</p>
+</div>
+<!-- @@@qt3dxr-quick-start-guide-applevisionpro.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qt3dxr-quest-quick-start.html">Getting Started With Meta Quest 3</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-xr-qmlmodule.html">Qt Quick 3D Xr QML Types</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

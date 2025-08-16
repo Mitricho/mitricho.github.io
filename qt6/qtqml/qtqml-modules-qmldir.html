@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qmldir.qdoc -->
+  <meta name="description" content="Defines a QML module">
+  <title>Module Definition qmldir Files | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qmlreference.html">The QML Reference</a></li>
+<li><a href="qtqml-modules-topic.html">QML Modules</a></li>
+<li>Module Definition qmldir Files</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtqml-modules-topic.html" />
+  <link rel="next" href="qtqml-modules-identifiedmodules.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtqml-modules-topic.html">QML Modules</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-modules-identifiedmodules.html">Identified Modules</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#contents-of-a-module-definition-qmldir-file">Contents of a Module Definition qmldir File</a></li>
+<li class="level2"><a href="#module-identifier-declaration">Module Identifier Declaration</a></li>
+<li class="level2"><a href="#object-type-declaration">Object Type Declaration</a></li>
+<li class="level2"><a href="#internal-object-type-declaration">Internal Object Type Declaration</a></li>
+<li class="level2"><a href="#javascript-resource-declaration">JavaScript Resource Declaration</a></li>
+<li class="level2"><a href="#plugin-declaration">Plugin Declaration</a></li>
+<li class="level2"><a href="#plugin-classname-declaration">Plugin Classname Declaration</a></li>
+<li class="level2"><a href="#type-description-file-declaration">Type Description File Declaration</a></li>
+<li class="level2"><a href="#module-dependencies-declaration">Module Dependencies Declaration</a></li>
+<li class="level2"><a href="#module-import-declaration">Module Import Declaration</a></li>
+<li class="level2"><a href="#designer-support-declaration">Designer Support Declaration</a></li>
+<li class="level2"><a href="#preferred-path-declaration">Preferred Path Declaration</a></li>
+<li class="level1"><a href="#versioning-semantics">Versioning Semantics</a></li>
+<li class="level1"><a href="#example-of-a-qmldir-file">Example of a qmldir File</a></li>
+<li class="level1"><a href="#type-description-files">Type Description Files</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Module Definition qmldir Files</h1>
+<!-- $$$qtqml-modules-qmldir.html-description -->
+<div class="descr" id="details">
+<p>There are two distinct types of <code translate="no">qmldir</code> files:</p>
+<ul>
+<li>QML document directory listing files</li>
+<li>QML module definition files</li>
+</ul>
+<p>This documentation covers only the second form of <code translate="no">qmldir</code> file, which lists the QML types, JavaScript files, and plugins that are available under a module. For more information about the first form of <code translate="no">qmldir</code> file, see <a href="qtqml-syntax-directoryimports.html#directory-listing-qmldir-files">directory listing qmldir files</a>.</p>
+<h2 id="contents-of-a-module-definition-qmldir-file">Contents of a Module Definition qmldir File</h2>
+<div class="admonition note">
+<p><b>Note: </b>Use the CMake API to <a href="qt6-port-to-qt-add-qml-module.html">generate qmldir files</a>. Write your <code translate="no">qmldir</code> manually only if you need to use <code translate="no">qmake</code>.</p>
+</div>
+<p>A <code translate="no">qmldir</code> file is a plain-text file that contains the following commands:</p>
+<ul>
+<li><a href="qtqml-modules-qmldir.html#module-identifier-declaration">Module Identifier Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#object-type-declaration">Object Type Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#internal-object-type-declaration">Internal Object Type Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#javascript-resource-declaration">JavaScript Resource Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#plugin-declaration">Plugin Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#plugin-classname-declaration">Plugin Classname Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#type-description-file-declaration">Type Description File Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#module-dependencies-declaration">Module Dependencies Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#module-import-declaration">Module Import Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#designer-support-declaration">Designer Support Declaration</a></li>
+<li><a href="qtqml-modules-qmldir.html#preferred-path-declaration">Preferred Path Declaration</a></li>
+</ul>
+<div class="admonition note">
+<p><b>Note: </b>Each command in a <code translate="no">qmldir</code> file must be on a separate line.</p>
+</div>
+<p>In addition to commands, you can also add comments, which are lines starting with <code translate="no">#</code>.</p>
+<h3 id="module-identifier-declaration">Module Identifier Declaration</h3>
+<pre class="cpp" translate="no">
+ module <span class="operator">&lt;</span>ModuleIdentifier<span class="operator">&gt;</span>
+</pre>
+<p>Declares the module identifier of the module. The &lt;ModuleIdentifier&gt; is the (dotted URI notation) identifier for the module, which must match the module's install path.</p>
+<p>The <a href="qtqml-modules-identifiedmodules.html#semantics-of-identified-modules">module identifier directive</a> must be the first line of the file. Exactly one module identifier directive may exist in the <code translate="no">qmldir</code> file.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ module ExampleModule
+</pre>
+<h3 id="object-type-declaration">Object Type Declaration</h3>
+<pre class="cpp" translate="no">
+ <span class="operator">[</span>singleton<span class="operator">]</span> <span class="operator">&lt;</span>TypeName<span class="operator">&gt;</span> <span class="operator">&lt;</span>InitialVersion<span class="operator">&gt;</span> <span class="operator">&lt;</span>File<span class="operator">&gt;</span>
+</pre>
+<p>Declares a <a href="qtqml-typesystem-objecttypes.html">QML object type</a> to be made available by the module.</p>
+<ul>
+<li><code translate="no">[singleton]</code> Optional. Used to declare a singleton type.</li>
+<li><code translate="no">&lt;TypeName&gt;</code> is the type being made available</li>
+<li><code translate="no">&lt;InitialVersion&gt;</code> is the module version for which the type is to be made available</li>
+<li><code translate="no">&lt;File&gt;</code> is the (relative) file name of the QML file that defines the type</li>
+</ul>
+<p>Zero or more object type declarations may exist in the <code translate="no">qmldir</code> file. However, each object type must have a unique type name within any particular version of the module.</p>
+<div class="admonition note">
+<p><b>Note: </b>To declare a <code translate="no">singleton</code> type, the QML file defining the type must include the <code translate="no">pragma Singleton</code> statement.</p>
+</div>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="comment">//Style.qml with custom singleton type definition</span>
+ pragma Singleton
+ import <span class="type"><a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a></span> <span class="number">2.0</span>
+
+ <span class="type"><a href="qml-qtqml-qtobject.html" translate="no">QtObject</a></span> {
+     property <span class="type">int</span> textSize: <span class="number">20</span>
+     property color textColor: <span class="string">&quot;green&quot;</span>
+ }
+
+ <span class="comment">// qmldir declaring the singleton type</span>
+ module CustomStyles
+ singleton Style <span class="number">1.0</span> Style<span class="operator">.</span>qml
+
+ <span class="comment">// singleton type in use</span>
+ import <span class="type"><a href="../qtquick/qtquick-module.html" translate="no">QtQuick</a></span> <span class="number">2.0</span>
+ import CustomStyles <span class="number">1.0</span>
+
+ Text {
+     font<span class="operator">.</span>pixelSize: Style<span class="operator">.</span>textSize
+     color: Style<span class="operator">.</span>textColor
+     text: <span class="string">&quot;Hello World&quot;</span>
+ }
+</pre>
+<h3 id="internal-object-type-declaration">Internal Object Type Declaration</h3>
+<pre class="cpp" translate="no">
+ internal <span class="operator">&lt;</span>TypeName<span class="operator">&gt;</span> <span class="operator">&lt;</span>File<span class="operator">&gt;</span>
+</pre>
+<p>Declares an object type that is in the module but should not be made available to users of the module.</p>
+<p>Zero or more internal object type declarations may exist in the <code translate="no">qmldir</code> file.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ internal MyPrivateType MyPrivateType<span class="operator">.</span>qml
+</pre>
+<p>This is necessary if the module is imported remotely (see <a href="qtqml-modules-identifiedmodules.html#remotely-installed-identified-modules">Remotely Installed Identified Modules</a>) because if an exported type depends on a non-exported type within the module, the engine must also load the non-exported type.</p>
+<h3 id="javascript-resource-declaration">JavaScript Resource Declaration</h3>
+<pre class="cpp" translate="no">
+ <span class="operator">&lt;</span>ResourceIdentifier<span class="operator">&gt;</span> <span class="operator">&lt;</span>InitialVersion<span class="operator">&gt;</span> <span class="operator">&lt;</span>File<span class="operator">&gt;</span>
+</pre>
+<p>Declares a JavaScript file to be made available by the module. The resource will be made available via the specified identifier with the specified version number.</p>
+<p>Zero or more JavaScript resource declarations may exist in the <code translate="no">qmldir</code> file. However, each JavaScript resource must have a unique identifier within any particular version of the module.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ MyScript <span class="number">1.0</span> MyScript<span class="operator">.</span>js
+</pre>
+<p>See the documentation about <a href="qtqml-javascript-resources.html">defining JavaScript resources</a> and <a href="qtqml-javascript-imports.html">Importing JavaScript Resources In QML</a> for more information.</p>
+<h3 id="plugin-declaration">Plugin Declaration</h3>
+<pre class="cpp" translate="no">
+ <span class="operator">[</span>optional<span class="operator">]</span> plugin <span class="operator">&lt;</span>Name<span class="operator">&gt;</span> <span class="operator">[</span><span class="operator">&lt;</span>Path<span class="operator">&gt;</span><span class="operator">]</span>
+</pre>
+<p>Declares a plugin to be made available by the module.</p>
+<ul>
+<li><code translate="no">optional</code> denotes that the plugin itself does not contain any relevant code and only serves to load a library it links to. If given, and if any types for the module are already available, indicating that the library has been loaded by some other means, QML will not load the plugin.</li>
+<li><code translate="no">&lt;Name&gt;</code> is the plugin library name. This is usually not the same as the file name of the plugin binary, which is platform dependent. For example, the library <code translate="no">MyAppTypes</code> would produce <code translate="no">libMyAppTypes.so</code> on Linux and <code translate="no">MyAppTypes.dll</code> on Windows.</li>
+<li><code translate="no">&lt;Path&gt;</code> (optional) specifies either:<ul>
+<li>an absolute path to the directory containing the plugin file, or</li>
+<li>a relative path from the directory containing the <code translate="no">qmldir</code> file to the directory containing the plugin file.</li>
+</ul>
+</li>
+</ul>
+<p>By default, the engine searches for the plugin library in the directory that contains the <code translate="no">qmldir</code> file. (The plugin search path can be queried with <a href="qqmlengine.html#pluginPathList" translate="no">QQmlEngine::pluginPathList</a>() and modified using <a href="qqmlengine.html#addPluginPath" translate="no">QQmlEngine::addPluginPath</a>().)</p>
+<p>Zero or more C++ plugin declarations may exist in the <code translate="no">qmldir</code> file. However, since plugin loading is a relatively expensive operation, clients are advised to specify at most a single plugin.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ plugin MyPluginLibrary
+</pre>
+<h3 id="plugin-classname-declaration">Plugin Classname Declaration</h3>
+<pre class="cpp" translate="no">
+ classname <span class="operator">&lt;</span>C<span class="operator">+</span><span class="operator">+</span> plugin <span class="keyword">class</span><span class="operator">&gt;</span>
+</pre>
+<p>Provides the class name of the C++ plugin used by the module.</p>
+<p>This information is required for all the QML modules that depend on a C++ plugin for additional functionality. Qt Quick applications built with static linking cannot resolve the module imports without this information.</p>
+<h3 id="type-description-file-declaration">Type Description File Declaration</h3>
+<pre class="cpp" translate="no">
+ typeinfo <span class="operator">&lt;</span>File<span class="operator">&gt;</span>
+</pre>
+<p>Declares a <a href="qtqml-modules-qmldir.html#type-description-files">type description file</a> for the module that can be read by QML tools such as Qt Creator to access information about the types defined by the module's plugins. <code translate="no">&lt;File&gt;</code> is the (relative) file name of a <code translate="no">.qmltypes</code> file.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ typeinfo mymodule<span class="operator">.</span>qmltypes
+</pre>
+<p>Without such a file, QML tools may be unable to offer features such as code completion for the types defined in your plugins.</p>
+<h3 id="module-dependencies-declaration">Module Dependencies Declaration</h3>
+<pre class="cpp" translate="no">
+ depends <span class="operator">&lt;</span>ModuleIdentifier<span class="operator">&gt;</span> <span class="operator">&lt;</span>InitialVersion<span class="operator">&gt;</span>
+</pre>
+<p>Declares that this module depends on another.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ depends MyOtherModule <span class="number">1.0</span>
+</pre>
+<p>This declaration is necessary only in cases when the dependency is hidden: for example, when the C++ code for one module is used to load QML (perhaps conditionally), which then depends on other modules. In such cases, the <code translate="no">depends</code> declaration is necessary to include the other modules in application packages.</p>
+<h3 id="module-import-declaration">Module Import Declaration</h3>
+<pre class="cpp" translate="no">
+ import <span class="operator">&lt;</span>ModuleIdentifier<span class="operator">&gt;</span> <span class="operator">[</span><span class="operator">&lt;</span>Version<span class="operator">&gt;</span><span class="operator">]</span>
+</pre>
+<p>Declares that this module imports another.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ import MyOtherModule <span class="number">1.0</span>
+</pre>
+<p>The types from the other module are made available in the same type namespace as this module is imported into. Omitting the version imports the latest version available of the other module. Specifying <code translate="no">auto</code> as version imports the same version as the version of this module specified in the QML <code translate="no">import</code> statement.</p>
+<h3 id="designer-support-declaration">Designer Support Declaration</h3>
+<pre class="cpp" translate="no">
+ designersupported
+</pre>
+<p>Set this property if the plugin is supported by Qt Quick Designer. By default, the plugin will not be supported.</p>
+<p>A plugin that is supported by Qt Quick Designer has to be properly tested. This means that the plugin does not crash when running inside the qml2puppet that is used by Qt Quick Designer to execute QML. Generally, the plugin should work well in the Qt Quick Designer and not cause any show stoppers, like taking excessive amounts of memory, slowing down the qml2puppet heavily, or anything else that renders the plugin effectively unusable in the Qt Quick Designer.</p>
+<p>The items of an unsupported plugin are not painted in the Qt Quick Designer, but they are still available as empty boxes and the properties can be edited.</p>
+<h3 id="preferred-path-declaration">Preferred Path Declaration</h3>
+<pre class="cpp" translate="no">
+ prefer <span class="operator">&lt;</span>Path<span class="operator">&gt;</span>
+</pre>
+<p>This property directs the QML engine to load any further files for this module from &lt;path&gt;, rather than the current directory. This can be used to load files compiled with qmlcachegen.</p>
+<p>For example, you can add a module's QML files as resources to a resource path <code translate="no">:/my/path/MyModule/</code>. Then, add <code translate="no">prefer :/my/path/MyModule</code> to the qmldir file in order to use the files in the resource system, rather than the ones in the file system. If you then use qmlcachegen for those, the pre-compiled files will be available to any clients of the module.</p>
+<h2 id="versioning-semantics">Versioning Semantics</h2>
+<p>All QML types that are exported for a particular major version are available with the latest version of the same major version. For example, if a module provides a <code translate="no">MyButton</code> type in version 1.0 and <code translate="no">MyWindow</code> type in version 1.1, clients importing version <code translate="no">1.1</code> of the module get to use the <code translate="no">MyButton</code> and <code translate="no">MyWindow</code> types. However, the reverse is not true: a type exported for a particular minor version cannot be used by importing an older or earlier minor version. In the example mentioned earlier, if the client had imported version <code translate="no">1.0</code> of the module, they can use the <code translate="no">MyButton</code> type only but not the <code translate="no">MyWindow</code> type.</p>
+<p>A module can offer multiple major versions but the clients have access to one major version only at a time. For example, importing <code translate="no">MyExampleModule 2.0</code> provides access to that major version only and not the previous major version. Although you can organize the artifacts that belong to different major versions under a sigle directory and a <code translate="no">qmldir</code> file, it is recommended to use different directories for each major version. If you choose to go with the earlier approach (one directory and a <code translate="no">qmldir</code> file), try to use the version suffix for the file names. For example, artifacts that belong to <code translate="no">MyExampleModule 2.0</code> can use <code translate="no">.2</code> suffix in their file name.</p>
+<p>A version cannot be imported if no types have been explicitly exported for that version. If a module provides a <code translate="no">MyButton</code> type in version 1.0 and a <code translate="no">MyWindow</code> type in version 1.1, you cannot import version 1.2 or version 2.0 of that module.</p>
+<p>A type can be defined by different files in different minor versions. In this case, the most closely matching version is used when imported by clients. For example, if a module had specified the following types via its <code translate="no">qmldir</code> file:</p>
+<pre class="cpp" translate="no">
+ module ExampleModule
+ MyButton <span class="number">1.0</span> MyButton<span class="operator">.</span>qml
+ MyButton <span class="number">1.1</span> MyButton11<span class="operator">.</span>qml
+ MyButton <span class="number">1.3</span> MyButton13<span class="operator">.</span>qml
+ MyRectangle <span class="number">1.2</span> MyRectangle12<span class="operator">.</span>qml
+</pre>
+<p>a client who imports version <code translate="no">1.2</code> of <code translate="no">ExampleModule</code> can use the <code translate="no">MyButton</code> type definition provided by <code translate="no">MyButton11.qml</code> as it is the latest version of that type, and the <code translate="no">MyRectangle</code> type definition provided by <code translate="no">MyRectangle12.qml</code>.</p>
+<p>The version system ensures that a given QML file works regardless of the version of installed software, as a versioned import only imports types for that version, leaving other identifiers available, even if the actual installed version might otherwise provide those identifiers.</p>
+<h2 id="example-of-a-qmldir-file">Example of a qmldir File</h2>
+<p>One example of a <code translate="no">qmldir</code> file follows:</p>
+<pre class="cpp" translate="no">
+ module ExampleModule
+ CustomButton <span class="number">2.0</span> CustomButton20<span class="operator">.</span>qml
+ CustomButton <span class="number">2.1</span> CustomButton21<span class="operator">.</span>qml
+ plugin examplemodule
+ MathFunctions <span class="number">2.0</span> mathfuncs<span class="operator">.</span>js
+</pre>
+<p>The above <code translate="no">qmldir</code> file defines a module called &quot;ExampleModule&quot;. It defines the <code translate="no">CustomButton</code> QML object type in versions 2.0 and 2.1 of the module, with different implementations for each version. It specifies a plugin that must be loaded by the engine when the module is imported by clients, and that plugin may register various C++-defined types with the QML type system. On Unix-like systems the QML engine attempts to load <code translate="no">libexamplemodule.so</code> as a <a href="qqmlextensionplugin.html" translate="no">QQmlExtensionPlugin</a>, and on Windows it loads <code translate="no">examplemodule.dll</code> as a <a href="qqmlextensionplugin.html" translate="no">QQmlExtensionPlugin</a>. Finally, the <code translate="no">qmldir</code> file specifies a <a href="qtqml-javascript-resources.html">JavaScript resource</a>, which is only available if version 2.0 or a later version (under the same major version) of the module is imported.</p>
+<p>If the module is <a href="qtqml-modules-identifiedmodules.html">installed</a> into the QML import path, clients could import and use the module in the following manner:</p>
+<pre class="qml" translate="no">
+ import QtQuick 2.0
+ import ExampleModule 2.1
+
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">width</span>: <span class="number">400</span>
+     <span class="name">height</span>: <span class="number">400</span>
+     <span class="name">color</span>: <span class="string">&quot;lightsteelblue&quot;</span>
+
+     <span class="type">CustomButton</span> {
+         <span class="name">color</span>: <span class="string">&quot;gray&quot;</span>
+         <span class="name">text</span>: <span class="string">&quot;Click Me!&quot;</span>
+         <span class="name">onClicked</span>: <span class="name">MathFunctions</span>.<span class="name">generateRandom</span>() <span class="operator">&gt;</span> <span class="number">10</span> ? <span class="name">color</span> <span class="operator">=</span> <span class="string">&quot;red&quot;</span> : <span class="name">color</span> <span class="operator">=</span> <span class="string">&quot;gray&quot;</span>;
+     }
+ }
+</pre>
+<p>The <code translate="no">CustomButton</code> type used above would come from the definition specified in the <code translate="no">CustomButton21.qml</code> file, and the JavaScript resource identified by the <code translate="no">MathFunctions</code> identifier would be defined in the <code translate="no">mathfuncs.js</code> file.</p>
+<h2 id="type-description-files">Type Description Files</h2>
+<p>QML modules may refer to one or more type information files in their <code translate="no">qmldir</code> file. These usually have the <code translate="no">.qmltypes</code> extension and are read by external tools to gain information about types defined in C++ and typically imported via plugins.</p>
+<p>As such qmltypes files have no effect on the functionality of a QML module. Their only use is to allow tools such as Qt Creator to provide code completion, error checking and other functionality to users of your module.</p>
+<p>Any module that defines QML types in C++ should also ship a type description file.</p>
+<p>The best way to create a qmltypes file for your module is to generate it using the build system and the <a href="qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> macros. If you follow the documentation on this, no further action is needed. qmltyperegistrar will automatically generate the <code translate="no">.qmltypes</code> files.</p>
+<p>Example: If your module is in <code translate="no">/tmp/imports/My/Module</code>, a file called <code translate="no">plugins.qmltypes</code> should be generated alongside the actual plugin binary.</p>
+<p>Add the line</p>
+<pre class="cpp" translate="no">
+ typeinfo plugins<span class="operator">.</span>qmltypes
+</pre>
+<p>to <code translate="no">/tmp/imports/My/Module/qmldir</code> to register it.</p>
+</div>
+<!-- @@@qtqml-modules-qmldir.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtqml-modules-topic.html">QML Modules</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtqml-modules-identifiedmodules.html">Identified Modules</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

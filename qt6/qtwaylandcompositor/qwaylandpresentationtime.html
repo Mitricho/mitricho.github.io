@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qwaylandpresentationtime.cpp -->
+  <meta name="description" content="The QWaylandPresentationTime class is an extension to get timing for on-screen presentation.">
+  <title>QWaylandPresentationTime Class | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-module.html" translate="no">C++ Classes</a></li>
+<li>QWaylandPresentationTime</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#reimplemented-public-functions">Reimplemented Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QWaylandPresentationTime Class</h1>
+<!-- $$$QWaylandPresentationTime-brief -->
+<p>The QWaylandPresentationTime class is an extension to get timing for on-screen presentation. <a href="#details">More...</a></p>
+<!-- @@@QWaylandPresentationTime -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QWaylandPresentationTime&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS WaylandCompositor)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::WaylandCompositor)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += waylandcompositor</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.3</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> In QML:</td><td class="memItemRight bottomAlign"> <a href="qml-qtwayland-compositor-presentationtime-presentationtime.html" translate="no">PresentationTime</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qwaylandcompositorextensiontemplate.html" translate="no">QWaylandCompositorExtensionTemplate</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qwaylandpresentationtime-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qwaylandpresentationtime.html#QWaylandPresentationTime" translate="no">QWaylandPresentationTime</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qwaylandpresentationtime.html#QWaylandPresentationTime-1" translate="no">QWaylandPresentationTime</a></b>(QWaylandCompositor *<i>compositor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qwaylandpresentationtime.html#sendFeedback" translate="no">sendFeedback</a></b>(QQuickWindow *<i>window</i>, quint64 <i>sequence</i>, quint64 <i>tv_sec</i>, quint32 <i>tv_nsec</i>)</td></tr>
+</table></div>
+<h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> virtual void </td><td class="memItemRight bottomAlign"><b><a href="qwaylandpresentationtime.html#initialize" translate="no">initialize</a></b>() override</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> const struct wl_interface *</td><td class="memItemRight bottomAlign"><b><a href="qwaylandpresentationtime.html#interface" translate="no">interface</a></b>()</td></tr>
+</table></div>
+<!-- $$$QWaylandPresentationTime-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The QWaylandPresentationTime extension provides a way to track rendering timing for a surface. Client can request feedbacks associated with a surface, then compositor send events for the feedback with the time when the surface is presented on-screen.</p>
+<p>QWaylandPresentationTime corresponds to the Wayland <code translate="no">wp_presentation</code> interface.</p>
+</div>
+<!-- @@@QWaylandPresentationTime -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QWaylandPresentationTime[overload1]$$$QWaylandPresentationTime -->
+<h3 class="fn" translate="no" id="QWaylandPresentationTime">QWaylandPresentationTime::<span class="name">QWaylandPresentationTime</span>()</h3>
+<p>Constructs an empty QWaylandPresentationTime object.</p>
+<!-- @@@QWaylandPresentationTime -->
+<!-- $$$QWaylandPresentationTime$$$QWaylandPresentationTimeQWaylandCompositor* -->
+<h3 class="fn" translate="no" id="QWaylandPresentationTime-1">QWaylandPresentationTime::<span class="name">QWaylandPresentationTime</span>(<span class="type"><a href="qwaylandcompositor.html" translate="no">QWaylandCompositor</a></span> *<i>compositor</i>)</h3>
+<p>Constructs a QWaylandPresentationTime object for <i translate="no">compositor</i>.</p>
+<!-- @@@QWaylandPresentationTime -->
+<!-- $$$initialize[overload1]$$$initialize -->
+<h3 class="fn" translate="no" id="initialize"><code class="details extra" translate="no">[override virtual]</code> <span class="type">void</span> QWaylandPresentationTime::<span class="name">initialize</span>()</h3>
+<p>Reimplements: <a href="qwaylandcompositorextension.html#initialize" translate="no">QWaylandCompositorExtension::initialize</a>().</p>
+<p>Initializes the extension.</p>
+<!-- @@@initialize -->
+<!-- $$$interface[overload1]$$$interface -->
+<h3 class="fn" translate="no" id="interface"><code class="details extra" translate="no">[static]</code> const <span class="type">struct</span> <span class="type">wl_interface</span> *QWaylandPresentationTime::<span class="name">interface</span>()</h3>
+<p>Returns the Wayland interface for the <a href="qwaylandpresentationtime.html" translate="no">QWaylandPresentationTime</a>.</p>
+<!-- @@@interface -->
+<!-- $$$sendFeedback[overload1]$$$sendFeedbackQQuickWindow*quint64quint64quint32 -->
+<h3 class="fn" translate="no" id="sendFeedback"><code class="details extra" translate="no">[invokable]</code> <span class="type">void</span> QWaylandPresentationTime::<span class="name">sendFeedback</span>(<span class="type"><a href="../qtquick/qquickwindow.html" translate="no">QQuickWindow</a></span> *<i>window</i>, <span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span> <i>sequence</i>, <span class="type"><a href="../qtcore/qttypes.html#quint64-typedef" translate="no">quint64</a></span> <i>tv_sec</i>, <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>tv_nsec</i>)</h3>
+<p>Interface to notify that a frame is presented on screen using <i translate="no">window</i>. If your platform supports DRM events, <code translate="no">page_flip_handler</code> is the proper timing to send it. The <i translate="no">sequence</i> is the refresh counter. <i translate="no">tv_sec</i> and <i translate="no">tv_nsec</i> hold the seconds and nanoseconds parts of the presentation timestamp, respectively.</p>
+<div class="admonition note"><p><b>Note: </b>This function can be invoked via the meta-object system and from QML. See <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a>.</p>
+</div><!-- @@@sendFeedback -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

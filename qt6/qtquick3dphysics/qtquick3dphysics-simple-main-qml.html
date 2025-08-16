@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3dphysics-examples-simple.qdoc -->
+  <meta name="description" content="Demonstrates setting up a simple physics scene.">
+  <title>Qt Quick 3D Physics - Simple Example | Qt Quick 3D Physics | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics</a></li>
+<li><a href="quick3dphysics-examples.html">Qt Quick 3D Physics Examples and Tutorials</a></li>
+<li>Qt Quick 3D Physics - Simple Example</li>
+<li id="buildversion"><a href="qtquick3dphysics-index.html">Qt Quick 3D Physics | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt Quick 3D Physics - Simple Example</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2022 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+ import QtQuick
+ import QtQuick3D
+ import QtQuick3D.Physics
+ import QtQuick3D.Physics.Helpers
+
+ <span class="type"><a href="../qtquick/qml-qtquick-window.html" translate="no">Window</a></span> {
+     <span class="name">width</span>: <span class="number">640</span>
+     <span class="name">height</span>: <span class="number">480</span>
+     <span class="name">visible</span>: <span class="number">true</span>
+     <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Qt Quick 3D Physics - Simple&quot;</span>)
+
+     <span class="type"><a href="qml-qtquick3d-physics-physicsworld.html" translate="no">PhysicsWorld</a></span> {
+         <span class="name">scene</span>: <span class="name">viewport</span>.<span class="name">scene</span>
+     }
+
+     <span class="type"><a href="../qtquick3d/qml-qtquick3d-view3d.html" translate="no">View3D</a></span> {
+         <span class="name">id</span>: <span class="name">viewport</span>
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+
+         <span class="name">environment</span>: <span class="name">SceneEnvironment</span> {
+             <span class="name">clearColor</span>: <span class="string">&quot;#d6dbdf&quot;</span>
+             <span class="name">backgroundMode</span>: <span class="name">SceneEnvironment</span>.<span class="name">Color</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-perspectivecamera.html" translate="no">PerspectiveCamera</a></span> {
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">200</span>, <span class="number">100</span>, <span class="number">500</span>)
+             <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">20</span>, -<span class="number">20</span>, <span class="number">0</span>)
+             <span class="name">clipFar</span>: <span class="number">5000</span>
+             <span class="name">clipNear</span>: <span class="number">1</span>
+         }
+
+         <span class="type"><a href="../qtquick3d/qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a></span> {
+             <span class="name">eulerRotation</span>.x: -<span class="number">45</span>
+             <span class="name">eulerRotation</span>.y: <span class="number">45</span>
+             <span class="name">castsShadow</span>: <span class="number">true</span>
+             <span class="name">brightness</span>: <span class="number">1</span>
+             <span class="name">shadowFactor</span>: <span class="number">50</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-physics-staticrigidbody.html" translate="no">StaticRigidBody</a></span> {
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, -<span class="number">100</span>, <span class="number">0</span>)
+             <span class="name">eulerRotation</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">90</span>, <span class="number">0</span>, <span class="number">0</span>)
+             <span class="name">collisionShapes</span>: <span class="name">PlaneShape</span> {}
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Rectangle&quot;</span>
+                 <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">10</span>, <span class="number">10</span>, <span class="number">1</span>)
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;green&quot;</span>
+                 }
+                 <span class="name">castsShadows</span>: <span class="number">false</span>
+                 <span class="name">receivesShadows</span>: <span class="number">true</span>
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(-<span class="number">100</span>, <span class="number">100</span>, <span class="number">0</span>)
+             <span class="name">collisionShapes</span>: <span class="name">BoxShape</span> {
+                 <span class="name">id</span>: <span class="name">boxShape</span>
+             }
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;yellow&quot;</span>
+                 }
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0</span>, <span class="number">100</span>, <span class="number">0</span>)
+             <span class="name">collisionShapes</span>: <span class="name">SphereShape</span> {
+                 <span class="name">id</span>: <span class="name">sphereShape</span>
+             }
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">source</span>: <span class="string">&quot;#Sphere&quot;</span>
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;blue&quot;</span>
+                 }
+             }
+         }
+
+         <span class="type"><a href="qml-qtquick3d-physics-dynamicrigidbody.html" translate="no">DynamicRigidBody</a></span> {
+             <span class="name">position</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">75</span>, <span class="number">200</span>, <span class="number">0</span>)
+             <span class="name">collisionShapes</span>: <span class="name">CapsuleShape</span> {
+                 <span class="name">id</span>: <span class="name">capsuleShape</span>
+             }
+
+             <span class="type"><a href="../qtquick3d/qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">geometry</span>: <span class="name">CapsuleGeometry</span> {}
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;red&quot;</span>
+                 }
+             }
+         }
+     }
+ }
+</pre>

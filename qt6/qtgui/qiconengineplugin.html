@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qiconengineplugin.cpp -->
+  <meta name="description" content="The QIconEnginePlugin class provides an abstract base for custom QIconEngine plugins.">
+  <title>QIconEnginePlugin Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QIconEnginePlugin</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QIconEnginePlugin Class</h1>
+<!-- $$$QIconEnginePlugin-brief -->
+<p>The QIconEnginePlugin class provides an abstract base for custom <a href="qiconengine.html" translate="no">QIconEngine</a> plugins. <a href="#details">More...</a></p>
+<!-- @@@QIconEnginePlugin -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QIconEnginePlugin&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qiconengineplugin-members.html">List of all members, including inherited members</a></li>
+<li>QIconEnginePlugin is part of <a href="../qtcore/plugins.html">Plugin Classes</a>.</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qiconengineplugin.html#QIconEnginePlugin" translate="no">QIconEnginePlugin</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qiconengineplugin.html#dtor.QIconEnginePlugin" translate="no">~QIconEnginePlugin</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual QIconEngine *</td><td class="memItemRight bottomAlign"><b><a href="qiconengineplugin.html#create" translate="no">create</a></b>(const QString &amp;<i>filename</i> = QString()) = 0</td></tr>
+</table></div>
+<!-- $$$QIconEnginePlugin-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The icon engine plugin is a simple plugin interface that makes it easy to create custom icon engines that can be loaded dynamically into applications through <a href="qicon.html" translate="no">QIcon</a>. <a href="qicon.html" translate="no">QIcon</a> uses the file or resource name's suffix to determine what icon engine to use.</p>
+<p>Writing a icon engine plugin is achieved by subclassing this base class, reimplementing the pure virtual function <a href="qiconengineplugin.html#create" translate="no">create</a>(), and exporting the class with the <a href="../qtcore/qtplugin.html#Q_PLUGIN_METADATA" translate="no">Q_PLUGIN_METADATA</a>() macro.</p>
+<p>The json metadata should contain a list of icon engine keys that this plugin supports. The keys correspond to the suffix of the file or resource name used when the plugin was created. Keys are case insensitive.</p>
+<pre class="cpp" translate="no">
+ { <span class="string">&quot;Keys&quot;</span>: <span class="operator">[</span> <span class="string">&quot;myiconengine&quot;</span> <span class="operator">]</span> }
+</pre>
+</div>
+<p><b>See also </b>How to Create Qt Plugins.</p>
+<!-- @@@QIconEnginePlugin -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QIconEnginePlugin[overload1]$$$QIconEnginePluginQObject* -->
+<h3 class="fn" translate="no" id="QIconEnginePlugin">QIconEnginePlugin::<span class="name">QIconEnginePlugin</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a icon engine plugin with the given <i translate="no">parent</i>. This is invoked automatically by the plugin loader.</p>
+<!-- @@@QIconEnginePlugin -->
+<!-- $$$~QIconEnginePlugin[overload1]$$$~QIconEnginePlugin -->
+<h3 class="fn" translate="no" id="dtor.QIconEnginePlugin"><code class="details extra" translate="no">[virtual noexcept]</code> QIconEnginePlugin::<span class="name">~QIconEnginePlugin</span>()</h3>
+<p>Destroys the icon engine plugin.</p>
+<p>You never have to call this explicitly. Qt destroys a plugin automatically when it is no longer used.</p>
+<!-- @@@~QIconEnginePlugin -->
+<!-- $$$create[overload1]$$$createconstQString& -->
+<h3 class="fn" translate="no" id="create"><code class="details extra" translate="no">[pure virtual]</code> <span class="type"><a href="qiconengine.html" translate="no">QIconEngine</a></span> *QIconEnginePlugin::<span class="name">create</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>filename</i> = QString())</h3>
+<p>Creates and returns a <a href="qiconengine.html" translate="no">QIconEngine</a> object for the icon with the given <i translate="no">filename</i>.</p>
+<!-- @@@create -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qopcuanode.cpp -->
+  <meta name="description" content="QOpcUaNode allows interaction with an OPC UA node.">
+  <title>QOpcUaNode Class | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-module.html" translate="no">C++ Classes</a></li>
+<li>QOpcUaNode</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#reading-and-writing-of-attributes">Reading and writing of attributes</a></li>
+<li class="level2"><a href="#subscriptions-and-monitored-items">Subscriptions and monitored items</a></li>
+<li class="level2"><a href="#browsing-the-address-space">Browsing the address space</a></li>
+<li class="level2"><a href="#method-calls">Method calls</a></li>
+<li class="level2"><a href="#resolving-browse-paths">Resolving browse paths</a></li>
+<li class="level2"><a href="#example">Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QOpcUaNode Class</h1>
+<!-- $$$QOpcUaNode-brief -->
+<p>QOpcUaNode allows interaction with an OPC UA node. <a href="#details">More...</a></p>
+<!-- @@@QOpcUaNode -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QOpcUaNode&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS OpcUa)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::OpcUa)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += opcua</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qopcuanode-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#AttributeMap-typedef" translate="no">AttributeMap</a></b></td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#attribute" translate="no">attribute</a></b>(QOpcUa::NodeAttribute <i>attribute</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::UaStatusCode </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#attributeError" translate="no">attributeError</a></b>(QOpcUa::NodeAttribute <i>attribute</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#browse" translate="no">browse</a></b>(const QOpcUaBrowseRequest &amp;<i>request</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#browseChildren" translate="no">browseChildren</a></b>(QOpcUa::ReferenceTypeId <i>referenceType</i> = QOpcUa::ReferenceTypeId::HierarchicalReferences, QOpcUa::NodeClasses <i>nodeClassMask</i> = QOpcUa::NodeClass::Undefined)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#callMethod" translate="no">callMethod</a></b>(const QString &amp;<i>methodNodeId</i>, const QList&lt;QOpcUa::TypedVariant&gt; &amp;<i>args</i> = QList&lt;QOpcUa::TypedVariant&gt;())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaClient *</td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#client" translate="no">client</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#disableMonitoring" translate="no">disableMonitoring</a></b>(QOpcUa::NodeAttributes <i>attr</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#enableMonitoring" translate="no">enableMonitoring</a></b>(QOpcUa::NodeAttributes <i>attr</i>, const QOpcUaMonitoringParameters &amp;<i>settings</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#modifyDataChangeFilter" translate="no">modifyDataChangeFilter</a></b>(QOpcUa::NodeAttribute <i>attr</i>, const QOpcUaMonitoringParameters::DataChangeFilter &amp;<i>filter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#modifyEventFilter" translate="no">modifyEventFilter</a></b>(const QOpcUaMonitoringParameters::EventFilter &amp;<i>eventFilter</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#modifyMonitoring" translate="no">modifyMonitoring</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QOpcUaMonitoringParameters::Parameter <i>item</i>, const QVariant &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUaMonitoringParameters </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#monitoringStatus" translate="no">monitoringStatus</a></b>(QOpcUa::NodeAttribute <i>attr</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#nodeId" translate="no">nodeId</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readAttributeRange" translate="no">readAttributeRange</a></b>(QOpcUa::NodeAttribute <i>attribute</i>, const QString &amp;<i>indexRange</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readAttributes" translate="no">readAttributes</a></b>(QOpcUa::NodeAttributes <i>attributes</i> = mandatoryBaseAttributes())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QOpcUaHistoryReadResponse *</td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readHistoryEvents" translate="no">readHistoryEvents</a></b>(const QDateTime &amp;<i>startTime</i>, const QDateTime &amp;<i>endTime</i>, QOpcUaMonitoringParameters::EventFilter &amp;<i>filter</i>, quint32 <i>numValues</i> = 0)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.3)</code> QOpcUaHistoryReadResponse *</td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readHistoryRaw" translate="no">readHistoryRaw</a></b>(const QDateTime &amp;<i>startTime</i>, const QDateTime &amp;<i>endTime</i>, quint32 <i>numValues</i>, bool <i>returnBounds</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> QOpcUaHistoryReadResponse *</td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readHistoryRaw-1" translate="no">readHistoryRaw</a></b>(const QDateTime &amp;<i>startTime</i>, const QDateTime &amp;<i>endTime</i>, quint32 <i>numValues</i>, bool <i>returnBounds</i>, QOpcUa::TimestampsToReturn <i>timestampsToReturn</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#readValueAttribute" translate="no">readValueAttribute</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#resolveBrowsePath" translate="no">resolveBrowsePath</a></b>(const QList&lt;QOpcUaRelativePathElement&gt; &amp;<i>path</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#serverTimestamp" translate="no">serverTimestamp</a></b>(QOpcUa::NodeAttribute <i>attribute</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDateTime </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#sourceTimestamp" translate="no">sourceTimestamp</a></b>(QOpcUa::NodeAttribute <i>attribute</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#valueAttribute" translate="no">valueAttribute</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::UaStatusCode </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#valueAttributeError" translate="no">valueAttributeError</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#writeAttribute" translate="no">writeAttribute</a></b>(QOpcUa::NodeAttribute <i>attribute</i>, const QVariant &amp;<i>value</i>, QOpcUa::Types <i>type</i> = QOpcUa::Types::Undefined)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#writeAttributeRange" translate="no">writeAttributeRange</a></b>(QOpcUa::NodeAttribute <i>attribute</i>, const QVariant &amp;<i>value</i>, const QString &amp;<i>indexRange</i>, QOpcUa::Types <i>type</i> = QOpcUa::Types::Undefined)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#writeAttributes" translate="no">writeAttributes</a></b>(const QOpcUaNode::AttributeMap &amp;<i>toWrite</i>, QOpcUa::Types <i>valueAttributeType</i> = QOpcUa::Types::Undefined)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#writeValueAttribute" translate="no">writeValueAttribute</a></b>(const QVariant &amp;<i>value</i>, QOpcUa::Types <i>type</i> = QOpcUa::Types::Undefined)</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a></b>(QOpcUa::NodeAttributes <i>attributes</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#attributeUpdated" translate="no">attributeUpdated</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QVariant <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#attributeWritten" translate="no">attributeWritten</a></b>(QOpcUa::NodeAttribute <i>attribute</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#browseFinished" translate="no">browseFinished</a></b>(QList&lt;QOpcUaReferenceDescription&gt; <i>children</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#dataChangeOccurred" translate="no">dataChangeOccurred</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QVariant <i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#disableMonitoringFinished" translate="no">disableMonitoringFinished</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#enableMonitoringFinished" translate="no">enableMonitoringFinished</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#eventOccurred" translate="no">eventOccurred</a></b>(QVariantList <i>eventFields</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#methodCallFinished" translate="no">methodCallFinished</a></b>(QString <i>methodNodeId</i>, QVariant <i>result</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a></b>(QOpcUa::NodeAttribute <i>attr</i>, QOpcUaMonitoringParameters::Parameters <i>items</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#resolveBrowsePathFinished" translate="no">resolveBrowsePathFinished</a></b>(QList&lt;QOpcUaBrowsePathTarget&gt; <i>targets</i>, QList&lt;QOpcUaRelativePathElement&gt; <i>path</i>, QOpcUa::UaStatusCode <i>statusCode</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.7)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#valueAttributeUpdated" translate="no">valueAttributeUpdated</a></b>(const QVariant &amp;<i>value</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::NodeAttributes </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#allBaseAttributes" translate="no">allBaseAttributes</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QOpcUa::NodeAttributes </td><td class="memItemRight bottomAlign"><b><a href="qopcuanode.html#mandatoryBaseAttributes" translate="no">mandatoryBaseAttributes</a></b>()</td></tr>
+</table></div>
+<!-- $$$QOpcUaNode-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>The node is the basic building block of the OPC UA address space. It has attributes like browse name, value, associated properties and can have references to other nodes in the address space. Nodes are organized in namespaces and have IDs which can e.g. be numeric, a string, a namespace-specific format (opaque) or a globally unique identifier. A node is identified by the namespace ID and the node ID. This identifier is usually given as a string: The identifier of a node residing in namespace 0 and having the numeric identifier 42 results in the string <code translate="no">ns=0;i=42</code>. A node with a string identifier can be addressed via <code translate="no">ns=0;s=myStringIdentifier</code>.</p>
+<p>Objects of this type are owned by the user and must be deleted when they are no longer needed. They are valid as long as the <a href="qopcuaclient.html" translate="no">QOpcUaClient</a> which created them exists.</p>
+<h3 id="reading-and-writing-of-attributes">Reading and writing of attributes</h3>
+<p>The node attributes are read from the server when <a href="qopcuanode.html#readAttributes" translate="no">readAttributes</a>() or <a href="qopcuanode.html#readAttributeRange" translate="no">readAttributeRange</a>() is called. The results are cached locally and can be retrieved using <a href="qopcuanode.html#attribute" translate="no">attribute</a>() after the <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> signal has been received.</p>
+<p>Attributes can be written using <a href="qopcuanode.html#writeAttribute" translate="no">writeAttribute</a>(), <a href="qopcuanode.html#writeAttributes" translate="no">writeAttributes</a>() and <a href="qopcuanode.html#writeAttributeRange" translate="no">writeAttributeRange</a>() if the user has the necessary rights. Success of the write operation is reported using the <a href="qopcuanode.html#attributeWritten" translate="no">attributeWritten</a> signal.</p>
+<p><a href="qopcuanode.html#attributeError" translate="no">attributeError</a>() contains a status code associated with the last read or write operation on the attribute. This is the low level status code returned by the OPC UA service. This status code can be simplified by converting it to a <a href="qopcua.html#ErrorCategory-enum" translate="no">QOpcUa::ErrorCategory</a> using <a href="qopcua.html#errorCategory" translate="no">QOpcUa::errorCategory</a>().</p>
+<h3 id="subscriptions-and-monitored-items">Subscriptions and monitored items</h3>
+<p>Subscriptions are a concept in OPC UA which allows receiving of notifications for changes in data or in case of events instead of continuously polling a node for changes. Monitored items define how attributes of a node are watched for changes. They are added to a subscription and any notifications they generate are forwarded to the user via the subscription. The interval of the updates as well as many other options of the monitored items and subscriptions can be configured by the user.</p>
+<p><a href="qopcuanode.html" translate="no">QOpcUaNode</a> offers an abstraction to interact with subscriptions and monitored items. <a href="qopcuanode.html#enableMonitoring" translate="no">enableMonitoring</a>() enables data change notifications for one or more attributes. The <a href="qopcuanode.html#dataChangeOccurred" translate="no">dataChangeOccurred</a> signal contains new values and the local cache is updated. <a href="qopcuanode.html#disableMonitoring" translate="no">disableMonitoring</a>() disables the data change notifications. The <a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a> signal notifies about changes of the monitoring status, e. g. after manual enable and disable or a status change on the server.</p>
+<p>Event monitoring uses the same API for setup and life cycle management. The <a href="qopcua.html#NodeAttribute-enum" translate="no">EventNotifier</a> attribute must be monitored using an <a href="qopcuamonitoringparameters-eventfilter.html" translate="no">EventFilter</a> which selects the required event fields and filters the reported events by user defined criteria. The events are reported in the <a href="qopcuanode.html#eventOccurred" translate="no">eventOccurred</a>() signal as a <a href="../qtcore/qvariant.html#QVariantList-typedef" translate="no">QVariantList</a> which contains the values of the selected event fields.</p>
+<p>Settings of the subscription and monitored item can be modified at runtime using <a href="qopcuanode.html#modifyMonitoring" translate="no">modifyMonitoring</a>().</p>
+<h3 id="browsing-the-address-space">Browsing the address space</h3>
+<p>The OPC UA address space consists of nodes connected by references. <a href="qopcuanode.html#browseChildren" translate="no">browseChildren</a> follows these references in forward direction and returns attributes from all nodes connected to the node behind an instance of <a href="qopcuanode.html" translate="no">QOpcUaNode</a> in the <a href="qopcuanode.html#browseFinished" translate="no">browseFinished</a> signal. <a href="qopcuanode.html#browse" translate="no">browse</a>() is similar to <a href="qopcuanode.html#browseChildren" translate="no">browseChildren</a>() but offers more options to configure the browse call.</p>
+<h3 id="method-calls">Method calls</h3>
+<p>OPC UA specifies methods on the server which can be called by the user. <a href="qopcuanode.html" translate="no">QOpcUaNode</a> supports this via <a href="qopcuanode.html#callMethod" translate="no">callMethod</a> which takes parameters and returns the results of the call in the <a href="qopcuanode.html#methodCallFinished" translate="no">methodCallFinished</a> signal.</p>
+<h3 id="resolving-browse-paths">Resolving browse paths</h3>
+<p>To support programming against a type description, OPC UA supports the resolution of a path of browse names starting from a certain node to obtain the node id of the target node. The <a href="qopcuanode.html#resolveBrowsePath" translate="no">resolveBrowsePath</a>() method follows a path starting from the node it was called on and returns the result in the <a href="qopcuanode.html#resolveBrowsePathFinished" translate="no">resolveBrowsePathFinished</a>() signal.</p>
+<h3 id="example">Example</h3>
+<p>For connecting the client to a server and getting a <a href="qopcuanode.html" translate="no">QOpcUaNode</a> object, see <a href="qopcuaclient.html" translate="no">QOpcUaClient</a>.</p>
+<p>After the node has been successfully created, the BrowseName of the root node is read from the server:</p>
+<pre class="cpp" translate="no">
+ <span class="type">QOpcUaNode</span> <span class="operator">*</span>rootNode; <span class="comment">// Created before, see QOpcUaClient documentation.</span>
+ <span class="comment">// Connect to the attributeRead signal. Compatible slots of QObjects can be used instead of a lambda.</span>
+ <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(rootNode<span class="operator">,</span> <span class="operator">&amp;</span><span class="type">QOpcUaNode</span><span class="operator">::</span>attributeRead<span class="operator">,</span> <span class="operator">[</span>rootNode<span class="operator">,</span> client<span class="operator">]</span>(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttributes attr) {
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Signal for attributes:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> attr;
+     <span class="keyword">if</span> (rootNode<span class="operator">-</span><span class="operator">&gt;</span>attributeError(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName) <span class="operator">!</span><span class="operator">=</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good) {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to read attribute:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> rootNode<span class="operator">-</span><span class="operator">&gt;</span>attributeError(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName);
+         client<span class="operator">-</span><span class="operator">&gt;</span>disconnectFromEndpoint();
+     }
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Browse name:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> rootNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName)<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span><span class="operator">&gt;</span>()<span class="operator">.</span>name();
+ });
+ rootNode<span class="operator">-</span><span class="operator">&gt;</span>readAttributes(<span class="type">QOpcUa</span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>BrowseName); <span class="comment">// Start a read operation for the node's BrowseName attribute.</span>
+</pre>
+</div>
+<!-- @@@QOpcUaNode -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$AttributeMap -->
+<h3 class="fn" translate="no" id="AttributeMap-typedef">QOpcUaNode::<span class="name">AttributeMap</span></h3>
+<p>This type is used by <a href="qopcuanode.html#writeAttributes" translate="no">writeAttributes</a>() to write more than one attribute at a time. <a href="../qtcore/qvariant.html" translate="no">QVariant</a> values must be assigned to the attributes to be written.</p>
+<!-- @@@AttributeMap -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$allBaseAttributes[overload1]$$$allBaseAttributes -->
+<h3 class="fn" translate="no" id="allBaseAttributes"><code class="details extra" translate="no">[static constexpr]</code> <span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> QOpcUaNode::<span class="name">allBaseAttributes</span>()</h3>
+<p>Contains all attributes of the OPC UA base node class.</p>
+<!-- @@@allBaseAttributes -->
+<!-- $$$attribute[overload1]$$$attributeQOpcUa::NodeAttribute -->
+<h3 class="fn" translate="no" id="attribute"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QOpcUaNode::<span class="name">attribute</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>) const</h3>
+<p>Returns the value of the attribute given in <i translate="no">attribute</i>.</p>
+<p>The value is only valid after the <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> signal has been emitted. An empty <a href="../qtcore/qvariant.html" translate="no">QVariant</a> is returned if there is no cached value for the attribute.</p>
+<!-- @@@attribute -->
+<!-- $$$attributeError[overload1]$$$attributeErrorQOpcUa::NodeAttribute -->
+<h3 class="fn" translate="no" id="attributeError"><span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> QOpcUaNode::<span class="name">attributeError</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>) const</h3>
+<p>Returns the error code for the attribute given in <i translate="no">attribute</i>.</p>
+<p>The error code is only valid after the <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> or <a href="qopcuanode.html#attributeWritten" translate="no">attributeWritten</a> signal has been emitted.</p>
+<p>If there is no entry in the attribute cache, <a href="qopcua.html#UaStatusCode-enum" translate="no">BadNoEntryExists</a> is returned.</p>
+<p><b>See also </b><a href="qopcua.html#errorCategory" translate="no">QOpcUa::errorCategory</a>.</p>
+<!-- @@@attributeError -->
+<!-- $$$attributeRead[overload1]$$$attributeReadQOpcUa::NodeAttributes -->
+<h3 class="fn" translate="no" id="attributeRead"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">attributeRead</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> <i>attributes</i>)</h3>
+<p>This signal is emitted after a <a href="qopcuanode.html#readAttributes" translate="no">readAttributes</a>() or <a href="qopcuanode.html#readAttributeRange" translate="no">readAttributeRange</a>() operation has finished. The receiver has to check the status code for the attributes contained in <i translate="no">attributes</i>.</p>
+<!-- @@@attributeRead -->
+<!-- $$$attributeUpdated[overload1]$$$attributeUpdatedQOpcUa::NodeAttributeQVariant -->
+<h3 class="fn" translate="no" id="attributeUpdated"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">attributeUpdated</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <i>value</i>)</h3>
+<p>This signal is emitted after the value in the attribute cache has been updated by a data change notification from the server, a read or a write operation. <i translate="no">value</i> contains the new value for the node attribute <i translate="no">attr</i>.</p>
+<p><b>See also </b><a href="qopcuanode.html#attribute" translate="no">attribute</a>(), <a href="qopcuanode.html#attributeError" translate="no">attributeError</a>(), <a href="qopcuanode.html#serverTimestamp" translate="no">serverTimestamp</a>(), <a href="qopcuanode.html#sourceTimestamp" translate="no">sourceTimestamp</a>(), and <a href="qopcuanode.html#valueAttributeUpdated" translate="no">valueAttributeUpdated</a>().</p>
+<!-- @@@attributeUpdated -->
+<!-- $$$attributeWritten[overload1]$$$attributeWrittenQOpcUa::NodeAttributeQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="attributeWritten"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">attributeWritten</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after a <a href="qopcuanode.html#writeAttribute" translate="no">writeAttribute</a>(), <a href="qopcuanode.html#writeAttributes" translate="no">writeAttributes</a>() or <a href="qopcuanode.html#writeAttributeRange" translate="no">writeAttributeRange</a>() operation has finished.</p>
+<p>Before this signal is emitted, the attribute cache is updated in case of a successful write. For <a href="qopcuanode.html#writeAttributes" translate="no">writeAttributes</a>() a signal is emitted for each attribute in the write call. <i translate="no">statusCode</i> contains the success information for the write operation on <i translate="no">attribute</i>.</p>
+<!-- @@@attributeWritten -->
+<!-- $$$browse[overload1]$$$browseconstQOpcUaBrowseRequest& -->
+<h3 class="fn" translate="no" id="browse"><span class="type">bool</span> QOpcUaNode::<span class="name">browse</span>(const <span class="type"><a href="qopcuabrowserequest.html" translate="no">QOpcUaBrowseRequest</a></span> &amp;<i>request</i>)</h3>
+<p>Starts a browse call from this node.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>All references matching the criteria specified in <i translate="no">request</i> are returned in the <a href="qopcuanode.html#browseFinished" translate="no">browseFinished</a>() signal.</p>
+<p>For example, an inverse browse call can be used to find the parent node of a property node:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuabrowserequest.html" translate="no">QOpcUaBrowseRequest</a></span> request;
+ request<span class="operator">.</span>setBrowseDirection(<span class="type"><a href="qopcuabrowserequest.html" translate="no">QOpcUaBrowseRequest</a></span><span class="operator">::</span>BrowseDirection<span class="operator">::</span>Inverse);
+ request<span class="operator">.</span>setReferenceTypeId(<span class="type">QOpcUa</span><span class="operator">::</span>ReferenceTypeId<span class="operator">::</span>HasProperty);
+ propertyNode<span class="operator">-</span><span class="operator">&gt;</span>browse(request);
+</pre>
+<!-- @@@browse -->
+<!-- $$$browseChildren[overload1]$$$browseChildrenQOpcUa::ReferenceTypeIdQOpcUa::NodeClasses -->
+<h3 class="fn" translate="no" id="browseChildren"><span class="type">bool</span> QOpcUaNode::<span class="name">browseChildren</span>(<span class="type"><a href="qopcua.html#ReferenceTypeId-enum" translate="no">QOpcUa::ReferenceTypeId</a></span> <i>referenceType</i> = QOpcUa::ReferenceTypeId::HierarchicalReferences, <span class="type"><a href="qopcua.html#NodeClass-enum" translate="no">QOpcUa::NodeClasses</a></span> <i>nodeClassMask</i> = QOpcUa::NodeClass::Undefined)</h3>
+<p>Executes a forward browse call starting from the node this method is called on. The browse operation collects information about child nodes connected to the node and delivers the results in the <a href="qopcuanode.html#browseFinished" translate="no">browseFinished</a>() signal.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>To request only children connected to the node by a certain type of reference, <i translate="no">referenceType</i> must be set to that reference type. For example, this can be used to get all properties of a node by passing <a href="qopcua.html#ReferenceTypeId-enum" translate="no">HasProperty</a> in <i translate="no">referenceType</i>. The results can be filtered to contain only nodes with certain node classes by setting them in <i translate="no">nodeClassMask</i>.</p>
+<!-- @@@browseChildren -->
+<!-- $$$browseFinished[overload1]$$$browseFinishedQList<QOpcUaReferenceDescription>QOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="browseFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">browseFinished</span>(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuareferencedescription.html" translate="no">QOpcUaReferenceDescription</a></span>&gt; <i>children</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after a <a href="qopcuanode.html#browseChildren" translate="no">browseChildren</a>() or <a href="qopcuanode.html#browse" translate="no">browse</a>() operation has finished.</p>
+<p><i translate="no">children</i> contains information about all nodes which matched the criteria in <a href="qopcuanode.html#browseChildren" translate="no">browseChildren</a>(). <i translate="no">statusCode</i> contains the service result of the browse operation. If <i translate="no">statusCode</i> is not <a href="qopcua.html#UaStatusCode-enum" translate="no">Good</a>, the passed <i translate="no">children</i> vector is empty.</p>
+<p><b>See also </b><a href="qopcuareferencedescription.html" translate="no">QOpcUaReferenceDescription</a>.</p>
+<!-- @@@browseFinished -->
+<!-- $$$callMethod[overload1]$$$callMethodconstQString&constQList<QOpcUa::TypedVariant>& -->
+<h3 class="fn" translate="no" id="callMethod"><span class="type">bool</span> QOpcUaNode::<span class="name">callMethod</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>methodNodeId</i>, const <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcua.html#TypedVariant-typedef" translate="no">QOpcUa::TypedVariant</a></span>&gt; &amp;<i>args</i> = QList&lt;QOpcUa::TypedVariant&gt;())</h3>
+<p>Calls the OPC UA method <i translate="no">methodNodeId</i> with the parameters given via <i translate="no">args</i>. The result is returned in the <a href="qopcuanode.html#methodCallFinished" translate="no">methodCallFinished</a> signal.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<!-- @@@callMethod -->
+<!-- $$$client[overload1]$$$client -->
+<h3 class="fn" translate="no" id="client"><span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span> *QOpcUaNode::<span class="name">client</span>() const</h3>
+<p>Returns a pointer to the client that has created this node.</p>
+<!-- @@@client -->
+<!-- $$$dataChangeOccurred[overload1]$$$dataChangeOccurredQOpcUa::NodeAttributeQVariant -->
+<h3 class="fn" translate="no" id="dataChangeOccurred"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">dataChangeOccurred</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <i>value</i>)</h3>
+<p>This signal is emitted after a data change notification has been received. <i translate="no">value</i> contains the new value for the node attribute <i translate="no">attr</i>.</p>
+<p><b>See also </b><a href="qopcuanode.html#attribute" translate="no">attribute</a>(), <a href="qopcuanode.html#serverTimestamp" translate="no">serverTimestamp</a>(), and <a href="qopcuanode.html#sourceTimestamp" translate="no">sourceTimestamp</a>().</p>
+<!-- @@@dataChangeOccurred -->
+<!-- $$$disableMonitoring[overload1]$$$disableMonitoringQOpcUa::NodeAttributes -->
+<h3 class="fn" translate="no" id="disableMonitoring"><span class="type">bool</span> QOpcUaNode::<span class="name">disableMonitoring</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> <i>attr</i>)</h3>
+<p>This method disables monitoring for the attributes given in <i translate="no">attr</i>.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>After the call is finished, the <a href="qopcuanode.html#disableMonitoringFinished" translate="no">disableMonitoringFinished</a> signal is emitted and <a href="qopcuanode.html#monitoringStatus" translate="no">monitoringStatus</a> returns a default constructed value with status code BadMonitoredItemIdIinvalid for <i translate="no">attr</i>.</p>
+<!-- @@@disableMonitoring -->
+<!-- $$$disableMonitoringFinished[overload1]$$$disableMonitoringFinishedQOpcUa::NodeAttributeQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="disableMonitoringFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">disableMonitoringFinished</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after an asynchronous call to <a href="qopcuanode.html#disableMonitoring" translate="no">disableMonitoring</a>() has finished. <i translate="no">statusCode</i> contains the status code generated by the operation. After this signal has been emitted, <a href="qopcuanode.html#monitoringStatus" translate="no">monitoringStatus</a> returns a default constructed value with status code BadMonitoredItemIdIinvalid for <i translate="no">attr</i>.</p>
+<!-- @@@disableMonitoringFinished -->
+<!-- $$$enableMonitoring[overload1]$$$enableMonitoringQOpcUa::NodeAttributesconstQOpcUaMonitoringParameters& -->
+<h3 class="fn" translate="no" id="enableMonitoring"><span class="type">bool</span> QOpcUaNode::<span class="name">enableMonitoring</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> <i>attr</i>, const <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span> &amp;<i>settings</i>)</h3>
+<p>This method creates a monitored item for each of the attributes given in <i translate="no">attr</i>. The settings from <i translate="no">settings</i> are used in the creation of the monitored items and the subscription.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>On completion of the call, the <a href="qopcuanode.html#enableMonitoringFinished" translate="no">enableMonitoringFinished</a> signal is emitted. There are multiple error cases in which a bad status code is generated: A subscription with the subscription id specified in <i translate="no">settings</i> does not exist, the node does not exist on the server, the node does not have the requested attribute or the maximum number of monitored items for the server is reached.</p>
+<p>The same method is used to enable event monitoring. Events are special objects in the OPC UA address space which contain information about an event that has occurred. If an event is triggered on the server, an event monitored item collects selected values of node attributes of the event object and its child nodes. Every node that has an event source can be monitored for events. To monitor a node for events, the attribute <a href="qopcua.html#NodeAttribute-enum" translate="no">EventNotifier</a> must be monitored using an EventFilter which contains the event fields the user needs and optionally a where clause which is used to filter events by criteria (for more details, see <a href="qopcuamonitoringparameters-eventfilter.html" translate="no">QOpcUaMonitoringParameters::EventFilter</a>).</p>
+<!-- @@@enableMonitoring -->
+<!-- $$$enableMonitoringFinished[overload1]$$$enableMonitoringFinishedQOpcUa::NodeAttributeQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="enableMonitoringFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">enableMonitoringFinished</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after an asynchronous call to <a href="qopcuanode.html#enableMonitoring" translate="no">enableMonitoring</a>() has finished. After this signal has been emitted, <a href="qopcuanode.html#monitoringStatus" translate="no">monitoringStatus</a>() returns valid information for <i translate="no">attr</i>. <i translate="no">statusCode</i> contains the status code for the operation.</p>
+<!-- @@@enableMonitoringFinished -->
+<!-- $$$eventOccurred[overload1]$$$eventOccurredQVariantList -->
+<h3 class="fn" translate="no" id="eventOccurred"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">eventOccurred</span>(<span class="type"><a href="../qtcore/qvariant.html#QVariantList-typedef" translate="no">QVariantList</a></span> <i>eventFields</i>)</h3>
+<p>This signal is emitted after a new event has been received.</p>
+<p><i translate="no">eventFields</i> contains the values of the event fields in the order specified in the <code translate="no">select</code> clause of the event filter.</p>
+<!-- @@@eventOccurred -->
+<!-- $$$mandatoryBaseAttributes[overload1]$$$mandatoryBaseAttributes -->
+<h3 class="fn" translate="no" id="mandatoryBaseAttributes"><code class="details extra" translate="no">[static constexpr]</code> <span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> QOpcUaNode::<span class="name">mandatoryBaseAttributes</span>()</h3>
+<p>Contains all mandatory attributes of the OPC UA base node class.</p>
+<!-- @@@mandatoryBaseAttributes -->
+<!-- $$$methodCallFinished[overload1]$$$methodCallFinishedQStringQVariantQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="methodCallFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">methodCallFinished</span>(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <i>methodNodeId</i>, <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <i>result</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after a method call for <i translate="no">methodNodeId</i> has finished on the server. <i translate="no">statusCode</i> contains the status code from the method call, <i translate="no">result</i> contains the output arguments of the method. <i translate="no">result</i> is empty if the method has no output arguments or <i translate="no">statusCode</i> is not <a href="qopcua.html#UaStatusCode-enum" translate="no">Good</a>. The <i translate="no">result</i> variant is either a single value if there is only one output argument or it contains a list of variants in case the called function returned multiple output arguments.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">if</span> (result<span class="operator">.</span>canConvert<span class="operator">&lt;</span><span class="type"><a href="../qtcore/qvariant.html#QVariantList-typedef" translate="no">QVariantList</a></span><span class="operator">&gt;</span>()) {
+     <span class="comment">// handle list type</span>
+ } <span class="keyword">else</span> {
+     <span class="comment">// handle value type</span>
+ }
+</pre>
+<!-- @@@methodCallFinished -->
+<!-- $$$modifyDataChangeFilter[overload1]$$$modifyDataChangeFilterQOpcUa::NodeAttributeconstQOpcUaMonitoringParameters::DataChangeFilter& -->
+<h3 class="fn" translate="no" id="modifyDataChangeFilter"><span class="type">bool</span> QOpcUaNode::<span class="name">modifyDataChangeFilter</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, const <span class="type"><a href="qopcuamonitoringparameters-datachangefilter.html" translate="no">QOpcUaMonitoringParameters::DataChangeFilter</a></span> &amp;<i>filter</i>)</h3>
+<p>Modifies an existing data change monitoring to use <i translate="no">filter</i> as data change filter.</p>
+<p>Returns <code translate="no">true</code> if the filter modification request has been successfully dispatched to the backend.</p>
+<p><a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a> for <i translate="no">attr</i> is emitted after the operation has finished.</p>
+<!-- @@@modifyDataChangeFilter -->
+<!-- $$$modifyEventFilter[overload1]$$$modifyEventFilterconstQOpcUaMonitoringParameters::EventFilter& -->
+<h3 class="fn" translate="no" id="modifyEventFilter"><span class="type">bool</span> QOpcUaNode::<span class="name">modifyEventFilter</span>(const <span class="type"><a href="qopcuamonitoringparameters-eventfilter.html" translate="no">QOpcUaMonitoringParameters::EventFilter</a></span> &amp;<i>eventFilter</i>)</h3>
+<p>Modifies an existing event monitoring to use <i translate="no">eventFilter</i> as event filter.</p>
+<p>Returns <code translate="no">true</code> if the filter modification request has been successfully dispatched to the backend.</p>
+<p><a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a> for <a href="qopcua.html#NodeAttribute-enum" translate="no">EventNotifier</a> is emitted after the operation has finished.</p>
+<!-- @@@modifyEventFilter -->
+<!-- $$$modifyMonitoring[overload1]$$$modifyMonitoringQOpcUa::NodeAttributeQOpcUaMonitoringParameters::ParameterconstQVariant& -->
+<h3 class="fn" translate="no" id="modifyMonitoring"><span class="type">bool</span> QOpcUaNode::<span class="name">modifyMonitoring</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="qopcuamonitoringparameters.html#Parameter-enum" translate="no">QOpcUaMonitoringParameters::Parameter</a></span> <i>item</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>)</h3>
+<p>This method modifies settings of the monitored item or the subscription. The parameter <i translate="no">item</i> of the monitored item or subscription associated with <i translate="no">attr</i> is attempted to set to <i translate="no">value</i>.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>After the call has finished, the <a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a> signal is emitted. This signal contains the modified parameters and the status code. A bad status code is generated if there is no monitored item associated with the requested attribute, modifying the requested parameter is not implemented or if the server has rejected the requested value.</p>
+<!-- @@@modifyMonitoring -->
+<!-- $$$monitoringStatus[overload1]$$$monitoringStatusQOpcUa::NodeAttribute -->
+<h3 class="fn" translate="no" id="monitoringStatus"><span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span> QOpcUaNode::<span class="name">monitoringStatus</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>)</h3>
+<p>Returns the monitoring parameters associated with the attribute <i translate="no">attr</i>. This can be used to check the success of <a href="qopcuanode.html#enableMonitoring" translate="no">enableMonitoring</a>() or if parameters have been revised. The returned values are only valid after <a href="qopcuanode.html#enableMonitoringFinished" translate="no">enableMonitoringFinished</a> or <a href="qopcuanode.html#monitoringStatusChanged" translate="no">monitoringStatusChanged</a> have been emitted for <i translate="no">attr</i>. If the status is queried before a signal has been emitted, <a href="qopcuamonitoringparameters.html#statusCode" translate="no">QOpcUaMonitoringParameters::statusCode</a>() returns <a href="qopcua.html#UaStatusCode-enum" translate="no">BadNoEntryExists</a>.</p>
+<!-- @@@monitoringStatus -->
+<!-- $$$monitoringStatusChanged[overload1]$$$monitoringStatusChangedQOpcUa::NodeAttributeQOpcUaMonitoringParameters::ParametersQOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="monitoringStatusChanged"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">monitoringStatusChanged</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attr</i>, <span class="type"><a href="qopcuamonitoringparameters.html#Parameter-enum" translate="no">QOpcUaMonitoringParameters::Parameters</a></span> <i>items</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after an asynchronous call to <a href="qopcuanode.html#modifyMonitoring" translate="no">modifyMonitoring</a>() has finished. The node attribute for which the operation was requested is returned in <i translate="no">attr</i>. <i translate="no">items</i> contains the parameters that have been modified. <i translate="no">statusCode</i> contains the result of the modify operation on the server.</p>
+<!-- @@@monitoringStatusChanged -->
+<!-- $$$nodeId[overload1]$$$nodeId -->
+<h3 class="fn" translate="no" id="nodeId"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QOpcUaNode::<span class="name">nodeId</span>() const</h3>
+<p>Returns the ID of the OPC UA node.</p>
+<!-- @@@nodeId -->
+<!-- $$$readAttributeRange[overload1]$$$readAttributeRangeQOpcUa::NodeAttributeconstQString& -->
+<h3 class="fn" translate="no" id="readAttributeRange"><span class="type">bool</span> QOpcUaNode::<span class="name">readAttributeRange</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>indexRange</i>)</h3>
+<p>Starts an asynchronous read operation for the node attribute <i translate="no">attribute</i>. <i translate="no">indexRange</i> is a string which can be used to select a part of an array. It is defined in OPC UA 1.05 part 4, 7.27. The first element in an array is 0, &quot;1&quot; returns the second element, &quot;0:9&quot; returns the first 10 elements, &quot;0,1&quot; returns the second element of the first row in a two-dimensional array.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>Attribute values only contain valid information after the <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> signal has been emitted.</p>
+<!-- @@@readAttributeRange -->
+<!-- $$$readAttributes[overload1]$$$readAttributesQOpcUa::NodeAttributes -->
+<h3 class="fn" translate="no" id="readAttributes"><span class="type">bool</span> QOpcUaNode::<span class="name">readAttributes</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttributes</a></span> <i>attributes</i> = mandatoryBaseAttributes())</h3>
+<p>Starts an asynchronous read operation for the node attributes in <i translate="no">attributes</i>.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>Attribute values only contain valid information after the <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> signal has been emitted.</p>
+<!-- @@@readAttributes -->
+<!-- $$$readHistoryEvents[overload1]$$$readHistoryEventsconstQDateTime&constQDateTime&QOpcUaMonitoringParameters::EventFilter&quint32 -->
+<h3 class="fn" translate="no" id="readHistoryEvents"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span> *QOpcUaNode::<span class="name">readHistoryEvents</span>(const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>startTime</i>, const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>endTime</i>, <span class="type"><a href="qopcuamonitoringparameters-eventfilter.html" translate="no">QOpcUaMonitoringParameters::EventFilter</a></span> &amp;<i>filter</i>, <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>numValues</i> = 0)</h3>
+<p>Starts a read event history request for this node using the parameters <i translate="no">startTime</i>, <i translate="no">endTime</i>, <i translate="no">filter</i> and <i translate="no">numValues</i>. The <i translate="no">filter</i> is used by the server to determine which events and which set of their fields shall be returned.</p>
+<p>Returns a <a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a> which contains the state of the request if the asynchronous request has been successfully dispatched. The results are returned in the <a href="qopcuahistoryreadresponse.html#readHistoryEventsFinished" translate="no">QOpcUaHistoryReadResponse::readHistoryEventsFinished</a>(const QList&lt;QOpcUaHistoryEvent&gt; &amp;results, QOpcUa::UaStatusCode serviceResult) signal.</p>
+<p>The following example retrieves historic events for the last two days. Up to 10 events are returned at a time. While there are more events matching the filter and the provided time range, <code translate="no">hasMoreData()</code> will be true and more events can be fetched via <b>readMoreData()</b>.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qscopedpointer.html" translate="no">QScopedPointer</a></span><span class="operator">&lt;</span><span class="type">QOpcUaNode</span><span class="operator">&gt;</span> node(opcuaClient<span class="operator">-</span><span class="operator">&gt;</span>node(<span class="string">&quot;ns=2;s=EventHistorian&quot;</span>));
+ QVERIFY(node <span class="operator">!</span><span class="operator">=</span> nullptr);
+
+ <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span><span class="operator">::</span>EventFilter filter;
+ filter <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuasimpleattributeoperand.html" translate="no">QOpcUaSimpleAttributeOperand</a></span>(<span class="string">&quot;Message&quot;</span>);
+ filter <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="type"><a href="qopcuasimpleattributeoperand.html" translate="no">QOpcUaSimpleAttributeOperand</a></span>(<span class="string">&quot;Time&quot;</span>);
+
+ <span class="keyword">const</span> <span class="keyword">auto</span> response <span class="operator">=</span> node<span class="operator">-</span><span class="operator">&gt;</span>readHistoryEvents(<span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">.</span>addDays(<span class="operator">-</span><span class="number">2</span>)<span class="operator">,</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">,</span> filter<span class="operator">,</span> <span class="number">10</span>);
+
+ <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(response<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span><span class="operator">::</span>readHistoryEventsFinished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span>
+                  <span class="operator">[</span>response<span class="operator">]</span>(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qopcuahistoryevent.html" translate="no">QOpcUaHistoryEvent</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>results<span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode serviceResult) {
+                      <span class="keyword">if</span> (serviceResult <span class="operator">!</span><span class="operator">=</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good) {
+                          <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Service call failed with&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> serviceResult;
+                          <span class="keyword">return</span>;
+                      }
+
+                      <span class="comment">// Print what we got so far</span>
+                      <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>result : response<span class="operator">-</span><span class="operator">&gt;</span>events()) {
+                          <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Results for&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> result<span class="operator">.</span>nodeId() <span class="operator">&lt;</span><span class="operator">&lt;</span> result<span class="operator">.</span>statusCode();
+                          <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>event : result<span class="operator">.</span>events())
+                              <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;    Event:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> event;
+                      }
+
+                      <span class="keyword">if</span> (response<span class="operator">-</span><span class="operator">&gt;</span>hasMoreData())
+                          response<span class="operator">-</span><span class="operator">&gt;</span>readMoreData();
+                  });
+</pre>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@readHistoryEvents -->
+<!-- $$$readHistoryRaw[overload1]$$$readHistoryRawconstQDateTime&constQDateTime&quint32bool -->
+<h3 class="fn" translate="no" id="readHistoryRaw"><code class="details extra" translate="no">[since 6.3]</code> <span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span> *QOpcUaNode::<span class="name">readHistoryRaw</span>(const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>startTime</i>, const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>endTime</i>, <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>numValues</i>, <span class="type">bool</span> <i>returnBounds</i>)</h3>
+<p>Starts a read history request for this node. This is the Qt OPC UA representation for the OPC UA ReadHistory service for reading raw historical data defined in <a href="https://reference.opcfoundation.org/v105/Core/docs/Part4/5.10.3/">OPC UA 1.05 part 4, 5.10.3</a>. It reads the history based on the parementers, <i translate="no">startTime</i>, <i translate="no">endTime</i>, <i translate="no">numValues</i>, and <i translate="no">returnBounds</i>.</p>
+<p>Returns a <a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a> which contains the state of the request if the asynchronous request has been successfully dispatched. The results are returned in the <a href="qopcuahistoryreadresponse.html#readHistoryDataFinished" translate="no">QOpcUaHistoryReadResponse::readHistoryDataFinished</a>(const QList&lt;QOpcUaHistoryData&gt; &amp;results, QOpcUa::UaStatusCode serviceResult) signal.</p>
+<p>In the following example, the historic data from the last two days of a node are requested and printed. The result is limited to ten values per node.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span> <span class="operator">*</span>response <span class="operator">=</span> node<span class="operator">-</span><span class="operator">&gt;</span>readHistoryRaw(<span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">,</span>
+                                                            <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>currentDateTime()<span class="operator">.</span>addDays(<span class="operator">-</span><span class="number">2</span>)<span class="operator">,</span>
+                                                            <span class="number">10</span><span class="operator">,</span>
+                                                            <span class="keyword">true</span>);
+ <span class="keyword">if</span> (response) {
+     <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span><span class="operator">::</span>connect(response123<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span><span class="operator">::</span>readHistoryDataFinished<span class="operator">,</span>
+                      <span class="operator">[</span><span class="operator">]</span> (<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qopcuahistorydata.html" translate="no">QOpcUaHistoryData</a></span><span class="operator">&gt;</span> results<span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode serviceResult) {
+         <span class="keyword">if</span> (serviceResult <span class="operator">!</span><span class="operator">=</span> <span class="type">QOpcUa</span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good) {
+             <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Fetching historical data failed with:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> serviceResult;
+         } <span class="keyword">else</span> {
+             <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span><span class="operator">&amp;</span> result : results) {
+                 <a href="../qtcore/qtlogging.html#qInfo" translate="no">qInfo</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;NodeId:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> result<span class="operator">.</span>nodeId();
+                 <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> <span class="operator">&amp;</span>dataValue : result<span class="operator">.</span>result())
+                     <a href="../qtcore/qtlogging.html#qInfo" translate="no">qInfo</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Value:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> dataValue<span class="operator">.</span>value();
+             }
+         }
+     });
+ }
+</pre>
+<p>This function was introduced in Qt 6.3.</p>
+<!-- @@@readHistoryRaw -->
+<!-- $$$readHistoryRaw$$$readHistoryRawconstQDateTime&constQDateTime&quint32boolQOpcUa::TimestampsToReturn -->
+<h3 class="fn" translate="no" id="readHistoryRaw-1"><code class="details extra" translate="no">[since 6.7]</code> <span class="type"><a href="qopcuahistoryreadresponse.html" translate="no">QOpcUaHistoryReadResponse</a></span> *QOpcUaNode::<span class="name">readHistoryRaw</span>(const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>startTime</i>, const <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> &amp;<i>endTime</i>, <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> <i>numValues</i>, <span class="type">bool</span> <i>returnBounds</i>, <span class="type"><a href="qopcua.html#TimestampsToReturn-enum" translate="no">QOpcUa::TimestampsToReturn</a></span> <i>timestampsToReturn</i>)</h3>
+<p>Starts a read history request for this node. The additional <i translate="no">timestampsToReturn</i> parameter determines which timestamps will be returned for each value.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<!-- @@@readHistoryRaw -->
+<!-- $$$readValueAttribute[overload1]$$$readValueAttribute -->
+<h3 class="fn" translate="no" id="readValueAttribute"><span class="type">bool</span> QOpcUaNode::<span class="name">readValueAttribute</span>()</h3>
+<p>Starts an asynchronous read operation for the node's Value attribute.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p><b>See also </b><a href="qopcuanode.html#readAttributes" translate="no">readAttributes</a>().</p>
+<!-- @@@readValueAttribute -->
+<!-- $$$resolveBrowsePath[overload1]$$$resolveBrowsePathconstQList<QOpcUaRelativePathElement>& -->
+<h3 class="fn" translate="no" id="resolveBrowsePath"><span class="type">bool</span> QOpcUaNode::<span class="name">resolveBrowsePath</span>(const <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuarelativepathelement.html" translate="no">QOpcUaRelativePathElement</a></span>&gt; &amp;<i>path</i>)</h3>
+<p>Resolves the browse path <i translate="no">path</i> to one or more node ids starting from this node using the TranslateBrowsePathsToNodeIds service specified in OPC UA 1.05 part 4, 5.8.4.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>TranslateBrowsePathsToNodeIds is mainly used to program against type definitions instead of a concrete set of nodes in the OPC UA address space. For example, a type definition for a machine model could consist of a starting node with browse name &quot;Machine&quot; which has a component with browse name &quot;Fan&quot;. Fan has a component with browse name &quot;RPM&quot; which is a Variable node holding the current RPM value of the fan. There are multiple machines of that type and each of these machines is mapped into the OPC UA address space as an object of the machine type. For each of these machine objects, the path from the machine node to the &quot;RPM&quot; node is the same. If a client wants to read the current RPM value, it needs to call resolveBrowsePath() with the machine node as starting node and the browse path from the machine to the &quot;RPM&quot; node:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qscopedpointer.html" translate="no">QScopedPointer</a></span><span class="operator">&lt;</span><span class="type">QOpcUaNode</span><span class="operator">&gt;</span> node(opcuaClient<span class="operator">-</span><span class="operator">&gt;</span>node(<span class="string">&quot;ns=1;s=machine1&quot;</span>));
+
+ <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qopcuarelativepathelement.html" translate="no">QOpcUaRelativePathElement</a></span><span class="operator">&gt;</span> path;
+ path<span class="operator">.</span>append(<span class="type"><a href="qopcuarelativepathelement.html" translate="no">QOpcUaRelativePathElement</a></span>(<span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span>(<span class="number">1</span><span class="operator">,</span> <span class="string">&quot;Fan&quot;</span>)<span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>ReferenceTypeId<span class="operator">::</span>HasComponent));
+ path<span class="operator">.</span>append(<span class="type"><a href="qopcuarelativepathelement.html" translate="no">QOpcUaRelativePathElement</a></span>(<span class="type"><a href="qopcuaqualifiedname.html" translate="no">QOpcUaQualifiedName</a></span>(<span class="number">1</span><span class="operator">,</span> <span class="string">&quot;RPM&quot;</span>)<span class="operator">,</span> <span class="type">QOpcUa</span><span class="operator">::</span>ReferenceTypeId<span class="operator">::</span>HasComponent));
+ node<span class="operator">-</span><span class="operator">&gt;</span>resolveBrowsePath(path);
+</pre>
+<p>The result returned in <a href="qopcuanode.html#resolveBrowsePathFinished" translate="no">resolveBrowsePathFinished</a>() contains the node id of the &quot;RPM&quot; node which can be used to access the node's attributes:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">if</span> (<span class="operator">!</span>results<span class="operator">.</span>size()) {
+     <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Browse path resolution failed&quot;</span>;
+     <span class="keyword">return</span>;
+ }
+
+ <span class="keyword">if</span> (results<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>isFullyResolved()) {
+    <span class="type">QOpcUaNode</span> <span class="operator">*</span>rpmNode <span class="operator">=</span> client<span class="operator">-</span><span class="operator">&gt;</span>node(results<span class="operator">.</span>at(<span class="number">0</span>)<span class="operator">.</span>targetId());
+    <span class="keyword">if</span> (<span class="operator">!</span>rpmNode) {
+        <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to create node&quot;</span>;
+        <span class="keyword">return</span>;
+    }
+    <span class="comment">// Connect slots, call methods</span>
+ } <span class="keyword">else</span> {
+     <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Browse path could not be fully resolved, the target node is on another server&quot;</span>;
+     <span class="keyword">return</span>;
+ }
+</pre>
+<!-- @@@resolveBrowsePath -->
+<!-- $$$resolveBrowsePathFinished[overload1]$$$resolveBrowsePathFinishedQList<QOpcUaBrowsePathTarget>QList<QOpcUaRelativePathElement>QOpcUa::UaStatusCode -->
+<h3 class="fn" translate="no" id="resolveBrowsePathFinished"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QOpcUaNode::<span class="name">resolveBrowsePathFinished</span>(<span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuabrowsepathtarget.html" translate="no">QOpcUaBrowsePathTarget</a></span>&gt; <i>targets</i>, <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span>&lt;<span class="type"><a href="qopcuarelativepathelement.html" translate="no">QOpcUaRelativePathElement</a></span>&gt; <i>path</i>, <span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> <i>statusCode</i>)</h3>
+<p>This signal is emitted after a <a href="qopcuanode.html#resolveBrowsePath" translate="no">resolveBrowsePath</a>() call has finished.</p>
+<p><a href="qopcuabrowsepathtarget.html" translate="no">QOpcUaBrowsePathTarget</a> <i translate="no">targets</i> contains the matches, <i translate="no">statusCode</i> is the status code of the operation. If <i translate="no">statusCode</i> is not <a href="qopcua.html#UaStatusCode-enum" translate="no">Good</a>, <i translate="no">targets</i> is empty. The browse path <i translate="no">path</i> is the browse path from the request. It can be used to associate results with requests.</p>
+<!-- @@@resolveBrowsePathFinished -->
+<!-- $$$serverTimestamp[overload1]$$$serverTimestampQOpcUa::NodeAttribute -->
+<h3 class="fn" translate="no" id="serverTimestamp"><span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> QOpcUaNode::<span class="name">serverTimestamp</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>) const</h3>
+<p>Returns the server timestamp from the last read or data change of <i translate="no">attribute</i>. Before at least one <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> or <a href="qopcuanode.html#dataChangeOccurred" translate="no">dataChangeOccurred</a> signal has been emitted, a null datetime is returned.</p>
+<!-- @@@serverTimestamp -->
+<!-- $$$sourceTimestamp[overload1]$$$sourceTimestampQOpcUa::NodeAttribute -->
+<h3 class="fn" translate="no" id="sourceTimestamp"><span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> QOpcUaNode::<span class="name">sourceTimestamp</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>) const</h3>
+<p>Returns the source timestamp from the last read or data change of <i translate="no">attribute</i>. Before at least one <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a> or <a href="qopcuanode.html#dataChangeOccurred" translate="no">dataChangeOccurred</a> signal has been emitted, a null datetime is returned.</p>
+<!-- @@@sourceTimestamp -->
+<!-- $$$valueAttribute[overload1]$$$valueAttribute -->
+<h3 class="fn" translate="no" id="valueAttribute"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QOpcUaNode::<span class="name">valueAttribute</span>() const</h3>
+<p>Returns the value of the node's Value attribute.</p>
+<p>The returned value is only valid after the Value attribute has been successfully read or written or after a data change from a monitoring has updated the attribute cache. This is indicated by a <a href="qopcuanode.html#attributeRead" translate="no">attributeRead</a>() or <a href="qopcuanode.html#attributeWritten" translate="no">attributeWritten</a>() signal with status code <a href="qopcua.html#UaStatusCode-enum" translate="no">Good</a> or a <a href="qopcuanode.html#dataChangeOccurred" translate="no">dataChangeOccurred</a>() signal for the Value attribute.</p>
+<p>If there is no value in the attribute cache, an invalid <a href="../qtcore/qvariant.html" translate="no">QVariant</a> is returned.</p>
+<p><b>See also </b><a href="qopcuanode.html#readValueAttribute" translate="no">readValueAttribute</a>(), <a href="qopcuanode.html#writeValueAttribute" translate="no">writeValueAttribute</a>(), and <a href="qopcuanode.html#valueAttributeError" translate="no">valueAttributeError</a>().</p>
+<!-- @@@valueAttribute -->
+<!-- $$$valueAttributeError[overload1]$$$valueAttributeError -->
+<h3 class="fn" translate="no" id="valueAttributeError"><span class="type"><a href="qopcua.html#UaStatusCode-enum" translate="no">QOpcUa::UaStatusCode</a></span> QOpcUaNode::<span class="name">valueAttributeError</span>() const</h3>
+<p>Returns the error code for the node's Value attribute. The status code <a href="qopcua.html#UaStatusCode-enum" translate="no">Good</a> indicates a valid return value for <a href="qopcuanode.html#valueAttribute" translate="no">valueAttribute</a>(). If there is no entry in the attribute cache, <a href="qopcua.html#UaStatusCode-enum" translate="no">BadNoEntryExists</a> is returned.</p>
+<!-- @@@valueAttributeError -->
+<!-- $$$valueAttributeUpdated[overload1]$$$valueAttributeUpdatedconstQVariant& -->
+<h3 class="fn" translate="no" id="valueAttributeUpdated"><code class="details extra" translate="no">[signal, since 6.7]</code> <span class="type">void</span> QOpcUaNode::<span class="name">valueAttributeUpdated</span>(const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>)</h3>
+<p>This signal is emitted after the value attribute in the attribute cache has been updated by a data change notification from the server, a read or a write operation. <i translate="no">value</i> contains the new value for the value attribute.</p>
+<p>This function was introduced in Qt 6.7.</p>
+<p><b>See also </b><a href="qopcuanode.html#attribute" translate="no">attribute</a>(), <a href="qopcuanode.html#attributeError" translate="no">attributeError</a>(), <a href="qopcuanode.html#serverTimestamp" translate="no">serverTimestamp</a>(), <a href="qopcuanode.html#sourceTimestamp" translate="no">sourceTimestamp</a>(), and <a href="qopcuanode.html#attributeUpdated" translate="no">attributeUpdated</a>().</p>
+<!-- @@@valueAttributeUpdated -->
+<!-- $$$writeAttribute[overload1]$$$writeAttributeQOpcUa::NodeAttributeconstQVariant&QOpcUa::Types -->
+<h3 class="fn" translate="no" id="writeAttribute"><span class="type">bool</span> QOpcUaNode::<span class="name">writeAttribute</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>, <span class="type"><a href="qopcua.html#Types-enum" translate="no">QOpcUa::Types</a></span> <i>type</i> = QOpcUa::Types::Undefined)</h3>
+<p>Writes <i translate="no">value</i> to the attribute given in <i translate="no">attribute</i> using the type information from <i translate="no">type</i>. Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>If the <i translate="no">type</i> parameter is omitted, the backend tries to find the correct type. The following default types are assumed:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Qt MetaType</th><th >OPC UA type</th></tr></thead>
+<tr valign="top" class="odd"><td >Bool</td><td >Boolean</td></tr>
+<tr valign="top" class="even"><td >UChar</td><td >Byte</td></tr>
+<tr valign="top" class="odd"><td >Char</td><td >SByte</td></tr>
+<tr valign="top" class="even"><td >UShort</td><td >UInt16</td></tr>
+<tr valign="top" class="odd"><td >Short</td><td >Int16</td></tr>
+<tr valign="top" class="even"><td >Int</td><td >Int32</td></tr>
+<tr valign="top" class="odd"><td >UInt</td><td >UInt32</td></tr>
+<tr valign="top" class="even"><td >ULongLong</td><td >UInt64</td></tr>
+<tr valign="top" class="odd"><td >LongLong</td><td >Int64</td></tr>
+<tr valign="top" class="even"><td >Double</td><td >Double</td></tr>
+<tr valign="top" class="odd"><td >Float</td><td >Float</td></tr>
+<tr valign="top" class="even"><td ><a href="../qtcore/qstring.html" translate="no">QString</a></td><td >String</td></tr>
+<tr valign="top" class="odd"><td ><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></td><td >DateTime</td></tr>
+<tr valign="top" class="even"><td ><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></td><td >ByteString</td></tr>
+<tr valign="top" class="odd"><td ><a href="../qtcore/quuid.html" translate="no">QUuid</a></td><td >Guid</td></tr>
+</table></div>
+<!-- @@@writeAttribute -->
+<!-- $$$writeAttributeRange[overload1]$$$writeAttributeRangeQOpcUa::NodeAttributeconstQVariant&constQString&QOpcUa::Types -->
+<h3 class="fn" translate="no" id="writeAttributeRange"><span class="type">bool</span> QOpcUaNode::<span class="name">writeAttributeRange</span>(<span class="type"><a href="qopcua.html#NodeAttribute-enum" translate="no">QOpcUa::NodeAttribute</a></span> <i>attribute</i>, const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>, const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>indexRange</i>, <span class="type"><a href="qopcua.html#Types-enum" translate="no">QOpcUa::Types</a></span> <i>type</i> = QOpcUa::Types::Undefined)</h3>
+<p>Writes <i translate="no">value</i> to the attribute given in <i translate="no">attribute</i> using the type information from <i translate="no">type</i>. For <i translate="no">indexRange</i>, see <a href="qopcuanode.html#readAttributeRange" translate="no">readAttributeRange</a>().</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<!-- @@@writeAttributeRange -->
+<!-- $$$writeAttributes[overload1]$$$writeAttributesconstQOpcUaNode::AttributeMap&QOpcUa::Types -->
+<h3 class="fn" translate="no" id="writeAttributes"><span class="type">bool</span> QOpcUaNode::<span class="name">writeAttributes</span>(const <span class="type"><a href="qopcuanode.html#AttributeMap-typedef" translate="no">QOpcUaNode::AttributeMap</a></span> &amp;<i>toWrite</i>, <span class="type"><a href="qopcua.html#Types-enum" translate="no">QOpcUa::Types</a></span> <i>valueAttributeType</i> = QOpcUa::Types::Undefined)</h3>
+<p>Executes a write operation for the attributes and values specified in <i translate="no">toWrite</i>.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p>The <i translate="no">valueAttributeType</i> parameter can be used to supply type information for the value attribute. All other attributes have known types.</p>
+<p><b>See also </b><a href="qopcuanode.html#writeAttribute" translate="no">writeAttribute</a>().</p>
+<!-- @@@writeAttributes -->
+<!-- $$$writeValueAttribute[overload1]$$$writeValueAttributeconstQVariant&QOpcUa::Types -->
+<h3 class="fn" translate="no" id="writeValueAttribute"><span class="type">bool</span> QOpcUaNode::<span class="name">writeValueAttribute</span>(const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>, <span class="type"><a href="qopcua.html#Types-enum" translate="no">QOpcUa::Types</a></span> <i>type</i> = QOpcUa::Types::Undefined)</h3>
+<p>Writes <i translate="no">value</i> to the node's Value attribute using the type information from <i translate="no">type</i>.</p>
+<p>Returns <code translate="no">true</code> if the asynchronous call has been successfully dispatched.</p>
+<p><b>See also </b><a href="qopcuanode.html#writeAttribute" translate="no">writeAttribute</a>().</p>
+<!-- @@@writeValueAttribute -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

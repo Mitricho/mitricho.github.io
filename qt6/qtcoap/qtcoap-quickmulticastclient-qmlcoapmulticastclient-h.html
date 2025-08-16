@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- quickmulticastclient.qdoc -->
+  <meta name="description" content="Using the CoAP client for a multicast resource discovery with a Qt Quick user interface.">
+  <title>Quick CoAP Multicast Discovery | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Quick CoAP Multicast Discovery</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Quick CoAP Multicast Discovery</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2019 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#ifndef QMLCOAPMULTICASTCLIENT_H</span>
+ <span class="preprocessor">#define QMLCOAPMULTICASTCLIENT_H</span>
+
+ <span class="preprocessor">#include &lt;QtCoap/qcoapnamespace.h&gt;</span>
+ <span class="preprocessor">#include &lt;QCoapClient&gt;</span>
+ <span class="preprocessor">#include &lt;QCoapResource&gt;</span>
+
+ <span class="preprocessor">#include &lt;QtQml/qqmlregistration.h&gt;</span>
+
+ <span class="keyword">class</span> <span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span>;
+
+ <span class="keyword">class</span> QmlCoapResource : <span class="keyword">public</span> <span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span>
+ {
+     Q_GADGET
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> title READ title)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> host READ hostStr)
+     Q_PROPERTY(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> path READ path)
+
+     QML_ANONYMOUS
+ <span class="keyword">public</span>:
+     QmlCoapResource() : <span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span>() {}
+     QmlCoapResource(<span class="keyword">const</span> <span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span> <span class="operator">&amp;</span>resource)
+         : <span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span>(resource) {}
+
+     <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> hostStr() <span class="keyword">const</span> { <span class="keyword">return</span> host()<span class="operator">.</span>toString(); }
+ };
+ Q_DECLARE_METATYPE(QmlCoapResource)
+
+ <span class="keyword">class</span> QmlCoapMulticastClient : <span class="keyword">public</span> <span class="type"><a href="qcoapclient.html" translate="no">QCoapClient</a></span>
+ {
+     Q_OBJECT
+
+     Q_PROPERTY(<span class="type">bool</span> isDiscovering READ isDiscovering NOTIFY isDiscoveringChanged)
+
+     QML_NAMED_ELEMENT(CoapMulticastClient)
+ <span class="keyword">public</span>:
+     QmlCoapMulticastClient(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> nullptr);
+
+     Q_INVOKABLE <span class="type">void</span> discover(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>host<span class="operator">,</span> <span class="type">int</span> port<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>discoveryPath);
+     Q_INVOKABLE <span class="type">void</span> discover(<span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span><span class="operator">::</span>MulticastGroup group<span class="operator">,</span> <span class="type">int</span> port<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>discoveryPath);
+     Q_INVOKABLE <span class="type">void</span> stopDiscovery();
+
+     <span class="type">bool</span> isDiscovering() <span class="keyword">const</span>;
+
+ Q_SIGNALS:
+     <span class="type">void</span> discovered(<span class="keyword">const</span> QmlCoapResource <span class="operator">&amp;</span>resource);
+     <span class="type">void</span> finished(<span class="type">int</span> error);
+     <span class="comment">// The bool parameter is not provided, because the signal is only used by</span>
+     <span class="comment">// the QML property system, and it does not use the passed value anyway.</span>
+     <span class="type">void</span> isDiscoveringChanged();
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> onDiscovered(<span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> <span class="operator">*</span>reply<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qcoapresource.html" translate="no">QCoapResource</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>resources);
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="qcoapresourcediscoveryreply.html" translate="no">QCoapResourceDiscoveryReply</a></span> <span class="operator">*</span>m_reply <span class="operator">=</span> nullptr;
+ };
+
+ <span class="keyword">namespace</span> <span class="type">QCoapForeignNamespace</span>
+ {
+     Q_NAMESPACE
+     QML_FOREIGN_NAMESPACE(<span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span>)
+     QML_NAMED_ELEMENT(<span class="type"><a href="qtcoap-module.html" translate="no">QtCoap</a></span>)
+ }
+
+ <span class="preprocessor">#endif // QMLCOAPMULTICASTCLIENT_H</span>
+</pre>

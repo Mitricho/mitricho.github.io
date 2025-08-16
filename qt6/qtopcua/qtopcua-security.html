@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- security.qdoc -->
+  <meta name="description" content="Instructions how to create OPC UA Clients with security support">
+  <title>Creating OPC UA Clients with security support | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li>Creating OPC UA Clients with security support</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qopcuaxmldatatypes2cpp.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qopcuaxmldatatypes2cpp.html">The Qt OPC UA data type generator</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level2"><a href="#create-a-new-application-certificate">Create a new Application Certificate</a></li>
+<li class="level2"><a href="#configuring-the-ua-application">Configuring the UA Application</a></li>
+<li class="level2"><a href="#pki-folder-layout">PKI Folder Layout</a></li>
+<li class="level2"><a href="#first-connection">First connection</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Creating OPC UA Clients with security support</h1>
+<!-- $$$qtopcua-security.html-description -->
+<div class="descr" id="details">
+<p>One of the core features of OPC UA is the support for security, which means we get cryptographically encrypted and signed protocol, user authentication and authorization support.</p>
+<p>To make this work, each application instances (installation of a program) needs to have its own <code translate="no">Application Instance Certificate</code> and the according private key.</p>
+<p>The applications can either generate self-signed certificates on their own, get some from a certificate authority using OPC UA GDS, or simply can be configured with certificates which haven been created manually by the user.</p>
+<p>Because at the moment Qt OPC UA does not support certificate generation or GDS, this tutorial describes how to generate a self-signed OPC UA certificate on the command line using OpenSSL.</p>
+<h3 id="create-a-new-application-certificate">Create a new Application Certificate</h3>
+<p>To be able to generate a correct x509v3 certificate with all required extensions for OPC UA, we need to setup a configuration file with all the necessary information first.</p>
+<p>Remember to change <code translate="no">subject</code> and <code translate="no">subjectAltName</code> to match your case.</p>
+<p>It is important to insert the <code translate="no">ApplicationURI</code> of the application into the <code translate="no">URI</code> field of <code translate="no">subjectAltName</code>, and that the hostname of your PC or device is inserted in the <code translate="no">DNS</code> fields of <code translate="no">subjectAltName</code>. Alternatively, you can use <code translate="no">IP</code> field if your device does not support host names and you are working with static IPs. Future versions of Qt OPC UA will be able to generate the certificate for you with correct information. For now, you can create one using the OpenSSL command line tool.</p>
+<p>Example: <code translate="no">opcuaviewer.config</code></p>
+<pre class="cpp" translate="no">
+ <span class="operator">[</span> req <span class="operator">]</span>
+ default_bits <span class="operator">=</span> <span class="number">2048</span>
+ default_md <span class="operator">=</span> sha256
+ distinguished_name <span class="operator">=</span> subject
+ req_extensions <span class="operator">=</span> req_ext
+ x509_extensions <span class="operator">=</span> req_ext
+ string_mask <span class="operator">=</span> utf8only
+ prompt <span class="operator">=</span> no
+
+ <span class="operator">[</span> req_ext <span class="operator">]</span>
+ basicConstraints <span class="operator">=</span> critical<span class="operator">,</span> CA:FALSE
+ keyUsage <span class="operator">=</span> critical<span class="operator">,</span> nonRepudiation<span class="operator">,</span> digitalSignature<span class="operator">,</span> keyEncipherment<span class="operator">,</span> dataEncipherment
+ extendedKeyUsage <span class="operator">=</span> clientAuth
+ subjectAltName <span class="operator">=</span> URI:urn:foo<span class="operator">.</span>com:The<span class="operator">%</span><span class="number">20Qt</span><span class="operator">%</span><span class="number">20Company</span>:<span class="type">QtOpcUaViewer</span><span class="operator">,</span>DNS:foo<span class="operator">.</span>com
+ subjectKeyIdentifier <span class="operator">=</span> hash
+ authorityKeyIdentifier<span class="operator">=</span>keyid:always<span class="operator">,</span>issuer:always
+
+ <span class="operator">[</span> subject <span class="operator">]</span>
+ countryName <span class="operator">=</span> DE
+ stateOrProvinceName <span class="operator">=</span> Berlin
+ localityName <span class="operator">=</span> Berlin
+ organizationName <span class="operator">=</span> The <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span> Company
+ commonName <span class="operator">=</span> <span class="type">QtOpcUaViewer</span>
+</pre>
+<p>Using this configuration file, OpenSSL is able to create a matching certificate for local use.</p>
+<pre class="cpp" translate="no">
+ <span class="preprocessor"># create a self-signed certificate and private key</span>
+ openssl req <span class="operator">-</span><span class="keyword">new</span> <span class="operator">-</span>x509  <span class="operator">-</span>config opcuaviewer<span class="operator">.</span>config <span class="operator">-</span>newkey rsa:<span class="number">2048</span> <span class="operator">-</span>keyout opcuaviewer<span class="operator">.</span>key <span class="operator">-</span>nodes <span class="operator">-</span>outform der <span class="operator">-</span>out opcuaviewer<span class="operator">.</span>der
+ <span class="preprocessor"># install the certificate and key into the application PKI directory</span>
+ mv opcuaviewer<span class="operator">.</span>der <span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>application<span class="operator">/</span>pki<span class="operator">/</span>own<span class="operator">/</span>certs<span class="operator">/</span>opcuaviewer<span class="operator">.</span>der
+ mv opcuaviewer<span class="operator">.</span>key <span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>application<span class="operator">/</span>pki<span class="operator">/</span>own<span class="operator">/</span><span class="keyword">private</span><span class="operator">/</span>opcuaviewer<span class="operator">.</span>pem
+ <span class="preprocessor"># secure private key file permissions</span>
+ chmod <span class="number">600</span> <span class="operator">/</span>path<span class="operator">/</span>to<span class="operator">/</span>application<span class="operator">/</span>pki<span class="operator">/</span>own<span class="operator">/</span><span class="keyword">private</span><span class="operator">/</span>opcuaviewer<span class="operator">.</span>pem
+</pre>
+<p>It is important to secure the file permission of the private key, so that only the UA application can read it. For services (daemons), it is recommended to create dedicated unprivileged users accounts for this and make this user the owner of the key. For interactive applications, this key should be individual to the user. For interactive applications, it is also possible to password protect the key. In this case, the user needs to enter the password every time the application is started and loading the key. For this reason, password protected keys are not a good solution for unattended applications, because this would required to store the password in a configuration file.</p>
+<p>You can dump the certificate data using OpenSSL to inspect the contents of the certificate:</p>
+<pre class="cpp" translate="no">
+         openssl x509 <span class="operator">-</span>in opcuaviewer<span class="operator">.</span>der <span class="operator">-</span>text <span class="operator">-</span>noout
+
+ Certificate:
+     Data:
+         Version: <span class="number">3</span> (<span class="number">0x2</span>)
+         Serial Number:
+             be:aa:<span class="number">41</span>:<span class="number">79</span>:<span class="number">8a</span>:b0:<span class="number">4f</span>:<span class="number">9a</span>
+     Signature Algorithm: sha512WithRSAEncryption
+         Issuer: C <span class="operator">=</span> DE<span class="operator">,</span> ST <span class="operator">=</span> Berlin<span class="operator">,</span> L <span class="operator">=</span> Berlin<span class="operator">,</span> O <span class="operator">=</span> The <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span> Company<span class="operator">,</span> CN <span class="operator">=</span> <span class="type">QtOpcUaViewer</span>
+         Validity
+             Not Before: Nov  <span class="number">7</span> <span class="number">14</span>:<span class="number">38</span>:<span class="number">52</span> <span class="number">2018</span> GMT
+             Not After : Dec  <span class="number">7</span> <span class="number">14</span>:<span class="number">38</span>:<span class="number">52</span> <span class="number">2018</span> GMT
+         Subject: C <span class="operator">=</span> DE<span class="operator">,</span> ST <span class="operator">=</span> Berlin<span class="operator">,</span> L <span class="operator">=</span> Berlin<span class="operator">,</span> O <span class="operator">=</span> The <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span> Company<span class="operator">,</span> CN <span class="operator">=</span> <span class="type">QtOpcUaViewer</span>
+         Subject Public Key Info:
+             Public Key Algorithm: rsaEncryption
+                 Public<span class="operator">-</span>Key: (<span class="number">2048</span> bit)
+                 Modulus:
+                     <span class="operator">[</span> skipped <span class="operator">]</span>
+                 Exponent: <span class="number">65537</span> (<span class="number">0x10001</span>)
+         X509v3 extensions:
+             X509v3 Basic Constraints: critical
+                 CA:FALSE
+             X509v3 Key Usage: critical
+                 Digital Signature<span class="operator">,</span> Non Repudiation<span class="operator">,</span> Key Encipherment<span class="operator">,</span> Data Encipherment<span class="operator">,</span> Certificate Sign
+             X509v3 Subject Alternative Name:
+                 URI:urn:foo<span class="operator">.</span>com:The<span class="operator">%</span><span class="number">20Qt</span><span class="operator">%</span><span class="number">20Company</span>:<span class="type">QtOpcUaViewer</span><span class="operator">,</span> DNS:foo<span class="operator">.</span>com
+             X509v3 Subject Key Identifier:
+                 B2:E8:<span class="number">5E</span>:<span class="number">34</span>:<span class="number">21</span>:EA:<span class="number">67</span>:CF:<span class="number">61</span>:FC:<span class="number">14</span>:<span class="number">94</span>:<span class="number">18</span>:C1:AD:<span class="number">13</span>:<span class="number">89</span>:<span class="number">83</span>:CA:<span class="number">9B</span>
+             X509v3 Authority Key Identifier:
+                 keyid:B2:E8:<span class="number">5E</span>:<span class="number">34</span>:<span class="number">21</span>:EA:<span class="number">67</span>:CF:<span class="number">61</span>:FC:<span class="number">14</span>:<span class="number">94</span>:<span class="number">18</span>:C1:AD:<span class="number">13</span>:<span class="number">89</span>:<span class="number">83</span>:CA:<span class="number">9B</span>
+                 DirName:<span class="operator">/</span>C<span class="operator">=</span>DE<span class="operator">/</span>ST<span class="operator">=</span>Berlin<span class="operator">/</span>L<span class="operator">=</span>Berlin<span class="operator">/</span>O<span class="operator">=</span>The <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span> Company<span class="operator">/</span>CN<span class="operator">=</span><span class="type">QtOpcUaViewer</span>
+                 serial:BE:AA:<span class="number">41</span>:<span class="number">79</span>:<span class="number">8A</span>:B0:<span class="number">4F</span>:<span class="number">9A</span>
+
+     Signature Algorithm: sha512WithRSAEncryption
+          <span class="operator">[</span> skipped <span class="operator">]</span>
+</pre>
+<h3 id="configuring-the-ua-application">Configuring the UA Application</h3>
+<p>To make security working with the certificate created in the previous step, it is important to</p>
+<ul>
+<li>Configure the correct Application Identity<pre class="cpp" translate="no">
+ m_identity <span class="operator">=</span> m_pkiConfig<span class="operator">.</span>applicationIdentity();
+</pre>
+</li>
+<li>Configure PKI locations so that the SDK can find the certificate, private key, trust list etc.<p>See, for example, the code from the <a href="qtopcua-opcuaviewer-example.html">Qt OPC UA Viewer Example</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>setupPkiConfiguration()
+ {
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span> pkidir <span class="operator">=</span>
+             <span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span>(<span class="type"><a href="../qtcore/qstandardpaths.html" translate="no">QStandardPaths</a></span><span class="operator">::</span>writableLocation(<span class="type"><a href="../qtcore/qstandardpaths.html" translate="no">QStandardPaths</a></span><span class="operator">::</span>AppLocalDataLocation) <span class="operator">+</span> <span class="string">&quot;/pki&quot;</span>);
+
+     <span class="keyword">if</span> (<span class="operator">!</span>pkidir<span class="operator">.</span>exists() <span class="operator">&amp;</span><span class="operator">&amp;</span> <span class="operator">!</span>copyDirRecursively(<span class="string">&quot;:/pki&quot;</span><span class="operator">,</span> pkidir<span class="operator">.</span>path()))
+         <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Could not set up directory %s!&quot;</span><span class="operator">,</span> qUtf8Printable(pkidir<span class="operator">.</span>path()));
+
+     m_pkiConfig<span class="operator">.</span>setClientCertificateFile(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;own/certs/opcuaviewer.der&quot;</span>));
+     m_pkiConfig<span class="operator">.</span>setPrivateKeyFile(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;own/private/opcuaviewer.pem&quot;</span>));
+     m_pkiConfig<span class="operator">.</span>setTrustListDirectory(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;trusted/certs&quot;</span>));
+     m_pkiConfig<span class="operator">.</span>setRevocationListDirectory(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;trusted/crl&quot;</span>));
+     m_pkiConfig<span class="operator">.</span>setIssuerListDirectory(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;issuers/certs&quot;</span>));
+     m_pkiConfig<span class="operator">.</span>setIssuerRevocationListDirectory(pkidir<span class="operator">.</span>absoluteFilePath(<span class="string">&quot;issuers/crl&quot;</span>));
+
+     <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> toCreate <span class="operator">=</span> { m_pkiConfig<span class="operator">.</span>issuerListDirectory()<span class="operator">,</span>
+                                    m_pkiConfig<span class="operator">.</span>issuerRevocationListDirectory() };
+     <span class="keyword">for</span> (<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>dir : toCreate) {
+         <span class="keyword">if</span> (<span class="operator">!</span><span class="type"><a href="../qtcore/qdir.html" translate="no">QDir</a></span>()<span class="operator">.</span>mkpath(dir))
+             <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Could not create directory %s!&quot;</span><span class="operator">,</span> qUtf8Printable(dir));
+     }
+ }
+</pre>
+<p>In the example, we extract pre-configured own and trusted certificates from the Qt resource system to a writable location in the file system. The remaining directories for issuer (revocation) lists are created manually.</p>
+</li>
+</ul>
+<h3 id="pki-folder-layout">PKI Folder Layout</h3>
+<p>Qt OPC UA uses the following folder layout:</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Folder</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >own</td><td >Location to store the application's own certificates.</td></tr>
+<tr valign="top" class="even"><td >trusted</td><td >A list of trusted application certificates or trusted CA certificates.</td></tr>
+<tr valign="top" class="odd"><td >issuer</td><td >A list of certificates for CAs which are not trusted but are needed to check signatures on certificates.</td></tr>
+<tr valign="top" class="even"><td >rejected</td><td >Here the application stores rejected certificates, so that they can later on be trusted by an Administrator. It is important to have a configured maximum number of files here. If this is reached, the oldest file should be deleted first. Without a limit, an attacker could fill the machine's hard disk with invalid connection attempts.</td></tr>
+</table></div>
+<p>Each of the folders <code translate="no">own</code>, <code translate="no">trusted</code>, and <code translate="no">issuers</code> contain the subdirectory structure defined by the following table.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Subdirectory</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >certs</td><td >Contains the DER encoded X.509 v3 certificates. The files shall have a .der file extension.</td></tr>
+<tr valign="top" class="even"><td >private</td><td >Contains the private keys. The format of the file may be backend specific. PEM encoded files should have a .pem extension. PKCS#12 encoded files should have a .pfx extension. The root file name shall be the same as the corresponding public key file in the certs directory. This folder only exists inside the <code translate="no">own</code> folder.</td></tr>
+<tr valign="top" class="odd"><td >crl</td><td >Contains the DER encoded CRL for any CA certificates found in the certs directories. The files shall have a .crl file extension.</td></tr>
+</table></div>
+<h3 id="first-connection">First connection</h3>
+<p>When connecting for the first time, the client needs to trust the server certificate.</p>
+<p>The client should display a certificate warning (with cert details) and offer the possibility to save the certificate in its trust list. For an example, see <a href="qtopcua-opcuaviewer-example.html">Qt OPC UA Viewer Example</a>.</p>
+<p>When the client has accepted the server certificate, you can try to connect again. Now the server may reject the client's certificate. This is indicated by the generic error code <code translate="no">BadSecurityChecksFailed</code>. Server normally store rejected certificates in a special <code translate="no">rejected</code> folder. Administrator can move these into the trust list to trust clients. This avoids manually copying the client certificate to the server machine.</p>
+<p>As soon as the server has trusted the client, you should be able to connect with security.</p>
+</div>
+<!-- @@@qtopcua-security.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qopcuaxmldatatypes2cpp.html">The Qt OPC UA data type generator</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- modbusclient.qdoc -->
+  <meta name="description" content="The example implements a Modbus client application.">
+  <title>Modbus Client | Qt Serial Bus | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtserialbus-index.html">Qt Serial Bus</a></li>
+<li><a href="qtserialbus-examples.html">Qt SerialBus Examples</a></li>
+<li>Modbus Client</li>
+<li id="buildversion"><a href="qtserialbus-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#creating-a-qmodbusclient">Creating a QModbusClient</a></li>
+<li class="level1"><a href="#reading-data">Reading Data</a></li>
+<li class="level1"><a href="#writing-data">Writing Data</a></li>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Modbus Client</h1>
+<!-- $$$modbus/client-brief -->
+<p>The example implements a Modbus client application.</p>
+<!-- @@@modbus/client -->
+<!-- $$$modbus/client-description -->
+<div class="descr" id="details">
+<p>The example acts as Modbus client sending Modbus request via serial line or TCP. The shown dialog allows the definition of standard requests and displays incoming responses.</p>
+<p>The example must be used in conjunction with the <a href="qtserialbus-modbus-server-example.html">Modbus Server example</a> or another Modbus device which is either connected via TCP or Serial Port.</p>
+<p>Key classes used in this example:</p>
+<ul>
+<li><a href="qmodbusclient.html" translate="no">QModbusClient</a></li>
+<li><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></li>
+<li><a href="qmodbusreply.html" translate="no">QModbusReply</a></li>
+</ul>
+<p class="centerAlign"><img src="images/modbusclient.png" alt="" /></p><h4 id="creating-a-qmodbusclient">Creating a QModbusClient</h4>
+<p>An instance of <a href="qmodbusclient.html" translate="no">QModbusClient</a> is required to perform any communication. Depending on the specified connection type, the example can instantiate a <a href="qmodbusrtuserialclient.html" translate="no">QModbusRtuSerialClient</a> (for serial communication), or a <a href="qmodbustcpclient.html" translate="no">QModbusTcpClient</a> (for TCP-based communication).</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">auto</span> type <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>ModbusConnection<span class="operator">&gt;</span>(index);
+     <span class="keyword">if</span> (type <span class="operator">=</span><span class="operator">=</span> Serial) {
+ <span class="preprocessor">#if QT_CONFIG(modbus_serialport)</span>
+         modbusDevice <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qmodbusrtuserialclient.html" translate="no">QModbusRtuSerialClient</a></span>(<span class="keyword">this</span>);
+         <span class="comment">// Try to fill in the first available serial port name if the line edit</span>
+         <span class="comment">// is empty, or contains a url (assume that ':' is only a part of url).</span>
+         <span class="keyword">const</span> <span class="keyword">auto</span> ports <span class="operator">=</span> <span class="type"><a href="../qtserialport/qserialportinfo.html" translate="no">QSerialPortInfo</a></span><span class="operator">::</span>availablePorts();
+         <span class="keyword">const</span> <span class="keyword">auto</span> currentText <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>text();
+         <span class="keyword">if</span> (<span class="operator">!</span>ports<span class="operator">.</span>isEmpty() <span class="operator">&amp;</span><span class="operator">&amp;</span> (currentText<span class="operator">.</span>isEmpty() <span class="operator">|</span><span class="operator">|</span> currentText<span class="operator">.</span>contains(u<span class="char">':'</span>)))
+             ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>setText(ports<span class="operator">.</span>front()<span class="operator">.</span>portName());
+ <span class="preprocessor">#endif</span>
+     } <span class="keyword">else</span> <span class="keyword">if</span> (type <span class="operator">=</span><span class="operator">=</span> Tcp) {
+         modbusDevice <span class="operator">=</span> <span class="keyword">new</span> <span class="type"><a href="qmodbustcpclient.html" translate="no">QModbusTcpClient</a></span>(<span class="keyword">this</span>);
+         <span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> currentUrl <span class="operator">=</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span><span class="operator">::</span>fromUserInput(ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>text());
+         <span class="comment">// Check if we already have &lt;ip address&gt;:&lt;port&gt;</span>
+         <span class="keyword">if</span> (currentUrl<span class="operator">.</span>port() <span class="operator">&lt;</span><span class="operator">=</span> <span class="number">0</span>)
+             ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>setText(QLatin1String(<span class="string">&quot;127.0.0.1:50200&quot;</span>));
+     }
+</pre>
+<p>Once the client is created, use the <a href="qmodbusdevice.html#setConnectionParameter" translate="no">setConnectionParameter</a>() method to specify the connection parameters. The parameters vary depending on the communication type:</p>
+<pre class="cpp" translate="no">
+         <span class="keyword">const</span> <span class="keyword">auto</span> settings <span class="operator">=</span> m_settingsDialog<span class="operator">-</span><span class="operator">&gt;</span>settings();
+         <span class="keyword">if</span> (<span class="keyword">static_cast</span><span class="operator">&lt;</span>ModbusConnection<span class="operator">&gt;</span>(ui<span class="operator">-</span><span class="operator">&gt;</span>connectType<span class="operator">-</span><span class="operator">&gt;</span>currentIndex()) <span class="operator">=</span><span class="operator">=</span> Serial) {
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>SerialPortNameParameter<span class="operator">,</span>
+                 ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>text());
+ <span class="preprocessor">#if QT_CONFIG(modbus_serialport)</span>
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>SerialParityParameter<span class="operator">,</span>
+                 settings<span class="operator">.</span>parity);
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>SerialBaudRateParameter<span class="operator">,</span>
+                 settings<span class="operator">.</span>baud);
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>SerialDataBitsParameter<span class="operator">,</span>
+                 settings<span class="operator">.</span>dataBits);
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>SerialStopBitsParameter<span class="operator">,</span>
+                 settings<span class="operator">.</span>stopBits);
+ <span class="preprocessor">#endif</span>
+         } <span class="keyword">else</span> {
+             <span class="keyword">const</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span> url <span class="operator">=</span> <span class="type"><a href="../qtcore/qurl.html" translate="no">QUrl</a></span><span class="operator">::</span>fromUserInput(ui<span class="operator">-</span><span class="operator">&gt;</span>portEdit<span class="operator">-</span><span class="operator">&gt;</span>text());
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>NetworkPortParameter<span class="operator">,</span> url<span class="operator">.</span>port());
+             modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setConnectionParameter(<span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>NetworkAddressParameter<span class="operator">,</span> url<span class="operator">.</span>host());
+         }
+         modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setTimeout(settings<span class="operator">.</span>responseTime);
+         modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>setNumberOfRetries(settings<span class="operator">.</span>numberOfRetries);
+</pre>
+<p>After the client is created and all the parameters are specified, use <a href="qmodbusdevice.html#connectDevice" translate="no">QModbusClient::connectDevice</a>() to connect to Modbus network.</p>
+<h4 id="reading-data">Reading Data</h4>
+<p>To read data from Modbus server, the client needs to specify a server address and the parameters of objects that it wants to read:</p>
+<ul>
+<li><a href="qmodbusdataunit.html#RegisterType-enum" translate="no">RegisterType</a></li>
+<li><a href="qmodbusdataunit.html#startAddress" translate="no">start address</a></li>
+<li><a href="qmodbusdataunit.html#valueCount" translate="no">number of entries to read</a></li>
+</ul>
+<p>The object parameters are represented by the <a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a> class:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> MainWindow<span class="operator">::</span>readRequest() <span class="keyword">const</span>
+ {
+     <span class="keyword">const</span> <span class="keyword">auto</span> table <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>writeTable<span class="operator">-</span><span class="operator">&gt;</span>currentData()<span class="operator">.</span>value<span class="operator">&lt;</span><span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>RegisterType<span class="operator">&gt;</span>();
+
+     <span class="type">int</span> startAddress <span class="operator">=</span> ui<span class="operator">-</span><span class="operator">&gt;</span>readAddress<span class="operator">-</span><span class="operator">&gt;</span>value();
+     Q_ASSERT(startAddress <span class="operator">&gt;</span><span class="operator">=</span> <span class="number">0</span> <span class="operator">&amp;</span><span class="operator">&amp;</span> startAddress <span class="operator">&lt;</span> <span class="number">10</span>);
+
+     <span class="comment">// do not go beyond 10 entries</span>
+     <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span> numberOfEntries <span class="operator">=</span> <a href="../qtcore/qtminmax-qtcore-proxy.html#qMin" translate="no">qMin</a>(ui<span class="operator">-</span><span class="operator">&gt;</span>readSize<span class="operator">-</span><span class="operator">&gt;</span>currentText()<span class="operator">.</span>toUShort()<span class="operator">,</span>
+                                    <span class="type"><a href="../qtcore/qttypes.html#quint16-typedef" translate="no">quint16</a></span>(<span class="number">10</span> <span class="operator">-</span> startAddress));
+     <span class="keyword">return</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span>(table<span class="operator">,</span> startAddress<span class="operator">,</span> numberOfEntries);
+ }
+</pre>
+<p>Once the parameters are collected, the <a href="qmodbusclient.html#sendReadRequest" translate="no">sendReadRequest</a>() method is used to send the actual request. The method returns a <a href="qmodbusreply.html" translate="no">QModbusReply</a> which should be processed in an asynchronous way, so the <a href="qmodbusreply.html#finished" translate="no">QModbusReply::finished</a>() signal is used to check when the reply is ready.</p>
+<pre class="cpp" translate="no">
+     <span class="keyword">if</span> (<span class="keyword">auto</span> <span class="operator">*</span>reply <span class="operator">=</span> modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>sendReadRequest(readRequest()<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>serverEdit<span class="operator">-</span><span class="operator">&gt;</span>value())) {
+         <span class="keyword">if</span> (<span class="operator">!</span>reply<span class="operator">-</span><span class="operator">&gt;</span>isFinished())
+             connect(reply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmodbusreply.html" translate="no">QModbusReply</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>MainWindow<span class="operator">::</span>onReadReady);
+         <span class="keyword">else</span>
+             <span class="keyword">delete</span> reply; <span class="comment">// broadcast replies return immediately</span>
+     } <span class="keyword">else</span> {
+         statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Read error: %1&quot;</span>)<span class="operator">.</span>arg(modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> <span class="number">5000</span>);
+     }
+</pre>
+<p>Once the <a href="qmodbusreply.html#finished" translate="no">QModbusReply::finished</a>() signal is received, the reply object can be used to get the data or to check for read errors:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> MainWindow<span class="operator">::</span>onReadReady()
+ {
+     <span class="keyword">auto</span> reply <span class="operator">=</span> qobject_cast<span class="operator">&lt;</span><span class="type"><a href="qmodbusreply.html" translate="no">QModbusReply</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(sender());
+     <span class="keyword">if</span> (<span class="operator">!</span>reply)
+         <span class="keyword">return</span>;
+
+     <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>error() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>NoError) {
+         <span class="keyword">const</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> unit <span class="operator">=</span> reply<span class="operator">-</span><span class="operator">&gt;</span>result();
+         <span class="keyword">for</span> (qsizetype i <span class="operator">=</span> <span class="number">0</span><span class="operator">,</span> total <span class="operator">=</span> unit<span class="operator">.</span>valueCount(); i <span class="operator">&lt;</span> total; <span class="operator">+</span><span class="operator">+</span>i) {
+             <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> entry <span class="operator">=</span> tr(<span class="string">&quot;Address: %1, Value: %2&quot;</span>)<span class="operator">.</span>arg(unit<span class="operator">.</span>startAddress() <span class="operator">+</span> i)
+                                      <span class="operator">.</span>arg(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span><span class="operator">::</span>number(unit<span class="operator">.</span>value(i)<span class="operator">,</span>
+                                           unit<span class="operator">.</span>registerType() <span class="operator">&lt;</span><span class="operator">=</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>Coils <span class="operator">?</span> <span class="number">10</span> : <span class="number">16</span>));
+             ui<span class="operator">-</span><span class="operator">&gt;</span>readValue<span class="operator">-</span><span class="operator">&gt;</span>addItem(entry);
+         }
+     } <span class="keyword">else</span> <span class="keyword">if</span> (reply<span class="operator">-</span><span class="operator">&gt;</span>error() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>ProtocolError) {
+         statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Read response error: %1 (Modbus exception: 0x%2)&quot;</span>)<span class="operator">.</span>
+                                     arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>
+                                     arg(reply<span class="operator">-</span><span class="operator">&gt;</span>rawResult()<span class="operator">.</span>exceptionCode()<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span> <span class="number">5000</span>);
+     } <span class="keyword">else</span> {
+         statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Read response error: %1 (code: 0x%2)&quot;</span>)<span class="operator">.</span>
+                                     arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>
+                                     arg(reply<span class="operator">-</span><span class="operator">&gt;</span>error()<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span> <span class="number">5000</span>);
+     }
+
+     reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+ }
+</pre>
+<h4 id="writing-data">Writing Data</h4>
+<p>To write the data to the Modbus server, the client needs to specify the server address, and the parameters of objects that it wants to write. As with reading the data, the <a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a> class is used to represent the information about the data to be written. This time the data also includes the desired <a href="qmodbusdataunit.html#values" translate="no">values</a>. The <a href="qmodbusclient.html#sendWriteRequest" translate="no">sendWriteRequest</a>() method is used to write the desired data:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span> writeUnit <span class="operator">=</span> writeRequest();
+     <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>RegisterType table <span class="operator">=</span> writeUnit<span class="operator">.</span>registerType();
+     <span class="keyword">for</span> (qsizetype i <span class="operator">=</span> <span class="number">0</span><span class="operator">,</span> total <span class="operator">=</span> writeUnit<span class="operator">.</span>valueCount(); i <span class="operator">&lt;</span> total; <span class="operator">+</span><span class="operator">+</span>i) {
+         <span class="keyword">const</span> <span class="keyword">auto</span> addr <span class="operator">=</span> i <span class="operator">+</span> writeUnit<span class="operator">.</span>startAddress();
+         <span class="keyword">if</span> (table <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmodbusdataunit.html" translate="no">QModbusDataUnit</a></span><span class="operator">::</span>Coils)
+             writeUnit<span class="operator">.</span>setValue(i<span class="operator">,</span> writeModel<span class="operator">-</span><span class="operator">&gt;</span>m_coils<span class="operator">[</span>addr<span class="operator">]</span>);
+         <span class="keyword">else</span>
+             writeUnit<span class="operator">.</span>setValue(i<span class="operator">,</span> writeModel<span class="operator">-</span><span class="operator">&gt;</span>m_holdingRegisters<span class="operator">[</span>addr<span class="operator">]</span>);
+     }
+
+     <span class="keyword">if</span> (<span class="keyword">auto</span> <span class="operator">*</span>reply <span class="operator">=</span> modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>sendWriteRequest(writeUnit<span class="operator">,</span> ui<span class="operator">-</span><span class="operator">&gt;</span>serverEdit<span class="operator">-</span><span class="operator">&gt;</span>value())) {
+         <span class="keyword">if</span> (<span class="operator">!</span>reply<span class="operator">-</span><span class="operator">&gt;</span>isFinished()) {
+             connect(reply<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="qmodbusreply.html" translate="no">QModbusReply</a></span><span class="operator">::</span>finished<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">,</span> reply<span class="operator">]</span>() {
+                 <span class="keyword">const</span> <span class="keyword">auto</span> error <span class="operator">=</span> reply<span class="operator">-</span><span class="operator">&gt;</span>error();
+                 <span class="keyword">if</span> (error <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>ProtocolError) {
+                     statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write response error: %1 (Modbus exception: 0x%2)&quot;</span>)
+                         <span class="operator">.</span>arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>arg(reply<span class="operator">-</span><span class="operator">&gt;</span>rawResult()<span class="operator">.</span>exceptionCode()<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span>
+                         <span class="number">5000</span>);
+                 } <span class="keyword">else</span> <span class="keyword">if</span> (error <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qmodbusdevice.html" translate="no">QModbusDevice</a></span><span class="operator">::</span>NoError) {
+                     statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write response error: %1 (code: 0x%2)&quot;</span>)<span class="operator">.</span>
+                         arg(reply<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">.</span>arg(error<span class="operator">,</span> <span class="operator">-</span><span class="number">1</span><span class="operator">,</span> <span class="number">16</span>)<span class="operator">,</span> <span class="number">5000</span>);
+                 }
+                 reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+             });
+         } <span class="keyword">else</span> {
+             <span class="comment">// broadcast replies return immediately</span>
+             reply<span class="operator">-</span><span class="operator">&gt;</span>deleteLater();
+         }
+     } <span class="keyword">else</span> {
+         statusBar()<span class="operator">-</span><span class="operator">&gt;</span>showMessage(tr(<span class="string">&quot;Write error: %1&quot;</span>)<span class="operator">.</span>arg(modbusDevice<span class="operator">-</span><span class="operator">&gt;</span>errorString())<span class="operator">,</span> <span class="number">5000</span>);
+     }
+</pre>
+<p>Like with reading the data, the returned <a href="qmodbusreply.html" translate="no">QModbusReply</a> object is used to check for write errors.</p>
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtserialbus.git/tree/examples/serialbus/modbus/client?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@modbus/client -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

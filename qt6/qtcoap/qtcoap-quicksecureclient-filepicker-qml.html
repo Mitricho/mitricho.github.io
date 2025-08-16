@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- quicksecureclient.qdoc -->
+  <meta name="description" content="Securing the CoAP client and using it with a Qt Quick user interface.">
+  <title>Quick Secure CoAP Client | Qt CoAP | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcoap-index.html">Qt CoAP</a></li>
+<li><a href="qtcoap-examples.html">Qt CoAP Examples</a></li>
+<li>Quick Secure CoAP Client</li>
+<li id="buildversion"><a href="qtcoap-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Quick Secure CoAP Client</h1>
+<pre class="qml" translate="no">
+ <span class="comment">// Copyright (C) 2019 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ import QtCore
+ import QtQuick
+ import QtQuick.Dialogs
+ import QtQuick.Controls
+ import QtQuick.Layouts
+
+ <span class="type">Item</span> {
+     <span class="name">id</span>: <span class="name">filePicker</span>
+
+     property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">dialogText</span>
+     property <span class="type">alias</span> <span class="name">selectedFile</span>: <span class="name">filePathField</span>.<span class="name">text</span>
+
+     <span class="name">height</span>: <span class="name">addFileButton</span>.<span class="name">height</span>
+
+     <span class="type">FileDialog</span> {
+         <span class="name">id</span>: <span class="name">fileDialog</span>
+         <span class="name">title</span>: <span class="name">qsTr</span>(<span class="string">&quot;Please Choose %1&quot;</span>).<span class="name">arg</span>(<span class="name">filePicker</span>.<span class="name">dialogText</span>)
+         <span class="name">currentFolder</span>: <span class="name">StandardPaths</span>.<span class="name">writableLocation</span>(<span class="name">StandardPaths</span>.<span class="name">HomeLocation</span>)
+         <span class="name">fileMode</span>: <span class="name">FileDialog</span>.<span class="name">OpenFile</span>
+         <span class="name">onAccepted</span>: <span class="name">filePathField</span>.<span class="name">text</span> <span class="operator">=</span> <span class="name">fileDialog</span>.<span class="name">selectedFile</span>
+     }
+
+     <span class="type">RowLayout</span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+         <span class="type">TextField</span> {
+             <span class="name">id</span>: <span class="name">filePathField</span>
+             <span class="name">placeholderText</span>: <span class="name">qsTr</span>(<span class="string">&quot;&lt;%1&gt;&quot;</span>).<span class="name">arg</span>(<span class="name">filePicker</span>.<span class="name">dialogText</span>)
+             <span class="name">inputMethodHints</span>: <span class="name">Qt</span>.<span class="name">ImhUrlCharactersOnly</span>
+             <span class="name">selectByMouse</span>: <span class="number">true</span>
+             <span class="name">Layout</span>.fillWidth: <span class="number">true</span>
+         }
+
+         <span class="type">Button</span> {
+             <span class="name">id</span>: <span class="name">addFileButton</span>
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Add %1&quot;</span>).<span class="name">arg</span>(<span class="name">filePicker</span>.<span class="name">dialogText</span>)
+             <span class="name">onClicked</span>: <span class="name">fileDialog</span>.<span class="name">open</span>()
+         }
+     }
+ }
+</pre>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- required.qdoc -->
+  <meta name="description" content="[required] A component's required property was not bound.">
+  <title>Component is missing a required property | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qmllint-warnings-and-errors.html">QML Lint Warning and Errors</a></li>
+<li>Component is missing a required property</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#component-is-missing-a-required-property">Component is missing a required property</a></li>
+<li class="level2"><a href="#what-happened">What happened?</a></li>
+<li class="level2"><a href="#why-is-this-bad">Why is this bad?</a></li>
+<li class="level2"><a href="#example">Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Component is missing a required property</h1>
+<!-- $$$qmllint-warnings-and-errors-required.html-description -->
+<div class="descr" id="details">
+<p>This warning category is spelled <code translate="no">[required]</code> by qmllint.</p>
+<h2 id="component-is-missing-a-required-property">Component is missing a required property</h2>
+<h3 id="what-happened">What happened?</h3>
+<p>The <a href="qtqml-syntax-objectattributes.html#required-properties">required property</a> of a component was not set.</p>
+<h3 id="why-is-this-bad">Why is this bad?</h3>
+<p>QML applications where components miss required properties will misbehave: they will not start at all if a missing required property is detected statically. Dynamically created components with missing required properties will not be created at runtime: they will be null instead.</p>
+<h3 id="example">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component RepeatMe: <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         required property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">index</span>;
+         required property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">helloWorld</span>;
+     }
+
+     <span class="type">RepeatMe</span> {} <span class="comment">// not ok: required properties index and helloWorld not set</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+         <span class="name">model</span>: <span class="number">10</span>
+         <span class="type">RepeatMe</span> {} <span class="comment">// not ok: required property index set by Repeater, but not helloWorld</span>
+     }
+ }
+</pre>
+<p>To fix this warning, set the required properties:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component RepeatMe: <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         required property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">index</span>;
+         required property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">helloWorld</span>;
+     }
+
+     <span class="type">RepeatMe</span> {
+         <span class="name">index</span>: <span class="number">0</span>
+         <span class="name">helloWorld</span>: <span class="number">42</span>
+     } <span class="comment">// ok: all required properties were set</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-repeater.html" translate="no">Repeater</a></span> {
+         <span class="name">model</span>: <span class="number">10</span>
+         <span class="type">RepeatMe</span> {
+             <span class="name">helloWorld</span>: <span class="name">index</span> <span class="operator">*</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span>
+         } <span class="comment">// ok: all required properties were set: index by the Repeater and helloWorld by the user</span>
+     }
+ }
+</pre>
+</div>
+<p><b>See also </b>QML Coding Conventions - Required Properties.</p>
+<!-- @@@qmllint-warnings-and-errors-required.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

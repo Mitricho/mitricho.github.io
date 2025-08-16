@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- x509.qdoc -->
+  <meta name="description" content="Shows how to generate keys and certificate signing requests.">
+  <title>Qt OPC UA X509 Support | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-examples.html">Qt OPC UA Examples</a></li>
+<li>Qt OPC UA X509 Support</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Qt OPC UA X509 Support</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2019 The Qt Company Ltd.</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &lt;QOpcUaKeyPair&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaProvider&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaX509CertificateSigningRequest&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaX509ExtensionBasicConstraints&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaX509ExtensionExtendedKeyUsage&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaX509ExtensionKeyUsage&gt;</span>
+ <span class="preprocessor">#include &lt;QOpcUaX509ExtensionSubjectAlternativeName&gt;</span>
+ <span class="preprocessor">#include &lt;QFile&gt;</span>
+
+ <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>StringLiterals;
+
+ <span class="type">int</span> main(<span class="type">int</span> argc<span class="operator">,</span> <span class="type">char</span> <span class="operator">*</span><span class="operator">*</span>argv)
+ {
+     Q_UNUSED(argc);
+     Q_UNUSED(argv);
+
+     <span class="comment">// Generate RSA Key</span>
+     <span class="type"><a href="qopcuakeypair.html" translate="no">QOpcUaKeyPair</a></span> key;
+     key<span class="operator">.</span>generateRsaKey(<span class="type"><a href="qopcuakeypair.html" translate="no">QOpcUaKeyPair</a></span><span class="operator">::</span>RsaKeyStrength<span class="operator">::</span>Bits2048);
+
+     <span class="comment">// Save private key to file</span>
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> keyData <span class="operator">=</span> key<span class="operator">.</span>privateKeyToByteArray(<span class="type"><a href="qopcuakeypair.html" translate="no">QOpcUaKeyPair</a></span><span class="operator">::</span>Cipher<span class="operator">::</span>Unencrypted<span class="operator">,</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>());
+
+     <span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span> keyFile(u<span class="string">&quot;privateKey.pem&quot;</span>_s);
+     <span class="keyword">if</span> (<span class="operator">!</span>keyFile<span class="operator">.</span>open(<span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span><span class="operator">::</span>WriteOnly))
+         <span class="keyword">return</span> EXIT_FAILURE;
+
+     keyFile<span class="operator">.</span>write(keyData);
+     keyFile<span class="operator">.</span>close();
+
+     <span class="comment">// Create a certificate signing request</span>
+     QOpcUaX509CertificateSigningRequest csr;
+
+     <span class="comment">// Set the subject of the certificate</span>
+     QOpcUaX509DistinguishedName dn;
+     dn<span class="operator">.</span>setEntry(QOpcUaX509DistinguishedName<span class="operator">::</span>Type<span class="operator">::</span>CommonName<span class="operator">,</span> u<span class="string">&quot;QtOpcUaViewer&quot;</span>_s);
+     dn<span class="operator">.</span>setEntry(QOpcUaX509DistinguishedName<span class="operator">::</span>Type<span class="operator">::</span>CountryName<span class="operator">,</span> u<span class="string">&quot;DE&quot;</span>_s);
+     dn<span class="operator">.</span>setEntry(QOpcUaX509DistinguishedName<span class="operator">::</span>Type<span class="operator">::</span>LocalityName<span class="operator">,</span> u<span class="string">&quot;Berlin&quot;</span>_s);
+     dn<span class="operator">.</span>setEntry(QOpcUaX509DistinguishedName<span class="operator">::</span>Type<span class="operator">::</span>StateOrProvinceName<span class="operator">,</span> u<span class="string">&quot;Berlin&quot;</span>_s);
+     dn<span class="operator">.</span>setEntry(QOpcUaX509DistinguishedName<span class="operator">::</span>Type<span class="operator">::</span>OrganizationName<span class="operator">,</span> u<span class="string">&quot;The Qt Company&quot;</span>_s);
+     csr<span class="operator">.</span>setSubject(dn);
+
+     <span class="comment">// The subject alternative name extension is needed for OPC UA</span>
+     QOpcUaX509ExtensionSubjectAlternativeName <span class="operator">*</span>san <span class="operator">=</span> <span class="keyword">new</span> QOpcUaX509ExtensionSubjectAlternativeName;
+     san<span class="operator">-</span><span class="operator">&gt;</span>addEntry(QOpcUaX509ExtensionSubjectAlternativeName<span class="operator">::</span>Type<span class="operator">::</span>DNS<span class="operator">,</span> u<span class="string">&quot;foo.com&quot;</span>_s);
+     san<span class="operator">-</span><span class="operator">&gt;</span>addEntry(QOpcUaX509ExtensionSubjectAlternativeName<span class="operator">::</span>Type<span class="operator">::</span>URI<span class="operator">,</span> u<span class="string">&quot;urn:foo.com:The%20Qt%20Company:QtOpcUaViewer&quot;</span>_s);
+     san<span class="operator">-</span><span class="operator">&gt;</span>setCritical(<span class="keyword">true</span>);
+     csr<span class="operator">.</span>addExtension(san);
+
+     <span class="comment">// Set the certificate basic constraints</span>
+     QOpcUaX509ExtensionBasicConstraints <span class="operator">*</span>bc <span class="operator">=</span> <span class="keyword">new</span> QOpcUaX509ExtensionBasicConstraints;
+     bc<span class="operator">-</span><span class="operator">&gt;</span>setCa(<span class="keyword">false</span>);
+     bc<span class="operator">-</span><span class="operator">&gt;</span>setCritical(<span class="keyword">true</span>);
+     csr<span class="operator">.</span>addExtension(bc);
+
+     <span class="comment">// The required values for key usage and extended key usage are defined in OPC UA Part 6, 6.2.2, Table 43</span>
+
+     <span class="comment">// Set the key usage constraints</span>
+     QOpcUaX509ExtensionKeyUsage <span class="operator">*</span>ku <span class="operator">=</span> <span class="keyword">new</span> QOpcUaX509ExtensionKeyUsage;
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setCritical(<span class="keyword">true</span>);
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>DigitalSignature);
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>NonRepudiation);
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>KeyEncipherment);
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>DataEncipherment);
+     ku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>CertificateSigning);
+     csr<span class="operator">.</span>addExtension(ku);
+
+     <span class="comment">// Set the extended key usage constraints</span>
+     QOpcUaX509ExtensionExtendedKeyUsage <span class="operator">*</span>eku <span class="operator">=</span> <span class="keyword">new</span> QOpcUaX509ExtensionExtendedKeyUsage;
+     eku<span class="operator">-</span><span class="operator">&gt;</span>setCritical(<span class="keyword">true</span>);
+     eku<span class="operator">-</span><span class="operator">&gt;</span>setKeyUsage(QOpcUaX509ExtensionExtendedKeyUsage<span class="operator">::</span>KeyUsage<span class="operator">::</span>TlsWebClientAuthentication);
+     csr<span class="operator">.</span>addExtension(eku);
+
+     <span class="comment">// Now there are two options:</span>
+     <span class="comment">// 1. When you need to get your certificate signing request signed by a certificate authority</span>
+     <span class="comment">//    you have to use the request data.</span>
+     <span class="comment">// 2. When there is no certificate authority you have to self-sign the request.</span>
+
+     <span class="comment">// Option 1</span>
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> certificateSigningRequestData <span class="operator">=</span> csr<span class="operator">.</span>createRequest(key);
+
+     <span class="comment">// Option 2</span>
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> selfSignedCertificateData <span class="operator">=</span> csr<span class="operator">.</span>createSelfSignedCertificate(key);
+
+     <span class="keyword">return</span> <span class="number">0</span>;
+ }
+</pre>

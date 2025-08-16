@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickrectangularshadow.cpp -->
+  <meta name="description" content="Creates smoothed rectangle, suitable for example for shadow and glow effects.">
+  <title>RectangularShadow QML Type | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick-effects-qmlmodule.html" translate="no">QtQuick.Effects</a></li>
+<li>RectangularShadow</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">RectangularShadow QML Type</h1>
+<!-- $$$RectangularShadow-brief -->
+<p>Creates smoothed rectangle, suitable for example for shadow and glow effects. <a href="#details">More...</a></p>
+<!-- @@@RectangularShadow -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Effects</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-item.html" translate="no">Item</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-effects-rectangularshadow-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#antialiasing-prop" translate="no">antialiasing</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#blur-prop" translate="no">blur</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#cached-prop" translate="no">cached</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#color-prop" translate="no">color</a></b> : color</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#material-prop" translate="no">material</a></b> : item</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#offset-prop" translate="no">offset</a></b> : vector2d</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#radius-prop" translate="no">radius</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-effects-rectangularshadow.html#spread-prop" translate="no">spread</a></b> : real</li>
+</ul>
+<!-- $$$RectangularShadow-description -->
+<h2 id="details">Detailed Description</h2>
+<p>RectangularShadow is a rounded rectangle with blur applied. The performance of RectangularShadow is much better than a general one that creates blurred shadow/glow of any shaped item.</p>
+<p>The following example shows how to add a shadow to a <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a>:</p>
+<div class="table"><table class="generic" width="70%">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/rectangularshadow-example-1.png" alt="" /></p></td><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Effects
+
+ ...
+ RectangularShadow {
+     anchors.fill: myRectangle
+     offset.x: -10
+     offset.y: -5
+     radius: myRectangle.radius
+     blur: 30
+     spread: 10
+     color: Qt.darker(myRectangle.color, 1.6)
+ }
+ Rectangle {
+     id: myRectangle
+     anchors.centerIn: parent
+     width: 200
+     height: 100
+     radius: 50
+     color: &quot;#c0d0f0&quot;
+ }
+</pre>
+</td></tr>
+</table></div>
+<p>The API of RectangularShadow is similar to CSS box-shadow, with color, offset, spread, and blur values. Additionally, RectangularShadow API contains:</p>
+<ul>
+<li><code translate="no">real</code> <a href="qml-qtquick-effects-rectangularshadow.html#radius-prop" translate="no">radius</a>: Controls the rounding radius applied to rectangle corners. Compared to CSS box-shadow, which inherits radius from the parent element, RectangularShadow expects user to set it. This allows you to use different radiuses and move the RectangularShadow separately from its parent item.</li>
+<li><code translate="no">bool</code> <a href="qml-qtquick-effects-rectangularshadow.html#cached-prop" translate="no">cached</a>: Allows caching the blurred shadow texture. This increases memory usage while potentially improving rendering performance, especially with bigger shadows that don't change dynamically.</li>
+<li><code translate="no">item</code> <a href="qml-qtquick-effects-rectangularshadow.html#material-prop" translate="no">material</a>: Contains the <a href="qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> element of the RectangularShadow for advanced use. This allows, for example, extending the effect with a custom shader.</li>
+</ul>
+<p>The rendering output also matches the CSS box-shadow, with few notable differences. These differences exist to make the RectangularShadow as high-performance as possible.</p>
+<ul>
+<li>Blurring is calculated mathematically in the shader rather than using Gaussian blur, which CSS box-shadow implementations often use. This makes the shadow look slightly different, especially with larger blur values.</li>
+<li>All the rectangle corners must have an even radius. When creating a shadow for a <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a> with different radiuses, select the best-matching radius for the shadow or use an alternative shadow method, for example, <a href="qml-qtquick-effects-multieffect.html" translate="no">MultiEffect</a>.</li>
+</ul>
+<p>Here is a table with screenshots to compare the rendering output of RectangularShadow and CSS box-shadow in the Chrome browser. The right-most element is RectangularShadow in blur multiplied with <code translate="no">1.2</code> (so <code translate="no">24</code>, <code translate="no">48</code>, <code translate="no">48</code>) for a closer match.</p>
+<div class="table"><table class="generic" width="80%">
+ <thead><tr class="qt-style"><th >type</th><th >CSS box-shadow</th><th >RectangularShadow</th><th >RectangularShadow + extra blur</th></tr></thead>
+<tr valign="top" class="odd"><td >offset: (0, 0) <br />
+ blur: 20 <br />
+ spread: 0 <br />
+</td><td ><p class="centerAlign"><img src="images/rectangularshadow-css-1.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-item-1.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-itemblur-1.png" alt="" /></p></td></tr>
+<tr valign="top" class="even"><td >offset: (-10, -20) <br />
+ blur: 40 <br />
+ spread: 0 <br />
+</td><td ><p class="centerAlign"><img src="images/rectangularshadow-css-2.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-item-2.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-itemblur-2.png" alt="" /></p></td></tr>
+<tr valign="top" class="odd"><td >offset: (-10, -20) <br />
+ blur: 40 <br />
+ spread: 10 <br />
+</td><td ><p class="centerAlign"><img src="images/rectangularshadow-css-3.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-item-3.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/rectangularshadow-itemblur-3.png" alt="" /></p></td></tr>
+</table></div>
+<p>RectangularShadow extends the shadow size with an exact amount regarding the blur amount, while some other shadows (including CSS box-shadow) have a multiplier for the size. The size of the shadow item inside a RectangularShadow is:</p>
+<pre class="cpp plain" translate="no">
+ width = rectangularShadow.width + 2 * blur +  2 * spread
+ height = rectangularShadow.height + 2 * blur + 2 * spread
+</pre>
+<p>For example, the shadow item size of the code below is 280x180 pixels. Radius or offset values do not affect the shadow item size.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a></span> {
+     <span class="name">width</span>: <span class="number">200</span>
+     <span class="name">height</span>: <span class="number">100</span>
+     <span class="name">blur</span>: <span class="number">30</span>
+     <span class="name">spread</span>: <span class="number">10</span>
+     <span class="name">radius</span>: <span class="number">20</span>
+ }
+</pre>
+<!-- @@@RectangularShadow -->
+<h2>Property Documentation</h2>
+<!-- $$$antialiasing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="antialiasing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">antialiasing</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Used to decide if the shadow should use antialiasing or not. When this is <code translate="no">true</code>, a single pixel antialiasing is used even when the <a href="qml-qtquick-effects-rectangularshadow.html#blur-prop" translate="no">blur</a> is <code translate="no">0</code>.</p>
+<p>The default value is <code translate="no">true</code>.</p>
+</div></div><!-- @@@antialiasing -->
+<br/>
+<!-- $$$blur -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="blur-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">blur</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines how many pixels outside the item area are reached by the shadow.</p>
+<p>The value ranges from 0.0 (no blur) to inf (infinite blur). The default value is <code translate="no">10.0</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>To match with the CSS box-shadow rendering output, the optimal blur amount is something like: <code translate="no">1.2 * cssBlur</code></p>
+</div>
+</div></div><!-- @@@blur -->
+<br/>
+<!-- $$$cached -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="cached-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">cached</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property allows the effect output pixels to be cached in order to improve the rendering performance.</p>
+<p>Every time the effect properties are changed, the pixels in the cache must be updated. Memory consumption is increased, because an extra buffer of memory is required for storing the effect output.</p>
+<p>It is recommended to disable the cache when the source or the effect properties are animated.</p>
+<p>The default value is <code translate="no">false</code>.</p>
+</div></div><!-- @@@cached -->
+<br/>
+<!-- $$$color -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="color-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">color</span> : <span class="type"><a href="qml-color.html" translate="no">color</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the RGBA color value that is used for the shadow.</p>
+<p>The default value is <code translate="no">Qt.rgba(0.0, 0.0, 0.0, 1.0)</code> (black).</p>
+</div></div><!-- @@@color -->
+<br/>
+<!-- $$$material -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="material-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">material</span> : <span class="type">item</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property contains the <a href="qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> item of the shadow. You can use this property to visualize the reach of the shadow, because the effect item often has different position and size than the <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> item, due to <a href="qml-qtquick-effects-rectangularshadow.html#blur-prop" translate="no">blur</a>, <a href="qml-qtquick-effects-rectangularshadow.html#offset-prop" translate="no">offset</a> and <a href="qml-qtquick-effects-rectangularshadow.html#spread-prop" translate="no">spread</a>.</p>
+<p>The material can also be replaced with a custom one. The default material is a <a href="qml-qtquick-shadereffect.html" translate="no">ShaderEffect</a> with the following <a href="qml-qtquick-shadereffect.html#fragmentShader-prop" translate="no">fragmentShader</a>:</p>
+<pre class="cpp plain" translate="no">
+ #version 440
+
+ layout(location = 0) in vec2 texCoord;
+ layout(location = 1) in vec2 fragCoord;
+ layout(location = 0) out vec4 fragColor;
+
+ layout(std140, binding = 0) uniform buf {
+     mat4 qt_Matrix;
+     float qt_Opacity;
+     vec4 color;
+     vec3 iResolution;
+     vec2 rectSize;
+     float radius;
+     float blur;
+ };
+
+ float roundedBox(vec2 centerPos, vec2 size, float radii) {
+     return length(max(abs(centerPos) - size + radii, 0.0)) - radii;
+ }
+
+ void main()
+ {
+     float box = roundedBox(fragCoord - iResolution.xy * 0.5, rectSize, radius);
+     float a = 1.0 - smoothstep(0.0, blur, box);
+     fragColor = color * qt_Opacity * a * a;
+ }
+</pre>
+<p>Qt Quick Effect Maker contains the <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> node that can be used as a starting point for a custom material. You can directly use the exported effect containing that node as a <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> material.</p>
+<pre class="qml" translate="no">
+ RectangularShadow {
+     ...
+     material: MyShadowEffect { }
+ }
+</pre>
+<p>To return to use the default material, set the material property to <code translate="no">null</code>.</p>
+</div></div><!-- @@@material -->
+<br/>
+<!-- $$$offset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="offset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">offset</span> : <span class="type"><a href="qml-vector2d.html" translate="no">vector2d</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the position offset that is used for the shadow. This offset is appended to the shadow position, relative to the <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> item position.</p>
+<p>The default value is <code translate="no">Qt.vector2d(0.0, 0.0)</code> (no offset).</p>
+</div></div><!-- @@@offset -->
+<br/>
+<!-- $$$radius -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="radius-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">radius</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines the corner radius that is used to draw a shadow with rounded corners.</p>
+<p>The value ranges from 0.0 to half of the effective width or height of the item, whichever is smaller.</p>
+<p>The default value is <code translate="no">0</code>.</p>
+</div></div><!-- @@@radius -->
+<br/>
+<!-- $$$spread -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="spread-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">spread</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property defines how much the shadow is spread (extended) in pixels. This spread is appended to the shadow size, relative to the <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> item size.</p>
+<p>The value ranges from -inf to inf. The default value is <code translate="no">0.0</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The radius behavior with spread matches to CSS box-shadow standard. So when the spread is smaller than the radius, the shadow radius grows by the amount of spread. When the spread grows bigger, radius grows only partially. See <a href="https://www.w3.org/TR/css-backgrounds-3/#shadow-shape">https://www.w3.org/TR/css-backgrounds-3/#shadow-shape</a>. If the shadow radius should grow in sync when the shadow grows (like with the Firefox CSS box-shadow implementation), increase the <a href="qml-qtquick-effects-rectangularshadow.html" translate="no">RectangularShadow</a> <code translate="no">width</code> and <code translate="no">height</code> instead of using the <code translate="no">spread</code>.</p>
+</div>
+</div></div><!-- @@@spread -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

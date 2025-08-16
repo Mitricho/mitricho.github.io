@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquickcontrols-material.qdoc -->
+  <title>Material Style | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+<li>Material Style</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquickcontrols-macos.html" />
+  <link rel="next" href="qtquickcontrols-universal.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquickcontrols-macos.html">macOS Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-universal.html">Universal Style</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#attached-properties">Attached Properties</a></li>
+<li class="level1"><a href="#attached-methods">Attached Methods</a></li>
+<li class="level1"><a href="#detailed-description">Detailed Description</a></li>
+<li class="level2"><a href="#customization">Customization</a></li>
+<li class="level2"><a href="#dependency">Dependency</a></li>
+<li class="level2"><a href="#pre-defined-material-colors">Pre-defined Material Colors</a></li>
+<li class="level2"><a href="#pre-defined-shades">Pre-defined Shades</a></li>
+<li class="level2"><a href="#variants">Variants</a></li>
+<li class="level2"><a href="#control-specific-notes">Control-Specific Notes</a></li>
+<li class="level1"><a href="#attached-property-documentation">Attached Property Documentation</a></li>
+<li class="level1"><a href="#attached-method-documentation">Attached Method Documentation</a></li>
+<li class="level1"><a href="#related-information">Related Information</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Material Style</h1>
+<!-- $$$qtquickcontrols-material.html-description -->
+<div class="descr" id="details">
+<p>The Material Style is based on the Google Material Design Guidelines. <a href="qtquickcontrols-material.html#detailed-desc-material">More...</a></p>
+<table class="alignedsummary"><tbody><tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> import QtQuick.Controls.Material 2.12</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 5.7</td></tr></tbody></table><h2 id="attached-properties">Attached Properties</h2>
+<ul>
+<li><a href="qtquickcontrols-material.html#material-accent-attached-prop"><b>accent</b></a> : color</li>
+<li><a href="qtquickcontrols-material.html#material-background-attached-prop"><b>background</b></a> : color</li>
+<li><a href="qtquickcontrols-material.html#material-elevation-attached-prop"><b>elevation</b></a> : int</li>
+<li><a href="qtquickcontrols-material.html#material-foreground-attached-prop"><b>foreground</b></a> : color</li>
+<li><a href="qtquickcontrols-material.html#material-primary-attached-prop"><b>primary</b></a> : color</li>
+<li><a href="qtquickcontrols-material.html#material-theme-attached-prop"><b>theme</b></a> : enumeration</li>
+<li><a href="qtquickcontrols-material.html#material-roundedscale-attached-prop"><b>roundedScale</b></a> : enumeration</li>
+<li><a href="qtquickcontrols-material.html#material-containerstyle-attached-prop"><b>containerStyle</b></a> : enumeration</li>
+</ul>
+<h2 id="attached-methods">Attached Methods</h2>
+<ul>
+<li>color <a href="qtquickcontrols-material.html#material-color-attached-method"><b>color</b></a>(enumeration predefined, enumeration shade)</li>
+</ul>
+<h2 id="detailed-description">Detailed Description</h2>
+<span id="detailed-desc-material"></span><p>The Material style is based on the <a href="https://m3.material.io">Google Material Design Guidelines</a>. It allows for a unified experience across platforms and device sizes.</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-light.png" alt="" /></p><p class="figCaption">The light theme of the Material style.</p>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-dark.png" alt="" /></p><p class="figCaption">The dark theme of the Material style.</p>
+</td></tr>
+</table></div>
+<p>To run an application with the Material style, see <a href="qtquickcontrols-styles.html#using-styles-in-qt-quick-controls">Using Styles in Qt Quick Controls</a>.</p>
+<div class="admonition note">
+<p><b>Note: </b>The Material style is not a native Android style. The Material style is a 100% cross-platform Qt Quick Controls style implementation that follows the Google Material Design Guidelines. The style runs on any platform, and looks more or less identical everywhere. Minor differences may occur due to differences in available system fonts and font rendering engines.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>As the Material Design Guidelines change over time, this style may change certain padding or font values, for example, in order to maintain consistency with the guidelines.</p>
+</div>
+<h3 id="customization">Customization</h3>
+<p>The Material style supports several customizable attributes. Some of these attributes <a href="qquickattachedpropertypropagator.html" translate="no">propagate</a> to children in the same manner as <a href="qml-qtquick-controls-control.html#font-prop" translate="no">fonts</a>:</p>
+<ul>
+<li><a href="qtquickcontrols-material.html#material-theme-attached-prop">theme</a></li>
+<li><a href="qtquickcontrols-material.html#material-primary-attached-prop">primary</a></li>
+<li><a href="qtquickcontrols-material.html#material-accent-attached-prop">accent</a></li>
+<li><a href="qtquickcontrols-material.html#material-foreground-attached-prop">foreground</a></li>
+<li><a href="qtquickcontrols-material.html#material-background-attached-prop">background</a></li>
+</ul>
+<p class="centerAlign"><img src="images/qtquickcontrols-material-attributes.png" alt="" /></p><p>The remaining attributes do not propagate to children:</p>
+<ul>
+<li><a href="qtquickcontrols-material.html#material-elevation-attached-prop">elevation</a></li>
+<li><a href="qtquickcontrols-material.html#material-roundedscale-attached-prop">roundedScale</a></li>
+<li><a href="qtquickcontrols-material.html#material-containerstyle-attached-prop">containerStyle</a></li>
+</ul>
+<p>In the following example, the window and all three radio buttons appear in the dark theme using a purple accent color:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ import QtQuick
+ import QtQuick.Controls
+ import QtQuick.Controls.Material
+
+ <span class="type"><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a></span> {
+     <span class="name">visible</span>: <span class="number">true</span>
+
+     <span class="name">Material</span>.theme: <span class="name">Material</span>.<span class="name">Dark</span>
+     <span class="name">Material</span>.accent: <span class="name">Material</span>.<span class="name">Purple</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-column.html" translate="no">Column</a></span> {
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Small&quot;</span>)
+         }
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Medium&quot;</span>)
+             <span class="name">checked</span>: <span class="number">true</span>
+         }
+         <span class="type"><a href="qml-qtquick-controls-radiobutton.html" translate="no">RadioButton</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Large&quot;</span>)
+         }
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-purple.png" alt="" /></p></td></tr>
+</table></div>
+<p>In addition to specifying the attributes in QML, it is also possible to specify some of them via environment variables or in a configuration file. Attributes specified in QML take precedence over all other methods.</p>
+<h4 id="configuration-file">Configuration File</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Variable</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">Theme</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-theme-attached-prop">Material theme</a>. The value can be one of the available themes, for example <code translate="no">&quot;Dark&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">Variant</code></td><td >Specifies the Material variant. The Material Design has two variants: a normal variant designed for touch devices, and a dense variant for desktop. The dense variant uses smaller sizes for controls and their fonts.<p>The value can be <code translate="no">&quot;Normal&quot;</code> or <code translate="no">&quot;Dense&quot;</code>.</p>
+</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">Accent</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-accent-attached-prop">Material accent color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Teal&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">Primary</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-primary-attached-prop">Material primary color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;BlueGrey&quot;</code>.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">Foreground</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-foreground-attached-prop">Material foreground color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Brown&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">Background</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-background-attached-prop">Material background color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Grey&quot;</code>.</td></tr>
+</table></div>
+<p>See <a href="qtquickcontrols-configuration.html">Qt Quick Controls Configuration File</a> for more details about the configuration file.</p>
+<h4 id="environment-variables">Environment Variables</h4>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Variable</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_THEME</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-theme-attached-prop">Material theme</a>. The value can be one of the available themes, for example <code translate="no">&quot;Dark&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_VARIANT</code></td><td >Specifies the Material variant. The Material Design has two variants: a normal variant designed for touch devices, and a dense variant for desktop. The dense variant uses smaller sizes for controls and their fonts.<p>The value can be <code translate="no">&quot;Normal&quot;</code> or <code translate="no">&quot;Dense&quot;</code>.</p>
+</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_ACCENT</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-accent-attached-prop">Material accent color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Teal&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_PRIMARY</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-primary-attached-prop">Material primary color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, but it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;BlueGrey&quot;</code>.</td></tr>
+<tr valign="top" class="odd"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_FOREGROUND</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-foreground-attached-prop">Material foreground color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Brown&quot;</code>.</td></tr>
+<tr valign="top" class="even"><td ><code translate="no">QT_QUICK_CONTROLS_MATERIAL_BACKGROUND</code></td><td >Specifies the default <a href="qtquickcontrols-material.html#material-background-attached-prop">Material background color</a>. The value can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, or one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a>, for example <code translate="no">&quot;Grey&quot;</code>.</td></tr>
+</table></div>
+<p>See <a href="qtquickcontrols-environment.html">Supported Environment Variables in Qt Quick Controls</a> for the full list of supported environment variables.</p>
+<h3 id="dependency">Dependency</h3>
+<p>The Material style must be separately imported to gain access to the attributes that are specific to the Material style. It should be noted that regardless of the references to the Material style, the same application code runs with any other style. Material-specific attributes only have an effect when the application is run with the Material style.</p>
+<p>If the Material style is imported in a QML file that is always loaded, the Material style must be deployed with the application in order to be able to run the application regardless of which style the application is run with. By using <a href="qtquickcontrols-fileselectors.html">file selectors</a>, style-specific tweaks can be applied without creating a hard dependency to a style.</p>
+<h3 id="pre-defined-material-colors">Pre-defined Material Colors</h3>
+<p>Even though primary and accent can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, it is recommended to use one of the pre-defined colors that have been designed to work well with the rest of the Material style palette:</p>
+<p>Available pre-defined colors:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.Red</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#F44336;">#F44336 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Pink</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#E91E63;">#E91E63 (default accent)</div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Purple</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#9C27B0;">#9C27B0 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.DeepPurple</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#673AB7;">#673AB7 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Indigo</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#3F51B5;">#3F51B5 (default primary)</div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Blue</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#2196F3;">#2196F3 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.LightBlue</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#03A9F4;">#03A9F4 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Cyan</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#00BCD4;">#00BCD4 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Teal</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#009688;">#009688 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Green</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#4CAF50;">#4CAF50 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.LightGreen</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#8BC34A;">#8BC34A </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Lime</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#CDDC39;">#CDDC39 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Yellow</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFEB3B;">#FFEB3B </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Amber</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFC107;">#FFC107 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Orange</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FF9800;">#FF9800 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.DeepOrange</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FF5722;">#FF5722 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Brown</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#795548;">#795548 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Grey</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#9E9E9E;">#9E9E9E </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.BlueGrey</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#607D8B;">#607D8B </div></td></tr>
+</table></div>
+<p>When the dark theme is in use, different <a href="qtquickcontrols-material.html#pre-defined-shades">shades</a> of the pre-defined colors are used by default:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.Red</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#EF9A9A;">#EF9A9A </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Pink</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#F48FB1;">#F48FB1 (default accent)</div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Purple</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#CE93D8;">#CE93D8 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.DeepPurple</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#B39DDB;">#B39DDB </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Indigo</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#9FA8DA;">#9FA8DA (default primary)</div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Blue</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#90CAF9;">#90CAF9 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.LightBlue</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#81D4FA;">#81D4FA </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Cyan</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#80DEEA;">#80DEEA </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Teal</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#80CBC4;">#80CBC4 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Green</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#A5D6A7;">#A5D6A7 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.LightGreen</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#C5E1A5;">#C5E1A5 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Lime</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#E6EE9C;">#E6EE9C </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Yellow</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFF59D;">#FFF59D </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Amber</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFE082;">#FFE082 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Orange</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFCC80;">#FFCC80 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.DeepOrange</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#FFAB91;">#FFAB91 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Brown</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#BCAAA4;">#BCAAA4 </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Grey</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#EEEEEE;">#EEEEEE </div></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.BlueGrey</code></td><td class="topAlign"><div style="padding:10px;color:#fff;background:#B0BEC5;">#B0BEC5 </div></td></tr>
+</table></div>
+<h3 id="pre-defined-shades">Pre-defined Shades</h3>
+<p>There are several different <a href="https://material.google.com/style/color.html#color-color-palette">shades</a> of each <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined color</a> that can be passed to the <a href="qtquickcontrols-material.html#material-color-attached-method">Material.color()</a> function:</p>
+<div class="table"><table class="valuelist"><tr><th class="tblConst">Constant</th><th class="tblVal">Value</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade50</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade100</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade200</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade300</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade400</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade500</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade600</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade700</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade800</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Shade900</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ShadeA100</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ShadeA200</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ShadeA400</code></td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ShadeA700</code></td></tr>
+</table></div>
+<p><b>See also</b> <a href="qtquickcontrols-basic.html">Basic Style</a>, <a href="qtquickcontrols-universal.html">Universal Style</a></p>
+<h3 id="variants">Variants</h3>
+<p>The Material style also supports a dense variant, where controls like buttons and delegates are smaller in height and use smaller font sizes. It is recommended to use the dense variant on desktop platforms, where a mouse and keyboard allow more precise and flexible user interaction.</p>
+<p>To use the dense variant, either set the <code translate="no">QT_QUICK_CONTROLS_MATERIAL_VARIANT</code> environment variable to <code translate="no">Dense</code>, or specify <code translate="no">Variant=Dense</code> in the <a href="qtquickcontrols-configuration.html">qtquickcontrols2.conf</a> file. The default value in both cases is <code translate="no">Normal</code>.</p>
+<p>The following images illustrate the differences between some of the controls when using the normal and dense variants:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-variant-normal.png" alt="" /></p></td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-variant-dense.png" alt="" /></p></td></tr>
+</table></div>
+<p>Note that the heights shown above may vary based on differences in fonts across platforms.</p>
+<h3 id="control-specific-notes">Control-Specific Notes</h3>
+<span id="material-control-specific-notes-textarea"></span><h4 id="textarea">TextArea</h4>
+<p><a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> supports two <a href="qtquickcontrols-material.html#material-containerstyle-attached-prop">containerStyles</a>: <code translate="no">Filled</code> and <code translate="no">Outlined</code>. Outlined TextAreas have floating placeholder text that sits at the top of the control. This requires the placeholder text to go outside the bounds of the control, which can cause it to be clipped when the <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> or the Flickable it's a child of sets <a href="../qtquick/qml-qtquick-item.html#clip-prop" translate="no">clip</a> to <code translate="no">true</code>. To avoid this, <a href="qml-qtquick-controls-control.html#topInset-prop" translate="no">topInset</a> is set to an appropriate value in these cases.</p>
+<p>As per the Material guidelines, placeholder text should be kept short and not take up multiple lines.</p>
+<h4 id="textfield">TextField</h4>
+<p>The same <a href="qtquickcontrols-material.html#textarea">issue with clipping</a> explained above for <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> can also occur with <a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a>. To avoid this, <a href="qml-qtquick-controls-control.html#topInset-prop" translate="no">topInset</a> is set to an appropriate value when the <a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a> sets clip to <code translate="no">true</code>.</p>
+<p>As per the Material guidelines, placeholder text should be kept short and not take up multiple lines.</p>
+<h2 id="attached-property-documentation">Attached Property Documentation</h2>
+<div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.accent</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="material-accent-attached-prop"></span><p>This attached property holds the accent color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is <code translate="no">Material.Pink</code>.</p>
+<p>In the following example, the accent color of the highlighted button is changed to <code translate="no">Material.Orange</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">highlighted</span>: <span class="number">true</span>
+     <span class="name">Material</span>.accent: <span class="name">Material</span>.<span class="name">Orange</span>
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-accent.png" alt="" /></p></td></tr>
+</table></div>
+<div class="admonition note">
+<p><b>Note: </b>Even though the accent can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a> that have been designed to work well with the rest of the Material style palette.</p>
+</div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.background</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="material-background-attached-prop"></span><p>This attached property holds the background color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is theme-specific (light or dark).</p>
+<p>In the following example, the background color of the button is changed to <code translate="no">Material.Teal</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">highlighted</span>: <span class="number">true</span>
+     <span class="name">Material</span>.background: <span class="name">Material</span>.<span class="name">Teal</span>
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-background.png" alt="" /></p></td></tr>
+</table></div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.elevation</span> : <span class="type">int</span></p></td></tr></tbody></table></div><span id="material-elevation-attached-prop"></span><p>This attached property holds the elevation of the control. The higher the elevation, the deeper the shadow. The property can be attached to any control, but not all controls visualize elevation. The value is not propagated to children.</p>
+<p>The default value is control-specific.</p>
+<p>In the following example, the elevation of the pane is set to <code translate="no">6</code> in order to achieve the look of an <a href="https://m3.material.io/components/cards/overview">elevated card</a>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">width</span>: <span class="number">120</span>
+     <span class="name">height</span>: <span class="number">120</span>
+
+     <span class="name">Material</span>.elevation: <span class="number">6</span>
+
+     <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;I'm a card!&quot;</span>)
+         <span class="name">anchors</span>.centerIn: <span class="name">parent</span>
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-elevation.png" alt="" /></p></td></tr>
+</table></div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.foreground</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="material-foreground-attached-prop"></span><p>This attached property holds the foreground color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The default value is theme-specific (light or dark).</p>
+<p>In the following example, the foreground color of the button is set to <code translate="no">Material.Pink</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">Material</span>.foreground: <span class="name">Material</span>.<span class="name">Pink</span>
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-foreground.png" alt="" /></p></td></tr>
+</table></div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.primary</span> : <span class="type">color</span></p></td></tr></tbody></table></div><span id="material-primary-attached-prop"></span><p>This attached property holds the primary color of the theme. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>The primary color is used as the background color of <a href="qml-qtquick-controls-toolbar.html" translate="no">ToolBar</a> by default.</p>
+<p>The default value is <code translate="no">Material.Indigo</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Even though the primary can be any <a href="../qtquick/qml-color.html" translate="no">color</a>, it is recommended to use one of the <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material colors</a> that have been designed to work well with the rest of the Material style palette.</p>
+</div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.theme</span> : <span class="type">enumeration</span></p></td></tr></tbody></table></div><span id="material-theme-attached-prop"></span><p>This attached property holds whether the theme is light or dark. The property can be attached to any window or item. The value is propagated to children.</p>
+<p>Available themes:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.Light</code></td><td class="topAlign">Light theme (default)</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Dark</code></td><td class="topAlign">Dark theme</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.System</code></td><td class="topAlign">System theme</td></tr>
+</table></div>
+<p>Setting the theme to <code translate="no">System</code> chooses either the light or dark theme based on the system theme colors. However, when reading the value of the theme property, the value is never <code translate="no">System</code>, but the actual theme.</p>
+<p>In the following example, the theme for both the pane and the button is set to <code translate="no">Material.Dark</code>:</p>
+<div class="table"><table class="generic">
+ <tr valign="top" class="odd"><td ><pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+     <span class="name">Material</span>.theme: <span class="name">Material</span>.<span class="name">Dark</span>
+
+     <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+         <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     }
+ }
+</pre>
+</td><td ><p class="centerAlign"><img src="images/qtquickcontrols-material-theme.png" alt="" /></p></td></tr>
+</table></div>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.roundedScale</span> : <span class="type">enumeration</span></p></td></tr></tbody></table></div><span id="material-roundedscale-attached-prop"></span><p>This attached property holds the radius of rounded corners used on the target control. The property can be attached to any window or item, but only some controls support it. The value is not propagated to children.</p>
+<p>The default value is control-specific.</p>
+<p>Available scales:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="even"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.NotRounded</code></td><td class="topAlign">Square corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ExtraSmallScale</code></td><td class="topAlign">Extra small rounded corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.SmallScale</code></td><td class="topAlign">Small rounded corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.MediumScale</code></td><td class="topAlign">Medium rounded corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.LargeScale</code></td><td class="topAlign">Large rounded corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.ExtraLargeScale</code></td><td class="topAlign">Extra large rounded corners</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.FullScale</code></td><td class="topAlign">Fully rounded corners</td></tr>
+</table></div>
+<p>This property was added in Qt 6.5.</p>
+<p>See also: <a href="https://m3.material.io/styles/shape/overview">Material Style: Shape</a>.</p>
+<br/><div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlPropNode"><p><span class="name">Material.containerStyle</span> : <span class="type">enumeration</span></p></td></tr></tbody></table></div><span id="material-containerstyle-attached-prop"></span><p>This attached property holds the style of the container used by the target control. The property can be attached to any window or item, but only <a href="qml-qtquick-controls-textfield.html" translate="no">TextField</a> and <a href="qml-qtquick-controls-textarea.html" translate="no">TextArea</a> support it by default. The value is not propagated to children.</p>
+<p>The default value is control-specific.</p>
+<p>Available styles:</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Material.Filled</code></td><td class="topAlign">Use the filled container variant if available</td></tr>
+<tr><td class="topAlign"><code translate="no">Material.Outlined</code></td><td class="topAlign">Use the outlined container variant if available</td></tr>
+</table></div>
+<p>This property was added in Qt 6.5.</p>
+<p>See also: <a href="https://m3.material.io/components/text-fields/guidelines#2c4fc9be-b266-4975-bdef-968ead47736e">Material Style: Text Field Containers</a>.</p>
+<br/><h2 id="attached-method-documentation">Attached Method Documentation</h2>
+<div class="qmlproto"><table class="qmlname"><tbody><tr valign="top" class="odd"><td class="tblQmlFuncNode"><p><span class="type">color</span> <span class="name">color</span>(<span class= type>enumeration</span> <i>predefined</i>, <span class= type>enumeration</span> <i>shade</i>)</p></td></tr></tbody></table></div><span id="material-color-attached-method"></span><p>This attached method returns the effective color value of the specified <a href="qtquickcontrols-material.html#pre-defined-material-colors">pre-defined Material color</a> combined with the given <a href="qtquickcontrols-material.html#pre-defined-shades">shade</a>. If omitted, the shade argument defaults to <code translate="no">Material.Shade500</code>.</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="name">color</span>: <span class="name">Material</span>.<span class="name">color</span>(<span class="name">Material</span>.<span class="name">Red</span>)
+ }
+</pre>
+<br/><h2 id="related-information">Related Information</h2>
+<ul>
+<li><a href="qtquickcontrols-styles.html">Styling Qt Quick Controls</a></li>
+</ul>
+</div>
+<!-- @@@qtquickcontrols-material.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquickcontrols-macos.html">macOS Style</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquickcontrols-universal.html">Universal Style</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

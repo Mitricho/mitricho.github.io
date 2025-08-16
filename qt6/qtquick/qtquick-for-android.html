@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick-for-android.qdoc -->
+  <meta name="description" content="An overview on using QML in native Android projects.">
+  <title>Qt Quick for Android | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Qt Quick for Android</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qt-labs-sharedimage-qmlmodule.html" />
+  <link rel="next" href="qtquick-android-classes.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qt-labs-sharedimage-qmlmodule.html">Shared image provider</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick-android-classes.html">Qt Quick Android Classes</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#qt-quick-for-android-overview">Qt Quick for Android overview</a></li>
+<li class="level2"><a href="#how-this-differs-from-qt-for-android">How this differs from Qt for Android</a></li>
+<li class="level1"><a href="#how-qt-quick-for-android-works">How Qt Quick for Android works</a></li>
+<li class="level1"><a href="#apis">APIs</a></li>
+<li class="level1"><a href="#api-examples">API examples</a></li>
+<li class="level1"><a href="#tooling">Tooling</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick for Android</h1>
+<!-- $$$qtquick-for-android.html-description -->
+<div class="descr" id="details">
+<h2 id="qt-quick-for-android-overview">Qt Quick for Android overview</h2>
+<p>The basis of this approach is to offer Qt QML APIs in an embedded way so that the app will remain a relatively typical Android app. This approach offers a more standard Android-centered approach at the cost of leveraging the cross-platform nature of a Qt application. It's best suited for adding desirable Qt features to an existing Android application.</p>
+<ul>
+<li>Android creates the Qt content and controls it.</li>
+<li>Android Studio with the Qt Tools for Android Studio plugin is used for development.</li>
+<li>For Qt content, Qt Creator or Qt Design Studio are used.</li>
+<li>Main languages are Java and Kotlin, with QML used for specific parts such as 3D content.</li>
+<li>You can use any Android APIs you want, but you can use JNI if you want more control over communication between your Java code and QML. See <a href="../qtcore/qjniobject.html" translate="no">QJniObject</a> and <a href="../qtcore/qjnienvironment.html" translate="no">QJniEnvironment</a>.</li>
+</ul>
+<h3 id="how-this-differs-from-qt-for-android">How this differs from Qt for Android</h3>
+<p>The most prominent difference between these approaches is the project structure. Qt for Android applications are CMake projects that can be built for Android or other platforms, while a Qt Quick for Android Project is an Android project that includes QML content and can only be built for Android.</p>
+<p class="centerAlign"><img src="images/qtquick-for-android-comparisson.drawio.svg" alt="" /></p><p>The main objective of the Qt for Android approach is to let Qt handle most of the work of the architecture and boilerplate code of the app and let you focus on the content. It offers a complete and reliable cross-platform approach.</p>
+<ul>
+<li>Qt creates and controls the Android app.</li>
+<li>Qt Creator, <a href="qtquick-tools-and-utilities.html#qt-design-studio">Qt Design Studio</a>, or Visual Studio can be used.</li>
+<li>Main languages are C++ and QML.</li>
+<li>Android specifics are more hidden; Qt handles these internally.</li>
+<li>To use Android APIs not yet available as Qt APIs, you must use JNI. See <a href="../qtcore/qjniobject.html" translate="no">QJniObject</a> and <a href="../qtcore/qjnienvironment.html" translate="no">QJniEnvironment</a>.</li>
+</ul>
+<p>See How Qt for Android Works for further details on Qt for Android's architecture.</p>
+<h2 id="how-qt-quick-for-android-works">How Qt Quick for Android works</h2>
+<p>Qt Quick for Android offers you <a href="qtquick-android-classes.html">Android APIs</a> that enable you to insert QML content as an <a href="https://developer.android.com/reference/android/view/View">Android View</a> in your project.</p>
+<p class="centerAlign"><img src="images/qtquick-for-android-architecture.drawio.svg" alt="" /></p><h2 id="apis">APIs</h2>
+<span id="android-classes"></span><p>These are the public Java and Kotlin APIs that you will use in an Android app to embed QML.</p>
+<ul>
+<li><a href="qtquickview-android-class.html">Qt Quick View Android Class</a></li>
+<li>QtAbstractItemModel Android Class</li>
+<li>QtAbstractListModel Android Class</li>
+<li>interface QtQmlStatusChangeListener (which uses the QtQmlStatus enum)</li>
+<li>QtModelIndex Android Class</li>
+</ul>
+<p>To use these classes, you must include the following in your <code translate="no">build.gradle</code> file:</p>
+<pre class="cpp plain" translate="no">
+ packagingOptions.jniLibs.useLegacyPackaging true
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>See the <a href="../qtcore/cmake-variable-qt-android-generate-java-qml-components.html">QT_ANDROID_GENERATE_JAVA_QTQUICKVIEW_CONTENTS</a> CMake variable for further information on Java code generation of QML components.</p>
+</div>
+<h2 id="api-examples">API examples</h2>
+<ul>
+<li><a href="qml-in-android-studio-projects-example.html">Qt Quick for Android Studio Projects</a></li>
+<li><a href="qtabstractlistmoder-kotlin-example.html">Exposing QtAbstractListModel to QML</a></li>
+<li><a href="qtabstractitemmodel-in-android-studio-projects-example.html">Using QtAbstractItemModel in Android Studio Projects</a></li>
+</ul>
+<h2 id="tooling">Tooling</h2>
+<p>The Qt Gradle Plugin and Qt Tools for Android Studio plugin are provided by Qt for easy development. You can use the Gradle Plugin independently from an IDE as part of your build toolchain. Qt Tools for Android Studio uses the plugin to build your projects in Android Studio.</p>
+</div>
+<!-- @@@qtquick-for-android.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qt-labs-sharedimage-qmlmodule.html">Shared image provider</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick-android-classes.html">Qt Quick Android Classes</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

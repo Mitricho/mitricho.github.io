@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- simulationserver.qdoc -->
+  <meta name="description" content="An OPC UA server that implements a simple water pump machine simulation.">
+  <title>Water Pump Simulation Server | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-examples.html">Qt OPC UA Examples</a></li>
+<li>Water Pump Simulation Server</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Water Pump Simulation Server</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2018 basysKom GmbH, opensource@basyskom.com</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &quot;simulationserver.h&quot;</span>
+
+ <span class="preprocessor">#include &lt;qopen62541utils.h&gt;</span>
+ <span class="preprocessor">#include &lt;qopen62541valueconverter.h&gt;</span>
+
+ <span class="preprocessor">#include &lt;QtCore/QDebug&gt;</span>
+ <span class="preprocessor">#include &lt;QtCore/QLoggingCategory&gt;</span>
+
+ <span class="preprocessor">#include &lt;cstring&gt;</span>
+
+ <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Literals<span class="operator">::</span>StringLiterals;
+
+ <span class="comment">// Node ID conversion is included from the open62541 plugin but warnings from there should be logged</span>
+ <span class="comment">// using qt.opcua.testserver instead of qt.opcua.plugins.open62541 for usage in the test server</span>
+ Q_LOGGING_CATEGORY(QT_OPCUA_PLUGINS_OPEN62541<span class="operator">,</span> <span class="string">&quot;qt.opcua.demoserver&quot;</span>)
+
+ DemoServer<span class="operator">::</span>DemoServer(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(parent)
+     <span class="operator">,</span> m_state(DemoServer<span class="operator">::</span>MachineState<span class="operator">::</span>Idle)
+     <span class="operator">,</span> m_percentFilledTank1(<span class="number">100</span>)
+     <span class="operator">,</span> m_percentFilledTank2(<span class="number">0</span>)
+ {
+     m_timer<span class="operator">.</span>setInterval(<span class="number">0</span>);
+     m_timer<span class="operator">.</span>setSingleShot(<span class="keyword">false</span>);
+     m_machineTimer<span class="operator">.</span>setInterval(<span class="number">200</span>);
+     connect(<span class="operator">&amp;</span>m_timer<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span><span class="operator">::</span>timeout<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>DemoServer<span class="operator">::</span>processServerEvents);
+ }
+
+ DemoServer<span class="operator">::</span><span class="operator">~</span>DemoServer()
+ {
+     shutdown();
+     UA_Server_delete(m_server);
+     UA_NodeId_clear(<span class="operator">&amp;</span>m_percentFilledTank1Node);
+     UA_NodeId_clear(<span class="operator">&amp;</span>m_percentFilledTank2Node);
+     UA_NodeId_clear(<span class="operator">&amp;</span>m_tank2TargetPercentNode);
+     UA_NodeId_clear(<span class="operator">&amp;</span>m_tank2ValveStateNode);
+     UA_NodeId_clear(<span class="operator">&amp;</span>m_machineStateNode);
+ }
+
+ <span class="type">bool</span> DemoServer<span class="operator">::</span>init()
+ {
+     m_server <span class="operator">=</span> UA_Server_new();
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_server)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     <span class="keyword">const</span> <span class="keyword">auto</span> config <span class="operator">=</span> UA_Server_getConfig(m_server);
+     UA_StatusCode result <span class="operator">=</span> UA_ServerConfig_setMinimal(config<span class="operator">,</span> <span class="number">43344</span><span class="operator">,</span> nullptr);
+
+     <span class="keyword">if</span> (result <span class="operator">!</span><span class="operator">=</span> UA_STATUSCODE_GOOD)
+         <span class="keyword">return</span> <span class="keyword">false</span>;
+
+     config<span class="operator">-</span><span class="operator">&gt;</span>tcpReuseAddr <span class="operator">=</span> <span class="keyword">true</span>;
+
+     <span class="keyword">return</span> <span class="keyword">true</span>;
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>processServerEvents()
+ {
+     <span class="keyword">if</span> (m_running)
+         UA_Server_run_iterate(m_server<span class="operator">,</span> <span class="keyword">true</span>);
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>shutdown()
+ {
+     <span class="keyword">if</span> (m_running) {
+         UA_Server_run_shutdown(m_server);
+         m_running <span class="operator">=</span> <span class="keyword">false</span>;
+     }
+ }
+
+ UA_NodeId DemoServer<span class="operator">::</span>addObject(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>parent<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>nodeString<span class="operator">,</span>
+                                 <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>browseName<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>displayName<span class="operator">,</span>
+                                 <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>description<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> referenceType)
+ {
+     UA_NodeId resultNode;
+     UA_ObjectAttributes oAttr <span class="operator">=</span> UA_ObjectAttributes_default;
+
+     oAttr<span class="operator">.</span>displayName <span class="operator">=</span> UA_LOCALIZEDTEXT_ALLOC(<span class="string">&quot;en-US&quot;</span><span class="operator">,</span> displayName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+     <span class="keyword">if</span> (description<span class="operator">.</span>size())
+         oAttr<span class="operator">.</span>description <span class="operator">=</span> UA_LOCALIZEDTEXT_ALLOC(<span class="string">&quot;en-US&quot;</span><span class="operator">,</span> description<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+
+     UA_StatusCode result;
+     UA_NodeId requestedNodeId <span class="operator">=</span> Open62541Utils<span class="operator">::</span>nodeIdFromQString(nodeString);
+     UA_NodeId parentNodeId <span class="operator">=</span> Open62541Utils<span class="operator">::</span>nodeIdFromQString(parent);
+
+     UA_QualifiedName nodeBrowseName <span class="operator">=</span> UA_QUALIFIEDNAME_ALLOC(requestedNodeId<span class="operator">.</span>namespaceIndex<span class="operator">,</span>
+                                                              browseName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+
+     result <span class="operator">=</span> UA_Server_addObjectNode(m_server<span class="operator">,</span>
+                                      requestedNodeId<span class="operator">,</span>
+                                      parentNodeId<span class="operator">,</span>
+                                      UA_NODEID_NUMERIC(<span class="number">0</span><span class="operator">,</span> referenceType)<span class="operator">,</span>
+                                      nodeBrowseName<span class="operator">,</span>
+                                      UA_NODEID_NULL<span class="operator">,</span>
+                                      oAttr<span class="operator">,</span>
+                                      nullptr<span class="operator">,</span>
+                                      <span class="operator">&amp;</span>resultNode);
+
+     UA_QualifiedName_clear(<span class="operator">&amp;</span>nodeBrowseName);
+     UA_NodeId_clear(<span class="operator">&amp;</span>requestedNodeId);
+     UA_NodeId_clear(<span class="operator">&amp;</span>parentNodeId);
+     UA_ObjectAttributes_clear(<span class="operator">&amp;</span>oAttr);
+
+     <span class="keyword">if</span> (result <span class="operator">!</span><span class="operator">=</span> UA_STATUSCODE_GOOD) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Could not add folder:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> nodeString <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot; :&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> result;
+         <span class="keyword">return</span> UA_NODEID_NULL;
+     }
+     <span class="keyword">return</span> resultNode;
+ }
+
+ UA_NodeId DemoServer<span class="operator">::</span>addVariable(<span class="keyword">const</span> UA_NodeId <span class="operator">&amp;</span>folder<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>variableNode<span class="operator">,</span>
+                                   <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>browseName<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>displayName<span class="operator">,</span>
+                                   <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value<span class="operator">,</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types type<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> referenceType)
+ {
+     UA_NodeId variableNodeId <span class="operator">=</span> Open62541Utils<span class="operator">::</span>nodeIdFromQString(variableNode);
+
+     UA_VariableAttributes attr <span class="operator">=</span> UA_VariableAttributes_default;
+     attr<span class="operator">.</span>value <span class="operator">=</span> QOpen62541ValueConverter<span class="operator">::</span>toOpen62541Variant(value<span class="operator">,</span> type);
+     attr<span class="operator">.</span>displayName <span class="operator">=</span> UA_LOCALIZEDTEXT_ALLOC(<span class="string">&quot;en-US&quot;</span><span class="operator">,</span> displayName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+     attr<span class="operator">.</span>dataType <span class="operator">=</span> attr<span class="operator">.</span>value<span class="operator">.</span>type <span class="operator">?</span> attr<span class="operator">.</span>value<span class="operator">.</span>type<span class="operator">-</span><span class="operator">&gt;</span>typeId : UA_TYPES<span class="operator">[</span>UA_TYPES_BOOLEAN<span class="operator">]</span><span class="operator">.</span>typeId;
+     attr<span class="operator">.</span>accessLevel <span class="operator">=</span> UA_ACCESSLEVELMASK_READ <span class="operator">|</span> UA_ACCESSLEVELMASK_WRITE;
+
+     UA_QualifiedName variableName <span class="operator">=</span> UA_QUALIFIEDNAME_ALLOC(variableNodeId<span class="operator">.</span>namespaceIndex<span class="operator">,</span>
+                                                            browseName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+
+     UA_NodeId resultId;
+     UA_StatusCode result <span class="operator">=</span> UA_Server_addVariableNode(m_server<span class="operator">,</span>
+                                                      variableNodeId<span class="operator">,</span>
+                                                      folder<span class="operator">,</span>
+                                                      UA_NODEID_NUMERIC(<span class="number">0</span><span class="operator">,</span> referenceType)<span class="operator">,</span>
+                                                      variableName<span class="operator">,</span>
+                                                      UA_NODEID_NULL<span class="operator">,</span>
+                                                      attr<span class="operator">,</span>
+                                                      nullptr<span class="operator">,</span>
+                                                      <span class="operator">&amp;</span>resultId);
+
+     UA_NodeId_clear(<span class="operator">&amp;</span>variableNodeId);
+     UA_VariableAttributes_clear(<span class="operator">&amp;</span>attr);
+     UA_QualifiedName_clear(<span class="operator">&amp;</span>variableName);
+
+     <span class="keyword">if</span> (result <span class="operator">!</span><span class="operator">=</span> UA_STATUSCODE_GOOD) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Could not add variable:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> result;
+         <span class="keyword">return</span> UA_NODEID_NULL;
+     }
+
+     <span class="keyword">return</span> resultId;
+ }
+
+ UA_StatusCode DemoServer<span class="operator">::</span>startPumpMethod(UA_Server <span class="operator">*</span>server<span class="operator">,</span>
+                                           <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>sessionId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>sessionHandle<span class="operator">,</span>
+                                           <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>methodId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>methodContext<span class="operator">,</span>
+                                           <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>objectId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>objectContext<span class="operator">,</span>
+                                           size_t inputSize<span class="operator">,</span> <span class="keyword">const</span> UA_Variant <span class="operator">*</span>input<span class="operator">,</span>
+                                           size_t outputSize<span class="operator">,</span> UA_Variant <span class="operator">*</span>output)
+ {
+     Q_UNUSED(server);
+     Q_UNUSED(sessionId);
+     Q_UNUSED(sessionHandle);
+     Q_UNUSED(methodId);
+     Q_UNUSED(objectId);
+     Q_UNUSED(objectContext);
+     Q_UNUSED(inputSize);
+     Q_UNUSED(input);
+     Q_UNUSED(outputSize);
+     Q_UNUSED(output);
+
+     DemoServer <span class="operator">*</span>data <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>DemoServer <span class="operator">*</span><span class="operator">&gt;</span>(methodContext);
+
+     <span class="type">double</span> targetValue <span class="operator">=</span> data<span class="operator">-</span><span class="operator">&gt;</span>readTank2TargetValue();
+
+     <span class="keyword">if</span> (data<span class="operator">-</span><span class="operator">&gt;</span>m_state <span class="operator">=</span><span class="operator">=</span> MachineState<span class="operator">::</span>Idle
+         <span class="operator">&amp;</span><span class="operator">&amp;</span> data<span class="operator">-</span><span class="operator">&gt;</span>m_percentFilledTank1 <span class="operator">&gt;</span> <span class="number">0</span>
+         <span class="operator">&amp;</span><span class="operator">&amp;</span> data<span class="operator">-</span><span class="operator">&gt;</span>m_percentFilledTank2 <span class="operator">&lt;</span> targetValue) {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Start pumping&quot;</span>;
+         data<span class="operator">-</span><span class="operator">&gt;</span>setState(MachineState<span class="operator">::</span>Pumping);
+         data<span class="operator">-</span><span class="operator">&gt;</span>m_machineTimer<span class="operator">.</span>start();
+         <span class="keyword">return</span> UA_STATUSCODE_GOOD;
+     }
+     <span class="keyword">else</span> {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Machine already running&quot;</span>;
+         <span class="keyword">return</span> UA_STATUSCODE_BADUSERACCESSDENIED;
+     }
+ }
+
+ UA_StatusCode DemoServer<span class="operator">::</span>stopPumpMethod(UA_Server <span class="operator">*</span>server<span class="operator">,</span>
+                                          <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>sessionId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>sessionHandle<span class="operator">,</span>
+                                          <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>methodId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>methodContext<span class="operator">,</span>
+                                          <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>objectId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>objectContext<span class="operator">,</span>
+                                          size_t inputSize<span class="operator">,</span> <span class="keyword">const</span> UA_Variant <span class="operator">*</span>input<span class="operator">,</span>
+                                          size_t outputSize<span class="operator">,</span> UA_Variant <span class="operator">*</span>output)
+ {
+     Q_UNUSED(server);
+     Q_UNUSED(sessionId);
+     Q_UNUSED(sessionHandle);
+     Q_UNUSED(methodId);
+     Q_UNUSED(objectId);
+     Q_UNUSED(objectContext);
+     Q_UNUSED(inputSize);
+     Q_UNUSED(input);
+     Q_UNUSED(outputSize);
+     Q_UNUSED(output);
+
+     DemoServer <span class="operator">*</span>data <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>DemoServer <span class="operator">*</span><span class="operator">&gt;</span>(methodContext);
+
+     <span class="keyword">if</span> (data<span class="operator">-</span><span class="operator">&gt;</span>m_state <span class="operator">=</span><span class="operator">=</span> MachineState<span class="operator">::</span>Pumping) {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Stopping&quot;</span>;
+         data<span class="operator">-</span><span class="operator">&gt;</span>m_machineTimer<span class="operator">.</span>stop();
+         data<span class="operator">-</span><span class="operator">&gt;</span>setState(MachineState<span class="operator">::</span>Idle);
+         <span class="keyword">return</span> UA_STATUSCODE_GOOD;
+     } <span class="keyword">else</span> {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Nothing to stop&quot;</span>;
+         <span class="keyword">return</span> UA_STATUSCODE_BADUSERACCESSDENIED;
+     }
+ }
+
+ UA_StatusCode DemoServer<span class="operator">::</span>flushTank2Method(UA_Server <span class="operator">*</span>server<span class="operator">,</span>
+                                            <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>sessionId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>sessionHandle<span class="operator">,</span>
+                                            <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>methodId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>methodContext<span class="operator">,</span>
+                                            <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>objectId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>objectContext<span class="operator">,</span>
+                                            size_t inputSize<span class="operator">,</span> <span class="keyword">const</span> UA_Variant <span class="operator">*</span>input<span class="operator">,</span>
+                                            size_t outputSize<span class="operator">,</span> UA_Variant <span class="operator">*</span>output)
+ {
+     Q_UNUSED(server);
+     Q_UNUSED(sessionId);
+     Q_UNUSED(sessionHandle);
+     Q_UNUSED(methodId);
+     Q_UNUSED(objectId);
+     Q_UNUSED(objectContext);
+     Q_UNUSED(inputSize);
+     Q_UNUSED(input);
+     Q_UNUSED(outputSize);
+     Q_UNUSED(output);
+
+     DemoServer <span class="operator">*</span>data <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>DemoServer <span class="operator">*</span><span class="operator">&gt;</span>(methodContext);
+
+     <span class="type">double</span> targetValue <span class="operator">=</span> data<span class="operator">-</span><span class="operator">&gt;</span>readTank2TargetValue();
+
+     <span class="keyword">if</span> (data<span class="operator">-</span><span class="operator">&gt;</span>m_state <span class="operator">=</span><span class="operator">=</span> MachineState<span class="operator">::</span>Idle <span class="operator">&amp;</span><span class="operator">&amp;</span> data<span class="operator">-</span><span class="operator">&gt;</span>m_percentFilledTank2 <span class="operator">&gt;</span> targetValue) {
+         data<span class="operator">-</span><span class="operator">&gt;</span>setState(MachineState<span class="operator">::</span>Flushing);
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Flushing tank 2&quot;</span>;
+         data<span class="operator">-</span><span class="operator">&gt;</span>setTank2ValveState(<span class="keyword">true</span>);
+         data<span class="operator">-</span><span class="operator">&gt;</span>m_machineTimer<span class="operator">.</span>start();
+         <span class="keyword">return</span> UA_STATUSCODE_GOOD;
+     }
+     <span class="keyword">else</span> {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Unable to comply&quot;</span>;
+         <span class="keyword">return</span> UA_STATUSCODE_BADUSERACCESSDENIED;
+     }
+ }
+
+ UA_StatusCode DemoServer<span class="operator">::</span>resetMethod(UA_Server <span class="operator">*</span>server<span class="operator">,</span>
+                                       <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>sessionId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>sessionHandle<span class="operator">,</span>
+                                       <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>methodId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>methodContext<span class="operator">,</span>
+                                       <span class="keyword">const</span> UA_NodeId <span class="operator">*</span>objectId<span class="operator">,</span> <span class="type">void</span> <span class="operator">*</span>objectContext<span class="operator">,</span>
+                                       size_t inputSize<span class="operator">,</span> <span class="keyword">const</span> UA_Variant <span class="operator">*</span>input<span class="operator">,</span>
+                                       size_t outputSize<span class="operator">,</span> UA_Variant <span class="operator">*</span>output)
+ {
+     Q_UNUSED(server);
+     Q_UNUSED(sessionId);
+     Q_UNUSED(sessionHandle);
+     Q_UNUSED(methodId);
+     Q_UNUSED(objectId);
+     Q_UNUSED(objectContext);
+     Q_UNUSED(inputSize);
+     Q_UNUSED(input);
+     Q_UNUSED(outputSize);
+     Q_UNUSED(output);
+
+     DemoServer <span class="operator">*</span>data <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>DemoServer <span class="operator">*</span><span class="operator">&gt;</span>(methodContext);
+
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Reset simulation&quot;</span>;
+         data<span class="operator">-</span><span class="operator">&gt;</span>setState(MachineState<span class="operator">::</span>Idle);
+         data<span class="operator">-</span><span class="operator">&gt;</span>m_machineTimer<span class="operator">.</span>stop();
+         data<span class="operator">-</span><span class="operator">&gt;</span>setTank2ValveState(<span class="keyword">false</span>);
+         data<span class="operator">-</span><span class="operator">&gt;</span>setPercentFillTank1(<span class="number">100</span>);
+         data<span class="operator">-</span><span class="operator">&gt;</span>setPercentFillTank2(<span class="number">0</span>);
+         <span class="keyword">return</span> UA_STATUSCODE_GOOD;
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>setState(DemoServer<span class="operator">::</span>MachineState state)
+ {
+     UA_Variant val;
+     m_state <span class="operator">=</span> state;
+     UA_Variant_setScalarCopy(<span class="operator">&amp;</span>val<span class="operator">,</span> <span class="operator">&amp;</span>state<span class="operator">,</span> <span class="operator">&amp;</span>UA_TYPES<span class="operator">[</span>UA_TYPES_UINT32<span class="operator">]</span>);
+     UA_Server_writeValue(m_server<span class="operator">,</span> m_machineStateNode<span class="operator">,</span> val);
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>setPercentFillTank1(<span class="type">double</span> fill)
+ {
+     UA_Variant val;
+     m_percentFilledTank1 <span class="operator">=</span> fill;
+     UA_Variant_setScalarCopy(<span class="operator">&amp;</span>val<span class="operator">,</span> <span class="operator">&amp;</span>fill<span class="operator">,</span> <span class="operator">&amp;</span>UA_TYPES<span class="operator">[</span>UA_TYPES_DOUBLE<span class="operator">]</span>);
+     UA_Server_writeValue(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_server<span class="operator">,</span> <span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_percentFilledTank1Node<span class="operator">,</span> val);
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>setPercentFillTank2(<span class="type">double</span> fill)
+ {
+     UA_Variant val;
+     m_percentFilledTank2 <span class="operator">=</span> fill;
+     UA_Variant_setScalarCopy(<span class="operator">&amp;</span>val<span class="operator">,</span> <span class="operator">&amp;</span>fill<span class="operator">,</span> <span class="operator">&amp;</span>UA_TYPES<span class="operator">[</span>UA_TYPES_DOUBLE<span class="operator">]</span>);
+     UA_Server_writeValue(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_server<span class="operator">,</span> <span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_percentFilledTank2Node<span class="operator">,</span> val);
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>setTank2ValveState(<span class="type">bool</span> state)
+ {
+     UA_Variant val;
+     UA_Variant_setScalarCopy(<span class="operator">&amp;</span>val<span class="operator">,</span> <span class="operator">&amp;</span>state<span class="operator">,</span> <span class="operator">&amp;</span>UA_TYPES<span class="operator">[</span>UA_TYPES_BOOLEAN<span class="operator">]</span>);
+     UA_Server_writeValue(<span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_server<span class="operator">,</span> <span class="keyword">this</span><span class="operator">-</span><span class="operator">&gt;</span>m_tank2ValveStateNode<span class="operator">,</span> val);
+ }
+
+ <span class="type">double</span> DemoServer<span class="operator">::</span>readTank2TargetValue()
+ {
+     UA_Variant var;
+     UA_Server_readValue(m_server<span class="operator">,</span> m_tank2TargetPercentNode<span class="operator">,</span> <span class="operator">&amp;</span>var);
+     <span class="keyword">return</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">double</span> <span class="operator">*</span><span class="operator">&gt;</span>(var<span class="operator">.</span>data)<span class="operator">[</span><span class="number">0</span><span class="operator">]</span>;
+ }
+
+ UA_NodeId DemoServer<span class="operator">::</span>addMethod(<span class="keyword">const</span> UA_NodeId <span class="operator">&amp;</span>folder<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>variableNode<span class="operator">,</span>
+                                 <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>description<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>browseName<span class="operator">,</span>
+                                 <span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>displayName<span class="operator">,</span> UA_MethodCallback cb<span class="operator">,</span>
+                                 <span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span> referenceType)
+ {
+     UA_NodeId methodNodeId <span class="operator">=</span> Open62541Utils<span class="operator">::</span>nodeIdFromQString(variableNode);
+
+     UA_MethodAttributes attr <span class="operator">=</span> UA_MethodAttributes_default;
+
+     attr<span class="operator">.</span>description <span class="operator">=</span> UA_LOCALIZEDTEXT_ALLOC(<span class="string">&quot;en-US&quot;</span><span class="operator">,</span> description<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+     attr<span class="operator">.</span>displayName <span class="operator">=</span> UA_LOCALIZEDTEXT_ALLOC(<span class="string">&quot;en-US&quot;</span><span class="operator">,</span> displayName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+     attr<span class="operator">.</span>executable <span class="operator">=</span> <span class="keyword">true</span>;
+     UA_QualifiedName methodBrowseName <span class="operator">=</span> UA_QUALIFIEDNAME_ALLOC(methodNodeId<span class="operator">.</span>namespaceIndex<span class="operator">,</span>
+                                                                browseName<span class="operator">.</span>toUtf8()<span class="operator">.</span>constData());
+
+     UA_NodeId resultId;
+     UA_StatusCode result <span class="operator">=</span> UA_Server_addMethodNode(m_server<span class="operator">,</span> methodNodeId<span class="operator">,</span> folder<span class="operator">,</span>
+                                                      UA_NODEID_NUMERIC(<span class="number">0</span><span class="operator">,</span> referenceType)<span class="operator">,</span>
+                                                      methodBrowseName<span class="operator">,</span>
+                                                      attr<span class="operator">,</span> cb<span class="operator">,</span>
+                                                      <span class="number">0</span><span class="operator">,</span> nullptr<span class="operator">,</span>
+                                                      <span class="number">0</span><span class="operator">,</span> nullptr<span class="operator">,</span>
+                                                      <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>resultId);
+
+     UA_NodeId_clear(<span class="operator">&amp;</span>methodNodeId);
+     UA_MethodAttributes_clear(<span class="operator">&amp;</span>attr);
+     UA_QualifiedName_clear(<span class="operator">&amp;</span>methodBrowseName);
+
+     <span class="keyword">if</span> (result <span class="operator">!</span><span class="operator">=</span> UA_STATUSCODE_GOOD) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Could not add Method:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> result;
+         <span class="keyword">return</span> UA_NODEID_NULL;
+     }
+     <span class="keyword">return</span> resultId;
+ }
+
+ <span class="type">void</span> DemoServer<span class="operator">::</span>launch()
+ {
+     UA_StatusCode s <span class="operator">=</span> UA_Server_run_startup(m_server);
+     <span class="keyword">if</span> (s <span class="operator">!</span><span class="operator">=</span> UA_STATUSCODE_GOOD)
+          <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Could not launch server&quot;</span>);
+      m_running <span class="operator">=</span> <span class="keyword">true</span>;
+      m_timer<span class="operator">.</span>start();
+
+      <span class="type">int</span> ns1 <span class="operator">=</span> UA_Server_addNamespace(m_server<span class="operator">,</span> <span class="string">&quot;Demo Namespace&quot;</span>);
+      <span class="keyword">if</span> (ns1 <span class="operator">!</span><span class="operator">=</span> <span class="number">2</span>) {
+          <a href="../qtcore/qtlogging.html#qFatal" translate="no">qFatal</a>(<span class="string">&quot;Unexpected namespace index for Demo namespace&quot;</span>);
+      }
+
+      UA_NodeId machineObject <span class="operator">=</span> addObject(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>namespace0Id(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeIds<span class="operator">::</span>Namespace0<span class="operator">::</span>ObjectsFolder)<span class="operator">,</span>
+                                          u<span class="string">&quot;ns=2;s=Machine&quot;</span>_s<span class="operator">,</span>
+                                          u<span class="string">&quot;Machine&quot;</span>_s<span class="operator">,</span>
+                                          u<span class="string">&quot;Machine&quot;</span>_s<span class="operator">,</span>
+                                          u<span class="string">&quot;The machine simulator&quot;</span>_s<span class="operator">,</span>
+                                          UA_NS0ID_ORGANIZES);
+
+      UA_NodeId tank1Object <span class="operator">=</span> addObject(u<span class="string">&quot;ns=2;s=Machine&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;ns=2;s=Machine.Tank1&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;Tank1&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;Tank 1&quot;</span>_s);
+
+      UA_NodeId tank2Object <span class="operator">=</span> addObject(u<span class="string">&quot;ns=2;s=Machine&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;ns=2;s=Machine.Tank2&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;Tank2&quot;</span>_s<span class="operator">,</span>
+                                        u<span class="string">&quot;Tank 2&quot;</span>_s);
+
+      m_percentFilledTank1Node <span class="operator">=</span> addVariable(tank1Object<span class="operator">,</span>
+                                             u<span class="string">&quot;ns=2;s=Machine.Tank1.PercentFilled&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;PercentFilled&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;Tank 1 Fill Level&quot;</span>_s<span class="operator">,</span>
+                                             <span class="number">100.0</span><span class="operator">,</span>
+                                             <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>Double);
+
+      m_percentFilledTank2Node <span class="operator">=</span> addVariable(tank2Object<span class="operator">,</span>
+                                             u<span class="string">&quot;ns=2;s=Machine.Tank2.PercentFilled&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;PercentFilled&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;Tank 2 Fill Level&quot;</span>_s<span class="operator">,</span>
+                                             <span class="number">0.0</span><span class="operator">,</span>
+                                             <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>Double);
+
+      m_tank2TargetPercentNode <span class="operator">=</span> addVariable(tank2Object<span class="operator">,</span>
+                                             u<span class="string">&quot;ns=2;s=Machine.Tank2.TargetPercent&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;TargetPercent&quot;</span>_s<span class="operator">,</span>
+                                             u<span class="string">&quot;Tank 2 Target Level&quot;</span>_s<span class="operator">,</span>
+                                             <span class="number">0.0</span><span class="operator">,</span>
+                                             <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>Double);
+
+      m_tank2ValveStateNode <span class="operator">=</span> addVariable(tank2Object<span class="operator">,</span>
+                                          u<span class="string">&quot;ns=2;s=Machine.Tank2.ValveState&quot;</span>_s<span class="operator">,</span>
+                                          u<span class="string">&quot;ValveState&quot;</span>_s<span class="operator">,</span>
+                                          u<span class="string">&quot;Tank 2 Valve State&quot;</span>_s<span class="operator">,</span>
+                                          <span class="keyword">false</span><span class="operator">,</span>
+                                          <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>Boolean);
+
+      m_machineStateNode <span class="operator">=</span> addVariable(machineObject<span class="operator">,</span>
+                                       u<span class="string">&quot;ns=2;s=Machine.State&quot;</span>_s<span class="operator">,</span>
+                                       u<span class="string">&quot;State&quot;</span>_s<span class="operator">,</span>
+                                       u<span class="string">&quot;Machine State&quot;</span>_s<span class="operator">,</span>
+                                       <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qttypes.html#quint32-typedef" translate="no">quint32</a></span><span class="operator">&gt;</span>(MachineState<span class="operator">::</span>Idle)<span class="operator">,</span>
+                                       <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>UInt32);
+
+      UA_NodeId tempId;
+      tempId <span class="operator">=</span> addVariable(machineObject<span class="operator">,</span>
+                           u<span class="string">&quot;ns=2;s=Machine.Designation&quot;</span>_s<span class="operator">,</span>
+                           u<span class="string">&quot;Designation&quot;</span>_s<span class="operator">,</span>
+                           u<span class="string">&quot;Machine Designation&quot;</span>_s<span class="operator">,</span>
+                           u<span class="string">&quot;TankExample&quot;</span>_s<span class="operator">,</span>
+                           <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>Types<span class="operator">::</span>String);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tempId);
+
+      tempId <span class="operator">=</span> addMethod(machineObject<span class="operator">,</span>
+                         u<span class="string">&quot;ns=2;s=Machine.Start&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Starts the pump&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Start&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Start Pump&quot;</span>_s<span class="operator">,</span>
+                         <span class="operator">&amp;</span>startPumpMethod);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tempId);
+
+      tempId <span class="operator">=</span> addMethod(machineObject<span class="operator">,</span>
+                         u<span class="string">&quot;ns=2;s=Machine.Stop&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Stops the pump&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Stop&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Stop Pump&quot;</span>_s<span class="operator">,</span>
+                         <span class="operator">&amp;</span>stopPumpMethod);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tempId);
+
+      tempId <span class="operator">=</span> addMethod(machineObject<span class="operator">,</span>
+                         u<span class="string">&quot;ns=2;s=Machine.FlushTank2&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Flushes tank 2&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;FlushTank2&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Flush Tank 2&quot;</span>_s<span class="operator">,</span>
+                         <span class="operator">&amp;</span>flushTank2Method);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tempId);
+
+      tempId <span class="operator">=</span> addMethod(machineObject<span class="operator">,</span>
+                         u<span class="string">&quot;ns=2;s=Machine.Reset&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Resets the simulation&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Reset&quot;</span>_s<span class="operator">,</span>
+                         u<span class="string">&quot;Reset Simulation&quot;</span>_s<span class="operator">,</span>
+                         <span class="operator">&amp;</span>resetMethod);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tempId);
+
+      UA_NodeId_clear(<span class="operator">&amp;</span>machineObject);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tank1Object);
+      UA_NodeId_clear(<span class="operator">&amp;</span>tank2Object);
+
+      <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(<span class="operator">&amp;</span>m_machineTimer<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span><span class="operator">::</span>timeout<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">[</span><span class="keyword">this</span><span class="operator">]</span>() {
+
+          <span class="type">double</span> targetValue <span class="operator">=</span> readTank2TargetValue();
+          <span class="keyword">if</span> (m_state <span class="operator">=</span><span class="operator">=</span> MachineState<span class="operator">::</span>Pumping
+              <span class="operator">&amp;</span><span class="operator">&amp;</span> m_percentFilledTank1 <span class="operator">&gt;</span> <span class="number">0</span>
+              <span class="operator">&amp;</span><span class="operator">&amp;</span> m_percentFilledTank2 <span class="operator">&lt;</span> targetValue) {
+             setPercentFillTank1(m_percentFilledTank1 <span class="operator">-</span> <span class="number">1</span>);
+             setPercentFillTank2(m_percentFilledTank2 <span class="operator">+</span> <span class="number">1</span>);
+             <span class="keyword">if</span> (<a href="../qtcore/qtnumeric.html#qFuzzyIsNull" translate="no">qFuzzyIsNull</a>(m_percentFilledTank1) <span class="operator">|</span><span class="operator">|</span> m_percentFilledTank2 <span class="operator">&gt;</span><span class="operator">=</span> targetValue) {
+                 setState(MachineState<span class="operator">::</span>Idle);
+                 m_machineTimer<span class="operator">.</span>stop();
+             }
+          } <span class="keyword">else</span> <span class="keyword">if</span> (m_state <span class="operator">=</span><span class="operator">=</span> MachineState<span class="operator">::</span>Flushing <span class="operator">&amp;</span><span class="operator">&amp;</span> m_percentFilledTank2 <span class="operator">&gt;</span> targetValue) {
+              setPercentFillTank2(m_percentFilledTank2 <span class="operator">-</span> <span class="number">1</span>);
+              <span class="keyword">if</span> (m_percentFilledTank2 <span class="operator">&lt;</span><span class="operator">=</span> targetValue) {
+                  setTank2ValveState(<span class="keyword">false</span>);
+                  setState(MachineState<span class="operator">::</span>Idle);
+                  m_machineTimer<span class="operator">.</span>stop();
+              }
+          }
+      });
+ }
+</pre>

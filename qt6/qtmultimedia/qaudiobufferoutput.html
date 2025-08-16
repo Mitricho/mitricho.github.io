@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qaudiobufferoutput.cpp -->
+  <meta name="description" content="The QAudioBufferOutput class is used for capturing audio data provided by QMediaPlayer.">
+  <title>QAudioBufferOutput Class | Qt Multimedia | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtmultimedia-index.html">Qt Multimedia</a></li>
+<li><a href="qtmultimedia-modules.html">C++ Classes</a></li>
+<li><a href="qtmultimedia-module.html" translate="no">QtMultimedia</a></li>
+<li>QAudioBufferOutput</li>
+<li id="buildversion"><a href="qtmultimedia-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#signals">Signals</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QAudioBufferOutput Class</h1>
+<!-- $$$QAudioBufferOutput-brief -->
+<p>The QAudioBufferOutput class is used for capturing audio data provided by <a href="qmediaplayer.html" translate="no">QMediaPlayer</a>. <a href="#details">More...</a></p>
+<!-- @@@QAudioBufferOutput -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QAudioBufferOutput&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Multimedia)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Multimedia)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += multimedia</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.8</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+</table></div>
+<ul>
+<li><a href="qaudiobufferoutput-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobufferoutput.html#QAudioBufferOutput" translate="no">QAudioBufferOutput</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qaudiobufferoutput.html#QAudioBufferOutput-1" translate="no">QAudioBufferOutput</a></b>(const QAudioFormat &amp;<i>format</i>, QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qaudiobufferoutput.html#dtor.QAudioBufferOutput" translate="no">~QAudioBufferOutput</a></b>() override</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QAudioFormat </td><td class="memItemRight bottomAlign"><b><a href="qaudiobufferoutput.html#format" translate="no">format</a></b>() const</td></tr>
+</table></div>
+<h2 id="signals">Signals</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qaudiobufferoutput.html#audioBufferReceived" translate="no">audioBufferReceived</a></b>(const QAudioBuffer &amp;<i>buffer</i>)</td></tr>
+</table></div>
+<!-- $$$QAudioBufferOutput-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QAudioBufferOutput can be set to <a href="qmediaplayer.html" translate="no">QMediaPlayer</a> in order to receive audio buffers decoded by the media player. The received audio data can be used for any processing or visualization. An audio level meter implementation can be seen in the widget based <a href="qtmultimedia-player-example.html">Media Player Example</a>.</p>
+<p>QAudioBufferOutput is only supported with the FFmpeg backend.</p>
+</div>
+<p><b>See also </b><a href="qmediaplayer.html" translate="no">QMediaPlayer</a>, <a href="qmediaplayer.html#audioBufferOutput-prop" translate="no">QMediaPlayer::setAudioBufferOutput</a>, and <a href="qaudiobuffer.html" translate="no">QAudioBuffer</a>.</p>
+<!-- @@@QAudioBufferOutput -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QAudioBufferOutput[overload1]$$$QAudioBufferOutputQObject* -->
+<h3 class="fn" translate="no" id="QAudioBufferOutput"><code class="details extra" translate="no">[explicit]</code> QAudioBufferOutput::<span class="name">QAudioBufferOutput</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a new QAudioBufferOutput object with <i translate="no">parent</i>.</p>
+<p>The audio format of output audio buffers will depend on the source media file and the inner audio decoder in <a href="qmediaplayer.html" translate="no">QMediaPlayer</a>.</p>
+<!-- @@@QAudioBufferOutput -->
+<!-- $$$QAudioBufferOutput$$$QAudioBufferOutputconstQAudioFormat&QObject* -->
+<h3 class="fn" translate="no" id="QAudioBufferOutput-1"><code class="details extra" translate="no">[explicit]</code> QAudioBufferOutput::<span class="name">QAudioBufferOutput</span>(const <span class="type"><a href="qaudioformat.html" translate="no">QAudioFormat</a></span> &amp;<i>format</i>, <span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a new QAudioBufferOutput object with audio <i translate="no">format</i> and <i translate="no">parent</i>.</p>
+<p>If the specified <i translate="no">format</i> is valid, it will be the format of output audio buffers. Otherwise, the format of output audio buffers will depend on the source media file and the inner audio decoder in <a href="qmediaplayer.html" translate="no">QMediaPlayer</a>.</p>
+<!-- @@@QAudioBufferOutput -->
+<!-- $$$~QAudioBufferOutput[overload1]$$$~QAudioBufferOutput -->
+<h3 class="fn" translate="no" id="dtor.QAudioBufferOutput"><code class="details extra" translate="no">[override virtual noexcept]</code> QAudioBufferOutput::<span class="name">~QAudioBufferOutput</span>()</h3>
+<p>Destroys the audio buffer output object.</p>
+<!-- @@@~QAudioBufferOutput -->
+<!-- $$$audioBufferReceived[overload1]$$$audioBufferReceivedconstQAudioBuffer& -->
+<h3 class="fn" translate="no" id="audioBufferReceived"><code class="details extra" translate="no">[signal]</code> <span class="type">void</span> QAudioBufferOutput::<span class="name">audioBufferReceived</span>(const <span class="type"><a href="qaudiobuffer.html" translate="no">QAudioBuffer</a></span> &amp;<i>buffer</i>)</h3>
+<p>Signals that a new audio <i translate="no">buffer</i> has been received from <a href="qmediaplayer.html" translate="no">QMediaPlayer</a>.</p>
+<!-- @@@audioBufferReceived -->
+<!-- $$$format[overload1]$$$format -->
+<h3 class="fn" translate="no" id="format"><span class="type"><a href="qaudioformat.html" translate="no">QAudioFormat</a></span> QAudioBufferOutput::<span class="name">format</span>() const</h3>
+<p>Gets the audio format specified in the constructor.</p>
+<p>If the format is valid, it specifies the format of output oudio buffers.</p>
+<!-- @@@format -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

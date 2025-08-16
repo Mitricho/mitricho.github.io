@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquaternion.cpp -->
+  <meta name="description" content="The QQuaternion class represents a quaternion consisting of a vector and scalar.">
+  <title>QQuaternion Class | Qt GUI | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtgui-index.html">Qt GUI</a></li>
+<li><a href="qtgui-module.html" translate="no">C++ Classes</a></li>
+<li>QQuaternion</li>
+<li id="buildversion"><a href="qtgui-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QQuaternion Class</h1>
+<!-- $$$QQuaternion-brief -->
+<p>The QQuaternion class represents a quaternion consisting of a vector and scalar. <a href="#details">More...</a></p>
+<!-- @@@QQuaternion -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QQuaternion&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Gui)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Gui)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += gui</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qquaternion-members.html">List of all members, including inherited members</a></li>
+<li>QQuaternion is part of <a href="painting-3d.html">Rendering in 3D</a>.</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#QQuaternion-1" translate="no">QQuaternion</a></b>(const QVector4D &amp;<i>vector</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#QQuaternion-2" translate="no">QQuaternion</a></b>(float <i>scalar</i>, const QVector3D &amp;<i>vector</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#QQuaternion-3" translate="no">QQuaternion</a></b>(float <i>scalar</i>, float <i>xpos</i>, float <i>ypos</i>, float <i>zpos</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#conjugated" translate="no">conjugated</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#getAxes" translate="no">getAxes</a></b>(QVector3D *<i>xAxis</i>, QVector3D *<i>yAxis</i>, QVector3D *<i>zAxis</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#getAxisAndAngle" translate="no">getAxisAndAngle</a></b>(float *<i>x</i>, float *<i>y</i>, float *<i>z</i>, float *<i>angle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#getAxisAndAngle-1" translate="no">getAxisAndAngle</a></b>(QVector3D *<i>axis</i>, float *<i>angle</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#getEulerAngles" translate="no">getEulerAngles</a></b>(float *<i>pitch</i>, float *<i>yaw</i>, float *<i>roll</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#inverted" translate="no">inverted</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#isIdentity" translate="no">isIdentity</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#length" translate="no">length</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#lengthSquared" translate="no">lengthSquared</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#normalize" translate="no">normalize</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#normalized" translate="no">normalized</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#rotatedVector" translate="no">rotatedVector</a></b>(const QVector3D &amp;<i>vector</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#scalar" translate="no">scalar</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setScalar" translate="no">setScalar</a></b>(float <i>scalar</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setVector" translate="no">setVector</a></b>(const QVector3D &amp;<i>vector</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setVector-1" translate="no">setVector</a></b>(float <i>x</i>, float <i>y</i>, float <i>z</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setX" translate="no">setX</a></b>(float <i>x</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setY" translate="no">setY</a></b>(float <i>y</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#setZ" translate="no">setZ</a></b>(float <i>z</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#toEulerAngles" translate="no">toEulerAngles</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMatrix3x3 </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#toRotationMatrix" translate="no">toRotationMatrix</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector4D </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#toVector4D" translate="no">toVector4D</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#vector" translate="no">vector</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#x" translate="no">x</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#y" translate="no">y</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#z" translate="no">z</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-QVariant" translate="no">operator QVariant</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-eq" translate="no">operator*=</a></b>(const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-eq-1" translate="no">operator*=</a></b>(float <i>factor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2b-eq" translate="no">operator+=</a></b>(const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator--eq" translate="no">operator-=</a></b>(const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2f-eq" translate="no">operator/=</a></b>(float <i>divisor</i>)</td></tr>
+</table></div>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> float </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#dotProduct" translate="no">dotProduct</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromAxes" translate="no">fromAxes</a></b>(const QVector3D &amp;<i>xAxis</i>, const QVector3D &amp;<i>yAxis</i>, const QVector3D &amp;<i>zAxis</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromAxisAndAngle" translate="no">fromAxisAndAngle</a></b>(const QVector3D &amp;<i>axis</i>, float <i>angle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromAxisAndAngle-1" translate="no">fromAxisAndAngle</a></b>(float <i>x</i>, float <i>y</i>, float <i>z</i>, float <i>angle</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromDirection" translate="no">fromDirection</a></b>(const QVector3D &amp;<i>direction</i>, const QVector3D &amp;<i>up</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromEulerAngles" translate="no">fromEulerAngles</a></b>(float <i>pitch</i>, float <i>yaw</i>, float <i>roll</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromEulerAngles-1" translate="no">fromEulerAngles</a></b>(const QVector3D &amp;<i>eulerAngles</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#fromRotationMatrix" translate="no">fromRotationMatrix</a></b>(const QMatrix3x3 &amp;<i>rot3x3</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#nlerp" translate="no">nlerp</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>, float <i>t</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#rotationTo" translate="no">rotationTo</a></b>(const QVector3D &amp;<i>from</i>, const QVector3D &amp;<i>to</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#slerp" translate="no">slerp</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>, float <i>t</i>)</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#qFuzzyCompare" translate="no">qFuzzyCompare</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-not-eq" translate="no">operator!=</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-3" translate="no">operator*</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVector3D </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-4" translate="no">operator*</a></b>(const QQuaternion &amp;<i>quaternion</i>, const QVector3D &amp;<i>vec</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-5" translate="no">operator*</a></b>(const QQuaternion &amp;<i>quaternion</i>, float <i>factor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2a-6" translate="no">operator*</a></b>(float <i>factor</i>, const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2b-1" translate="no">operator+</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator--2" translate="no">operator-</a></b>(const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator--3" translate="no">operator-</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QQuaternion </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-2f-1" translate="no">operator/</a></b>(const QQuaternion &amp;<i>quaternion</i>, float <i>divisor</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-lt-lt-22" translate="no">operator&lt;&lt;</a></b>(QDataStream &amp;<i>stream</i>, const QQuaternion &amp;<i>quaternion</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-eq-eq" translate="no">operator==</a></b>(const QQuaternion &amp;<i>q1</i>, const QQuaternion &amp;<i>q2</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QDataStream &amp;</td><td class="memItemRight bottomAlign"><b><a href="qquaternion.html#operator-gt-gt-19" translate="no">operator&gt;&gt;</a></b>(QDataStream &amp;<i>stream</i>, QQuaternion &amp;<i>quaternion</i>)</td></tr>
+</table></div>
+<!-- $$$QQuaternion-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Quaternions are used to represent rotations in 3D space, and consist of a 3D rotation axis specified by the x, y, and z coordinates, and a scalar representing the rotation angle.</p>
+</div>
+<!-- @@@QQuaternion -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QQuaternion[overload1]$$$QQuaternion -->
+<h3 class="fn" translate="no" id="QQuaternion"><code class="details extra" translate="no">[constexpr noexcept]</code> QQuaternion::<span class="name">QQuaternion</span>()</h3>
+<p>Constructs an identity quaternion (1, 0, 0, 0), i.e. with the vector (0, 0, 0) and scalar 1.</p>
+<!-- @@@QQuaternion -->
+<!-- $$$QQuaternion$$$QQuaternionconstQVector4D& -->
+<h3 class="fn" translate="no" id="QQuaternion-1"><code class="details extra" translate="no">[explicit constexpr noexcept]</code> QQuaternion::<span class="name">QQuaternion</span>(const <span class="type"><a href="qvector4d.html" translate="no">QVector4D</a></span> &amp;<i>vector</i>)</h3>
+<p>Constructs a quaternion from the components of <i translate="no">vector</i>.</p>
+<!-- @@@QQuaternion -->
+<!-- $$$QQuaternion$$$QQuaternionfloatconstQVector3D& -->
+<h3 class="fn" translate="no" id="QQuaternion-2"><code class="details extra" translate="no">[constexpr noexcept]</code> QQuaternion::<span class="name">QQuaternion</span>(<span class="type">float</span> <i>scalar</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>vector</i>)</h3>
+<p>Constructs a quaternion vector from the specified <i translate="no">vector</i> and <i translate="no">scalar</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#vector" translate="no">vector</a>() and <a href="qquaternion.html#scalar" translate="no">scalar</a>().</p>
+<!-- @@@QQuaternion -->
+<!-- $$$QQuaternion$$$QQuaternionfloatfloatfloatfloat -->
+<h3 class="fn" translate="no" id="QQuaternion-3"><code class="details extra" translate="no">[constexpr noexcept]</code> QQuaternion::<span class="name">QQuaternion</span>(<span class="type">float</span> <i>scalar</i>, <span class="type">float</span> <i>xpos</i>, <span class="type">float</span> <i>ypos</i>, <span class="type">float</span> <i>zpos</i>)</h3>
+<p>Constructs a quaternion with the vector (<i translate="no">xpos</i>, <i translate="no">ypos</i>, <i translate="no">zpos</i>) and <i translate="no">scalar</i>.</p>
+<!-- @@@QQuaternion -->
+<!-- $$$conjugated[overload1]$$$conjugated -->
+<h3 class="fn" translate="no" id="conjugated"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">conjugated</span>() const</h3>
+<p>Returns the conjugate of this quaternion, which is (-x, -y, -z, scalar).</p>
+<!-- @@@conjugated -->
+<!-- $$$dotProduct[overload1]$$$dotProductconstQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="dotProduct"><code class="details extra" translate="no">[static constexpr noexcept]</code> <span class="type">float</span> QQuaternion::<span class="name">dotProduct</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns the dot product of <i translate="no">q1</i> and <i translate="no">q2</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#length" translate="no">length</a>().</p>
+<!-- @@@dotProduct -->
+<!-- $$$fromAxes[overload1]$$$fromAxesconstQVector3D&constQVector3D&constQVector3D& -->
+<h3 class="fn" translate="no" id="fromAxes"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromAxes</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>xAxis</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>yAxis</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>zAxis</i>)</h3>
+<p>Constructs the quaternion using 3 axes (<i translate="no">xAxis</i>, <i translate="no">yAxis</i>, <i translate="no">zAxis</i>).</p>
+<div class="admonition note">
+<p><b>Note: </b>The axes are assumed to be orthonormal.</p>
+</div>
+<p><b>See also </b><a href="qquaternion.html#getAxes" translate="no">getAxes</a>() and <a href="qquaternion.html#fromRotationMatrix" translate="no">fromRotationMatrix</a>().</p>
+<!-- @@@fromAxes -->
+<!-- $$$fromAxisAndAngle[overload1]$$$fromAxisAndAngleconstQVector3D&float -->
+<h3 class="fn" translate="no" id="fromAxisAndAngle"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromAxisAndAngle</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>axis</i>, <span class="type">float</span> <i>angle</i>)</h3>
+<p>Creates a normalized quaternion that corresponds to rotating through <i translate="no">angle</i> degrees about the specified 3D <i translate="no">axis</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#getAxisAndAngle" translate="no">getAxisAndAngle</a>().</p>
+<!-- @@@fromAxisAndAngle -->
+<!-- $$$fromAxisAndAngle$$$fromAxisAndAnglefloatfloatfloatfloat -->
+<h3 class="fn" translate="no" id="fromAxisAndAngle-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromAxisAndAngle</span>(<span class="type">float</span> <i>x</i>, <span class="type">float</span> <i>y</i>, <span class="type">float</span> <i>z</i>, <span class="type">float</span> <i>angle</i>)</h3>
+<p>Creates a normalized quaternion that corresponds to rotating through <i translate="no">angle</i> degrees about the 3D axis (<i translate="no">x</i>, <i translate="no">y</i>, <i translate="no">z</i>).</p>
+<p><b>See also </b><a href="qquaternion.html#getAxisAndAngle" translate="no">getAxisAndAngle</a>().</p>
+<!-- @@@fromAxisAndAngle -->
+<!-- $$$fromDirection[overload1]$$$fromDirectionconstQVector3D&constQVector3D& -->
+<h3 class="fn" translate="no" id="fromDirection"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromDirection</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>direction</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>up</i>)</h3>
+<p>Constructs the quaternion using specified forward direction <i translate="no">direction</i> and upward direction <i translate="no">up</i>. If the upward direction was not specified or the forward and upward vectors are collinear, a new orthonormal upward direction will be generated.</p>
+<p><b>See also </b><a href="qquaternion.html#fromAxes" translate="no">fromAxes</a>() and <a href="qquaternion.html#rotationTo" translate="no">rotationTo</a>().</p>
+<!-- @@@fromDirection -->
+<!-- $$$fromEulerAngles[overload1]$$$fromEulerAnglesfloatfloatfloat -->
+<h3 class="fn" translate="no" id="fromEulerAngles"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromEulerAngles</span>(<span class="type">float</span> <i>pitch</i>, <span class="type">float</span> <i>yaw</i>, <span class="type">float</span> <i>roll</i>)</h3>
+<p>Creates a quaternion that corresponds to a rotation of <i translate="no">roll</i> degrees around the z axis, <i translate="no">pitch</i> degrees around the x axis, and <i translate="no">yaw</i> degrees around the y axis (in that order).</p>
+<p><b>See also </b><a href="qquaternion.html#getEulerAngles" translate="no">getEulerAngles</a>().</p>
+<!-- @@@fromEulerAngles -->
+<!-- $$$fromEulerAngles$$$fromEulerAnglesconstQVector3D& -->
+<h3 class="fn" translate="no" id="fromEulerAngles-1"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromEulerAngles</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>eulerAngles</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Creates a quaternion that corresponds to a rotation of <i translate="no">eulerAngles</i>: eulerAngles.<a href="qquaternion.html#z" translate="no">z</a>() degrees around the z axis, eulerAngles.<a href="qquaternion.html#x" translate="no">x</a>() degrees around the x axis, and eulerAngles.<a href="qquaternion.html#y" translate="no">y</a>() degrees around the y axis (in that order).</p>
+<p><b>See also </b><a href="qquaternion.html#toEulerAngles" translate="no">toEulerAngles</a>().</p>
+<!-- @@@fromEulerAngles -->
+<!-- $$$fromRotationMatrix[overload1]$$$fromRotationMatrixconstQMatrix3x3& -->
+<h3 class="fn" translate="no" id="fromRotationMatrix"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">fromRotationMatrix</span>(const <span class="type"><a href="qgenericmatrix.html#QMatrix3x3-typedef" translate="no">QMatrix3x3</a></span> &amp;<i>rot3x3</i>)</h3>
+<p>Creates a quaternion that corresponds to a rotation matrix <i translate="no">rot3x3</i>.</p>
+<div class="admonition note">
+<p><b>Note: </b>If a given rotation matrix is not normalized, the resulting quaternion will contain scaling information.</p>
+</div>
+<p><b>See also </b><a href="qquaternion.html#toRotationMatrix" translate="no">toRotationMatrix</a>() and <a href="qquaternion.html#fromAxes" translate="no">fromAxes</a>().</p>
+<!-- @@@fromRotationMatrix -->
+<!-- $$$getAxes[overload1]$$$getAxesQVector3D*QVector3D*QVector3D* -->
+<h3 class="fn" translate="no" id="getAxes"><span class="type">void</span> QQuaternion::<span class="name">getAxes</span>(<span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> *<i>xAxis</i>, <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> *<i>yAxis</i>, <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> *<i>zAxis</i>) const</h3>
+<p>Returns the 3 orthonormal axes (<i translate="no">xAxis</i>, <i translate="no">yAxis</i>, <i translate="no">zAxis</i>) defining the quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#fromAxes" translate="no">fromAxes</a>() and <a href="qquaternion.html#toRotationMatrix" translate="no">toRotationMatrix</a>().</p>
+<!-- @@@getAxes -->
+<!-- $$$getAxisAndAngle[overload1]$$$getAxisAndAnglefloat*float*float*float* -->
+<h3 class="fn" translate="no" id="getAxisAndAngle"><span class="type">void</span> QQuaternion::<span class="name">getAxisAndAngle</span>(<span class="type">float</span> *<i>x</i>, <span class="type">float</span> *<i>y</i>, <span class="type">float</span> *<i>z</i>, <span class="type">float</span> *<i>angle</i>) const</h3>
+<p>Extracts a 3D axis (<i translate="no">x</i>, <i translate="no">y</i>, <i translate="no">z</i>) and a rotating angle <i translate="no">angle</i> (in degrees) that corresponds to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#fromAxisAndAngle" translate="no">fromAxisAndAngle</a>().</p>
+<!-- @@@getAxisAndAngle -->
+<!-- $$$getAxisAndAngle$$$getAxisAndAngleQVector3D*float* -->
+<h3 class="fn" translate="no" id="getAxisAndAngle-1"><span class="type">void</span> QQuaternion::<span class="name">getAxisAndAngle</span>(<span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> *<i>axis</i>, <span class="type">float</span> *<i>angle</i>) const</h3>
+<p>This is an overloaded function.</p>
+<p>Extracts a 3D axis <i translate="no">axis</i> and a rotating angle <i translate="no">angle</i> (in degrees) that corresponds to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#fromAxisAndAngle" translate="no">fromAxisAndAngle</a>().</p>
+<!-- @@@getAxisAndAngle -->
+<!-- $$$getEulerAngles[overload1]$$$getEulerAnglesfloat*float*float* -->
+<h3 class="fn" translate="no" id="getEulerAngles"><span class="type">void</span> QQuaternion::<span class="name">getEulerAngles</span>(<span class="type">float</span> *<i>pitch</i>, <span class="type">float</span> *<i>yaw</i>, <span class="type">float</span> *<i>roll</i>) const</h3>
+<p>Calculates <i translate="no">roll</i>, <i translate="no">pitch</i>, and <i translate="no">yaw</i> Euler angles (in degrees) that corresponds to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#fromEulerAngles" translate="no">fromEulerAngles</a>().</p>
+<!-- @@@getEulerAngles -->
+<!-- $$$inverted[overload1]$$$inverted -->
+<h3 class="fn" translate="no" id="inverted"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">inverted</span>() const</h3>
+<p>Returns the inverse of this quaternion. If this quaternion is null, then a null quaternion is returned.</p>
+<p><b>See also </b><a href="qquaternion.html#isNull" translate="no">isNull</a>() and <a href="qquaternion.html#length" translate="no">length</a>().</p>
+<!-- @@@inverted -->
+<!-- $$$isIdentity[overload1]$$$isIdentity -->
+<h3 class="fn" translate="no" id="isIdentity"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QQuaternion::<span class="name">isIdentity</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the x, y, and z components of this quaternion are set to 0.0, and the scalar component is set to 1.0; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isIdentity -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> QQuaternion::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the x, y, z, and scalar components of this quaternion are set to 0.0; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isNull -->
+<!-- $$$length[overload1]$$$length -->
+<h3 class="fn" translate="no" id="length"><span class="type">float</span> QQuaternion::<span class="name">length</span>() const</h3>
+<p>Returns the length of the quaternion. This is also called the &quot;norm&quot;.</p>
+<p><b>See also </b><a href="qquaternion.html#lengthSquared" translate="no">lengthSquared</a>(), <a href="qquaternion.html#normalized" translate="no">normalized</a>(), and <a href="qquaternion.html#dotProduct" translate="no">dotProduct</a>().</p>
+<!-- @@@length -->
+<!-- $$$lengthSquared[overload1]$$$lengthSquared -->
+<h3 class="fn" translate="no" id="lengthSquared"><span class="type">float</span> QQuaternion::<span class="name">lengthSquared</span>() const</h3>
+<p>Returns the squared length of the quaternion.</p>
+<div class="admonition note">
+<p><b>Note: </b>Though cheap to compute, this is susceptible to overflow and underflow that <a href="qquaternion.html#length" translate="no">length</a>() avoids in many cases.</p>
+</div>
+<p><b>See also </b><a href="qquaternion.html#length" translate="no">length</a>() and <a href="qquaternion.html#dotProduct" translate="no">dotProduct</a>().</p>
+<!-- @@@lengthSquared -->
+<!-- $$$nlerp[overload1]$$$nlerpconstQQuaternion&constQQuaternion&float -->
+<h3 class="fn" translate="no" id="nlerp"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">nlerp</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>, <span class="type">float</span> <i>t</i>)</h3>
+<p>Interpolates along the shortest linear path between the rotational positions <i translate="no">q1</i> and <i translate="no">q2</i>. The value <i translate="no">t</i> should be between 0 and 1, indicating the distance to travel between <i translate="no">q1</i> and <i translate="no">q2</i>. The result will be <a href="qquaternion.html#normalized" translate="no">normalized</a>().</p>
+<p>If <i translate="no">t</i> is less than or equal to 0, then <i translate="no">q1</i> will be returned. If <i translate="no">t</i> is greater than or equal to 1, then <i translate="no">q2</i> will be returned.</p>
+<p>The nlerp() function is typically faster than <a href="qquaternion.html#slerp" translate="no">slerp</a>() and will give approximate results to spherical interpolation that are good enough for some applications.</p>
+<p><b>See also </b><a href="qquaternion.html#slerp" translate="no">slerp</a>().</p>
+<!-- @@@nlerp -->
+<!-- $$$normalize[overload1]$$$normalize -->
+<h3 class="fn" translate="no" id="normalize"><span class="type">void</span> QQuaternion::<span class="name">normalize</span>()</h3>
+<p>Normalizes the current quaternion in place. Nothing happens if this is a null quaternion or the length of the quaternion is very close to 1.</p>
+<p><b>See also </b><a href="qquaternion.html#length" translate="no">length</a>() and <a href="qquaternion.html#normalized" translate="no">normalized</a>().</p>
+<!-- @@@normalize -->
+<!-- $$$normalized[overload1]$$$normalized -->
+<h3 class="fn" translate="no" id="normalized"><span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">normalized</span>() const</h3>
+<p>Returns the normalized unit form of this quaternion.</p>
+<p>If this quaternion is null, then a null quaternion is returned. If the length of the quaternion is very close to 1, then the quaternion will be returned as-is. Otherwise the normalized form of the quaternion of length 1 will be returned.</p>
+<p><b>See also </b><a href="qquaternion.html#normalize" translate="no">normalize</a>(), <a href="qquaternion.html#length" translate="no">length</a>(), and <a href="qquaternion.html#dotProduct" translate="no">dotProduct</a>().</p>
+<!-- @@@normalized -->
+<!-- $$$rotatedVector[overload1]$$$rotatedVectorconstQVector3D& -->
+<h3 class="fn" translate="no" id="rotatedVector"><span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> QQuaternion::<span class="name">rotatedVector</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>vector</i>) const</h3>
+<p>Rotates <i translate="no">vector</i> with this quaternion to produce a new vector in 3D space. The following code:</p>
+<pre class="cpp" translate="no">
+ QVector3D result <span class="operator">=</span> q<span class="operator">.</span>rotatedVector(vector);
+</pre>
+<p>is equivalent to the following:</p>
+<pre class="cpp" translate="no">
+ QVector3D result <span class="operator">=</span> (q <span class="operator">*</span> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span>(<span class="number">0</span><span class="operator">,</span> vector) <span class="operator">*</span> q<span class="operator">.</span>conjugated())<span class="operator">.</span>vector();
+</pre>
+<!-- @@@rotatedVector -->
+<!-- $$$rotationTo[overload1]$$$rotationToconstQVector3D&constQVector3D& -->
+<h3 class="fn" translate="no" id="rotationTo"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">rotationTo</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>from</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>to</i>)</h3>
+<p>Returns the shortest arc quaternion to rotate from the direction described by the vector <i translate="no">from</i> to the direction described by the vector <i translate="no">to</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#fromDirection" translate="no">fromDirection</a>().</p>
+<!-- @@@rotationTo -->
+<!-- $$$scalar[overload1]$$$scalar -->
+<h3 class="fn" translate="no" id="scalar"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">float</span> QQuaternion::<span class="name">scalar</span>() const</h3>
+<p>Returns the scalar component of this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#setScalar" translate="no">setScalar</a>(), <a href="qquaternion.html#x" translate="no">x</a>(), <a href="qquaternion.html#y" translate="no">y</a>(), and <a href="qquaternion.html#z" translate="no">z</a>().</p>
+<!-- @@@scalar -->
+<!-- $$$setScalar[overload1]$$$setScalarfloat -->
+<h3 class="fn" translate="no" id="setScalar"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setScalar</span>(<span class="type">float</span> <i>scalar</i>)</h3>
+<p>Sets the scalar component of this quaternion to <i translate="no">scalar</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#scalar" translate="no">scalar</a>(), <a href="qquaternion.html#setX" translate="no">setX</a>(), <a href="qquaternion.html#setY" translate="no">setY</a>(), and <a href="qquaternion.html#setZ" translate="no">setZ</a>().</p>
+<!-- @@@setScalar -->
+<!-- $$$setVector[overload1]$$$setVectorconstQVector3D& -->
+<h3 class="fn" translate="no" id="setVector"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setVector</span>(const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>vector</i>)</h3>
+<p>Sets the vector component of this quaternion to <i translate="no">vector</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#vector" translate="no">vector</a>() and <a href="qquaternion.html#setScalar" translate="no">setScalar</a>().</p>
+<!-- @@@setVector -->
+<!-- $$$setVector$$$setVectorfloatfloatfloat -->
+<h3 class="fn" translate="no" id="setVector-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setVector</span>(<span class="type">float</span> <i>x</i>, <span class="type">float</span> <i>y</i>, <span class="type">float</span> <i>z</i>)</h3>
+<p>Sets the vector component of this quaternion to (<i translate="no">x</i>, <i translate="no">y</i>, <i translate="no">z</i>).</p>
+<p><b>See also </b><a href="qquaternion.html#vector" translate="no">vector</a>() and <a href="qquaternion.html#setScalar" translate="no">setScalar</a>().</p>
+<!-- @@@setVector -->
+<!-- $$$setX[overload1]$$$setXfloat -->
+<h3 class="fn" translate="no" id="setX"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setX</span>(<span class="type">float</span> <i>x</i>)</h3>
+<p>Sets the x coordinate of this quaternion's vector to the given <i translate="no">x</i> coordinate.</p>
+<p><b>See also </b><a href="qquaternion.html#x" translate="no">x</a>(), <a href="qquaternion.html#setY" translate="no">setY</a>(), <a href="qquaternion.html#setZ" translate="no">setZ</a>(), and <a href="qquaternion.html#setScalar" translate="no">setScalar</a>().</p>
+<!-- @@@setX -->
+<!-- $$$setY[overload1]$$$setYfloat -->
+<h3 class="fn" translate="no" id="setY"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setY</span>(<span class="type">float</span> <i>y</i>)</h3>
+<p>Sets the y coordinate of this quaternion's vector to the given <i translate="no">y</i> coordinate.</p>
+<p><b>See also </b><a href="qquaternion.html#y" translate="no">y</a>(), <a href="qquaternion.html#setX" translate="no">setX</a>(), <a href="qquaternion.html#setZ" translate="no">setZ</a>(), and <a href="qquaternion.html#setScalar" translate="no">setScalar</a>().</p>
+<!-- @@@setY -->
+<!-- $$$setZ[overload1]$$$setZfloat -->
+<h3 class="fn" translate="no" id="setZ"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">void</span> QQuaternion::<span class="name">setZ</span>(<span class="type">float</span> <i>z</i>)</h3>
+<p>Sets the z coordinate of this quaternion's vector to the given <i translate="no">z</i> coordinate.</p>
+<p><b>See also </b><a href="qquaternion.html#z" translate="no">z</a>(), <a href="qquaternion.html#setX" translate="no">setX</a>(), <a href="qquaternion.html#setY" translate="no">setY</a>(), and <a href="qquaternion.html#setScalar" translate="no">setScalar</a>().</p>
+<!-- @@@setZ -->
+<!-- $$$slerp[overload1]$$$slerpconstQQuaternion&constQQuaternion&float -->
+<h3 class="fn" translate="no" id="slerp"><code class="details extra" translate="no">[static]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> QQuaternion::<span class="name">slerp</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>, <span class="type">float</span> <i>t</i>)</h3>
+<p>Interpolates along the shortest spherical path between the rotational positions <i translate="no">q1</i> and <i translate="no">q2</i>. The value <i translate="no">t</i> should be between 0 and 1, indicating the spherical distance to travel between <i translate="no">q1</i> and <i translate="no">q2</i>.</p>
+<p>If <i translate="no">t</i> is less than or equal to 0, then <i translate="no">q1</i> will be returned. If <i translate="no">t</i> is greater than or equal to 1, then <i translate="no">q2</i> will be returned.</p>
+<p><b>See also </b><a href="qquaternion.html#nlerp" translate="no">nlerp</a>().</p>
+<!-- @@@slerp -->
+<!-- $$$toEulerAngles[overload1]$$$toEulerAngles -->
+<h3 class="fn" translate="no" id="toEulerAngles"><span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> QQuaternion::<span class="name">toEulerAngles</span>() const</h3>
+<p>This is an overloaded function.</p>
+<p>Calculates roll, pitch, and yaw Euler angles (in degrees) that corresponds to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#fromEulerAngles" translate="no">fromEulerAngles</a>().</p>
+<!-- @@@toEulerAngles -->
+<!-- $$$toRotationMatrix[overload1]$$$toRotationMatrix -->
+<h3 class="fn" translate="no" id="toRotationMatrix"><span class="type"><a href="qgenericmatrix.html#QMatrix3x3-typedef" translate="no">QMatrix3x3</a></span> QQuaternion::<span class="name">toRotationMatrix</span>() const</h3>
+<p>Creates a rotation matrix that corresponds to this quaternion.</p>
+<div class="admonition note">
+<p><b>Note: </b>If this quaternion is not normalized, the resulting rotation matrix will contain scaling information.</p>
+</div>
+<p><b>See also </b><a href="qquaternion.html#fromRotationMatrix" translate="no">fromRotationMatrix</a>() and <a href="qquaternion.html#getAxes" translate="no">getAxes</a>().</p>
+<!-- @@@toRotationMatrix -->
+<!-- $$$toVector4D[overload1]$$$toVector4D -->
+<h3 class="fn" translate="no" id="toVector4D"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qvector4d.html" translate="no">QVector4D</a></span> QQuaternion::<span class="name">toVector4D</span>() const</h3>
+<p>Returns this quaternion as a 4D vector.</p>
+<!-- @@@toVector4D -->
+<!-- $$$vector[overload1]$$$vector -->
+<h3 class="fn" translate="no" id="vector"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> QQuaternion::<span class="name">vector</span>() const</h3>
+<p>Returns the vector component of this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#setVector" translate="no">setVector</a>() and <a href="qquaternion.html#scalar" translate="no">scalar</a>().</p>
+<!-- @@@vector -->
+<!-- $$$x[overload1]$$$x -->
+<h3 class="fn" translate="no" id="x"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">float</span> QQuaternion::<span class="name">x</span>() const</h3>
+<p>Returns the x coordinate of this quaternion's vector.</p>
+<p><b>See also </b><a href="qquaternion.html#setX" translate="no">setX</a>(), <a href="qquaternion.html#y" translate="no">y</a>(), <a href="qquaternion.html#z" translate="no">z</a>(), and <a href="qquaternion.html#scalar" translate="no">scalar</a>().</p>
+<!-- @@@x -->
+<!-- $$$y[overload1]$$$y -->
+<h3 class="fn" translate="no" id="y"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">float</span> QQuaternion::<span class="name">y</span>() const</h3>
+<p>Returns the y coordinate of this quaternion's vector.</p>
+<p><b>See also </b><a href="qquaternion.html#setY" translate="no">setY</a>(), <a href="qquaternion.html#x" translate="no">x</a>(), <a href="qquaternion.html#z" translate="no">z</a>(), and <a href="qquaternion.html#scalar" translate="no">scalar</a>().</p>
+<!-- @@@y -->
+<!-- $$$z[overload1]$$$z -->
+<h3 class="fn" translate="no" id="z"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">float</span> QQuaternion::<span class="name">z</span>() const</h3>
+<p>Returns the z coordinate of this quaternion's vector.</p>
+<p><b>See also </b><a href="qquaternion.html#setZ" translate="no">setZ</a>(), <a href="qquaternion.html#x" translate="no">x</a>(), <a href="qquaternion.html#y" translate="no">y</a>(), and <a href="qquaternion.html#scalar" translate="no">scalar</a>().</p>
+<!-- @@@z -->
+<!-- $$$operator QVariant[overload1]$$$operator QVariant -->
+<h3 class="fn" translate="no" id="operator-QVariant"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QQuaternion::<span class="name">operator QVariant</span>() const</h3>
+<p>Returns the quaternion as a <a href="../qtcore/qvariant.html" translate="no">QVariant</a>.</p>
+<!-- @@@operator QVariant -->
+<!-- $$$operator*=[overload1]$$$operator*=constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-2a-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;QQuaternion::<span class="name">operator*=</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Multiplies this quaternion by <i translate="no">quaternion</i> and returns a reference to this quaternion.</p>
+<!-- @@@operator*= -->
+<!-- $$$operator*=$$$operator*=float -->
+<h3 class="fn" translate="no" id="operator-2a-eq-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;QQuaternion::<span class="name">operator*=</span>(<span class="type">float</span> <i>factor</i>)</h3>
+<p>Multiplies this quaternion's components by the given <i translate="no">factor</i>, and returns a reference to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2f-eq" translate="no">operator/=</a>().</p>
+<!-- @@@operator*= -->
+<!-- $$$operator+=[overload1]$$$operator+=constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-2b-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;QQuaternion::<span class="name">operator+=</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Adds the given <i translate="no">quaternion</i> to this quaternion and returns a reference to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#operator--eq" translate="no">operator-=</a>().</p>
+<!-- @@@operator+= -->
+<!-- $$$operator-=[overload1]$$$operator-=constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator--eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;QQuaternion::<span class="name">operator-=</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Subtracts the given <i translate="no">quaternion</i> from this quaternion and returns a reference to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2b-eq" translate="no">operator+=</a>().</p>
+<!-- @@@operator-= -->
+<!-- $$$operator/=[overload1]$$$operator/=float -->
+<h3 class="fn" translate="no" id="operator-2f-eq"><code class="details extra" translate="no">[constexpr]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;QQuaternion::<span class="name">operator/=</span>(<span class="type">float</span> <i>divisor</i>)</h3>
+<p>Divides this quaternion's components by the given <i translate="no">divisor</i>, and returns a reference to this quaternion.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2a-eq" translate="no">operator*=</a>().</p>
+<!-- @@@operator/= -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$qFuzzyCompare[overload1]$$$qFuzzyCompareconstQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="qFuzzyCompare"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">qFuzzyCompare</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">q1</i> and <i translate="no">q2</i> are equal, allowing for a small fuzziness factor for floating-point comparisons; false otherwise.</p>
+<!-- @@@qFuzzyCompare -->
+<!-- $$$operator!=[overload1]$$$operator!=constQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator!=</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">q1</i> is not equal to <i translate="no">q2</i>; otherwise returns <code translate="no">false</code>. This operator uses an exact floating-point comparison.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator*$$$operator*constQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-2a-3"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator*</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Multiplies <i translate="no">q1</i> and <i translate="no">q2</i> using quaternion multiplication. The result corresponds to applying both of the rotations specified by <i translate="no">q1</i> and <i translate="no">q2</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2a-eq" translate="no">QQuaternion::operator*=</a>().</p>
+<!-- @@@operator* -->
+<!-- $$$operator*$$$operator*constQQuaternion&constQVector3D& -->
+<h3 class="fn" translate="no" id="operator-2a-4"><span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> <span class="name">operator*</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>, const <span class="type"><a href="qvector3d.html" translate="no">QVector3D</a></span> &amp;<i>vec</i>)</h3>
+<p>Rotates a vector <i translate="no">vec</i> with a quaternion <i translate="no">quaternion</i> to produce a new vector in 3D space.</p>
+<!-- @@@operator* -->
+<!-- $$$operator*$$$operator*constQQuaternion&float -->
+<h3 class="fn" translate="no" id="operator-2a-5"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator*</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>, <span class="type">float</span> <i>factor</i>)</h3>
+<p>Returns a copy of the given <i translate="no">quaternion</i>, multiplied by the given <i translate="no">factor</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2a-eq" translate="no">QQuaternion::operator*=</a>().</p>
+<!-- @@@operator* -->
+<!-- $$$operator*$$$operator*floatconstQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-2a-6"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator*</span>(<span class="type">float</span> <i>factor</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Returns a copy of the given <i translate="no">quaternion</i>, multiplied by the given <i translate="no">factor</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2a-eq" translate="no">QQuaternion::operator*=</a>().</p>
+<!-- @@@operator* -->
+<!-- $$$operator+$$$operator+constQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-2b-1"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator+</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns a <a href="qquaternion.html" translate="no">QQuaternion</a> object that is the sum of the given quaternions, <i translate="no">q1</i> and <i translate="no">q2</i>; each component is added separately.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2b-eq" translate="no">QQuaternion::operator+=</a>().</p>
+<!-- @@@operator+ -->
+<!-- $$$operator-$$$operator-constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator--2"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator-</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>This is an overloaded function.</p>
+<p>Returns a <a href="qquaternion.html" translate="no">QQuaternion</a> object that is formed by changing the sign of all three components of the given <i translate="no">quaternion</i>.</p>
+<p>Equivalent to <code translate="no">QQuaternion(0,0,0,0) - quaternion</code>.</p>
+<!-- @@@operator- -->
+<!-- $$$operator-$$$operator-constQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator--3"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator-</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns a <a href="qquaternion.html" translate="no">QQuaternion</a> object that is formed by subtracting <i translate="no">q2</i> from <i translate="no">q1</i>; each component is subtracted separately.</p>
+<p><b>See also </b><a href="qquaternion.html#operator--eq" translate="no">QQuaternion::operator-=</a>().</p>
+<!-- @@@operator- -->
+<!-- $$$operator/$$$operator/constQQuaternion&float -->
+<h3 class="fn" translate="no" id="operator-2f-1"><code class="details extra" translate="no">[constexpr]</code> <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> <span class="name">operator/</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>, <span class="type">float</span> <i>divisor</i>)</h3>
+<p>Returns the <a href="qquaternion.html" translate="no">QQuaternion</a> object formed by dividing all components of the given <i translate="no">quaternion</i> by the given <i translate="no">divisor</i>.</p>
+<p><b>See also </b><a href="qquaternion.html#operator-2f-eq" translate="no">QQuaternion::operator/=</a>().</p>
+<!-- @@@operator/ -->
+<!-- $$$operator<<$$$operator<<QDataStream&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-lt-lt-22"><span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&lt;&lt;</span>(<span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Writes the given <i translate="no">quaternion</i> to the given <i translate="no">stream</i> and returns a reference to the stream.</p>
+<p><b>See also </b><a href="../qtcore/datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator<< -->
+<!-- $$$operator==[overload1]$$$operator==constQQuaternion&constQQuaternion& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><code class="details extra" translate="no">[constexpr noexcept]</code> <span class="type">bool</span> <span class="name">operator==</span>(const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q1</i>, const <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>q2</i>)</h3>
+<p>Returns <code translate="no">true</code> if <i translate="no">q1</i> is equal to <i translate="no">q2</i>; otherwise returns <code translate="no">false</code>. This operator uses an exact floating-point comparison.</p>
+<!-- @@@operator== -->
+<!-- $$$operator>>$$$operator>>QDataStream&QQuaternion& -->
+<h3 class="fn" translate="no" id="operator-gt-gt-19"><span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> &amp;<span class="name">operator&gt;&gt;</span>(<span class="type"><a href="../qtcore/qdatastream.html" translate="no">QDataStream</a></span> &amp;<i>stream</i>, <span class="type"><a href="qquaternion.html#QQuaternion" translate="no">QQuaternion</a></span> &amp;<i>quaternion</i>)</h3>
+<p>Reads a quaternion from the given <i translate="no">stream</i> into the given <i translate="no">quaternion</i> and returns a reference to the stream.</p>
+<p><b>See also </b><a href="../qtcore/datastreamformat.html">Serializing Qt Data Types</a>.</p>
+<!-- @@@operator>> -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

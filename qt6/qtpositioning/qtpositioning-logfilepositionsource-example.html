@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- logfilepositionsource.qdoc -->
+  <meta name="description" content="Logfile Position Source shows how to create and work with a custom position source. It can be useful for simulating GPS data, or when the data is received in some custom format.">
+  <title>Log File Position Source (C++) | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li><a href="qtpositioning-examples.html">Qt Positioning Examples</a></li>
+<li>Log File Position Source (C++)</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#running-the-example">Running the Example</a></li>
+<li class="level1"><a href="#creating-custom-position-source">Creating custom Position Source</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Log File Position Source (C++)</h1>
+<!-- $$$logfilepositionsource-brief -->
+<p>Logfile Position Source shows how to create and work with a custom position source. It can be useful for simulating GPS data, or when the data is received in some custom format.</p>
+<!-- @@@logfilepositionsource -->
+<!-- $$$logfilepositionsource-description -->
+<div class="descr" id="details">
+<h4 id="running-the-example">Running the Example</h4>
+<p>To run the example from Qt Creator, open the <b translate="no">Welcome</b> mode and select the example from <b translate="no">Examples</b>. For more information, see Qt Creator: Tutorial: Build and run.</p>
+<h4 id="creating-custom-position-source">Creating custom Position Source</h4>
+<p>In this example, the data is read from a text file, <i>simplelog.txt</i>. The file specifies position data using a simple text format: it contains one position update per line, where each line contains a date/time, a latitude and a longitude, separated by spaces. The date/time is in ISO 8601 format and the latitude and longitude are in degrees decimal format. Here is an excerpt from <i>simplelog.txt</i>:</p>
+<pre class="cpp" translate="no">
+ <span class="number">2009</span><span class="operator">-</span><span class="number">08</span><span class="operator">-</span><span class="number">24T22</span>:<span class="number">25</span>:<span class="number">01</span> <span class="operator">-</span><span class="number">27.576082</span> <span class="number">153.092415</span>
+ <span class="number">2009</span><span class="operator">-</span><span class="number">08</span><span class="operator">-</span><span class="number">24T22</span>:<span class="number">25</span>:<span class="number">02</span> <span class="operator">-</span><span class="number">27.576223</span> <span class="number">153.092530</span>
+ <span class="number">2009</span><span class="operator">-</span><span class="number">08</span><span class="operator">-</span><span class="number">24T22</span>:<span class="number">25</span>:<span class="number">03</span> <span class="operator">-</span><span class="number">27.576364</span> <span class="number">153.092648</span>
+</pre>
+<p>We create a custom <code translate="no">LogFilePositionSource</code> class, which derives from <a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a>. It reads position data from the file and distributes it via the <a href="qgeopositioninfosource.html#positionUpdated" translate="no">positionUpdated</a>() signal.</p>
+<p>The resulting time and position information is then displayed on the screen as simple text in date/time and latitude/longitude format.</p>
+<p>Here is the definition of the <code translate="no">LogFilePositionSource</code> class:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> LogFilePositionSource : <span class="keyword">public</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span>
+ {
+     Q_OBJECT
+ <span class="keyword">public</span>:
+     LogFilePositionSource(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent <span class="operator">=</span> <span class="number">0</span>);
+
+     <span class="type"><a href="qgeopositioninfo.html" translate="no">QGeoPositionInfo</a></span> lastKnownPosition(<span class="type">bool</span> satelliteMethodsOnly <span class="operator">=</span> <span class="keyword">false</span>) <span class="keyword">const</span> override;
+
+     PositioningMethods supportedPositioningMethods() <span class="keyword">const</span> override;
+     <span class="type">int</span> minimumUpdateInterval() <span class="keyword">const</span> override;
+     Error error() <span class="keyword">const</span> override;
+
+ <span class="keyword">public</span> <span class="keyword">slots</span>:
+     <span class="keyword">virtual</span> <span class="type">void</span> startUpdates() override;
+     <span class="keyword">virtual</span> <span class="type">void</span> stopUpdates() override;
+
+     <span class="keyword">virtual</span> <span class="type">void</span> requestUpdate(<span class="type">int</span> timeout <span class="operator">=</span> <span class="number">5000</span>) override;
+
+ <span class="keyword">private</span> <span class="keyword">slots</span>:
+     <span class="type">void</span> readNextPosition();
+
+ <span class="keyword">private</span>:
+     <span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span> <span class="operator">*</span>logFile;
+     <span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span> <span class="operator">*</span>timer;
+     <span class="type"><a href="qgeopositioninfo.html" translate="no">QGeoPositionInfo</a></span> lastPosition;
+     Error lastError <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>NoError;
+ };
+</pre>
+<p>The main methods overrided by the subclass are:</p>
+<ul>
+<li><a href="qgeopositioninfosource.html#startUpdates" translate="no">startUpdates</a>(): called by client applications to start regular position updates.</li>
+<li><a href="qgeopositioninfosource.html#stopUpdates" translate="no">stopUpdates</a>(): called by client applications to stop regular position updates.</li>
+<li><a href="qgeopositioninfosource.html#requestUpdate" translate="no">requestUpdate</a>(): called by client applications to request a single update, with a specified timeout.</li>
+</ul>
+<p>When a position update is available, the subclass emits the <a href="qgeopositioninfosource.html#positionUpdated" translate="no">positionUpdated</a>() signal.</p>
+<p>Here are the key methods in the class implementation:</p>
+<pre class="cpp" translate="no">
+ LogFilePositionSource<span class="operator">::</span>LogFilePositionSource(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span>(parent)<span class="operator">,</span>
+       logFile(<span class="keyword">new</span> <span class="type"><a href="../qtcore/qfile.html" translate="no">QFile</a></span>(<span class="keyword">this</span>))<span class="operator">,</span>
+       timer(<span class="keyword">new</span> <span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span>(<span class="keyword">this</span>))
+ {
+     connect(timer<span class="operator">,</span> <span class="operator">&amp;</span><span class="type"><a href="../qtcore/qtimer.html" translate="no">QTimer</a></span><span class="operator">::</span>timeout<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>LogFilePositionSource<span class="operator">::</span>readNextPosition);
+
+     logFile<span class="operator">-</span><span class="operator">&gt;</span>setFileName(<span class="string">&quot;:/simplelog.txt&quot;</span>);
+     <span class="keyword">if</span> (<span class="operator">!</span>logFile<span class="operator">-</span><span class="operator">&gt;</span>open(<span class="type"><a href="../qtcore/qiodevice.html" translate="no">QIODevice</a></span><span class="operator">::</span>ReadOnly))
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Error: cannot open source file&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> logFile<span class="operator">-</span><span class="operator">&gt;</span>fileName();
+ }
+
+ <span class="type">void</span> LogFilePositionSource<span class="operator">::</span>startUpdates()
+ {
+     lastError <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>NoError;
+     <span class="type">int</span> interval <span class="operator">=</span> updateInterval();
+     <span class="keyword">if</span> (interval <span class="operator">&lt;</span> minimumUpdateInterval())
+         interval <span class="operator">=</span> minimumUpdateInterval();
+
+     timer<span class="operator">-</span><span class="operator">&gt;</span>start(interval);
+ }
+
+ <span class="type">void</span> LogFilePositionSource<span class="operator">::</span>stopUpdates()
+ {
+     timer<span class="operator">-</span><span class="operator">&gt;</span>stop();
+ }
+
+ <span class="type">void</span> LogFilePositionSource<span class="operator">::</span>requestUpdate(<span class="type">int</span> <span class="comment">/*timeout*/</span>)
+ {
+     <span class="comment">// For simplicity, ignore timeout - assume that if data is not available</span>
+     <span class="comment">// now, no data will be added to the file later</span>
+     lastError <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>NoError;
+     <span class="keyword">if</span> (logFile<span class="operator">-</span><span class="operator">&gt;</span>canReadLine()) {
+         readNextPosition();
+     } <span class="keyword">else</span> {
+         lastError <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>UpdateTimeoutError;
+         <span class="keyword">emit</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>errorOccurred(lastError);
+     }
+ }
+
+ <span class="type">void</span> LogFilePositionSource<span class="operator">::</span>readNextPosition()
+ {
+     <span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span> line <span class="operator">=</span> logFile<span class="operator">-</span><span class="operator">&gt;</span>readLine()<span class="operator">.</span>trimmed();
+     <span class="keyword">if</span> (<span class="operator">!</span>line<span class="operator">.</span>isEmpty()) {
+         <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="../qtcore/qbytearray.html" translate="no">QByteArray</a></span><span class="operator">&gt;</span> data <span class="operator">=</span> line<span class="operator">.</span>split(<span class="char">' '</span>);
+         <span class="type">double</span> latitude;
+         <span class="type">double</span> longitude;
+         <span class="type">bool</span> hasLatitude <span class="operator">=</span> <span class="keyword">false</span>;
+         <span class="type">bool</span> hasLongitude <span class="operator">=</span> <span class="keyword">false</span>;
+         <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span> timestamp <span class="operator">=</span> <span class="type"><a href="../qtcore/qdatetime.html" translate="no">QDateTime</a></span><span class="operator">::</span>fromString(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>(data<span class="operator">.</span>value(<span class="number">0</span>))<span class="operator">,</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>ISODate);
+         latitude <span class="operator">=</span> data<span class="operator">.</span>value(<span class="number">1</span>)<span class="operator">.</span>toDouble(<span class="operator">&amp;</span>hasLatitude);
+         longitude <span class="operator">=</span> data<span class="operator">.</span>value(<span class="number">2</span>)<span class="operator">.</span>toDouble(<span class="operator">&amp;</span>hasLongitude);
+
+         <span class="keyword">if</span> (hasLatitude <span class="operator">&amp;</span><span class="operator">&amp;</span> hasLongitude <span class="operator">&amp;</span><span class="operator">&amp;</span> timestamp<span class="operator">.</span>isValid()) {
+             <span class="type"><a href="qgeocoordinate.html" translate="no">QGeoCoordinate</a></span> coordinate(latitude<span class="operator">,</span> longitude);
+             <span class="type"><a href="qgeopositioninfo.html" translate="no">QGeoPositionInfo</a></span> info(coordinate<span class="operator">,</span> timestamp);
+             <span class="keyword">if</span> (info<span class="operator">.</span>isValid()) {
+                 lastPosition <span class="operator">=</span> info;
+                 <span class="keyword">emit</span> positionUpdated(info);
+             }
+         }
+     }
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtpositioning.git/tree/examples/positioning/logfilepositionsource?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@logfilepositionsource -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

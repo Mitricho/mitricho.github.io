@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquick3druntimeloader.cpp -->
+  <meta name="description" content="Imports a 3D asset at runtime.">
+  <title>RuntimeLoader QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-assetutils-qmlmodule.html" translate="no">QtQuick3D.AssetUtils</a></li>
+<li>RuntimeLoader</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">RuntimeLoader QML Type</h1>
+<!-- $$$RuntimeLoader-brief -->
+<p>Imports a 3D asset at runtime. <a href="#details">More...</a></p>
+<!-- @@@RuntimeLoader -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.AssetUtils</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.2</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-assetutils-runtimeloader-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-assetutils-runtimeloader.html#bounds-prop" translate="no">bounds</a></b> : Bounds</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-assetutils-runtimeloader.html#errorString-prop" translate="no">errorString</a></b> : string</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-assetutils-runtimeloader.html#instancing-prop" translate="no">instancing</a></b> : Instancing</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-assetutils-runtimeloader.html#source-prop" translate="no">source</a></b> : url</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-assetutils-runtimeloader.html#status-prop" translate="no">status</a></b> : enumeration</li>
+</ul>
+<!-- $$$RuntimeLoader-description -->
+<h2 id="details">Detailed Description</h2>
+<p>The RuntimeLoader type provides a way to load a 3D asset directly from source at runtime, without converting it to <a href="qtquick3d-qmlmodule.html" translate="no">QtQuick3D</a>'s internal format first.</p>
+<p>RuntimeLoader supports .obj and glTF version 2.0 files in both in text (.gltf) and binary (.glb) formats.</p>
+<!-- @@@RuntimeLoader -->
+<h2>Property Documentation</h2>
+<!-- $$$bounds -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="bounds-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">bounds</span> : <span class="type">Bounds</span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property describes the extents of the bounding volume around the imported model.</p>
+<div class="admonition note">
+<p><b>Note: </b>The value may not be available before the first render</p>
+</div>
+</div></div><!-- @@@bounds -->
+<br/>
+<!-- $$$errorString -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="errorString-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">errorString</span> : <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds a human-readable string indicating the status of the latest load operation.</p>
+</div></div><!-- @@@errorString -->
+<br/>
+<!-- $$$instancing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="instancing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">instancing</span> : <span class="type"><a href="qml-qtquick3d-instancing.html" translate="no">Instancing</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>If this property is set, the imported model will not be rendered normally. Instead, a number of instances will be rendered, as defined by the instance table.</p>
+<p>See the <a href="quick3d-instancing.html">Instanced Rendering</a> overview documentation for more information.</p>
+</div></div><!-- @@@instancing -->
+<br/>
+<!-- $$$source -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="source-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">source</span> : <span class="type"><a href="../qtqml/qml-url.html" translate="no">url</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the location of the source file containing the 3D asset. Changing this property will unload the current asset and attempt to load an asset from the given URL.</p>
+<p>The success or failure of the load operation is indicated by <a href="qml-qtquick3d-assetutils-runtimeloader.html#status-prop" translate="no">status</a>.</p>
+</div></div><!-- @@@source -->
+<br/>
+<!-- $$$status -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="status-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">status</span> : <span class="type">enumeration</span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the status of the latest load operation.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">RuntimeLoader.Empty</code></td><td class="topAlign">No URL was specified.</td></tr>
+<tr><td class="topAlign"><code translate="no">RuntimeLoader.Success</code></td><td class="topAlign">The load operation was successful.</td></tr>
+<tr><td class="topAlign"><code translate="no">RuntimeLoader.Error</code></td><td class="topAlign">The load operation failed. A human-readable error message is provided by <a href="qml-qtquick3d-assetutils-runtimeloader.html#errorString-prop" translate="no">errorString</a>.</td></tr>
+</table></div>
+</div></div><!-- @@@status -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

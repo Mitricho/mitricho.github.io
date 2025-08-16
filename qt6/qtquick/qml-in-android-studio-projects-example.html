@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick_for_android_studio_projects.qdoc -->
+  <meta name="description" content="Uses a QtQuickView to embed Qt Quick content in Android projects.">
+  <title>Qt Quick for Android Studio Projects | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li><a href="qtquick-for-android.html">Qt Quick for Android</a></li>
+<li>Qt Quick for Android Studio Projects</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="qtquick-android-classes.html" />
+  <link rel="next" href="qtabstractitemmodel-in-android-studio-projects-example.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="qtquick-android-classes.html">Qt Quick Android Classes</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtabstractitemmodel-in-android-studio-projects-example.html">Using QtAbstractItemModel in Android Studio Projects</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#interacting-with-the-qml-components">Interacting with the QML components</a></li>
+<li class="level1"><a href="#getting-and-setting-qml-component-property-values">Getting and setting QML component property values</a></li>
+<li class="level1"><a href="#signal-listeners">Signal listeners</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick for Android Studio Projects</h1>
+<!-- $$$qml-in-android-studio-projects-example.html-description -->
+<div class="descr" id="details">
+<h2 id="overview">Overview</h2>
+<p>This example contains a QML project that you can import into Android Studio with the Qt Tools for Android Studio plugin and Java and Kotlin projects that use the QML project as a View by utilizing the <a href="qtquickview-android-class.html">QtQuickView</a> API.</p>
+<p>For more information on how QML works, see the <a href="../qtqml/qtqml-index.html">Qt Qml</a>. This documentation will focus on how a QML component is embedded into Java- and Kotlin-based Android applications.</p>
+<p class="centerAlign"><img src="images/portrait_java.png" alt="" /></p><p>First, we look at the <code translate="no">MainActivity</code>'s onCreate() method of the Java and Kotlin projects.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+     setContentView(R.layout.activity_main);
+
+     m_qmlViewBackgroundText = findViewById(R.id.qmlViewBackgroundText);
+     m_qmlStatus = findViewById(R.id.qmlStatusText);
+     m_androidControlsLayout = findViewById(R.id.javaRelative);
+     m_colorBox = findViewById(R.id.qmlColorBox);
+     m_switch = findViewById(R.id.disconnectQmlListenerSwitch);
+     m_switch.setOnClickListener(view -&gt; switchListener());
+     QtQuickView m_firstQuickView = new QtQuickView(this);
+     QtQuickView m_secondQuickView = new QtQuickView(this);
+
+     // Set status change listener for m_qmlView
+     // listener implemented below in OnStatusChanged
+     m_firstQmlContent.setStatusChangeListener(this);
+     m_secondQmlContent.setStatusChangeListener(this);
+     final ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(
+             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+     FrameLayout m_firstQmlFrameLayout = findViewById(R.id.firstQmlFrame);
+     m_firstQmlFrameLayout.addView(m_firstQuickView, params);
+     FrameLayout m_secondQmlFrameLayout = findViewById(R.id.secondQmlFrame);
+     m_secondQmlFrameLayout.addView(m_secondQuickView, params);
+     m_firstQuickView.loadContent(m_firstQmlContent);
+     m_secondQuickView.loadContent(m_secondQmlContent);
+
+     Button m_changeColorButton = findViewById(R.id.changeQmlColorButton);
+     m_changeColorButton.setOnClickListener(view -&gt; onClickListener());
+     Button m_rotateQmlGridButton = findViewById(R.id.rotateQmlGridButton);
+     m_rotateQmlGridButton.setOnClickListener(view -&gt; rotateQmlGrid());
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ override fun onCreate(savedInstanceState: Bundle?) {
+     super.onCreate(savedInstanceState)
+     m_binding = ActivityMainBinding.inflate(layoutInflater)
+     val view = m_binding.root
+     setContentView(view)
+
+     m_binding.disconnectQmlListenerSwitch.setOnCheckedChangeListener { button, checked -&gt;
+         switchListener(
+             button,
+             checked
+         )
+     }
+
+     val firstQtQuickView = QtQuickView(this)
+     val secondQtQuickView = QtQuickView(this)
+
+     // Set status change listener for m_qmlView
+     // listener implemented below in OnStatusChanged
+     m_firstQmlContent.setStatusChangeListener(this)
+     m_secondQmlContent.setStatusChangeListener(this)
+
+     val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
+         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+     )
+     m_binding.firstQmlFrame.addView(firstQtQuickView, params)
+     m_binding.secondQmlFrame.addView(secondQtQuickView, params)
+     firstQtQuickView.loadContent(m_firstQmlContent)
+     secondQtQuickView.loadContent(m_secondQmlContent)
+
+     m_binding.changeQmlColorButton.setOnClickListener { onClickListener() }
+     m_binding.rotateQmlGridButton.setOnClickListener { rotateQmlGrid() }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>in the Kotlin project we use <a href="https://developer.android.com/topic/libraries/view-binding">View binding</a> to access the UI components of the application:</p>
+</div>
+<pre class="cpp" translate="no">
+ m_binding = ActivityMainBinding.inflate(layoutInflater)
+ val view = m_binding.root
+ setContentView(view)
+</pre>
+<p>Inside the <code translate="no">onCreate()</code> method, previously declared variables are initialized with new <a href="qtquickview-android-class.html">QtQuickViews</a>. These new instances of <a href="qtquickview-android-class.html">QtQuickView</a> are created by giving them the Context of the Java/Kotlin Activity as arguments.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ QtQuickView m_firstQuickView = new QtQuickView(this);
+ QtQuickView m_secondQuickView = new QtQuickView(this);
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ val firstQtQuickView = QtQuickView(this)
+ val secondQtQuickView = QtQuickView(this)
+</pre>
+<p>The QtQuickViews are added to the Android layout with appropriate layout parameters.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ final ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(
+         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+ FrameLayout m_firstQmlFrameLayout = findViewById(R.id.firstQmlFrame);
+ m_firstQmlFrameLayout.addView(m_firstQuickView, params);
+ FrameLayout m_secondQmlFrameLayout = findViewById(R.id.secondQmlFrame);
+ m_secondQmlFrameLayout.addView(m_secondQuickView, params);
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ val params: ViewGroup.LayoutParams = FrameLayout.LayoutParams(
+     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+ )
+ m_binding.firstQmlFrame.addView(firstQtQuickView, params)
+ m_binding.secondQmlFrame.addView(secondQtQuickView, params)
+</pre>
+<p>The <code translate="no">Main</code> and <code translate="no">Second</code> Java classes inherit from the <code translate="no">QtQuickViewContent</code> class. These classes are generated from the QML project that we've imported.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ private final Main m_firstQmlContent = new Main();
+ private final Second m_secondQmlContent = new Second();
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ private val m_firstQmlContent: Main = Main()
+ private val m_secondQmlContent: Second = Second()
+</pre>
+<p>The Qt Quick content is loaded through the <code translate="no">QtQuickView.loadContent()</code> method, which takes a <code translate="no">QtQuickViewContent</code> as an argument.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ m_firstQuickView.loadContent(m_firstQmlContent);
+ m_secondQuickView.loadContent(m_secondQmlContent);
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ firstQtQuickView.loadContent(m_firstQmlContent)
+ secondQtQuickView.loadContent(m_secondQmlContent)
+</pre>
+<h2 id="interacting-with-the-qml-components">Interacting with the QML components</h2>
+<p>To interact with the embedded QML components we implement the <code translate="no">QtQmlStatusChangeListener</code> interface and override the onStatusChanged method to get the loading status of the QtQuickViewContent currently being loaded into the QtQuickViews.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">public</span> <span class="keyword">class</span> MainActivity extends AppCompatActivity implements
+ <span class="type">QtQmlStatusChangeListener</span> {
+     <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> MainActivity : AppCompatActivity()<span class="operator">,</span> <span class="type">QtQmlStatusChangeListener</span> {
+     <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ }
+</pre>
+<p>The <code translate="no">onStatusChanged</code> implementation:</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ @Override
+ public void onStatusChanged(QtQmlStatus qtQmlStatus, QtQuickViewContent content) {
+     Log.i(TAG, &quot;Status of QtQuickView: &quot; + qtQmlStatus);
+
+     // Show current QML View status in a textview
+     m_qmlStatus.setText(getString(R.string.qml_view_status, m_statusNames.get(qtQmlStatus)));
+     updateColorDisplay();
+
+     if (content == m_firstQmlContent) {
+         // Connect signal listener to &quot;onClicked&quot; signal from main.qml
+         // addSignalListener returns int which can be used later to identify the listener
+         if (qtQmlStatus == QtQmlStatus.READY &amp;&amp; m_switch.isChecked()) {
+             m_qmlButtonSignalListenerId = m_firstQmlContent.connectOnClickedListener(
+                     (String name, Void v) -&gt; {
+                         Log.i(TAG, &quot;QML button clicked&quot;);
+                         m_androidControlsLayout.setBackgroundColor(Color.parseColor(
+                                 m_colors.getColor()
+                         ));
+                     });
+         }
+     }
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ override fun onStatusChanged(status: QtQmlStatus?, content: QtQuickViewContent?) {
+     Log.v(TAG, &quot;Status of QtQuickView: $status&quot;)
+
+     // Show current QML View status in a textview
+     m_binding.qmlStatusText.text = getString(R.string.qml_view_status, m_statusNames[status])
+
+     updateColorDisplay()
+
+     if (content == m_firstQmlContent) {
+         // Connect signal listener to &quot;onClicked&quot; signal from main.qml
+         // addSignalListener returns int which can be used later to identify the listener
+         if (status == QtQmlStatus.READY &amp;&amp; m_binding.disconnectQmlListenerSwitch.isChecked) {
+             m_qmlButtonSignalListenerId =
+                 m_firstQmlContent.connectOnClickedListener { _: String, _: Void? -&gt;
+                     Log.i(TAG, &quot;QML button clicked&quot;)
+                     m_binding.kotlinRelative.setBackgroundColor(
+                         Color.parseColor(
+                             m_colors.getColor()
+                         )
+                     )
+                 }
+         }
+     }
+ }
+</pre>
+<p>The <code translate="no">MainActivity</code> is set as the <code translate="no">statusChangeListener</code> of the <code translate="no">m_mainQmlContent</code> and <code translate="no">m_secondQmlContent</code> with the <code translate="no">QtQuickViewContent.setStatusChangeListener</code> method.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ m_firstQmlContent.setStatusChangeListener(this);
+ m_secondQmlContent.setStatusChangeListener(this);
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ m_firstQmlContent.setStatusChangeListener(this)
+ m_secondQmlContent.setStatusChangeListener(this)
+</pre>
+<p>The overridden callback function <code translate="no">onStatusChanged()</code> receives <code translate="no">StatusChanged()</code> signal containing the current status (public Enum QtQmlStatus) of the loading of the current <code translate="no">QtQuickViewContent</code> into the <a href="qtquickview-android-class.html#qtquickview">QtQuickView</a>. If this <code translate="no">QtQmlStatus</code> is confirmed to be <code translate="no">QtQmlStatus.READY</code>, we can start interacting with the QML view.</p>
+<h2 id="getting-and-setting-qml-component-property-values">Getting and setting QML component property values</h2>
+<p>Getting and setting QML component property values happens through the methods described in the <code translate="no">Main.java</code> class. In this case we use the <code translate="no">m_mainQmlContent.setColorStringProperty()</code> and <code translate="no">m_mainQmlContent.getColorStringProperty()</code> methods. These methods are generated according to what properties the QML component includes.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ public void onClickListener() {
+     // Set the QML view root object property &quot;colorStringFormat&quot; value to
+     // color from Colors.getColor()
+     m_firstQmlContent.setColorStringFormat(m_colors.getColor());
+     updateColorDisplay();
+ }
+ private void updateColorDisplay() {
+     String qmlBackgroundColor = m_firstQmlContent.getColorStringFormat();
+     // Display the QML View background color code
+     m_qmlViewBackgroundText.setText(qmlBackgroundColor);
+
+     // Display the QML View background color in a view
+     // if qmlBackGroundColor is not null
+     if (qmlBackgroundColor != null) {
+         m_colorBox.setBackgroundColor(Color.parseColor(qmlBackgroundColor));
+     }
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ private fun onClickListener() {
+     // Set the QML view root object property &quot;colorStringFormat&quot; value to
+     // color from Colors.getColor()
+     m_firstQmlContent.colorStringFormat = m_colors.getColor()
+     updateColorDisplay()
+ }
+
+ private fun updateColorDisplay() {
+     val qmlBackgroundColor = m_firstQmlContent.colorStringFormat
+     // Display the QML View background color code
+     m_binding.qmlViewBackgroundText.text = qmlBackgroundColor
+     // Display the QML View background color in a view
+     // if qmlBackgroundColor is not null
+     if (qmlBackgroundColor != null) {
+         m_binding.qmlColorBox.setBackgroundColor(Color.parseColor(qmlBackgroundColor))
+     }
+ }
+</pre>
+<p>With the <code translate="no">m_mainQmlContent.setColorStringProperty()</code> method we set the <code translate="no">colorStringFormat</code> property value of the <code translate="no">m_mainQmlContent</code> a random color value that is fetched from the <code translate="no">Colors.java</code> (or <code translate="no">Colors.kt</code>) class.</p>
+<p>The <code translate="no">m_mainQmlContent.getColorStringProperty()</code> method is used here to fetch the current background color of the root object of the m_mainQmlContent and then show it to the user on the Java/Kotlin Android side of the application.</p>
+<p><code translate="no">m_secondQmlContent</code> has a <a href="qml-qtquick-grid.html" translate="no">Grid</a> QML component which we can rotate from the Java side with the generated <code translate="no">m_secondQmlContent.setGridRotation()</code> method.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ private void rotateQmlGrid() {
+     Integer previousGridRotation = m_secondQmlContent.getGridRotation();
+     if (previousGridRotation != null) {
+         m_secondQmlContent.setGridRotation(previousGridRotation + 45);
+     }
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ private fun rotateQmlGrid() {
+     val previousGridRotation = m_secondQmlContent.gridRotation
+     if (previousGridRotation != null) {
+         m_secondQmlContent.gridRotation = previousGridRotation + 45
+     }
+ }
+</pre>
+<h2 id="signal-listeners">Signal listeners</h2>
+<p>The <code translate="no">QtQuickViewContent</code> class offers a <code translate="no">connectSignalListener()</code> and <code translate="no">disconnectSignalListener()</code> methods which are used to connect and disconnect signal listener between signals that are declared in the QML component root object. The <code translate="no">QtQuickViewContent.connectSignalListener()</code> returns a unique signal listener id which we store and use later to identify and disconnect the listener.</p>
+<p>Here we connect a signal listener to the <code translate="no">onClicked()</code> signal of the QML component.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ if (qtQmlStatus == QtQmlStatus.READY &amp;&amp; m_switch.isChecked()) {
+     m_qmlButtonSignalListenerId = m_firstQmlContent.connectOnClickedListener(
+             (String name, Void v) -&gt; {
+                 Log.i(TAG, &quot;QML button clicked&quot;);
+                 m_androidControlsLayout.setBackgroundColor(Color.parseColor(
+                         m_colors.getColor()
+                 ));
+             });
+ }
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ if (status == QtQmlStatus.READY &amp;&amp; m_binding.disconnectQmlListenerSwitch.isChecked) {
+     m_qmlButtonSignalListenerId =
+         m_firstQmlContent.connectOnClickedListener { _: String, _: Void? -&gt;
+             Log.i(TAG, &quot;QML button clicked&quot;)
+             m_binding.kotlinRelative.setBackgroundColor(
+                 Color.parseColor(
+                     m_colors.getColor()
+                 )
+             )
+         }
+ }
+</pre>
+<p>The <code translate="no">onClicked()</code> signal is emitted every time the button on the QML component is clicked. That signal is then received by this listener and the background color of the layout holding the Android side of the application is set to a random color value fetched from the <code translate="no">Colors.java</code> class.</p>
+<p>Next, the signal listener is disconnected using the <code translate="no">QtQuickViewContent.disconnectSignalListener()</code> method by giving it the unique signal listener id.</p>
+<p>For a Java-based project:</p>
+<pre class="cpp" translate="no">
+ m_firstQmlContent.disconnectSignalListener(m_qmlButtonSignalListenerId);
+</pre>
+<p>For a Kotlin-based project:</p>
+<pre class="cpp" translate="no">
+ m_firstQmlContent.disconnectSignalListener(m_qmlButtonSignalListenerId)
+</pre>
+</div>
+<!-- @@@qml-in-android-studio-projects-example.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="qtquick-android-classes.html">Qt Quick Android Classes</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtabstractitemmodel-in-android-studio-projects-example.html">Using QtAbstractItemModel in Android Studio Projects</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

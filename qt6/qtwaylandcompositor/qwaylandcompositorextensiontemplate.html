@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qwaylandcompositorextension.cpp -->
+  <meta name="description" content="QWaylandCompositorExtensionTemplate is a convenience class for subclassing QWaylandCompositorExtension.">
+  <title>QWaylandCompositorExtensionTemplate Class | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-module.html" translate="no">C++ Classes</a></li>
+<li>QWaylandCompositorExtensionTemplate</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#static-public-members">Static Public Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QWaylandCompositorExtensionTemplate Class</h1>
+<span class="small-subtitle" translate="no">template &lt;typename T&gt; class QWaylandCompositorExtensionTemplate</span>
+<!-- $$$QWaylandCompositorExtensionTemplate-brief -->
+<p>QWaylandCompositorExtensionTemplate is a convenience class for subclassing <a href="qwaylandcompositorextension.html" translate="no">QWaylandCompositorExtension</a>. <a href="#details">More...</a></p>
+<!-- @@@QWaylandCompositorExtensionTemplate -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QWaylandCompositorExtensionTemplate&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS WaylandCompositor)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::WaylandCompositor)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += waylandcompositor</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="qwaylandcompositorextension.html" translate="no">QWaylandCompositorExtension</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qwaylandidleinhibitmanagerv1.html" translate="no">QWaylandIdleInhibitManagerV1</a>, <a href="qwaylandiviapplication.html" translate="no">QWaylandIviApplication</a>, <a href="qwaylandpresentationtime.html" translate="no">QWaylandPresentationTime</a>, <a href="qwaylandqttextinputmethodmanager.html" translate="no">QWaylandQtTextInputMethodManager</a>, <a href="qwaylandtextinputmanager.html" translate="no">QWaylandTextInputManager</a>, <a href="qwaylandviewporter.html" translate="no">QWaylandViewporter</a>, <a href="qwaylandxdgdecorationmanagerv1.html" translate="no">QWaylandXdgDecorationManagerV1</a>, and <a href="qwaylandxdgoutputmanagerv1.html" translate="no">QWaylandXdgOutputManagerV1</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qwaylandcompositorextensiontemplate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="static-public-members">Static Public Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> T *</td><td class="memItemRight bottomAlign"><b><a href="qwaylandcompositorextensiontemplate.html#findIn" translate="no">findIn</a></b>(QWaylandObject *<i>container</i>)</td></tr>
+</table></div>
+<!-- $$$QWaylandCompositorExtensionTemplate-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QWaylandCompositorExtensionTemplate is a template class which inherits <a href="qwaylandcompositorextension.html" translate="no">QWaylandCompositorExtension</a> and is convenience for building custom Wayland extensions with Qt.</p>
+<p>It provides the connection between Qt Wayland Compositor and the class generated by <code translate="no">qtwaylandscanner</code>, based on the XML description of the extension protocol.</p>
+<p>It provides two specific pieces of convenience:</p>
+<ul>
+<li>A reimplementation of <a href="qwaylandcompositorextension.html#extensionInterface" translate="no">QWaylandCompositorExtension::extensionInterface</a>() which returns the <code translate="no">wl_interface</code> pointer for the qtwaylandscanner-generated base class.</li>
+<li>A static <a href="qwaylandcompositorextensiontemplate.html#findIn" translate="no">findIn</a>() function which searches for an instance of the extension in a provided container, and returns this if it is found.</li>
+</ul>
+<p>Typically, a new extension will dual-inherit QWaylandCompositorExtensionTemplate and the class generated by <code translate="no">qtwaylandscanner</code>.</p>
+<p>QWaylandCompositorExtensionTemplate should be parameterized with the subclass itself:</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> MyExtension
+     : <span class="keyword">public</span> <span class="type">QWaylandCompositorExtensionTemplate</span><span class="operator">&lt;</span>MyExtension<span class="operator">&gt;</span>
+     <span class="operator">,</span> <span class="type">QtWaylandServer</span><span class="operator">::</span>my_extension
+</pre>
+<p>In this example, <code translate="no">MyExtension</code> is an implementation of the generated interface <code translate="no">my_extension</code>.</p>
+</div>
+<p><b>See also </b><a href="qtwaylandcompositor-custom-shell-example.html">Custom Shell</a>.</p>
+<!-- @@@QWaylandCompositorExtensionTemplate -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$findIn[overload1]$$$findInQWaylandObject* -->
+<h3 class="fn" translate="no" id="findIn"><code class="details extra" translate="no">[static]</code> <span class="type">T</span> *QWaylandCompositorExtensionTemplate::<span class="name">findIn</span>(<span class="type"><a href="qwaylandobject.html#QWaylandObject" translate="no">QWaylandObject</a></span> *<i>container</i>)</h3>
+<p>If any instance of the interface has been registered with <i translate="no">container</i>, this is returned. Otherwise null is returned. The look-up is based on the generated <code translate="no">interfaceName()</code> which matches the interface name in the protocol description.</p>
+<!-- @@@findIn -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- pointerhandlers.qdoc -->
+  <meta name="description" content="Shows how to use Qt Quick Input Handlers in interactive components.">
+  <title>Qt Quick Examples - Pointer Handlers | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Qt Quick Examples - Pointer Handlers</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#taphandler">TapHandler</a></li>
+<li class="level2"><a href="#multi-tap-buttons">Multi-tap Buttons</a></li>
+<li class="level2"><a href="#pie-menu">Pie Menu</a></li>
+<li class="level1"><a href="#pointhandler">PointHandler</a></li>
+<li class="level1"><a href="#hoverhandler">HoverHandler</a></li>
+<li class="level1"><a href="#draghandler">DragHandler</a></li>
+<li class="level1"><a href="#pinchhandler">PinchHandler</a></li>
+<li class="level1"><a href="#interoperability">Interoperability</a></li>
+<li class="level2"><a href="#sliders">Sliders</a></li>
+<li class="level2"><a href="#map">Map</a></li>
+<li class="level2"><a href="#fake-flickable">Fake Flickable</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick Examples - Pointer Handlers</h1>
+<!-- $$$pointerhandlers-brief -->
+<p>Shows how to use <a href="qtquickhandlers-index.html">Qt Quick Input Handlers</a> in interactive components.</p>
+<!-- @@@pointerhandlers -->
+<!-- $$$pointerhandlers-description -->
+<div class="descr" id="details">
+<p><a href="../qtquickcontrols/qtquickcontrols-index.html">Qt Quick Controls</a> contains pre-built components that are sufficient for many kinds of user interfaces; but you may sometimes find a need to write such components &quot;from scratch&quot;. In that case, you will need to make substantial use of Pointer Handlers. This is a collection of small examples that show how to implement some common and less-common interaction patterns.</p>
+<p>If you build the example as an executable, you can choose pages from a top-level <a href="qml-qtquick-listview.html" translate="no">ListView</a>. The <code translate="no">TouchpointFeedbackSprite</code> and <code translate="no">MouseFeedbackSprite</code> components show how to use <a href="qml-qtquick-pointhandler.html" translate="no">PointHandler</a> to provide feedback about what the user is doing with the pointing devices: these components are always visible throughout the example, and do not interfere with interaction anywhere else. These components are handy for reuse if you ever need to do a video or live demonstration of a user interface.</p>
+<p>Alternatively, some of the individual QML files can be run on the command line with the qml tool, as a quick reminder to see how a particular kind of component can be built.</p>
+<h4 id="taphandler">TapHandler</h4>
+<p class="centerAlign"><img src="images/pointerhandlers-example-taphandler.webp" alt="" /></p><p>The &quot;tap&quot; page shows how to detect touchscreen taps, long-presses, and mouse clicks with different buttons. You can also try out the different <a href="qml-qtquick-taphandler.html#gesturePolicy-prop" translate="no">gesturePolicy</a> values.</p>
+<h5 id="multi-tap-buttons">Multi-tap Buttons</h5>
+<p>On this page are three custom <code translate="no">Button</code> components, with different <a href="qml-qtquick-taphandler.html#gesturePolicy-prop" translate="no">gesturePolicy</a> values: one button requires you to keep your finger or mouse within the button during the whole time from press to release; one will execute even if you drag outside the button and then drag back in before releasing; and one will exit its pressed state if you drag a little past the <a href="../qtgui/qstylehints.html#startDragDistance-prop" translate="no">system-wide drag threshold</a>. If you try this example on a touchscreen, you should be able to interact with all three buttons at the same time with different fingers.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-multibutton.webp" alt="" /></p><h5 id="pie-menu">Pie Menu</h5>
+<p>This page shows how to write a touchscreen-friendly pie menu that animates into view when activated by a long-press. You can select a menu item by dragging from the center position onto one of the sectors and releasing. If you drag outside the menu, or release in the middle of the menu, nothing is selected. If you drag outside the grey viewport, the menu is cancelled.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-piemenu.webp" alt="" /></p><h4 id="pointhandler">PointHandler</h4>
+<p>On the &quot;single point handler&quot; page, <a href="qml-qtquick-pointhandler.html" translate="no">PointHandler</a> provides feedback from some of the properties that can be found in <a href="qml-qtquick-singlepointhandler.html#point-prop" translate="no">SinglePointHandler::point</a> and <a href="qml-qtquick-handlerpoint.html#device-prop" translate="no">handlerPoint::device</a>. If you have built the example as an executable, you will see this feedback at the same time as the feedback from the PointHandlers in the main pointerhandlers.qml file.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-pointhandler.webp" alt="" /></p><p>The &quot;tablet canvas&quot; page uses <a href="qml-qtquick-pointhandler.html" translate="no">PointHandler</a> to uniquely detect different <a href="../qtgui/qpointingdevice.html#PointerType-enum" translate="no">types of pointing devices</a>, so that if you have a drawing tablet connected to your computer, you can draw on the Canvas item with different types of stylus: pen, airbrush or marker. You can &quot;erase&quot; strokes with the stylus eraser (done here by drawing on top with the background color). Several <a href="qml-qtquick-hoverhandler.html" translate="no">HoverHandlers</a> provide feedback about which type of stylus or eraser is detected.</p>
+<h4 id="hoverhandler">HoverHandler</h4>
+<p>The &quot;hover sidebar&quot; page shows how to detect when the mouse is hovering a button component and its container at the same time. The propagation can be disabled by setting the <a href="qml-qtquick-hoverhandler.html#blocking-prop" translate="no">HoverHandler::blocking</a> property. You can try out all combinations of <a href="qml-qtquick-hoverhandler.html" translate="no">HoverHandler</a> and <a href="qml-qtquick-mousearea.html" translate="no">MouseArea</a> here, to compare how they handle hover detection. And one more <a href="qml-qtquick-hoverhandler.html" translate="no">HoverHandler</a> is used to show the current mouse position in scene coordinates.</p>
+<p>You can also verify that the <a href="qml-qtquick-hoverhandler.html" translate="no">HoverHandler</a> on the animated &quot;platform&quot; is hovered whenever it slides under the mouse cursor.</p>
+<h4 id="draghandler">DragHandler</h4>
+<p>The &quot;joystick&quot; page simply has a <a href="qml-qtquick-draghandler.html" translate="no">DragHandler</a> dragging an <a href="qml-qtquick-image.html" translate="no">Image</a>. A <a href="qml-qtquick-state.html" translate="no">State</a> with <a href="qml-qtquick-anchorchanges.html" translate="no">AnchorChanges</a> unlocks the <a href="qtquick-positioning-topic.html#anchors">anchors</a> so that dragging is possible; and an <a href="qml-qtquick-anchoranimation.html" translate="no">AnchorAnimation</a> animates the knob's return to the center position when released.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-joystick.jpg" alt="" /></p><p>The &quot;fling animation&quot; page demonstrates one use of the DragHandler::centroid::velocity property, which simply makes the value from <a href="../qtgui/qeventpoint.html#velocity-prop" translate="no">QEventPoint::velocity</a>() available in QML. The <code translate="no">MomentumAnimation</code> component that is used in this example shows one way to simulate phyics (momentum and friction) without resorting to heavier solutions.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-fling.webp" alt="" /></p><h4 id="pinchhandler">PinchHandler</h4>
+<p>The &quot;pinch&quot; page demonstrates multiple PinchHandlers: some require two fingers and some require three, to perform the usual scaling, rotation and translation, with constraints managed via <a href="qml-qtquick-pinchhandler.html" translate="no">PinchHandler</a>'s axis min and max properties. One of the <a href="qml-qtquick-pinchhandler.html" translate="no">PinchHandler</a> instances is used to manipulate different <a href="qml-qtquick-rectangle.html" translate="no">Rectangle</a> properties rather than position, scale and rotation. Various <a href="qml-qtquick-pinchhandler.html" translate="no">PinchHandler</a> properties are bound in various ways. You should be able to manipulate each instance uniquely. Some items also have DragHandlers and TapHandlers.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-pinchhandler.webp" alt="" /></p><h4 id="interoperability">Interoperability</h4>
+<h5 id="sliders">Sliders</h5>
+<p>The &quot;mixer&quot; page demonstrates the use of multiple handlers inside a <a href="qml-qtquick-listview.html" translate="no">ListView</a> delegate. You can interact with multiple <code translate="no">Slider</code> components simultaneously, and you can flick the <a href="qml-qtquick-listview.html" translate="no">ListView</a> sideways.</p>
+<ul>
+<li>A <a href="qml-qtquick-draghandler.html" translate="no">DragHandler</a> allows you to start dragging anywhere along the &quot;track&quot; where the slider knob can slide. Because the default <a href="qml-qtquick-draghandler.html#snapMode-prop" translate="no">snapMode</a> is <code translate="no">DragHandler.SnapAuto</code>, the knob will <i>snap</i> into a position centered under the mouse or touchpoint after you have dragged past the <a href="../qtgui/qstylehints.html#startDragDistance-prop" translate="no">system-wide drag threshold</a>.</li>
+<li>A <a href="qml-qtquick-wheelhandler.html" translate="no">WheelHandler</a> directly adjusts the <code translate="no">y</code> property of the knob <a href="qml-qtquick-image.html" translate="no">Image</a>.</li>
+<li>A <a href="qml-qt-labs-animation-boundaryrule.html" translate="no">BoundaryRule</a> prevents either the <a href="qml-qtquick-draghandler.html" translate="no">DragHandler</a> or the <a href="qml-qtquick-wheelhandler.html" translate="no">WheelHandler</a> from dragging the knob too far.</li>
+<li>A <a href="qml-qtquick-taphandler.html" translate="no">TapHandler</a> provides one more gesture than a typical <code translate="no">Slider</code> component would have: you can tap on the knob.</li>
+</ul>
+<p class="centerAlign"><img src="images/pointerhandlers-example-mixer.webp" alt="" /></p><h5 id="map">Map</h5>
+<p>The &quot;map&quot; page demonstrates dragging, transformation and re-scaling an <a href="../qtsvg/qtsvg-index.html">SVG</a> <a href="qml-qtquick-image.html" translate="no">Image</a>. You should be able to zoom into a particular location on the map; and if the zoom level is changed substantially, <a href="qml-qtquick-image.html#sourceSize-prop" translate="no">Image::sourceSize</a> is changed to request the SVG to be re-rendered at a different resolution. Dragging vertically with two fingers activates a <a href="qml-qtquick-draghandler.html" translate="no">DragHandler</a> that manipulates a <a href="qml-qtquick-rotation.html" translate="no">Rotation</a> transform to tilt the map.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-map.webp" alt="" /></p><h5 id="fake-flickable">Fake Flickable</h5>
+<p>The &quot;fake Flickable&quot; page contains an attempt to reproduce much of the functionality of <a href="qml-qtquick-flickable.html" translate="no">Flickable</a> using discrete pointer handlers and animations. Flickable is a complex component, but here you can see one way of separating the individual behaviors that it provides, in case you would like to have only part of the functionality without the complexity.</p>
+<p>There's also a slide-out &quot;drawer&quot; component holding a few more pointer-handler-powered controls.</p>
+<p class="centerAlign"><img src="images/pointerhandlers-example-fakeflickable.jpg" alt="" /></p><p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quick/pointerhandlers?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@pointerhandlers -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

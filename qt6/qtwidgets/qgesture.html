@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qgesture.cpp -->
+  <meta name="description" content="The QGesture class represents a gesture, containing properties that describe the corresponding user input.">
+  <title>QGesture Class | Qt Widgets | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwidgets-index.html">Qt Widgets</a></li>
+<li><a href="qtwidgets-module.html" translate="no">C++ Classes</a></li>
+<li>QGesture</li>
+<li id="buildversion"><a href="qtwidgets-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#gesture-properties">Gesture Properties</a></li>
+<li class="level2"><a href="#lifecycle-of-a-gesture-object">Lifecycle of a Gesture Object</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QGesture Class</h1>
+<!-- $$$QGesture-brief -->
+<p>The QGesture class represents a gesture, containing properties that describe the corresponding user input. <a href="#details">More...</a></p>
+<!-- @@@QGesture -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QGesture&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Widgets)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Widgets)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += widgets</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="../qtcore/qobject.html" translate="no">QObject</a></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qpangesture.html" translate="no">QPanGesture</a>, <a href="qpinchgesture.html" translate="no">QPinchGesture</a>, <a href="qswipegesture.html" translate="no">QSwipeGesture</a>, <a href="qtapandholdgesture.html" translate="no">QTapAndHoldGesture</a>, and <a href="qtapgesture.html" translate="no">QTapGesture</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qgesture-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#GestureCancelPolicy-enum" translate="no">GestureCancelPolicy</a></b> { CancelNone, CancelAllInContext }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary" translate="no">
+<tr><td class="topAlign"><ul>
+<li class="fn" translate="no"><b><a href="qgesture.html#gestureCancelPolicy-prop" translate="no">gestureCancelPolicy</a></b> : QGesture::GestureCancelPolicy</li>
+<li class="fn" translate="no"><b><a href="qgesture.html#gestureType-prop" translate="no">gestureType</a></b> : const Qt::GestureType</li>
+<li class="fn" translate="no"><b><a href="qgesture.html#hasHotSpot-prop" translate="no">hasHotSpot</a></b> : const bool</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn" translate="no"><b><a href="qgesture.html#hotSpot-prop" translate="no">hotSpot</a></b> : QPointF</li>
+<li class="fn" translate="no"><b><a href="qgesture.html#state-prop" translate="no">state</a></b> : const Qt::GestureState</li>
+</ul>
+</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#QGesture" translate="no">QGesture</a></b>(QObject *<i>parent</i> = nullptr)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> virtual </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#dtor.QGesture" translate="no">~QGesture</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QGesture::GestureCancelPolicy </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#gestureCancelPolicy-prop" translate="no">gestureCancelPolicy</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt::GestureType </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#gestureType-prop" translate="no">gestureType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#hasHotSpot-prop" translate="no">hasHotSpot</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QPointF </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#hotSpot-prop" translate="no">hotSpot</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#gestureCancelPolicy-prop" translate="no">setGestureCancelPolicy</a></b>(QGesture::GestureCancelPolicy <i>policy</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#hotSpot-prop" translate="no">setHotSpot</a></b>(const QPointF &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Qt::GestureState </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#state-prop" translate="no">state</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qgesture.html#hotSpot-prop" translate="no">unsetHotSpot</a></b>()</td></tr>
+</table></div>
+<!-- $$$QGesture-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>Gesture objects are not constructed directly by developers. They are created by the <a href="qgesturerecognizer.html" translate="no">QGestureRecognizer</a> object that is registered with the application; see <a href="qgesturerecognizer.html#registerRecognizer" translate="no">QGestureRecognizer::registerRecognizer</a>().</p>
+<p>For an overview of gesture handling in Qt and information on using gestures in your applications, see the <a href="gestures-overview.html">Gestures in Widgets and Graphics View</a> document.</p>
+<h3 id="gesture-properties">Gesture Properties</h3>
+<p>The class has a list of properties that can be queried by the user to get some gesture-specific arguments. For example, the pinch gesture has a scale factor that is exposed as a property.</p>
+<p>Developers of custom gesture recognizers can add additional properties in order to provide additional information about a gesture. This can be done by adding new dynamic properties to a QGesture object, or by subclassing the QGesture class (or one of its subclasses).</p>
+<h3 id="lifecycle-of-a-gesture-object">Lifecycle of a Gesture Object</h3>
+<p>A QGesture instance is implicitly created when needed and is owned by Qt. Developers should never destroy them or store them for later use as Qt may destroy particular instances of them and create new ones to replace them.</p>
+<p>The registered gesture recognizer monitors the input events for the target object via its <a href="qgesturerecognizer.html#recognize" translate="no">recognize</a>() function, updating the properties of the gesture object as required.</p>
+<p>The gesture object may be delivered to the target object in a <a href="qgestureevent.html" translate="no">QGestureEvent</a> if the corresponding gesture is active or has just been canceled. Each event that is delivered contains a list of gesture objects, since support for more than one gesture may be enabled for the target object. Due to the way events are handled in Qt, gesture events may be filtered by other objects.</p>
+</div>
+<p><b>See also </b><a href="qgestureevent.html" translate="no">QGestureEvent</a> and <a href="qgesturerecognizer.html" translate="no">QGestureRecognizer</a>.</p>
+<!-- @@@QGesture -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$GestureCancelPolicy$$$CancelNone$$$CancelAllInContext -->
+<h3 class="fn" translate="no" id="GestureCancelPolicy-enum">enum QGesture::<span class="name">GestureCancelPolicy</span></h3>
+<p>This enum describes how accepting a gesture can cancel other gestures automatically.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QGesture::CancelNone</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">On accepting this gesture no other gestures will be affected.</td></tr>
+<tr><td class="topAlign"><code translate="no">QGesture::CancelAllInContext</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">On accepting this gesture all gestures that are active in the context (respecting the <a href="../qtcore/qt.html#GestureFlag-enum" translate="no">Qt::GestureFlag</a> that were specified when subscribed to the gesture) will be cancelled.</td></tr>
+</table></div>
+<!-- @@@GestureCancelPolicy -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$gestureCancelPolicy-prop$$$gestureCancelPolicy$$$setGestureCancelPolicyQGesture::GestureCancelPolicy -->
+<h3 class="fn" translate="no" id="gestureCancelPolicy-prop"><span class="name">gestureCancelPolicy</span> : <span class="type"><a href="qgesture.html#GestureCancelPolicy-enum" translate="no">QGesture::GestureCancelPolicy</a></span></h3>
+<p>This property holds the policy for deciding what happens on accepting a gesture</p>
+<p>On accepting one gesture Qt can automatically cancel other gestures that belong to other targets. The policy is normally set to not cancel any other gestures and can be set to cancel all active gestures in the context. For example for all child widgets.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QGesture::GestureCancelPolicy </td><td class="memItemRight bottomAlign"><span class="name"><b>gestureCancelPolicy</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setGestureCancelPolicy</b></span>(QGesture::GestureCancelPolicy <i>policy</i>)</td></tr>
+</table></div>
+<!-- @@@gestureCancelPolicy -->
+<!-- $$$gestureType-prop$$$gestureType -->
+<h3 class="fn" translate="no" id="gestureType-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">gestureType</span> : const <span class="type"><a href="../qtcore/qt.html#GestureType-enum" translate="no">Qt::GestureType</a></span></h3>
+<p>This property holds the type of the gesture</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt::GestureType </td><td class="memItemRight bottomAlign"><span class="name"><b>gestureType</b></span>() const</td></tr>
+</table></div>
+<!-- @@@gestureType -->
+<!-- $$$hasHotSpot-prop$$$hasHotSpot -->
+<h3 class="fn" translate="no" id="hasHotSpot-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">hasHotSpot</span> : const <span class="type">bool</span></h3>
+<p>This property holds whether the gesture has a hot-spot</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b>hasHotSpot</b></span>() const</td></tr>
+</table></div>
+<!-- @@@hasHotSpot -->
+<!-- $$$hotSpot-prop$$$hotSpot$$$setHotSpotconstQPointF&$$$unsetHotSpot -->
+<h3 class="fn" translate="no" id="hotSpot-prop"><span class="name">hotSpot</span> : <span class="type"><a href="../qtcore/qpointf.html" translate="no">QPointF</a></span></h3>
+<p>This property holds the point that is used to find the receiver for the gesture event.</p>
+<p>The hot-spot is a point in the global coordinate system, use <a href="qwidget.html#mapFromGlobal" translate="no">QWidget::mapFromGlobal</a>() or <a href="qgestureevent.html#mapToGraphicsScene" translate="no">QGestureEvent::mapToGraphicsScene</a>() to get a local hot-spot.</p>
+<p>The hot-spot should be set by the gesture recognizer to allow gesture event delivery to a <a href="qgraphicsobject.html" translate="no">QGraphicsObject</a>.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QPointF </td><td class="memItemRight bottomAlign"><span class="name"><b>hotSpot</b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>setHotSpot</b></span>(const QPointF &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b>unsetHotSpot</b></span>()</td></tr>
+</table></div>
+<!-- @@@hotSpot -->
+<!-- $$$state-prop$$$state -->
+<h3 class="fn" translate="no" id="state-prop"><code class="details extra" translate="no">[read-only]</code> <span class="name">state</span> : const <span class="type"><a href="../qtcore/qt.html#GestureState-enum" translate="no">Qt::GestureState</a></span></h3>
+<p>This property holds the current state of the gesture</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> Qt::GestureState </td><td class="memItemRight bottomAlign"><span class="name"><b>state</b></span>() const</td></tr>
+</table></div>
+<!-- @@@state -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QGesture[overload1]$$$QGestureQObject* -->
+<h3 class="fn" translate="no" id="QGesture"><code class="details extra" translate="no">[explicit]</code> QGesture::<span class="name">QGesture</span>(<span class="type"><a href="../qtcore/qobject.html#QObject" translate="no">QObject</a></span> *<i>parent</i> = nullptr)</h3>
+<p>Constructs a new gesture object with the given <i translate="no">parent</i>.</p>
+<p>QGesture objects are created by gesture recognizers in the <a href="qgesturerecognizer.html#create" translate="no">QGestureRecognizer::create</a>() function.</p>
+<!-- @@@QGesture -->
+<!-- $$$~QGesture[overload1]$$$~QGesture -->
+<h3 class="fn" translate="no" id="dtor.QGesture"><code class="details extra" translate="no">[virtual noexcept]</code> QGesture::<span class="name">~QGesture</span>()</h3>
+<p>Destroys the gesture object.</p>
+<!-- @@@~QGesture -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

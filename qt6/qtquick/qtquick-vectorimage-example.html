@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- vectorimage.qdoc -->
+  <meta name="description" content="A Qt Quick example demonstrating the differences of Qt SVG, VectorImage and svgtoqml.">
+  <title>Vector Image Example | Qt Quick | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick-index.html">Qt Quick</a></li>
+<li>Vector Image Example</li>
+<li id="buildversion"><a href="qtquick-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-image-component-and-qt-svg">The Image component and Qt SVG</a></li>
+<li class="level1"><a href="#the-vectorimage-component">The VectorImage component</a></li>
+<li class="level1"><a href="#the-svgtoqml-tool">The svgtoqml tool</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Vector Image Example</h1>
+<!-- $$$vectorimage-brief -->
+<p>A Qt Quick example demonstrating the differences of <a href="../qtsvg/qtsvg-index.html">Qt SVG</a>, <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> and <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a>.</p>
+<!-- @@@vectorimage -->
+<!-- $$$vectorimage-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/qml-vectorimage-example.png" alt="" /></p><p>There are several different ways you can include two-dimensional vector graphics in your Qt application. This example focuses on the <code translate="no">SVG</code> format and how this can be used with Qt. As a baseline, Qt supports the static features of the <code translate="no">SVG Tiny 1.2</code> profile. In addition, <a href="../qtsvg/qtsvg-index.html">Qt SVG</a> optionally supports some features from the full profile, but those are not used in this example.</p>
+<p>The example shows a grid of 3x3 cells, each containing the same vector image of a heart. The heart image is provided as an <code translate="no">SVG</code> file with the example.</p>
+<p>In the grid, each row shows the image at a different scale factor (1x, 2.5x and 4x respectively).</p>
+<p>Each column represents a different way to render the vector graphics in Qt. The left-most column is an <a href="qml-qtquick-image.html" translate="no">Image</a> component, the center column is a <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> component and the right-most column is a pregenerated <code translate="no">QML</code> representation created using the <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a> tool.</p>
+<p>Each method of rendering the vector graphics has its own benefits and drawbacks, and caters to different use cases. To make an informed decision about which one to use, it can be useful to understand the details of how they differ.</p>
+<h4 id="the-image-component-and-qt-svg">The <a href="qml-qtquick-image.html" translate="no">Image</a> component and <a href="../qtsvg/qtsvg-index.html">Qt SVG</a></h4>
+<p>When you use the <a href="qml-qtquick-image.html" translate="no">Image</a> element and set an <code translate="no">SVG</code> file as source, this will invoke the image format plugin in <a href="../qtsvg/qtsvg-index.html">Qt SVG</a>. The plugin will parse the <code translate="no">SVG</code> file, rasterize it using the software rasterizer in <a href="../qtgui/qpainter.html" translate="no">QPainter</a> and then provide it to Qt Quick as a pixmap image. This is equivalent to using the <a href="../qtsvg/qsvgrenderer.html" translate="no">QSvgRenderer</a> class to draw the image.</p>
+<pre class="qml" translate="no">
+         <span class="type"><a href="qml-qtquick-image.html" translate="no">Image</a></span> {
+             <span class="name">sourceSize</span>: <span class="name">Qt</span>.<span class="name">size</span>(<span class="name">topLevel</span>.<span class="name">sourceSize</span>, <span class="name">topLevel</span>.<span class="name">sourceSize</span>)
+             <span class="name">source</span>: <span class="string">&quot;heart.svg&quot;</span>
+         }
+</pre>
+<p>Since the vector image is rasterized at a specific size, any transformation we apply to the <a href="qml-qtquick-image.html" translate="no">Image</a> will be applied to the <i>rasterized image</i>. This can result in pixelation artifacts and uneven curves.</p>
+<p>Loading a vector image through <a href="qml-qtquick-image.html" translate="no">Image</a> works best if you request the image at the exact size that you intend to display. When the <a href="qml-qtquick-image.html" translate="no">Image</a> is displayed at a 1x scale in the top-most row, it looks identical to the others, but at higher scale factors it starts to look fuzzy.</p>
+<p>If the image will ever only be displayed with a single size, then this will typically be the most performant option. There is a start-up cost for rasterizing the image at the specified size, but after this, the cost of copying the data onto the screen is very low.</p>
+<p>But as the image is requested at multiple different sizes, the start-up cost will grow, as will the accumulated memory consumption. Animated zooms of the image can often get too expensive to run at full frame rate on lower end devices. These are the use cases for which <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> and <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a> should be considered.</p>
+<h4 id="the-vectorimage-component">The <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> component</h4>
+<p>As an alternative to <a href="qml-qtquick-image.html" translate="no">Image</a>, Qt provides the <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> component. This converts the <code translate="no">SVG</code> image to a vector graphics representation in Qt Quick, and rasterization happens on demand, on the graphics HW, as it is rendered to the screen.</p>
+<pre class="qml" translate="no">
+         <span class="type"><a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a></span> {
+             <span class="name">width</span>: <span class="name">topLevel</span>.<span class="name">sourceSize</span>
+             <span class="name">height</span>: <span class="name">topLevel</span>.<span class="name">sourceSize</span>
+             <span class="name">preferredRendererType</span>: <span class="name">VectorImage</span>.<span class="name">CurveRenderer</span>
+             <span class="name">source</span>: <span class="string">&quot;heart.svg&quot;</span>
+         }
+</pre>
+<p>Since the image is not pre-rasterized, we can apply transformations to it without losing fidelity to the original shapes. Note that the example uses the <code translate="no">VectorImage.CurveRenderer</code> renderer type. This is recommended for use cases where the image will be transformed and antialiasing is needed.</p>
+<p>This means that we can display the image at any size and even animate the scale of the image, and all the work will be done by the graphics hardware. However, when the <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> is rendered onto the screen, it will come at a slightly higher cost than rendering an <a href="qml-qtquick-image.html" translate="no">Image</a>. This is because the rasterization of curves happens every time the component is rendered and not ahead of time.</p>
+<p>Therefore, <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> is most suitable for vector graphics where the size will change frequently. It can also be suitable when the destination size of the image is very large and memory consumption is a concern. When using <a href="qml-qtquick-image.html" translate="no">Image</a>, the full rasterized image has to be stored in graphics memory. Thus, the memory consumption will scale with the size of the image. The memory consumed by <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> will be the same, regardless of the destination size it is rendered at.</p>
+<h4 id="the-svgtoqml-tool">The <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a> tool</h4>
+<p>The <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> component parses the <code translate="no">SVG</code> file and builds up an equivalent scene of Qt Quick items at run-time.</p>
+<p>If the <code translate="no">SVG</code> is part of the application assets, then some of the work can be done ahead of time instead, by using the <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a> tool. This tool produces the same scene as <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a>, but instead of building it at run-time, it creates a <code translate="no">QML</code> file which can be included in the application project.</p>
+<p>In this example, the <code translate="no">heart.svg</code> file has been pre-converted to a file called <code translate="no">Heart.qml</code>. This can be instantiated in the scene as any other Qt Quick item.</p>
+<pre class="qml" translate="no">
+         <span class="type">Heart</span> {
+             <span class="name">width</span>: <span class="name">topLevel</span>.<span class="name">sourceSize</span>
+             <span class="name">height</span>: <span class="name">topLevel</span>.<span class="name">sourceSize</span>
+         }
+</pre>
+<p>By using this approach, we do not need to parse the <code translate="no">SVG</code> file every time the application is started. In addition, the <code translate="no">svgtoqml</code> tool can optimize and analyze the shapes, in order to provide the renderer with hints that will further speed up its run-time processing.</p>
+<p>The <a href="../qtqml/qtqml-tooling-svgtoqml.html">svgtoqml</a> tool should be considered for the same use cases as <a href="qml-qtquick-vectorimage-vectorimage.html" translate="no">VectorImage</a> and should be preferred whenever the <code translate="no">SVG</code> file is available as an asset when the application is built and is not provided by the end-user of the application.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtdeclarative.git/tree/examples/quick/vectorimage?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@vectorimage -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

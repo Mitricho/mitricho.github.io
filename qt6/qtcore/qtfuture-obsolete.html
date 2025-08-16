@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qfuture.qdoc -->
+  <meta name="description" content="Contains miscellaneous identifiers used by the QFuture class.">
+  <title>Obsolete Members for QtFuture | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li>Obsolete Members for QtFuture</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Obsolete Members for QtFuture</h1>
+<p><b>The following members of class <a href="qtfuture.html" translate="no">QtFuture</a> are deprecated.</b> They are provided to keep old source code working. We strongly advise against using them in new code.</p>
+<h2>Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(since 6.1, deprecated in 6.6)</code> QFuture&lt;void&gt; </td><td class="memItemRight bottomAlign"><b><a href="qtfuture-obsolete.html#makeReadyFuture" translate="no">makeReadyFuture</a></b>()</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(since 6.1, deprecated in 6.6)</code> QFuture&lt;std::decay_t&lt;T&gt;&gt; </td><td class="memItemRight bottomAlign"><b><a href="qtfuture-obsolete.html#makeReadyFuture-1" translate="no">makeReadyFuture</a></b>(T &amp;&amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> <code class="summary extra" translate="no">(since 6.1, deprecated in 6.6)</code> QFuture&lt;T&gt; </td><td class="memItemRight bottomAlign"><b><a href="qtfuture-obsolete.html#makeReadyFuture-2" translate="no">makeReadyFuture</a></b>(const QList&lt;T&gt; &amp;<i>values</i>)</td></tr>
+</table></div>
+<h2>Function Documentation</h2>
+<!-- $$$makeReadyFuture[overload1]$$$makeReadyFuture -->
+<h3 class="fn" translate="no" id="makeReadyFuture"><code class="details extra" translate="no">[since 6.1, deprecated in 6.6]</code> <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span>&lt;<span class="type">void</span>&gt; QtFuture::<span class="name">makeReadyFuture</span>()</h3>
+<p>This function is deprecated since 6.6. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use <a href="qtfuture.html#makeReadyVoidFuture" translate="no">makeReadyVoidFuture</a>() instead.</p>
+<p>Creates and returns a void <a href="qfuture.html" translate="no">QFuture</a>. Such <a href="qfuture.html" translate="no">QFuture</a> can't store any result. One can use it to query the state of the computation. The returned <a href="qfuture.html" translate="no">QFuture</a> will always be in the finished state.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">auto</span> f <span class="operator">=</span> <span class="type">QtFuture</span><span class="operator">::</span>makeReadyFuture();
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="keyword">const</span> <span class="type">bool</span> started <span class="operator">=</span> f<span class="operator">.</span>isStarted(); <span class="comment">// started == true</span>
+ <span class="keyword">const</span> <span class="type">bool</span> running <span class="operator">=</span> f<span class="operator">.</span>isRunning(); <span class="comment">// running == false</span>
+ <span class="keyword">const</span> <span class="type">bool</span> finished <span class="operator">=</span> f<span class="operator">.</span>isFinished(); <span class="comment">// finished == true</span>
+</pre>
+<p>The method should be avoided because it has an inconsistent set of overloads. From Qt 6.10 onwards, using it in code will result in compiler warnings.</p>
+<p>This function was introduced in Qt 6.1.</p>
+<p><b>See also </b><a href="qfuture.html" translate="no">QFuture</a>, <a href="qfuture.html#isStarted" translate="no">QFuture::isStarted</a>(), <a href="qfuture.html#isRunning" translate="no">QFuture::isRunning</a>(), <a href="qfuture.html#isFinished" translate="no">QFuture::isFinished</a>(), <a href="qtfuture.html#makeReadyVoidFuture" translate="no">QtFuture::makeReadyVoidFuture</a>(), <a href="qtfuture.html#makeReadyValueFuture" translate="no">QtFuture::makeReadyValueFuture</a>(), <a href="qtfuture.html#makeReadyRangeFuture" translate="no">QtFuture::makeReadyRangeFuture</a>(), and <a href="qtfuture.html#makeExceptionalFuture" translate="no">QtFuture::makeExceptionalFuture</a>().</p>
+<!-- @@@makeReadyFuture -->
+<!-- $$$makeReadyFuture$$$makeReadyFutureT&& -->
+<h3 class="fn" translate="no" id="makeReadyFuture-1"><code class="details extra" translate="no">[since 6.1, deprecated in 6.6]</code> template &lt;typename T, typename = QtPrivate::EnableForNonVoid&lt;T&gt;&gt; <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span>&lt;<span class="type">std::decay_t</span>&lt;<span class="type">T</span>&gt;&gt; QtFuture::<span class="name">makeReadyFuture</span>(<span class="type">T</span> &amp;&amp;<i>value</i>)</h3>
+<p>This function is deprecated since 6.6. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use <a href="qtfuture.html#makeReadyValueFuture" translate="no">makeReadyValueFuture</a>() instead.</p>
+<p>Creates and returns a <a href="qfuture.html" translate="no">QFuture</a> which already has a result <i translate="no">value</i>. The returned <a href="qfuture.html" translate="no">QFuture</a> has a type of std::decay_t&lt;T&gt;, where T is not void.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">auto</span> f <span class="operator">=</span> <span class="type">QtFuture</span><span class="operator">::</span>makeReadyFuture(std<span class="operator">::</span>make_unique<span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span>(<span class="number">42</span>));
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="keyword">const</span> <span class="type">int</span> result <span class="operator">=</span> <span class="operator">*</span>f<span class="operator">.</span>takeResult(); <span class="comment">// result == 42</span>
+</pre>
+<p>The method should be avoided because it has an inconsistent set of overloads. From Qt 6.10 onwards, using it in code will result in compiler warnings.</p>
+<p>This function was introduced in Qt 6.1.</p>
+<p><b>See also </b><a href="qfuture.html" translate="no">QFuture</a>, <a href="qtfuture.html#makeReadyVoidFuture" translate="no">QtFuture::makeReadyVoidFuture</a>(), <a href="qtfuture.html#makeReadyValueFuture" translate="no">QtFuture::makeReadyValueFuture</a>(), <a href="qtfuture.html#makeReadyRangeFuture" translate="no">QtFuture::makeReadyRangeFuture</a>(), and <a href="qtfuture.html#makeExceptionalFuture" translate="no">QtFuture::makeExceptionalFuture</a>().</p>
+<!-- @@@makeReadyFuture -->
+<!-- $$$makeReadyFuture$$$makeReadyFutureconstQList<T>& -->
+<h3 class="fn" translate="no" id="makeReadyFuture-2"><code class="details extra" translate="no">[since 6.1, deprecated in 6.6]</code> template &lt;typename T&gt; <span class="type"><a href="qfuture.html" translate="no">QFuture</a></span>&lt;<span class="type">T</span>&gt; QtFuture::<span class="name">makeReadyFuture</span>(const <span class="type"><a href="qlist.html" translate="no">QList</a></span>&lt;<span class="type">T</span>&gt; &amp;<i>values</i>)</h3>
+<p>This function is deprecated since 6.6. We strongly advise against using it in new code.</p>
+<p>This is an overloaded function.</p>
+<p>Use <a href="qtfuture.html#makeReadyRangeFuture" translate="no">makeReadyRangeFuture</a>() instead.</p>
+<p>Creates and returns a <a href="qfuture.html" translate="no">QFuture</a> which already has multiple results set from <i translate="no">values</i>.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">const</span> <span class="type"><a href="qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span> values { <span class="number">1</span><span class="operator">,</span> <span class="number">2</span><span class="operator">,</span> <span class="number">3</span> };
+ <span class="keyword">auto</span> f <span class="operator">=</span> <span class="type">QtFuture</span><span class="operator">::</span>makeReadyFuture(values);
+ <span class="operator">.</span><span class="operator">.</span><span class="operator">.</span>
+ <span class="keyword">const</span> <span class="type">int</span> count <span class="operator">=</span> f<span class="operator">.</span>resultCount(); <span class="comment">// count == 3</span>
+ <span class="keyword">const</span> <span class="keyword">auto</span> results <span class="operator">=</span> f<span class="operator">.</span>results(); <span class="comment">// results == { 1, 2, 3 }</span>
+</pre>
+<p>The method should be avoided because it has an inconsistent set of overloads. From Qt 6.10 onwards, using it in code will result in compiler warnings.</p>
+<p>This function was introduced in Qt 6.1.</p>
+<p><b>See also </b><a href="qfuture.html" translate="no">QFuture</a>, <a href="qtfuture.html#makeReadyVoidFuture" translate="no">QtFuture::makeReadyVoidFuture</a>(), <a href="qtfuture.html#makeReadyValueFuture" translate="no">QtFuture::makeReadyValueFuture</a>(), <a href="qtfuture.html#makeReadyRangeFuture" translate="no">QtFuture::makeReadyRangeFuture</a>(), and <a href="qtfuture.html#makeExceptionalFuture" translate="no">QtFuture::makeExceptionalFuture</a>().</p>
+<!-- @@@makeReadyFuture -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

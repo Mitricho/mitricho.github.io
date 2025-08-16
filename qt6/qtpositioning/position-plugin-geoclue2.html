@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- geoclue2.qdoc -->
+  <meta name="description" content="Uses the GeoClue v2 library to provide positioning updates">
+  <title>Qt Positioning GeoClue v2 plugin | Qt Positioning | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtpositioning-index.html">Qt Positioning</a></li>
+<li><a href="qtpositioning-plugins.html">Qt Positioning Plugins</a></li>
+<li>Qt Positioning GeoClue v2 plugin</li>
+<li id="buildversion"><a href="qtpositioning-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="position-plugin-android.html" />
+  <link rel="next" href="position-plugin-gypsy.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="position-plugin-android.html">Android plugin</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="position-plugin-gypsy.html">Gypsy plugin</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#overview">Overview</a></li>
+<li class="level1"><a href="#parameters">Parameters</a></li>
+<li class="level1"><a href="#examples">Examples</a></li>
+<li class="level2"><a href="#qml">QML</a></li>
+<li class="level2"><a href="#c">C++</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Positioning GeoClue v2 plugin</h1>
+<!-- $$$position-plugin-geoclue2.html-description -->
+<div class="descr" id="details">
+<h2 id="overview">Overview</h2>
+<p>This plugin is an interface to the <a href="https://gitlab.freedesktop.org/geoclue/geoclue/-/wikis/home">GeoClue v2</a> library. It requires this library to be installed on the system to function.</p>
+<p>The plugin uses D-Bus to establish communication with the GeoClue v2 D-Bus service and to provide positioning information.</p>
+<p>The plugin can be used to receive only the positioning information. It <i>does not</i> provide satellite information.</p>
+<p>The plugin can be loaded by using the provider name <b>geoclue2</b>.</p>
+<h2 id="parameters">Parameters</h2>
+<p>The following table lists parameters that <i>can</i> be passed to the geoclue2 plugin.</p>
+<div class="table"><table class="generic">
+ <thead><tr class="qt-style"><th >Parameter</th><th >Description</th></tr></thead>
+<tr valign="top" class="odd"><td >desktopId</td><td >The <a href="https://www.freedesktop.org/software/geoclue/docs/gdbus-org.freedesktop.GeoClue2.Client.html#gdbus-property-org-freedesktop-GeoClue2-Client.DesktopId">Desktop Id</a> property used by the D-Bus service. If the parameter is not specified, the application name provided by <a href="../qtcore/qcoreapplication.html#applicationName-prop" translate="no">QCoreApplication::applicationName</a>() is used.</td></tr>
+</table></div>
+<h2 id="examples">Examples</h2>
+<p>The following examples show how to create a <b>geoclue2</b> <a href="qml-qtpositioning-positionsource.html" translate="no">PositionSource</a> from C++ and QML.</p>
+<h3 id="qml">QML</h3>
+<pre class="cpp" translate="no">
+ PositionSource {
+     name: <span class="string">&quot;geoclue2&quot;</span>
+     PluginParameter { name: <span class="string">&quot;desktopId&quot;</span>; value: <span class="string">&quot;SomeIdentifierString&quot;</span> }
+ }
+</pre>
+<h3 id="c">C++</h3>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtcore/qvariant.html#QVariantMap-typedef" translate="no">QVariantMap</a></span> params;
+ params<span class="operator">[</span><span class="string">&quot;desktopId&quot;</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">&quot;SomeIdentifierString&quot;</span>;
+ <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span> <span class="operator">*</span>positionSource <span class="operator">=</span> <span class="type"><a href="qgeopositioninfosource.html" translate="no">QGeoPositionInfoSource</a></span><span class="operator">::</span>createSource(<span class="string">&quot;geoclue2&quot;</span><span class="operator">,</span> params<span class="operator">,</span> <span class="keyword">this</span>);
+</pre>
+</div>
+<!-- @@@position-plugin-geoclue2.html -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="position-plugin-android.html">Android plugin</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="position-plugin-gypsy.html">Gypsy plugin</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

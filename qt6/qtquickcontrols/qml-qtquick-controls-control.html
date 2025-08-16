@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qquickcontrol.cpp -->
+  <meta name="description" content="Abstract base type providing functionality common to all controls.">
+  <title>Control QML Type | Qt Quick Controls | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquickcontrols-index.html">Qt Quick Controls</a></li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">QML Types</a></li>
+<li>Control</li>
+<li id="buildversion"><a href="qtquickcontrols-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#control-layout">Control Layout</a></li>
+<li class="level2"><a href="#event-handling">Event Handling</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">Control QML Type</h1>
+<!-- $$$Control-brief -->
+<p>Abstract base type providing functionality common to all controls. <a href="#details">More...</a></p>
+<!-- @@@Control -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick.Controls</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></p>
+</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherited By:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick-controls-abstractbutton.html" translate="no">AbstractButton</a>, <a href="qml-qtquick-controls-busyindicator.html" translate="no">BusyIndicator</a>, <a href="qml-qtquick-controls-combobox.html" translate="no">ComboBox</a>, <a href="qml-qtquick-controls-container.html" translate="no">Container</a>, <a href="qml-qtquick-controls-dayofweekrow.html" translate="no">DayOfWeekRow</a>, <a href="qml-qtquick-controls-dial.html" translate="no">Dial</a>, <a href="qml-qtquick-controls-menuseparator.html" translate="no">MenuSeparator</a>, <a href="qml-qtquick-controls-monthgrid.html" translate="no">MonthGrid</a>, <a href="qml-qtquick-controls-pageindicator.html" translate="no">PageIndicator</a>, <a href="qml-qtquick-controls-pane.html" translate="no">Pane</a>, <a href="qml-qtquick-controls-progressbar.html" translate="no">ProgressBar</a>, <a href="qml-qtquick-controls-rangeslider.html" translate="no">RangeSlider</a>, <a href="qml-qtquick-controls-scrollbar.html" translate="no">ScrollBar</a>, <a href="qml-qtquick-controls-scrollindicator.html" translate="no">ScrollIndicator</a>, <a href="qml-qtquick-controls-selectionrectangle.html" translate="no">SelectionRectangle</a>, <a href="qml-qtquick-controls-slider.html" translate="no">Slider</a>, <a href="qml-qtquick-controls-spinbox.html" translate="no">SpinBox</a>, <a href="qml-qtquick-controls-stackview.html" translate="no">StackView</a>, <a href="qml-qtquick-controls-toolseparator.html" translate="no">ToolSeparator</a>, <a href="qml-qtquick-controls-tumbler.html" translate="no">Tumbler</a>, and <a href="qml-qtquick-controls-weeknumbercolumn.html" translate="no">WeekNumberColumn</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick-controls-control-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#availableHeight-prop" translate="no">availableHeight</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#availableWidth-prop" translate="no">availableWidth</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a></b> : Item</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#bottomInset-prop" translate="no">bottomInset</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a></b> : Item</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#focusReason-prop" translate="no">focusReason</a></b> : enumeration</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#font-prop" translate="no">font</a></b> : font</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#horizontalPadding-prop" translate="no">horizontalPadding</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#hoverEnabled-prop" translate="no">hoverEnabled</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#hovered-prop" translate="no">hovered</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#implicitBackgroundHeight-prop" translate="no">implicitBackgroundHeight</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#implicitBackgroundWidth-prop" translate="no">implicitBackgroundWidth</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#implicitContentHeight-prop" translate="no">implicitContentHeight</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#implicitContentWidth-prop" translate="no">implicitContentWidth</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#leftInset-prop" translate="no">leftInset</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#locale-prop" translate="no">locale</a></b> : Locale</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#mirrored-prop" translate="no">mirrored</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#rightInset-prop" translate="no">rightInset</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#spacing-prop" translate="no">spacing</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#topInset-prop" translate="no">topInset</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a></b> : real</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#verticalPadding-prop" translate="no">verticalPadding</a></b> : real <code class="summary extra" translate="no">(since QtQuick.Controls 2.5 (Qt 5.12))</code></li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#visualFocus-prop" translate="no">visualFocus</a></b> : bool</li>
+<li class="fn" translate="no"><b><a href="qml-qtquick-controls-control.html#wheelEnabled-prop" translate="no">wheelEnabled</a></b> : bool</li>
+</ul>
+<!-- $$$Control-description -->
+<h2 id="details">Detailed Description</h2>
+<p>Control is the base type of user interface controls. It receives input events from the window system, and paints a representation of itself on the screen.</p>
+<h2 id="control-layout">Control Layout</h2>
+<p>The following diagram illustrates the layout of a typical control:</p>
+<p class="centerAlign"><img src="images/qtquickcontrols-control.png" alt="" /></p><p>The <a href="../qtquick/qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a> and <a href="../qtquick/qml-qtquick-item.html#implicitHeight-prop" translate="no">implicitHeight</a> of a control are typically based on the implicit sizes of the background and the content item plus any insets and paddings. These properties determine how large the control will be when no explicit <a href="../qtquick/qml-qtquick-item.html#width-prop" translate="no">width</a> or <a href="../qtquick/qml-qtquick-item.html#height-prop" translate="no">height</a> is specified.</p>
+<p>The geometry of the <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> is determined by the padding. The following example reserves 10px padding between the boundaries of the control and its content:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">padding</span>: <span class="number">10</span>
+
+     <span class="name">contentItem</span>: <span class="name">Text</span> {
+         <span class="name">text</span>: <span class="string">&quot;Content&quot;</span>
+     }
+ }
+</pre>
+<p>The <a href="qml-qtquick-controls-control.html#background-prop" translate="no">background</a> item fills the entire width and height of the control, unless insets or an explicit size have been given for it. Background insets are useful for extending the touchable/interactive area of a control without affecting its visual size. This is often used on touch devices to ensure that a control is not too small to be interacted with by the user. Insets affect the size of the control, and hence will affect how much space they take up in a layout, for example.</p>
+<p>Negative insets can be used to make the background larger than the control. The following example uses negative insets to place a shadow outside the control's boundaries:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">topInset</span>: -<span class="number">2</span>
+     <span class="name">leftInset</span>: -<span class="number">2</span>
+     <span class="name">rightInset</span>: -<span class="number">6</span>
+     <span class="name">bottomInset</span>: -<span class="number">6</span>
+
+     <span class="name">background</span>: <span class="name">BorderImage</span> {
+         <span class="name">source</span>: <span class="string">&quot;:/images/shadowed-background.png&quot;</span>
+     }
+ }
+</pre>
+<h2 id="event-handling">Event Handling</h2>
+<p>All controls, except non-interactive indicators, do not let clicks and touches through to items below them. For example, the <code translate="no">console.log()</code> call in the example below will never be executed when clicking on the Pane, because the <a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a> is below it in the scene:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="../qtquick/qml-qtquick-mousearea.html" translate="no">MouseArea</a></span> {
+     <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     <span class="name">onClicked</span>: <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;MouseArea was clicked&quot;</span>)
+
+     <span class="type"><a href="qml-qtquick-controls-pane.html" translate="no">Pane</a></span> {
+         <span class="name">anchors</span>.fill: <span class="name">parent</span>
+     }
+ }
+</pre>
+<p>Wheel events are consumed by controls if <a href="qml-qtquick-controls-control.html#wheelEnabled-prop" translate="no">wheelEnabled</a> is <code translate="no">true</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a>, <a href="qml-qtquick-controls-container.html" translate="no">Container</a>, and <a href="qtquick-controls-qmlmodule.html#using-qt-quick-controls-types-in-property-declarations" translate="no">Using Qt Quick Controls types in property declarations</a>.</p>
+<!-- @@@Control -->
+<h2>Property Documentation</h2>
+<!-- $$$availableHeight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="availableHeight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">availableHeight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the height available to the <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> after deducting vertical padding from the <a href="../qtquick/qml-qtquick-item.html#height-prop" translate="no">height</a> of the control.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a>, and <a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a>.</p>
+</div></div><!-- @@@availableHeight -->
+<br/>
+<!-- $$$availableWidth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="availableWidth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">availableWidth</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the width available to the <a href="qml-qtquick-controls-control.html#contentItem-prop" translate="no">contentItem</a> after deducting horizontal padding from the <a href="../qtquick/qml-qtquick-item.html#width-prop" translate="no">width</a> of the control.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a>, and <a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a>.</p>
+</div></div><!-- @@@availableWidth -->
+<br/>
+<!-- $$$background -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="background-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">background</span> : <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the background item.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">background</span>: <span class="name">Rectangle</span> {
+         <span class="name">implicitWidth</span>: <span class="number">100</span>
+         <span class="name">implicitHeight</span>: <span class="number">40</span>
+         <span class="name">opacity</span>: <span class="name">enabled</span> ? <span class="number">1</span> : <span class="number">0.3</span>
+         <span class="name">color</span>: <span class="name">control</span>.<span class="name">down</span> ? <span class="string">&quot;#d0d0d0&quot;</span> : <span class="string">&quot;#e0e0e0&quot;</span>
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>If the background item has no explicit size specified, it automatically follows the control's size. In most cases, there is no need to specify width or height for a background item.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Most controls use the implicit size of the background item to calculate the implicit size of the control itself. If you replace the background item with a custom one, you should also consider providing a sensible implicit size for it (unless it is an item like <a href="../qtquick/qml-qtquick-image.html" translate="no">Image</a> which has its own implicit size).</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>.</p>
+</div></div><!-- @@@background -->
+<br/>
+<!-- $$$bottomInset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="bottomInset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">bottomInset</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the bottom inset for the background.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a> and <a href="qml-qtquick-controls-control.html#topInset-prop" translate="no">topInset</a>.</p>
+</div></div><!-- @@@bottomInset -->
+<br/>
+<!-- $$$bottomPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="bottomPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">bottomPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the bottom padding. Unless explicitly set, the value is equal to <code translate="no">verticalPadding</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a>, <a href="qml-qtquick-controls-control.html#verticalPadding-prop" translate="no">verticalPadding</a>, and <a href="qml-qtquick-controls-control.html#availableHeight-prop" translate="no">availableHeight</a>.</p>
+</div></div><!-- @@@bottomPadding -->
+<br/>
+<!-- $$$contentItem -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="contentItem-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">contentItem</span> : <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the visual content item.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-button.html" translate="no">Button</a></span> {
+     <span class="name">id</span>: <span class="name">control</span>
+     <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;Button&quot;</span>)
+     <span class="name">contentItem</span>: <span class="name">Label</span> {
+         <span class="name">text</span>: <span class="name">control</span>.<span class="name">text</span>
+         <span class="name">verticalAlignment</span>: <span class="name">Text</span>.<span class="name">AlignVCenter</span>
+     }
+ }
+</pre>
+<div class="admonition note">
+<p><b>Note: </b>The content item is automatically positioned and resized to fit within the <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a> of the control. Bindings to the <a href="../qtquick/qml-qtquick-item.html#x-prop" translate="no">x</a>, <a href="../qtquick/qml-qtquick-item.html#y-prop" translate="no">y</a>, <a href="../qtquick/qml-qtquick-item.html#width-prop" translate="no">width</a>, and <a href="../qtquick/qml-qtquick-item.html#height-prop" translate="no">height</a> properties of the contentItem are not respected.</p>
+</div>
+<div class="admonition note">
+<p><b>Note: </b>Most controls use the implicit size of the content item to calculate the implicit size of the control itself. If you replace the content item with a custom one, you should also consider providing a sensible implicit size for it (unless it is an item like <a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a> which has its own implicit size).</p>
+</div>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a> and <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>.</p>
+</div></div><!-- @@@contentItem -->
+<br/>
+<!-- $$$focusReason -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="focusReason-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">focusReason</span> : <span class="type">enumeration</span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the reason of the last focus change.</p>
+<p>The value of this property is modified by Qt whenever focus is transferred, and you should never have to set this property yourself.</p>
+<div class="admonition note">
+<p><b>Note: </b>This property does not indicate whether the item has <a href="../qtquick/qml-qtquick-item.html#activeFocus-prop" translate="no">active focus</a>, but the reason why the item either gained or lost focus.</p>
+</div>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">Qt.MouseFocusReason</code></td><td class="topAlign">A mouse action occurred.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.TabFocusReason</code></td><td class="topAlign">The Tab key was pressed.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.BacktabFocusReason</code></td><td class="topAlign">A Backtab occurred. The input for this may include the Shift or Control keys; e.g. Shift+Tab.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ActiveWindowFocusReason</code></td><td class="topAlign">The window system made this window either active or inactive.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.PopupFocusReason</code></td><td class="topAlign">The application opened/closed a pop-up that grabbed/released the keyboard focus.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.ShortcutFocusReason</code></td><td class="topAlign">The user typed a label's buddy shortcut</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.MenuBarFocusReason</code></td><td class="topAlign">The menu bar took focus.</td></tr>
+<tr><td class="topAlign"><code translate="no">Qt.OtherFocusReason</code></td><td class="topAlign">Another reason, usually application-specific.</td></tr>
+</table></div>
+<p><b>See also </b><a href="../qtquick/qml-qtquick-item.html#activeFocus-prop" translate="no">Item::activeFocus</a> and <a href="qml-qtquick-controls-control.html#visualFocus-prop" translate="no">visualFocus</a>.</p>
+</div></div><!-- @@@focusReason -->
+<br/>
+<!-- $$$font -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="font-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">font</span> : <span class="type"><a href="../qtquick/qml-font.html" translate="no">font</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the font currently set for the control.</p>
+<p>This property describes the control's requested font. The font is used by the control's style when rendering standard components, and is available as a means to ensure that custom controls can maintain consistency with the native platform's native look and feel. It's common that different platforms, or different styles, define different fonts for an application.</p>
+<p>The default font depends on the system environment. <a href="qml-qtquick-controls-applicationwindow.html" translate="no">ApplicationWindow</a> maintains a system/theme font which serves as a default for all controls. There may also be special font defaults for certain types of controls. You can also set the default font for controls by either:</p>
+<ul>
+<li>passing a custom font to <a href="../qtgui/qguiapplication.html#setFont" translate="no">QGuiApplication::setFont</a>(), before loading the QML; or</li>
+<li>specifying the fonts in the <a href="qtquickcontrols-configuration.html">qtquickcontrols2.conf file</a>.</li>
+</ul>
+<p>Finally, the font is matched against Qt's font database to find the best match.</p>
+<p>Control propagates explicit font properties from parent to children. If you change a specific property on a control's font, that property propagates to all of the control's children, overriding any system defaults for that property.</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-page.html" translate="no">Page</a></span> {
+     <span class="name">font</span>.family: <span class="string">&quot;Courier&quot;</span>
+
+     <span class="type"><a href="../qtquick/qml-qtquick-column.html" translate="no">Column</a></span> {
+         <span class="type"><a href="qml-qtquick-controls-label.html" translate="no">Label</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;This will use Courier...&quot;</span>)
+         }
+
+         <span class="type"><a href="qml-qtquick-controls-switch.html" translate="no">Switch</a></span> {
+             <span class="name">text</span>: <span class="name">qsTr</span>(<span class="string">&quot;... and so will this&quot;</span>)
+         }
+     }
+ }
+</pre>
+<p>For the full list of available font properties, see the <a href="../qtquick/qml-font.html" translate="no">font QML Value Type</a> documentation.</p>
+</div></div><!-- @@@font -->
+<br/>
+<!-- $$$horizontalPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="horizontalPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">horizontalPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the horizontal padding. Unless explicitly set, the value is equal to <code translate="no">padding</code>.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a>, <a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a>, and <a href="qml-qtquick-controls-control.html#verticalPadding-prop" translate="no">verticalPadding</a>.</p>
+</div></div><!-- @@@horizontalPadding -->
+<br/>
+<!-- $$$hoverEnabled -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="hoverEnabled-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">hoverEnabled</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property determines whether the control accepts hover events. The default value is <code translate="no">Application.styleHints.useHoverEffects</code>.</p>
+<p>Setting this property propagates the value to all child controls that do not have <code translate="no">hoverEnabled</code> explicitly set.</p>
+<p>You can also enable or disable hover effects for all Qt Quick Controls applications by setting the <code translate="no">QT_QUICK_CONTROLS_HOVER_ENABLED</code> <a href="qtquickcontrols-environment.html">environment variable</a>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#hovered-prop" translate="no">hovered</a>.</p>
+</div></div><!-- @@@hoverEnabled -->
+<br/>
+<!-- $$$hovered -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="hovered-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">hovered</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the control is hovered.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#hoverEnabled-prop" translate="no">hoverEnabled</a>.</p>
+</div></div><!-- @@@hovered -->
+<br/>
+<!-- $$$implicitBackgroundHeight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitBackgroundHeight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitBackgroundHeight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit background height.</p>
+<p>The value is equal to <code translate="no">background ? background.implicitHeight : 0</code>.</p>
+<p>This is typically used, together with <a href="qml-qtquick-controls-control.html#implicitContentHeight-prop" translate="no">implicitContentHeight</a>, to calculate the <a href="../qtquick/qml-qtquick-item.html#implicitHeight-prop" translate="no">implicitHeight</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">implicitHeight</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="name">implicitBackgroundHeight</span> <span class="operator">+</span> <span class="name">topInset</span> <span class="operator">+</span> <span class="name">bottomInset</span>,
+                              <span class="name">implicitContentHeight</span> <span class="operator">+</span> <span class="name">topPadding</span> <span class="operator">+</span> <span class="name">bottomPadding</span>)
+ }
+</pre>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#implicitBackgroundWidth-prop" translate="no">implicitBackgroundWidth</a> and <a href="qml-qtquick-controls-control.html#implicitContentHeight-prop" translate="no">implicitContentHeight</a>.</p>
+</div></div><!-- @@@implicitBackgroundHeight -->
+<br/>
+<!-- $$$implicitBackgroundWidth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitBackgroundWidth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitBackgroundWidth</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit background width.</p>
+<p>The value is equal to <code translate="no">background ? background.implicitWidth : 0</code>.</p>
+<p>This is typically used, together with <a href="qml-qtquick-controls-control.html#implicitContentWidth-prop" translate="no">implicitContentWidth</a>, to calculate the <a href="../qtquick/qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">implicitWidth</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="name">implicitBackgroundWidth</span> <span class="operator">+</span> <span class="name">leftInset</span> <span class="operator">+</span> <span class="name">rightInset</span>,
+                             <span class="name">implicitContentWidth</span> <span class="operator">+</span> <span class="name">leftPadding</span> <span class="operator">+</span> <span class="name">rightPadding</span>)
+ }
+</pre>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#implicitBackgroundHeight-prop" translate="no">implicitBackgroundHeight</a> and <a href="qml-qtquick-controls-control.html#implicitContentWidth-prop" translate="no">implicitContentWidth</a>.</p>
+</div></div><!-- @@@implicitBackgroundWidth -->
+<br/>
+<!-- $$$implicitContentHeight -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitContentHeight-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitContentHeight</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit content height.</p>
+<p>For basic controls, the value is equal to <code translate="no">contentItem ? contentItem.implicitHeight : 0</code>. For types that inherit Container or Pane, the value is calculated based on the content children.</p>
+<p>This is typically used, together with <a href="qml-qtquick-controls-control.html#implicitBackgroundHeight-prop" translate="no">implicitBackgroundHeight</a>, to calculate the <a href="../qtquick/qml-qtquick-item.html#implicitHeight-prop" translate="no">implicitHeight</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">implicitHeight</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="name">implicitBackgroundHeight</span> <span class="operator">+</span> <span class="name">topInset</span> <span class="operator">+</span> <span class="name">bottomInset</span>,
+                              <span class="name">implicitContentHeight</span> <span class="operator">+</span> <span class="name">topPadding</span> <span class="operator">+</span> <span class="name">bottomPadding</span>)
+ }
+</pre>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#implicitContentWidth-prop" translate="no">implicitContentWidth</a> and <a href="qml-qtquick-controls-control.html#implicitBackgroundHeight-prop" translate="no">implicitBackgroundHeight</a>.</p>
+</div></div><!-- @@@implicitContentHeight -->
+<br/>
+<!-- $$$implicitContentWidth -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="implicitContentWidth-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">implicitContentWidth</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[read-only, since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the implicit content width.</p>
+<p>For basic controls, the value is equal to <code translate="no">contentItem ? contentItem.implicitWidth : 0</code>. For types that inherit Container or Pane, the value is calculated based on the content children.</p>
+<p>This is typically used, together with <a href="qml-qtquick-controls-control.html#implicitBackgroundWidth-prop" translate="no">implicitBackgroundWidth</a>, to calculate the <a href="../qtquick/qml-qtquick-item.html#implicitWidth-prop" translate="no">implicitWidth</a>:</p>
+<pre class="cpp" translate="no">
+ <span class="type"><a href="qml-qtquick-controls-control.html" translate="no">Control</a></span> {
+     <span class="name">implicitWidth</span>: <span class="name">Math</span>.<span class="name">max</span>(<span class="name">implicitBackgroundWidth</span> <span class="operator">+</span> <span class="name">leftInset</span> <span class="operator">+</span> <span class="name">rightInset</span>,
+                             <span class="name">implicitContentWidth</span> <span class="operator">+</span> <span class="name">leftPadding</span> <span class="operator">+</span> <span class="name">rightPadding</span>)
+ }
+</pre>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#implicitContentHeight-prop" translate="no">implicitContentHeight</a> and <a href="qml-qtquick-controls-control.html#implicitBackgroundWidth-prop" translate="no">implicitBackgroundWidth</a>.</p>
+</div></div><!-- @@@implicitContentWidth -->
+<br/>
+<!-- $$$leftInset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="leftInset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">leftInset</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the left inset for the background.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a> and <a href="qml-qtquick-controls-control.html#rightInset-prop" translate="no">rightInset</a>.</p>
+</div></div><!-- @@@leftInset -->
+<br/>
+<!-- $$$leftPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="leftPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">leftPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the left padding. Unless explicitly set, the value is equal to <code translate="no">horizontalPadding</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a>, <a href="qml-qtquick-controls-control.html#horizontalPadding-prop" translate="no">horizontalPadding</a>, and <a href="qml-qtquick-controls-control.html#availableWidth-prop" translate="no">availableWidth</a>.</p>
+</div></div><!-- @@@leftPadding -->
+<br/>
+<!-- $$$locale -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="locale-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">locale</span> : <span class="type"><a href="../qtqml/qml-qtqml-locale.html" translate="no">Locale</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the locale of the control.</p>
+<p>It contains locale specific properties for formatting data and numbers. Unless a special locale has been set, this is either the parent's locale or the default locale.</p>
+<p>Control propagates the locale from parent to children. If you change the control's locale, that locale propagates to all of the control's children, overriding the system default locale.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#mirrored-prop" translate="no">mirrored</a>.</p>
+</div></div><!-- @@@locale -->
+<br/>
+<!-- $$$mirrored -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="mirrored-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">mirrored</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the control is mirrored.</p>
+<p>This property is provided for convenience. A control is considered mirrored when its visual layout direction is right-to-left; that is, when <a href="../qtquick/qml-qtquick-layoutmirroring.html#enabled-prop" translate="no">LayoutMirroring.enabled</a> is <code translate="no">true</code>.</p>
+<p>As of Qt 6.2, the <a href="qml-qtquick-controls-control.html#locale-prop" translate="no">locale</a> property no longer affects this property.</p>
+<p><b>See also </b><a href="../qtquick/qml-qtquick-layoutmirroring.html" translate="no">LayoutMirroring</a> and <a href="../qtquick/qtquick-positioning-righttoleft.html">Right-to-left User Interfaces</a>.</p>
+</div></div><!-- @@@mirrored -->
+<br/>
+<!-- $$$padding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="padding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">padding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the default padding.</p>
+<p>Padding adds a space between each edge of the content item and the background item, effectively controlling the size of the content item. To specify a padding value for a specific edge of the control, set its relevant property:</p>
+<ul>
+<li><a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a></li>
+<li><a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a></li>
+<li><a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a></li>
+<li><a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a></li>
+</ul>
+<div class="admonition note">
+<p><b>Note: </b>Different styles may specify the default padding for certain controls in different ways, and these ways may change over time as the design guidelines that the style is based on evolve. To ensure that these changes don't affect the padding values you have specified, it is best to use the most specific properties available. For example, rather than setting the padding property:</p>
+</div>
+<pre class="cpp" translate="no">
+ padding: <span class="number">0</span>
+</pre>
+<p>set each specific property instead:</p>
+<pre class="cpp" translate="no">
+ leftPadding: <span class="number">0</span>
+ rightPadding: <span class="number">0</span>
+ topPadding: <span class="number">0</span>
+ bottomPadding: <span class="number">0</span>
+</pre>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#availableWidth-prop" translate="no">availableWidth</a>, <a href="qml-qtquick-controls-control.html#availableHeight-prop" translate="no">availableHeight</a>, <a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a>, <a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a>, <a href="qml-qtquick-controls-control.html#rightPadding-prop" translate="no">rightPadding</a>, and <a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a>.</p>
+</div></div><!-- @@@padding -->
+<br/>
+<!-- $$$rightInset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rightInset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">rightInset</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the right inset for the background.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a> and <a href="qml-qtquick-controls-control.html#leftInset-prop" translate="no">leftInset</a>.</p>
+</div></div><!-- @@@rightInset -->
+<br/>
+<!-- $$$rightPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="rightPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">rightPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the right padding. Unless explicitly set, the value is equal to <code translate="no">horizontalPadding</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#leftPadding-prop" translate="no">leftPadding</a>, <a href="qml-qtquick-controls-control.html#horizontalPadding-prop" translate="no">horizontalPadding</a>, and <a href="qml-qtquick-controls-control.html#availableWidth-prop" translate="no">availableWidth</a>.</p>
+</div></div><!-- @@@rightPadding -->
+<br/>
+<!-- $$$spacing -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="spacing-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">spacing</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the spacing.</p>
+<p>Spacing is useful for controls that have multiple or repetitive building blocks. For example, some styles use spacing to determine the distance between the text and indicator of <a href="qml-qtquick-controls-checkbox.html" translate="no">CheckBox</a>. Spacing is not enforced by Control, so each style may interpret it differently, and some may ignore it altogether.</p>
+</div></div><!-- @@@spacing -->
+<br/>
+<!-- $$$topInset -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="topInset-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">topInset</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the top inset for the background.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a> and <a href="qml-qtquick-controls-control.html#bottomInset-prop" translate="no">bottomInset</a>.</p>
+</div></div><!-- @@@topInset -->
+<br/>
+<!-- $$$topPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="topPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">topPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the top padding. Unless explicitly set, the value is equal to <code translate="no">verticalPadding</code>.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a>, <a href="qml-qtquick-controls-control.html#verticalPadding-prop" translate="no">verticalPadding</a>, and <a href="qml-qtquick-controls-control.html#availableHeight-prop" translate="no">availableHeight</a>.</p>
+</div></div><!-- @@@topPadding -->
+<br/>
+<!-- $$$verticalPadding -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="verticalPadding-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">verticalPadding</span> : <span class="type"><a href="../qtqml/qml-real.html" translate="no">real</a></span> <code class="details extra" translate="no">[since QtQuick.Controls 2.5 (Qt 5.12)]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds the vertical padding. Unless explicitly set, the value is equal to <code translate="no">padding</code>.</p>
+<p>This property was introduced in QtQuick.Controls 2.5 (Qt 5.12).</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#control-layout" translate="no">Control Layout</a>, <a href="qml-qtquick-controls-control.html#padding-prop" translate="no">padding</a>, <a href="qml-qtquick-controls-control.html#topPadding-prop" translate="no">topPadding</a>, <a href="qml-qtquick-controls-control.html#bottomPadding-prop" translate="no">bottomPadding</a>, and <a href="qml-qtquick-controls-control.html#horizontalPadding-prop" translate="no">horizontalPadding</a>.</p>
+</div></div><!-- @@@verticalPadding -->
+<br/>
+<!-- $$$visualFocus -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="visualFocus-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">visualFocus</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span> <code class="details extra" translate="no">[read-only]</code></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property holds whether the control has visual focus. This property is <code translate="no">true</code> when the control has active focus and the focus reason is either <code translate="no">Qt.TabFocusReason</code>, <code translate="no">Qt.BacktabFocusReason</code>, or <code translate="no">Qt.ShortcutFocusReason</code>.</p>
+<p>In general, for visualizing key focus, this property is preferred over <a href="../qtquick/qml-qtquick-item.html#activeFocus-prop" translate="no">Item::activeFocus</a>. This ensures that key focus is only visualized when interacting with keys - not when interacting via touch or mouse.</p>
+<p><b>See also </b><a href="qml-qtquick-controls-control.html#focusReason-prop" translate="no">focusReason</a> and <a href="../qtquick/qml-qtquick-item.html#activeFocus-prop" translate="no">Item::activeFocus</a>.</p>
+</div></div><!-- @@@visualFocus -->
+<br/>
+<!-- $$$wheelEnabled -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="wheelEnabled-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">wheelEnabled</span> : <span class="type"><a href="../qtqml/qml-bool.html" translate="no">bool</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>This property determines whether the control handles wheel events. The default value is <code translate="no">false</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>Care must be taken when enabling wheel events for controls within scrollable items such as <a href="../qtquick/qml-qtquick-flickable.html" translate="no">Flickable</a>, as the control will consume the events and hence interrupt scrolling of the Flickable.</p>
+</div>
+</div></div><!-- @@@wheelEnabled -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

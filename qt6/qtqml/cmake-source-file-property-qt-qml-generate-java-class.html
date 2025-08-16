@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- cmake-properties.qdoc -->
+  <meta name="description" content="Marks a QML file for Java code generation.">
+  <title>QT_QML_GENERATE_ANDROID_JAVA_CLASS | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="cmake-source-file-properties-qtqml.html">CMake Source File Properties in Qt6 Qml</a></li>
+<li>QT_QML_GENERATE_ANDROID_JAVA_CLASS</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">QT_QML_GENERATE_ANDROID_JAVA_CLASS</h1>
+<!-- $$$cmake-source-file-property-qt-qml-generate-java-class.html-description -->
+<div class="descr" id="details">
+<p>Marks a QML file for Java code generation.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p>When using QML as a <a href="https://developer.android.com/reference/android/view/View">Android: View</a> in Android via <a href="../qtquick/qtquickview-android-class.html#qtquickview">QtQuickView</a>, you can choose the QML components to make available as generated Java classes usable from Android code. To mark a <code translate="no">.qml</code> file for code generation, set its <code translate="no">QT_QML_GENERATE_ANDROID_JAVA_CLASS</code> source property to <code translate="no">TRUE</code>. The source property must be set before <a href="qt-add-qml-module.html">creating</a> the module.</p>
+<div class="admonition note">
+<p><b>Note: </b>The <code translate="no">.qml</code> file name must start with an uppercase letter and define a QML component. This property is valid only if <a href="../qtcore/cmake-variable-qt-android-generate-java-qml-components.html">QT_ANDROID_GENERATE_JAVA_QTQUICKVIEW_CONTENTS</a> is defined.</p>
+</div>
+<p>The source file property can be set like so:</p>
+<pre class="cpp plain" translate="no">
+ set_source_files_properties(MyMainItem.qml
+     PROPERTIES QT_QML_GENERATE_ANDROID_JAVA_CLASS TRUE)
+</pre>
+<p>You can pass multiple files at once to set_source_files_properties:</p>
+<pre class="cpp plain" translate="no">
+ set(plain_qml_files
+     MyItem1.qml
+     MyItem2.qml
+     FancyButton.qml
+
+ )
+
+ set(qml_to_java_files
+     MyMainItem.qml
+     MyOtherMain.qml
+ )
+
+ set_source_files_properties(${qml_to_java_files}
+     PROPERTIES QT_QML_GENERATE_ANDROID_JAVA_CLASS TRUE
+ )
+
+ qt_add_qml_module(myapp
+     URI MyModule
+     QML_FILES ${plain_qml_files} ${qml_to_java_files}
+ )
+</pre>
+</div>
+<p><b>See also </b><a href="qtqml-documents-definetypes.html#naming-custom-qml-object-types">Naming Custom QML Object Types</a>.</p>
+<!-- @@@cmake-source-file-property-qt-qml-generate-java-class.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

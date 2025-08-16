@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- custom-extension.qdoc -->
+  <meta name="description" content="Custom Extension shows how to implement a custom Wayland extension.">
+  <title>Custom Extension | Qt Wayland Compositor | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor</a></li>
+<li><a href="qtwaylandcompositor-examples.html">Qt Wayland Compositor Examples</a></li>
+<li>Custom Extension</li>
+<li id="buildversion"><a href="qtwaylandcompositor-index.html">Qt Wayland Compositor | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#the-protocol-definition">The Protocol Definition</a></li>
+<li class="level1"><a href="#the-compositor-implementation">The Compositor Implementation</a></li>
+<li class="level1"><a href="#the-c-client-implementation">The C++ Client Implementation</a></li>
+<li class="level1"><a href="#the-qml-client-implementation">The QML Client Implementation</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Custom Extension</h1>
+<!-- $$$custom-extension-brief -->
+<p>Custom Extension shows how to implement a custom Wayland extension.</p>
+<!-- @@@custom-extension -->
+<!-- $$$custom-extension-description -->
+<div class="descr" id="details">
+<p>It's easy to write new extensions for Wayland. They are defined using a XML-based format and the <code translate="no">wayland-scanner</code> tool converts this to glue code in C. Qt expands on this with the <code translate="no">qtwaylandscanner</code>, which generates additional glue code in Qt and C++.</p>
+<p class="centerAlign"><img src="images/custom-extension.png" alt="" /></p><p>The Custom Extension example shows how to use these tools to extend the Wayland protocol and send custom requests and events between a Wayland client and a server.</p>
+<p>The example consists of four items:</p>
+<ul>
+<li>The definition of the protocol itself.</li>
+<li>A compositor that supports the extension.</li>
+<li>A C++-based client that supports the extension.</li>
+<li>A QML-based client that supports the extension.</li>
+</ul>
+<h4 id="the-protocol-definition">The Protocol Definition</h4>
+<p>The XML file <code translate="no">custom.xml</code> defines the protocol. It contains an interface called &quot;qt_example_extension&quot;. This is the name which will be broadcast from the server and which the client will attach to in order to send requests and receive events. This name should be unique, so it is good to use a prefix that sets it apart from official interfaces.</p>
+<p>An interface typically consists of two types of remote procedure calls: <i>requests</i> and <i>events</i>. &quot;Requests&quot; are calls the client makes on the server-side, and &quot;events&quot; are calls the server makes on the client-side.</p>
+<p>The example extension contains a set of <i>requests</i> which instructs the server to apply certain transforms to the client window. For instance, if the client sends a &quot;bounce&quot; request, then the server should respond to this by making the window bounce on the screen.</p>
+<p>Similarly, it has a set of <i>events</i> which the server can use to provide instructions for the client. For instance, the &quot;set_font_size&quot; event is an instruction for the client to set its default font size to a specific size.</p>
+<p>The protocol defines the existence of requests and events, as well as the arguments they take. When <code translate="no">qtwaylandscanner</code> is run on it, it will generate the code needed to marshall the procedure call and its arguments and to transmit this over the connection. On the other end, this becomes a call to a virtual function which can be implemented to provide the actual response.</p>
+<p>In order to have <code translate="no">qtwaylandscanner</code> run automatically as part of the build, we use the CMake functions <a href="qt-generate-wayland-protocol-server-sources.html">qt_generate_wayland_protocol_server_sources()</a> and <a href="../qtwaylandclient/qt-generate-wayland-protocol-client-sources.html">qt_generate_wayland_protocol_client_sources()</a> for generating the server-side and client-side glue code, respectively. (When using <code translate="no">qmake</code>, the <code translate="no">WAYLANDSERVERSOURCES</code> and <code translate="no">WAYLANDCLIENTSOURCES</code> variables achieve the same.)</p>
+<h4 id="the-compositor-implementation">The Compositor Implementation</h4>
+<p>The Compositor application itself is implemented using QML and Qt Quick, but the extension is implemented in C++.</p>
+<p>The first step is to create a subclass of the glue code generated by <code translate="no">qtwaylandscanner</code> so that we can access its functionality. We add the <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> macro to the class in order to make it accessible from QML.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CustomExtension  : <span class="keyword">public</span> <span class="type"><a href="qwaylandcompositorextensiontemplate.html" translate="no">QWaylandCompositorExtensionTemplate</a></span><span class="operator">&lt;</span>CustomExtension<span class="operator">&gt;</span>
+         <span class="operator">,</span> <span class="keyword">public</span> <span class="type">QtWaylandServer</span><span class="operator">::</span>qt_example_extension
+ {
+     Q_OBJECT
+     QML_ELEMENT
+</pre>
+<p>In addition to inheriting from the generated class, we also inherit the class <a href="qwaylandcompositorextensiontemplate.html" translate="no">QWaylandCompositorExtensionTemplate</a> which provides some additional convenience when dealing with extensions, using the <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">Curiously Recurring Template Pattern</a>.</p>
+<p>Note that the <a href="qwaylandcompositorextensiontemplate.html" translate="no">QWaylandCompositorExtensionTemplate</a> must be first in the inheritance list, since it is a <a href="../qtcore/qobject.html" translate="no">QObject</a>-based class.</p>
+<p>The subclass has re-implementations of virtual functions in the generated base class, where we can handle requests issued by a client.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">protected</span>:
+     <span class="type">void</span> example_extension_bounce(Resource <span class="operator">*</span>resource<span class="operator">,</span> wl_resource <span class="operator">*</span>surface<span class="operator">,</span> uint32_t duration) override;
+</pre>
+<p>In these re-implementations, we simply translate the request to a <i>signal</i> emission, so that we can handle it in the actual QML code of the compositor.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> CustomExtension<span class="operator">::</span>example_extension_bounce(<span class="type">QtWaylandServer</span><span class="operator">::</span>qt_example_extension<span class="operator">::</span>Resource <span class="operator">*</span>resource<span class="operator">,</span> wl_resource <span class="operator">*</span>wl_surface<span class="operator">,</span> uint32_t duration)
+ {
+     Q_UNUSED(resource);
+     <span class="keyword">auto</span> surface <span class="operator">=</span> <span class="type"><a href="qwaylandsurface.html" translate="no">QWaylandSurface</a></span><span class="operator">::</span>fromResource(wl_surface);
+     <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;server received bounce&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> surface <span class="operator">&lt;</span><span class="operator">&lt;</span> duration;
+     <span class="keyword">emit</span> bounce(surface<span class="operator">,</span> duration);
+ }
+</pre>
+<p>In addition, the subclass defines <i>slots</i> for each of the events, so that these can be either called from QML or be connected to signals. The slots simply call the generated functions which send the events to the client.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> CustomExtension<span class="operator">::</span>setFontSize(<span class="type"><a href="qwaylandsurface.html" translate="no">QWaylandSurface</a></span> <span class="operator">*</span>surface<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#uint-typedef" translate="no">uint</a></span> pixelSize)
+ {
+     <span class="keyword">if</span> (surface) {
+         Resource <span class="operator">*</span>target <span class="operator">=</span> resourceMap()<span class="operator">.</span>value(surface<span class="operator">-</span><span class="operator">&gt;</span>waylandClient());
+         <span class="keyword">if</span> (target) {
+             <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Server-side extension sending setFontSize:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> pixelSize;
+             send_set_font_size(target<span class="operator">-</span><span class="operator">&gt;</span>handle<span class="operator">,</span>  surface<span class="operator">-</span><span class="operator">&gt;</span>resource()<span class="operator">,</span> pixelSize);
+         }
+     }
+ }
+</pre>
+<p>Since we added the <a href="../qtqml/qqmlintegration-h-qtqml-proxy.html#QML_ELEMENT" translate="no">QML_ELEMENT</a> macro to the class definition (and added the corresponding build steps to the build system files), it can be instantiated in QML.</p>
+<p>We make it a direct child of the <a href="qml-qtwayland-compositor-waylandcompositor.html" translate="no">WaylandCompositor</a> object in order for the compositor to register it as an extension.</p>
+<pre class="qml" translate="no">
+     <span class="type">CustomExtension</span> {
+         <span class="name">id</span>: <span class="name">custom</span>
+
+         <span class="name">onSurfaceAdded</span>: (<span class="keyword"></span>surface) =&gt; {
+             var item = <span class="name">itemForSurface</span>(<span class="name">surface</span>)
+             <span class="name">item</span>.<span class="name">isCustom</span> <span class="operator">=</span> <span class="number">true</span>
+         }
+
+         <span class="name">onBounce</span>: (<span class="keyword"></span>surface, ms) =&gt; {
+             var item = <span class="name">itemForSurface</span>(<span class="name">surface</span>)
+             <span class="name">item</span>.<span class="name">doBounce</span>(<span class="name">ms</span>)
+         }
+
+         <span class="name">onSpin</span>: (<span class="keyword"></span>surface, ms) =&gt; {
+             var item = <span class="name">itemForSurface</span>(<span class="name">surface</span>)
+             <span class="name">item</span>.<span class="name">doSpin</span>(<span class="name">ms</span>)
+         }
+
+         <span class="name">onCustomObjectCreated</span>: (<span class="keyword"></span>obj) =&gt; {
+             var item = <span class="name">customObjectComponent</span>.<span class="name">createObject</span>(<span class="name">defaultOutput</span>.<span class="name">surfaceArea</span>,
+                                                           { &quot;color&quot;: <span class="name">obj</span>.<span class="name">color</span>,
+                                                             &quot;text&quot;: <span class="name">obj</span>.<span class="name">text</span>,
+                                                             &quot;obj&quot;: <span class="name">obj</span> } )
+         }
+     }
+
+     <span class="keyword">function</span> <span class="name">setDecorations</span>(shown) {
+         var n = <span class="name">itemList</span>.<span class="name">length</span>
+         <span class="keyword">for</span> (var i = 0; <span class="name">i</span> <span class="operator">&lt;</span> <span class="name">n</span>; i++) {
+             <span class="keyword">if</span> (<span class="name">itemList</span>[<span class="name">i</span>].<span class="name">isCustom</span>)
+                 <span class="name">custom</span>.<span class="name">showDecorations</span>(<span class="name">itemList</span>[<span class="name">i</span>].<span class="name">surface</span>.<span class="name">client</span>, <span class="name">shown</span>)
+         }
+     }
+</pre>
+<p>The object has signal handlers for the requests it may get from the client and reacts to them accordingly. In addition, we can call its slots to send events.</p>
+<pre class="qml" translate="no">
+             <span class="name">onFontSizeChanged</span>: {
+                 <span class="name">custom</span>.<span class="name">setFontSize</span>(<span class="name">surface</span>, <span class="name">fontSize</span>)
+             }
+</pre>
+<h4 id="the-c-client-implementation">The C++ Client Implementation</h4>
+<p>Both clients share the C++ implementation of the interface. Like in the compositor, we make a subclass of the generated code which also inherits from a template class. In this case, we inherit QWaylandClientExtensionTemplate.</p>
+<pre class="cpp" translate="no">
+ <span class="keyword">class</span> CustomExtension : <span class="keyword">public</span> <span class="type">QWaylandClientExtensionTemplate</span><span class="operator">&lt;</span>CustomExtension<span class="operator">&gt;</span>
+         <span class="operator">,</span> <span class="keyword">public</span> <span class="type">QtWayland</span><span class="operator">::</span>qt_example_extension
+</pre>
+<p>The approach is very similar to that of the compositor, except inverted: Requests are implemented as slots which call the generated functions, and events virtual functions which we re-implement to emit signals.</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> CustomExtension<span class="operator">::</span>sendBounce(<span class="type"><a href="../qtgui/qwindow.html" translate="no">QWindow</a></span> <span class="operator">*</span>window<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#uint-typedef" translate="no">uint</a></span> ms)
+ {
+     <span class="type">QtWayland</span><span class="operator">::</span>qt_example_extension<span class="operator">::</span>bounce(getWlSurface(window)<span class="operator">,</span> ms);
+ }
+</pre>
+<p>The client code itself is very simple and only intended to show how to trigger the behavior. In a custom paint event, it draws a set of rectangles and labels. When any of these are clicked, it issues requests to the server.</p>
+<pre class="cpp" translate="no">
+     <span class="type">void</span> mousePressEvent(<span class="type"><a href="../qtgui/qmouseevent.html" translate="no">QMouseEvent</a></span> <span class="operator">*</span>ev) override
+     {
+         <span class="keyword">if</span> (rect1<span class="operator">.</span>contains(ev<span class="operator">-</span><span class="operator">&gt;</span>position()))
+             doSpin();
+         <span class="keyword">else</span> <span class="keyword">if</span> (rect2<span class="operator">.</span>contains(ev<span class="operator">-</span><span class="operator">&gt;</span>position()))
+             doBounce();
+         <span class="keyword">else</span> <span class="keyword">if</span> (rect3<span class="operator">.</span>contains(ev<span class="operator">-</span><span class="operator">&gt;</span>position()))
+             newWindow();
+         <span class="keyword">else</span> <span class="keyword">if</span> (rect4<span class="operator">.</span>contains(ev<span class="operator">-</span><span class="operator">&gt;</span>position()))
+             newObject();
+     }
+</pre>
+<p>To update the font size when the <code translate="no">set_font_size</code> event is received, the signal in our extension class is connected to a slot.</p>
+<pre class="cpp" translate="no">
+         connect(m_extension<span class="operator">,</span> <span class="operator">&amp;</span>CustomExtension<span class="operator">::</span>fontSize<span class="operator">,</span> <span class="keyword">this</span><span class="operator">,</span> <span class="operator">&amp;</span>TestWindow<span class="operator">::</span>handleSetFontSize);
+</pre>
+<p>The slot will update the font size and repaint the window.</p>
+<h4 id="the-qml-client-implementation">The QML Client Implementation</h4>
+<p>The QML client is similar to the C++ client. It relies on the same implementation of the custom extension as the C++ client, and instantiates this in QML to enable it.</p>
+<pre class="qml" translate="no">
+     <span class="type">CustomExtension</span> {
+         <span class="name">id</span>: <span class="name">customExtension</span>
+         <span class="name">onActiveChanged</span>: {
+             <span class="name">registerWindow</span>(<span class="name">topLevelWindow</span>)
+         }
+         <span class="name">onFontSize</span>: (<span class="keyword"></span>window, pixelSize) =&gt; {
+             <span class="name">topLevelWindow</span>.<span class="name">fontSize</span> <span class="operator">=</span> <span class="name">pixelSize</span>
+         }
+     }
+</pre>
+<p>The UI consists of some clickable rectangles, and uses <a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a> to send the corresponding requests when a rectangle is clicked.</p>
+<pre class="qml" translate="no">
+             <span class="type"><a href="../qtquick/qml-qtquick-taphandler.html" translate="no">TapHandler</a></span> {
+                 <span class="name">onTapped</span>: {
+                     <span class="keyword">if</span> (<span class="name">customExtension</span>.<span class="name">active</span>)
+                         <span class="name">customExtension</span>.<span class="name">sendBounce</span>(<span class="name">topLevelWindow</span>, <span class="number">1000</span>)
+                 }
+             }
+</pre>
+<p>For simplicity, the example has been limited to only demonstrate the <code translate="no">bounce</code> and <code translate="no">spin</code> requests as well as the <code translate="no">set_font_size</code> event. Adding support for the additional features is left as an exercise for the reader.</p>
+<p><a href="https://code.qt.io/cgit/qt/qtwayland.git/tree/examples/wayland/custom-extension?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@custom-extension -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

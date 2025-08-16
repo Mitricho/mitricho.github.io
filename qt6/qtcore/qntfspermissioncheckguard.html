@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qfile.cpp -->
+  <meta name="description" content="The QNtfsPermissionCheckGuard class is a RAII class to manage NTFS permission checking.">
+  <title>QNtfsPermissionCheckGuard Class | Qt Core | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtcore-index.html">Qt Core</a></li>
+<li><a href="qtcore-module.html" translate="no">C++ Classes</a></li>
+<li>QNtfsPermissionCheckGuard</li>
+<li id="buildversion"><a href="qtcore-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#related-non-members">Related Non-Members</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+<li class="level2"><a href="#qt-ntfs-permission-lookup">qt_ntfs_permission_lookup</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QNtfsPermissionCheckGuard Class</h1>
+<!-- $$$QNtfsPermissionCheckGuard-brief -->
+<p>The QNtfsPermissionCheckGuard class is a RAII class to manage NTFS permission checking. <a href="#details">More...</a></p>
+<!-- @@@QNtfsPermissionCheckGuard -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QNtfsPermissionCheckGuard&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Core)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Core)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += core</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.6</td></tr>
+</table></div>
+<ul>
+<li><a href="qntfspermissioncheckguard-members.html">List of all members, including inherited members</a></li>
+<li>QNtfsPermissionCheckGuard is part of <a href="io.html">Input/Output and Networking</a>.</li>
+</ul>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qntfspermissioncheckguard.html#QNtfsPermissionCheckGuard" translate="no">QNtfsPermissionCheckGuard</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qntfspermissioncheckguard.html#dtor.QNtfsPermissionCheckGuard" translate="no">~QNtfsPermissionCheckGuard</a></b>()</td></tr>
+</table></div>
+<h2 id="related-non-members">Related Non-Members</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qntfspermissioncheckguard.html#qAreNtfsPermissionChecksEnabled" translate="no">qAreNtfsPermissionChecksEnabled</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qntfspermissioncheckguard.html#qDisableNtfsPermissionChecks" translate="no">qDisableNtfsPermissionChecks</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> bool </td><td class="memItemRight bottomAlign"><b><a href="qntfspermissioncheckguard.html#qEnableNtfsPermissionChecks" translate="no">qEnableNtfsPermissionChecks</a></b>()</td></tr>
+</table></div>
+<!-- $$$QNtfsPermissionCheckGuard-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>For performance reasons, <a href="qfile.html" translate="no">QFile</a>, <a href="qfileinfo.html" translate="no">QFileInfo</a>, and related classes do not perform full ownership and permission (ACL) checking on NTFS file systems by default. During the lifetime of any instance of this class, that default is overridden and advanced checking is performed. This provides a safe and easy way to manage enabling and disabling this change to the default behavior.</p>
+<p>Example:</p>
+<pre class="cpp" translate="no">
+ <span class="type">void</span> complexFunction()
+ {
+     <span class="type"><a href="qntfspermissioncheckguard.html#QNtfsPermissionCheckGuard" translate="no">QNtfsPermissionCheckGuard</a></span> permissionGuard;  <span class="comment">// check is enabled</span>
+
+     <span class="comment">// do complex things here that need permission check enabled</span>
+
+ }   <span class="comment">// as the guard goes out of scope the check is disabled</span>
+</pre>
+<p>This class is available only on Windows.</p>
+<h3 id="qt-ntfs-permission-lookup">qt_ntfs_permission_lookup</h3>
+<p>Prior to Qt 6.6, the user had to directly manipulate the global variable <code translate="no">qt_ntfs_permission_lookup</code>. However, this was a non-atomic global variable and as such it was prone to data races.</p>
+<p>The variable <code translate="no">qt_ntfs_permission_lookup</code> is therefore deprecated since Qt 6.6.</p>
+</div>
+<!-- @@@QNtfsPermissionCheckGuard -->
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QNtfsPermissionCheckGuard[overload1]$$$QNtfsPermissionCheckGuard -->
+<h3 class="fn" translate="no" id="QNtfsPermissionCheckGuard">QNtfsPermissionCheckGuard::<span class="name">QNtfsPermissionCheckGuard</span>()</h3>
+<p>Creates a guard and calls the function <a href="qntfspermissioncheckguard.html#qEnableNtfsPermissionChecks" translate="no">qEnableNtfsPermissionChecks</a>().</p>
+<!-- @@@QNtfsPermissionCheckGuard -->
+<!-- $$$~QNtfsPermissionCheckGuard[overload1]$$$~QNtfsPermissionCheckGuard -->
+<h3 class="fn" translate="no" id="dtor.QNtfsPermissionCheckGuard"><code class="details extra" translate="no">[noexcept]</code> QNtfsPermissionCheckGuard::<span class="name">~QNtfsPermissionCheckGuard</span>()</h3>
+<p>Destroys the guard and calls the function <a href="qntfspermissioncheckguard.html#qDisableNtfsPermissionChecks" translate="no">qDisableNtfsPermissionChecks</a>().</p>
+<!-- @@@~QNtfsPermissionCheckGuard -->
+</div>
+<div class="relnonmem">
+<h2>Related Non-Members</h2>
+<!-- $$$qAreNtfsPermissionChecksEnabled[overload1]$$$qAreNtfsPermissionChecksEnabled -->
+<h3 class="fn" translate="no" id="qAreNtfsPermissionChecksEnabled"><code class="details extra" translate="no">[noexcept, since 6.6]</code> <span class="type">bool</span> <span class="name">qAreNtfsPermissionChecksEnabled</span>()</h3>
+<p>Checks the status of the permission checks on NTFS file systems. Returns <code translate="no">true</code> if the check is enabled.</p>
+<p>This function is only available on Windows and makes the direct manipulation of <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a> obsolete.</p>
+<div class="admonition note">
+<p><b>Note: </b>The thread-safety of this function holds only as long as there are no concurrent updates to <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a>.</p>
+</div>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<!-- @@@qAreNtfsPermissionChecksEnabled -->
+<!-- $$$qDisableNtfsPermissionChecks[overload1]$$$qDisableNtfsPermissionChecks -->
+<h3 class="fn" translate="no" id="qDisableNtfsPermissionChecks"><code class="details extra" translate="no">[noexcept, since 6.6]</code> <span class="type">bool</span> <span class="name">qDisableNtfsPermissionChecks</span>()</h3>
+<p>Disables permission checking on NTFS file systems. Returns <code translate="no">true</code> if the check is disabled, meaning that there are no more users.</p>
+<p>This function is only available on Windows and makes the direct manipulation of <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a> obsolete.</p>
+<p>This is a low-level function and must (only) be called to match one earlier call to <a href="qntfspermissioncheckguard.html#qEnableNtfsPermissionChecks" translate="no">qEnableNtfsPermissionChecks</a>(). Please consider the RAII class <a href="qntfspermissioncheckguard.html" translate="no">QNtfsPermissionCheckGuard</a> instead.</p>
+<div class="admonition note">
+<p><b>Note: </b>The thread-safety of this function holds only as long as there are no concurrent updates to <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a>.</p>
+</div>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<!-- @@@qDisableNtfsPermissionChecks -->
+<!-- $$$qEnableNtfsPermissionChecks[overload1]$$$qEnableNtfsPermissionChecks -->
+<h3 class="fn" translate="no" id="qEnableNtfsPermissionChecks"><code class="details extra" translate="no">[noexcept, since 6.6]</code> <span class="type">bool</span> <span class="name">qEnableNtfsPermissionChecks</span>()</h3>
+<p>Enables permission checking on NTFS file systems. Returns <code translate="no">true</code> if the check was already enabled before the call to this function, meaning that there are other users.</p>
+<p>This function is only available on Windows and makes the direct manipulation of <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a> obsolete.</p>
+<p>This is a low-level function, please consider the RAII class <a href="qntfspermissioncheckguard.html" translate="no">QNtfsPermissionCheckGuard</a> instead.</p>
+<div class="admonition note">
+<p><b>Note: </b>The thread-safety of this function holds only as long as there are no concurrent updates to <a href="qntfspermissioncheckguard.html#qt-ntfs-permission-lookup" translate="no">qt_ntfs_permission_lookup</a>.</p>
+</div>
+<p><b>Note:</b> This function is thread-safe.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<!-- @@@qEnableNtfsPermissionChecks -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

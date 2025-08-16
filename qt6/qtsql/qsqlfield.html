@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qsqlfield.cpp -->
+  <meta name="description" content="The QSqlField class manipulates the fields in SQL database tables and views.">
+  <title>QSqlField Class | Qt SQL | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtsql-index.html">Qt SQL</a></li>
+<li><a href="qtsql-module.html" translate="no">C++ Classes</a></li>
+<li>QSqlField</li>
+<li id="buildversion"><a href="qtsql-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#public-types">Public Types</a></li>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#public-functions">Public Functions</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">QSqlField Class</h1>
+<!-- $$$QSqlField-brief -->
+<p>The QSqlField class manipulates the fields in SQL database tables and views. <a href="#details">More...</a></p>
+<!-- @@@QSqlField -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <code translate="no">#include &lt;QSqlField&gt;</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> CMake:</td><td class="memItemRight bottomAlign"> <code translate="no">find_package(Qt6 REQUIRED COMPONENTS Sql)</code><br/>
+<code translate="no">target_link_libraries(mytarget PRIVATE Qt6::Sql)</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> <code translate="no">QT += sql</code></td></tr>
+</table></div>
+<ul>
+<li><a href="qsqlfield-members.html">List of all members, including inherited members</a></li>
+<li><a href="qsqlfield-obsolete.html">Deprecated members</a></li>
+<li>QSqlField is part of <a href="database.html">Database Classes</a> and <a href="../qtcore/shared.html">Implicitly Shared Classes</a>.</li>
+</ul>
+<h2 id="public-types">Public Types</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> enum </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#RequiredStatus-enum" translate="no">RequiredStatus</a></b> { Required, Optional, Unknown }</td></tr>
+</table></div>
+<h2 id="properties">Properties</h2>
+<div class="table"><table class="propsummary" translate="no">
+<tr><td class="topAlign"><ul>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#autoValue-prop" translate="no">autoValue</a></b> : bool</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#defaultValue-prop" translate="no">defaultValue</a></b> : QVariant</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#generated-prop" translate="no">generated</a></b> : bool</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#length-prop" translate="no">length</a></b> : int</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#metaType-prop" translate="no">metaType</a></b> : QMetaType</li>
+<li class="fn" translate="no"><b><a href="qsqlfield.html#name-prop" translate="no">name</a></b> : QString</li>
+</ul></td><td class="topAlign"><ul>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#precision-prop" translate="no">precision</a></b> : int</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#readOnly-prop" translate="no">readOnly</a></b> : bool</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#requiredStatus-prop" translate="no">requiredStatus</a></b> : RequiredStatus</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#tableName-prop" translate="no">tableName</a></b> : QString</li>
+<li class="fn" translate="no"><code class="summary extra" translate="no">(since 6.8)</code> <b><a href="qsqlfield.html#value-prop" translate="no">value</a></b> : QVariant</li>
+</ul>
+</td></tr>
+</table></div>
+<h2 id="public-functions">Public Functions</h2>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.0)</code> </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#QSqlField-2" translate="no">QSqlField</a></b>(const QString &amp;<i>fieldName</i> = QString(), QMetaType <i>type</i> = QMetaType(), const QString &amp;<i>table</i> = QString())</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></b>(const QSqlField &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#dtor.QSqlField" translate="no">~QSqlField</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#clear" translate="no">clear</a></b>()</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#isAutoValue" translate="no">isAutoValue</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#isGenerated" translate="no">isGenerated</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#isNull" translate="no">isNull</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#isReadOnly" translate="no">isReadOnly</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#isValid" translate="no">isValid</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#length" translate="no">length</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QMetaType </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#metaType" translate="no">metaType</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#name" translate="no">name</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#precision" translate="no">precision</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlField::RequiredStatus </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setAutoValue" translate="no">setAutoValue</a></b>(bool <i>autoVal</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setDefaultValue" translate="no">setDefaultValue</a></b>(const QVariant &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setGenerated" translate="no">setGenerated</a></b>(bool <i>gen</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setLength" translate="no">setLength</a></b>(int <i>fieldLength</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setMetaType" translate="no">setMetaType</a></b>(QMetaType <i>type</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setName" translate="no">setName</a></b>(const QString &amp;<i>name</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setPrecision" translate="no">setPrecision</a></b>(int <i>precision</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setReadOnly" translate="no">setReadOnly</a></b>(bool <i>readOnly</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setRequired" translate="no">setRequired</a></b>(bool <i>required</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setRequiredStatus" translate="no">setRequiredStatus</a></b>(QSqlField::RequiredStatus <i>required</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setTableName" translate="no">setTableName</a></b>(const QString &amp;<i>tableName</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#setValue" translate="no">setValue</a></b>(const QVariant &amp;<i>value</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> <code class="summary extra" translate="no">(since 6.6)</code> void </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#swap" translate="no">swap</a></b>(QSqlField &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QString </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#tableName" translate="no">tableName</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QVariant </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#value" translate="no">value</a></b>() const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#operator-not-eq" translate="no">operator!=</a></b>(const QSqlField &amp;<i>other</i>) const</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> QSqlField &amp;</td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#operator-eq" translate="no">operator=</a></b>(const QSqlField &amp;<i>other</i>)</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="qsqlfield.html#operator-eq-eq" translate="no">operator==</a></b>(const QSqlField &amp;<i>other</i>) const</td></tr>
+</table></div>
+<!-- $$$QSqlField-description -->
+<div class="descr">
+<h2 id="details">Detailed Description</h2>
+<p>QSqlField represents the characteristics of a single column in a database table or view, such as the data type and column name. A field also contains the value of the database column, which can be viewed or changed.</p>
+<p>Field data values are stored as QVariants. Using an incompatible type is not permitted. For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> field(<span class="string">&quot;age&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span>());
+     field<span class="operator">.</span>setValue(<span class="type">QPixmap</span>());  <span class="comment">// WRONG</span>
+</pre>
+<p>However, the field will attempt to cast certain data types to the field data type where possible:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> field(<span class="string">&quot;age&quot;</span><span class="operator">,</span> <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span>());
+     field<span class="operator">.</span>setValue(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span>(<span class="string">&quot;123&quot;</span>));  <span class="comment">// casts QString to int</span>
+</pre>
+<p>QSqlField objects are rarely created explicitly in application code. They are usually accessed indirectly through <a href="qsqlrecord.html" translate="no">QSqlRecord</a>s that already contain a list of fields. For example:</p>
+<pre class="cpp" translate="no">
+     <span class="type"><a href="qsqlquery.html" translate="no">QSqlQuery</a></span> query;
+     ...
+     <span class="type"><a href="qsqlrecord.html" translate="no">QSqlRecord</a></span> record <span class="operator">=</span> query<span class="operator">.</span>record();
+     <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> field <span class="operator">=</span> record<span class="operator">.</span>field(<span class="string">&quot;country&quot;</span>);
+</pre>
+<p>A QSqlField object can provide some meta-data about the field, for example, its <a href="qsqlfield.html#name" translate="no">name</a>(), variant type(), <a href="qsqlfield.html#length" translate="no">length</a>(), <a href="qsqlfield.html#precision" translate="no">precision</a>(), <a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a>(), typeID(), and its <a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a>(), <a href="qsqlfield.html#isGenerated" translate="no">isGenerated</a>() and <a href="qsqlfield.html#isReadOnly" translate="no">isReadOnly</a>(). The field's data can be checked to see if it <a href="qsqlfield.html#isNull" translate="no">isNull</a>(), and its <a href="qsqlfield.html#value" translate="no">value</a>() retrieved. When editing the data can be set with <a href="qsqlfield.html#setValue" translate="no">setValue</a>() or set to NULL with <a href="qsqlfield.html#clear" translate="no">clear</a>().</p>
+</div>
+<p><b>See also </b><a href="qsqlrecord.html" translate="no">QSqlRecord</a>.</p>
+<!-- @@@QSqlField -->
+<div class="types">
+<h2>Member Type Documentation</h2>
+<!-- $$$RequiredStatus$$$Unknown$$$Optional$$$Required -->
+<h3 class="fn" translate="no" id="RequiredStatus-enum">enum QSqlField::<span class="name">RequiredStatus</span></h3>
+<p>Specifies whether the field is required or optional.</p>
+<div class="table"><table class="valuelist"><tr valign="top" class="odd"><th class="tblConst">Constant</th><th class="tblval">Value</th><th class="tbldscr">Description</th></tr>
+<tr><td class="topAlign"><code translate="no">QSqlField::Required</code></td><td class="topAlign tblval"><code translate="no">1</code></td><td class="topAlign">The field must be specified when inserting records.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSqlField::Optional</code></td><td class="topAlign tblval"><code translate="no">0</code></td><td class="topAlign">The fields doesn't have to be specified when inserting records.</td></tr>
+<tr><td class="topAlign"><code translate="no">QSqlField::Unknown</code></td><td class="topAlign tblval"><code translate="no">-1</code></td><td class="topAlign">The database driver couldn't determine whether the field is required or optional.</td></tr>
+</table></div>
+<p><b>See also </b><a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a>.</p>
+<!-- @@@RequiredStatus -->
+</div>
+<div class="prop">
+<h2>Property Documentation</h2>
+<!-- $$$autoValue-prop$$$isAutoValue$$$setAutoValuebool -->
+<h3 class="fn" translate="no" id="autoValue-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">autoValue</span> : <span class="type">bool</span></h3>
+<p>If the value is auto-generated by the database, for example auto-increment primary key values, this value is <code translate="no">true</code>.</p>
+<div class="admonition note">
+<p><b>Note: </b>When using the ODBC driver, due to limitations in the ODBC API, the <code translate="no">isAutoValue()</code> field is only populated in a <a href="qsqlfield.html" translate="no">QSqlField</a> resulting from a <a href="qsqlrecord.html" translate="no">QSqlRecord</a> obtained by executing a <code translate="no">SELECT</code> query. It is <code translate="no">false</code> in a <a href="qsqlfield.html" translate="no">QSqlField</a> resulting from a <a href="qsqlrecord.html" translate="no">QSqlRecord</a> returned from <a href="qsqldatabase.html#record" translate="no">QSqlDatabase::record</a>() or <a href="qsqldatabase.html#primaryIndex" translate="no">QSqlDatabase::primaryIndex</a>().</p>
+</div>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#isAutoValue" translate="no">isAutoValue</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setAutoValue" translate="no">setAutoValue</a></b></span>(bool <i>autoVal</i>)</td></tr>
+</table></div>
+<!-- @@@autoValue -->
+<!-- $$$defaultValue-prop$$$defaultValue$$$setDefaultValueconstQVariant& -->
+<h3 class="fn" translate="no" id="defaultValue-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">defaultValue</span> : <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span></h3>
+<p>This property holds the default value for this field. Only some database drivers supports this property. Currently those are SQLite, PostgreSQL, Oracle and MySQL/MariaDB.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QVariant </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setDefaultValue" translate="no">setDefaultValue</a></b></span>(const QVariant &amp;<i>value</i>)</td></tr>
+</table></div>
+<!-- @@@defaultValue -->
+<!-- $$$generated-prop$$$isGenerated$$$setGeneratedbool -->
+<h3 class="fn" translate="no" id="generated-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">generated</span> : <span class="type">bool</span></h3>
+<p>This property holds the generated state. If <i translate="no">generated</i> is <code translate="no">false</code>, no SQL will be generated for this field; otherwise, Qt classes such as <a href="qsqlquerymodel.html" translate="no">QSqlQueryModel</a> and <a href="qsqltablemodel.html" translate="no">QSqlTableModel</a> will generate SQL for this field.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#isGenerated" translate="no">isGenerated</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setGenerated" translate="no">setGenerated</a></b></span>(bool <i>gen</i>)</td></tr>
+</table></div>
+<!-- @@@generated -->
+<!-- $$$length-prop$$$length$$$setLengthint -->
+<h3 class="fn" translate="no" id="length-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">length</span> : <span class="type">int</span></h3>
+<p>This property holds the field's length.</p>
+<p>If the value is negative, it means that the information is not available from the database. For strings this is the maximum number of characters the string can hold; the meaning varies for other types.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#length" translate="no">length</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setLength" translate="no">setLength</a></b></span>(int <i>fieldLength</i>)</td></tr>
+</table></div>
+<!-- @@@length -->
+<!-- $$$metaType-prop$$$metaType$$$setMetaTypeQMetaType -->
+<h3 class="fn" translate="no" id="metaType-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">metaType</span> : <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span></h3>
+<p>This property holds the field's type as stored in the database. Note that the actual value might have a different type, Numerical values that are too large to store in a long int or double are usually stored as strings to prevent precision loss.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QMetaType </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#metaType" translate="no">metaType</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setMetaType" translate="no">setMetaType</a></b></span>(QMetaType <i>type</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qsqldatabase.html#numericalPrecisionPolicy" translate="no">QSqlDatabase::numericalPrecisionPolicy</a>.</p>
+<!-- @@@metaType -->
+<!-- $$$name-prop$$$name$$$setNameconstQString& -->
+<h3 class="fn" translate="no" id="name-prop"><span class="name">name</span> : <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds the name of the field. This can be the column name or a user given alias.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#name" translate="no">name</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setName" translate="no">setName</a></b></span>(const QString &amp;<i>name</i>)</td></tr>
+</table></div>
+<!-- @@@name -->
+<!-- $$$precision-prop$$$precision$$$setPrecisionint -->
+<h3 class="fn" translate="no" id="precision-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">precision</span> : <span class="type">int</span></h3>
+<p>This property holds the field's precision; this is only meaningful for numeric types.</p>
+<p>If the returned value is negative, it means that the information is not available from the database.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> int </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#precision" translate="no">precision</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setPrecision" translate="no">setPrecision</a></b></span>(int <i>precision</i>)</td></tr>
+</table></div>
+<!-- @@@precision -->
+<!-- $$$readOnly-prop$$$isReadOnly$$$setReadOnlybool -->
+<h3 class="fn" translate="no" id="readOnly-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">readOnly</span> : <span class="type">bool</span></h3>
+<p>When this property is <code translate="no">true</code> then this <a href="qsqlfield.html" translate="no">QSqlField</a> cannot be modified. A read-only field cannot have its value set with <a href="qsqlfield.html#setValue" translate="no">setValue</a>() and cannot be cleared to NULL with <a href="qsqlfield.html#clear" translate="no">clear</a>().</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> bool </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#isReadOnly" translate="no">isReadOnly</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setReadOnly" translate="no">setReadOnly</a></b></span>(bool <i>readOnly</i>)</td></tr>
+</table></div>
+<!-- @@@readOnly -->
+<!-- $$$requiredStatus-prop$$$requiredStatus$$$setRequiredStatusQSqlField::RequiredStatus -->
+<h3 class="fn" translate="no" id="requiredStatus-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">requiredStatus</span> : <span class="type"><a href="qsqlfield.html#RequiredStatus-enum" translate="no">RequiredStatus</a></span></h3>
+<p>This property holds the <a href="qsqlfield.html#RequiredStatus-enum" translate="no">RequiredStatus</a> of the field. An <code translate="no">INSERT</code> will fail if a required field does not have a value.</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QSqlField::RequiredStatus </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setRequiredStatus" translate="no">setRequiredStatus</a></b></span>(QSqlField::RequiredStatus <i>required</i>)</td></tr>
+</table></div>
+<p><b>See also </b><a href="qsqlfield.html#RequiredStatus-enum" translate="no">RequiredStatus</a>.</p>
+<!-- @@@requiredStatus -->
+<!-- $$$tableName-prop$$$tableName$$$setTableNameconstQString& -->
+<h3 class="fn" translate="no" id="tableName-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">tableName</span> : <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span></h3>
+<p>This property holds the tableName of the field.</p>
+<div class="admonition note">
+<p><b>Note: </b>When using the QPSQL driver, due to limitations in the libpq library, the <code translate="no">tableName()</code> field is not populated in a <a href="qsqlfield.html" translate="no">QSqlField</a> resulting from a <a href="qsqlrecord.html" translate="no">QSqlRecord</a> obtained by <a href="qsqlquery.html#record" translate="no">QSqlQuery::record</a>() of a forward-only query.</p>
+</div>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QString </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#tableName" translate="no">tableName</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setTableName" translate="no">setTableName</a></b></span>(const QString &amp;<i>tableName</i>)</td></tr>
+</table></div>
+<!-- @@@tableName -->
+<!-- $$$value-prop$$$value$$$setValueconstQVariant& -->
+<h3 class="fn" translate="no" id="value-prop"><code class="details extra" translate="no">[since 6.8]</code> <span class="name">value</span> : <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span></h3>
+<p>This property holds the <i translate="no">value</i> as a <a href="../qtcore/qvariant.html" translate="no">QVariant</a></p>
+<p>Setting a <i translate="no">value</i> to a read-only <a href="qsqlfield.html" translate="no">QSqlField</a> is a no-op. If the data type of <i translate="no">value</i> differs from the field's current data type, an attempt is made to cast it to the proper type. This preserves the data type of the field in the case of assignment, e.g. a <a href="../qtcore/qstring.html" translate="no">QString</a> to an integer data type.</p>
+<p>To set the value to NULL, use <a href="qsqlfield.html#clear" translate="no">clear</a>().</p>
+<p>This property was introduced in Qt 6.8.</p>
+<p><b>Access functions:</b></p>
+<div class="table"><table class="alignedsummary" translate="no">
+<tr><td class="memItemLeft topAlign rightAlign"> QVariant </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#value" translate="no">value</a></b></span>() const</td></tr>
+<tr><td class="memItemLeft topAlign rightAlign"> void </td><td class="memItemRight bottomAlign"><span class="name"><b><a href="qsqlfield.html#setValue" translate="no">setValue</a></b></span>(const QVariant &amp;<i>value</i>)</td></tr>
+</table></div>
+<!-- @@@value -->
+</div>
+<div class="func">
+<h2>Member Function Documentation</h2>
+<!-- $$$QSqlField$$$QSqlFieldconstQString&QMetaTypeconstQString& -->
+<h3 class="fn" translate="no" id="QSqlField-2"><code class="details extra" translate="no">[explicit, since 6.0]</code> QSqlField::<span class="name">QSqlField</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>fieldName</i> = QString(), <span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span> <i>type</i> = QMetaType(), const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>table</i> = QString())</h3>
+<p>This is an overloaded function.</p>
+<p>Constructs an empty field called <i translate="no">fieldName</i> of type <i translate="no">type</i> in <i translate="no">table</i>.</p>
+<p>This function was introduced in Qt 6.0.</p>
+<!-- @@@QSqlField -->
+<!-- $$$QSqlField[overload1]$$$QSqlFieldconstQSqlField& -->
+<h3 class="fn" translate="no" id="QSqlField">QSqlField::<span class="name">QSqlField</span>(const <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;<i>other</i>)</h3>
+<p>Constructs a copy of <i translate="no">other</i>.</p>
+<!-- @@@QSqlField -->
+<!-- $$$~QSqlField[overload1]$$$~QSqlField -->
+<h3 class="fn" translate="no" id="dtor.QSqlField"><code class="details extra" translate="no">[noexcept]</code> QSqlField::<span class="name">~QSqlField</span>()</h3>
+<p>Destroys the object and frees any allocated resources.</p>
+<!-- @@@~QSqlField -->
+<!-- $$$clear[overload1]$$$clear -->
+<h3 class="fn" translate="no" id="clear"><span class="type">void</span> QSqlField::<span class="name">clear</span>()</h3>
+<p>Clears the value of the field and sets it to NULL. If the field is read-only, nothing happens.</p>
+<!-- @@@clear -->
+<!-- $$$defaultValue -->
+<h3 class="fn" translate="no" id="defaultValue"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QSqlField::<span class="name">defaultValue</span>() const</h3>
+<p>Sets the value of defaultValue.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property defaultValue. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setDefaultValue" translate="no">setDefaultValue</a>().</p>
+<!-- @@@defaultValue -->
+<!-- $$$isAutoValue -->
+<h3 class="fn" translate="no" id="isAutoValue"><span class="type">bool</span> QSqlField::<span class="name">isAutoValue</span>() const</h3>
+<p>Returns the value of <a href="qsqlfield.html#autoValue-prop" translate="no">autoValue</a>.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property <a href="qsqlfield.html#autoValue-prop" translate="no">autoValue</a>. </p>
+</div><!-- @@@isAutoValue -->
+<!-- $$$isGenerated -->
+<h3 class="fn" translate="no" id="isGenerated"><span class="type">bool</span> QSqlField::<span class="name">isGenerated</span>() const</h3>
+<p>Returns the value of <a href="qsqlfield.html#generated-prop" translate="no">generated</a>.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property <a href="qsqlfield.html#generated-prop" translate="no">generated</a>. </p>
+</div><!-- @@@isGenerated -->
+<!-- $$$isNull[overload1]$$$isNull -->
+<h3 class="fn" translate="no" id="isNull"><span class="type">bool</span> QSqlField::<span class="name">isNull</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the field's value is NULL; otherwise returns false.</p>
+<p><b>See also </b><a href="qsqlfield.html#value" translate="no">value</a>.</p>
+<!-- @@@isNull -->
+<!-- $$$isReadOnly -->
+<h3 class="fn" translate="no" id="isReadOnly"><span class="type">bool</span> QSqlField::<span class="name">isReadOnly</span>() const</h3>
+<p>Returns the value of <a href="qsqlfield.html#readOnly-prop" translate="no">readOnly</a>.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property <a href="qsqlfield.html#readOnly-prop" translate="no">readOnly</a>. </p>
+</div><!-- @@@isReadOnly -->
+<!-- $$$isValid[overload1]$$$isValid -->
+<h3 class="fn" translate="no" id="isValid"><span class="type">bool</span> QSqlField::<span class="name">isValid</span>() const</h3>
+<p>Returns <code translate="no">true</code> if the field's variant type is valid; otherwise returns <code translate="no">false</code>.</p>
+<!-- @@@isValid -->
+<!-- $$$length -->
+<h3 class="fn" translate="no" id="length"><span class="type">int</span> QSqlField::<span class="name">length</span>() const</h3>
+<p>Returns the value of length.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property length. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setLength" translate="no">setLength</a>().</p>
+<!-- @@@length -->
+<!-- $$$metaType -->
+<h3 class="fn" translate="no" id="metaType"><span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span> QSqlField::<span class="name">metaType</span>() const</h3>
+<p>Returns the value of metaType.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property metaType. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setMetaType" translate="no">setMetaType</a>().</p>
+<!-- @@@metaType -->
+<!-- $$$name -->
+<h3 class="fn" translate="no" id="name"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlField::<span class="name">name</span>() const</h3>
+<p>Returns the value of name.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property name. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setName" translate="no">setName</a>().</p>
+<!-- @@@name -->
+<!-- $$$precision -->
+<h3 class="fn" translate="no" id="precision"><span class="type">int</span> QSqlField::<span class="name">precision</span>() const</h3>
+<p>Returns the value of precision.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property precision. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setPrecision" translate="no">setPrecision</a>().</p>
+<!-- @@@precision -->
+<!-- $$$requiredStatus -->
+<h3 class="fn" translate="no" id="requiredStatus"><span class="type"><a href="qsqlfield.html#RequiredStatus-enum" translate="no">QSqlField::RequiredStatus</a></span> QSqlField::<span class="name">requiredStatus</span>() const</h3>
+<p>Returns the value of requiredStatus.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property requiredStatus. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setRequiredStatus" translate="no">setRequiredStatus</a>().</p>
+<!-- @@@requiredStatus -->
+<!-- $$$setAutoValue -->
+<h3 class="fn" translate="no" id="setAutoValue"><span class="type">void</span> QSqlField::<span class="name">setAutoValue</span>(<span class="type">bool</span> <i>autoVal</i>)</h3>
+<p>Sets <a href="qsqlfield.html#autoValue-prop" translate="no">autoValue</a> to <i translate="no">autoVal</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#autoValue-prop" translate="no">autoValue</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#isAutoValue" translate="no">isAutoValue</a>().</p>
+<!-- @@@setAutoValue -->
+<!-- $$$setDefaultValue -->
+<h3 class="fn" translate="no" id="setDefaultValue"><span class="type">void</span> QSqlField::<span class="name">setDefaultValue</span>(const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>)</h3>
+<p>Sets <a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a> to <i translate="no">value</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#defaultValue" translate="no">defaultValue</a>().</p>
+<!-- @@@setDefaultValue -->
+<!-- $$$setGenerated -->
+<h3 class="fn" translate="no" id="setGenerated"><span class="type">void</span> QSqlField::<span class="name">setGenerated</span>(<span class="type">bool</span> <i>gen</i>)</h3>
+<p>Sets <a href="qsqlfield.html#generated-prop" translate="no">generated</a> to <i translate="no">gen</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#generated-prop" translate="no">generated</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#isGenerated" translate="no">isGenerated</a>().</p>
+<!-- @@@setGenerated -->
+<!-- $$$setLength -->
+<h3 class="fn" translate="no" id="setLength"><span class="type">void</span> QSqlField::<span class="name">setLength</span>(<span class="type">int</span> <i>fieldLength</i>)</h3>
+<p>Sets <a href="qsqlfield.html#length" translate="no">length</a> to <i translate="no">fieldLength</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#length" translate="no">length</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#length" translate="no">length</a>().</p>
+<!-- @@@setLength -->
+<!-- $$$setMetaType -->
+<h3 class="fn" translate="no" id="setMetaType"><span class="type">void</span> QSqlField::<span class="name">setMetaType</span>(<span class="type"><a href="../qtcore/qmetatype.html" translate="no">QMetaType</a></span> <i>type</i>)</h3>
+<p>Sets <a href="qsqlfield.html#metaType" translate="no">metaType</a> to <i translate="no">type</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#metaType" translate="no">metaType</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#metaType" translate="no">metaType</a>().</p>
+<!-- @@@setMetaType -->
+<!-- $$$setName -->
+<h3 class="fn" translate="no" id="setName"><span class="type">void</span> QSqlField::<span class="name">setName</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>name</i>)</h3>
+<p>Sets <a href="qsqlfield.html#name" translate="no">name</a> to <i translate="no">name</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#name" translate="no">name</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#name" translate="no">name</a>().</p>
+<!-- @@@setName -->
+<!-- $$$setPrecision -->
+<h3 class="fn" translate="no" id="setPrecision"><span class="type">void</span> QSqlField::<span class="name">setPrecision</span>(<span class="type">int</span> <i>precision</i>)</h3>
+<p>Sets <a href="qsqlfield.html#precision" translate="no">precision</a> to <i translate="no">precision</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#precision" translate="no">precision</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#precision" translate="no">precision</a>().</p>
+<!-- @@@setPrecision -->
+<!-- $$$setReadOnly -->
+<h3 class="fn" translate="no" id="setReadOnly"><span class="type">void</span> QSqlField::<span class="name">setReadOnly</span>(<span class="type">bool</span> <i>readOnly</i>)</h3>
+<p>Sets <a href="qsqlfield.html#readOnly-prop" translate="no">readOnly</a> to <i translate="no">readOnly</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#readOnly-prop" translate="no">readOnly</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#isReadOnly" translate="no">isReadOnly</a>().</p>
+<!-- @@@setReadOnly -->
+<!-- $$$setRequired[overload1]$$$setRequiredbool -->
+<h3 class="fn" translate="no" id="setRequired"><span class="type">void</span> QSqlField::<span class="name">setRequired</span>(<span class="type">bool</span> <i>required</i>)</h3>
+<p>Sets the required status of this field to <a href="qsqlfield.html#RequiredStatus-enum" translate="no">Required</a> if <i translate="no">required</i> is true; otherwise sets it to <a href="qsqlfield.html#RequiredStatus-enum" translate="no">Optional</a>.</p>
+<p><b>See also </b><a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a>.</p>
+<!-- @@@setRequired -->
+<!-- $$$setRequiredStatus -->
+<h3 class="fn" translate="no" id="setRequiredStatus"><span class="type">void</span> QSqlField::<span class="name">setRequiredStatus</span>(<span class="type"><a href="qsqlfield.html#RequiredStatus-enum" translate="no">QSqlField::RequiredStatus</a></span> <i>required</i>)</h3>
+<p>Sets <a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a> to <i translate="no">required</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#requiredStatus" translate="no">requiredStatus</a>().</p>
+<!-- @@@setRequiredStatus -->
+<!-- $$$setTableName -->
+<h3 class="fn" translate="no" id="setTableName"><span class="type">void</span> QSqlField::<span class="name">setTableName</span>(const <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> &amp;<i>tableName</i>)</h3>
+<p>Sets <a href="qsqlfield.html#tableName" translate="no">tableName</a> to <i translate="no">tableName</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#tableName" translate="no">tableName</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#tableName" translate="no">tableName</a>().</p>
+<!-- @@@setTableName -->
+<!-- $$$setValue -->
+<h3 class="fn" translate="no" id="setValue"><span class="type">void</span> QSqlField::<span class="name">setValue</span>(const <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> &amp;<i>value</i>)</h3>
+<p>Sets <a href="qsqlfield.html#value" translate="no">value</a> to <i translate="no">value</i>.</p>
+<div class="admonition note"><p><b>Note: </b>Setter function for property <a href="qsqlfield.html#value" translate="no">value</a>. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#value" translate="no">value</a>().</p>
+<!-- @@@setValue -->
+<!-- $$$swap[overload1]$$$swapQSqlField& -->
+<h3 class="fn" translate="no" id="swap"><code class="details extra" translate="no">[noexcept, since 6.6]</code> <span class="type">void</span> QSqlField::<span class="name">swap</span>(<span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;<i>other</i>)</h3>
+<p>Swaps this field with <i translate="no">other</i>. This operation is very fast and never fails.</p>
+<p>This function was introduced in Qt 6.6.</p>
+<!-- @@@swap -->
+<!-- $$$tableName -->
+<h3 class="fn" translate="no" id="tableName"><span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> QSqlField::<span class="name">tableName</span>() const</h3>
+<p>Returns the tableName.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property tableName. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setTableName" translate="no">setTableName</a>().</p>
+<!-- @@@tableName -->
+<!-- $$$value -->
+<h3 class="fn" translate="no" id="value"><span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> QSqlField::<span class="name">value</span>() const</h3>
+<p>Returns the value of value.</p>
+<div class="admonition note"><p><b>Note: </b>Getter function for property value. </p>
+</div><p><b>See also </b><a href="qsqlfield.html#setValue" translate="no">setValue</a>().</p>
+<!-- @@@value -->
+<!-- $$$operator!=[overload1]$$$operator!=constQSqlField& -->
+<h3 class="fn" translate="no" id="operator-not-eq"><span class="type">bool</span> QSqlField::<span class="name">operator!=</span>(const <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the field is unequal to <i translate="no">other</i>; otherwise returns false.</p>
+<!-- @@@operator!= -->
+<!-- $$$operator=[overload1]$$$operator=constQSqlField& -->
+<h3 class="fn" translate="no" id="operator-eq"><span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;QSqlField::<span class="name">operator=</span>(const <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;<i>other</i>)</h3>
+<p>Sets the field equal to <i translate="no">other</i>.</p>
+<!-- @@@operator= -->
+<!-- $$$operator==[overload1]$$$operator==constQSqlField& -->
+<h3 class="fn" translate="no" id="operator-eq-eq"><span class="type">bool</span> QSqlField::<span class="name">operator==</span>(const <span class="type"><a href="qsqlfield.html#QSqlField" translate="no">QSqlField</a></span> &amp;<i>other</i>) const</h3>
+<p>Returns <code translate="no">true</code> if the field is equal to <i translate="no">other</i>; otherwise returns false.</p>
+<!-- @@@operator== -->
+</div>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

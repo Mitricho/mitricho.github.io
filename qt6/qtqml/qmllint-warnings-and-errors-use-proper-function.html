@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- use-proper-function.qdoc -->
+  <meta name="description" content="[use-proper-function] Calling something that might not be a function.">
+  <title>Use proper function | Qt Qml | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtqml-index.html">Qt Qml</a></li>
+<li><a href="qmllint-warnings-and-errors.html">QML Lint Warning and Errors</a></li>
+<li>Use proper function</li>
+<li id="buildversion"><a href="qtqml-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#property-is-a-variant-property-it-may-or-may-not-be-a-method">Property is a variant property: It may or may not be a method</a></li>
+<li class="level2"><a href="#what-happened">What happened?</a></li>
+<li class="level2"><a href="#why-is-this-bad">Why is this bad?</a></li>
+<li class="level2"><a href="#example">Example</a></li>
+<li class="level1"><a href="#property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method">Property is a QJSValue property: It may or may not be a method</a></li>
+<li class="level2"><a href="#property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-what-happened-5">What happened?</a></li>
+<li class="level2"><a href="#property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-why-is-this-bad-6">Why is this bad?</a></li>
+<li class="level2"><a href="#property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-example-7">Example</a></li>
+<li class="level1"><a href="#signal-is-shadowed-by-a-property">Signal is shadowed by a property</a></li>
+<li class="level2"><a href="#signal-is-shadowed-by-a-property-what-happened-9">What happened?</a></li>
+<li class="level2"><a href="#signal-is-shadowed-by-a-property-why-is-this-bad-10">Why is this bad?</a></li>
+<li class="level2"><a href="#signal-is-shadowed-by-a-property-example-11">Example</a></li>
+<li class="level1"><a href="#method-is-shadowed-by-a-property">Method is shadowed by a property</a></li>
+<li class="level1"><a href="#slot-is-shadowed-by-a-property">Slot is shadowed by a property</a></li>
+<li class="level1"><a href="#property-is-not-a-method">Property is not a method</a></li>
+<li class="level2"><a href="#property-is-not-a-method-what-happened-15">What happened?</a></li>
+<li class="level2"><a href="#property-is-not-a-method-why-is-this-bad-16">Why is this bad?</a></li>
+<li class="level2"><a href="#property-is-not-a-method-example-17">Example</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Use proper function</h1>
+<!-- $$$qmllint-warnings-and-errors-use-proper-function.html-description -->
+<div class="descr" id="details">
+<p>This warning category is spelled <code translate="no">[use-proper-function]</code> by qmllint.</p>
+<h2 id="property-is-a-variant-property-it-may-or-may-not-be-a-method">Property is a variant property: It may or may not be a method</h2>
+<h3 id="what-happened">What happened?</h3>
+<p>You used a property of the type <a href="qml-var.html" translate="no">var</a> as if it were a callable function.</p>
+<h3 id="why-is-this-bad">Why is this bad?</h3>
+<p>This affects the readability of the code, the QML engine will error out if the property does not contain a callable function, and the QML tooling can't apply specific method optimizations.</p>
+<h3 id="example">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     property <span class="type"><a href="qml-var.html" translate="no">var</a></span> <span class="name">fun</span>: <span class="keyword"></span>() =&gt; <span class="keyword"></span><span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Hello&quot;</span>)
+     <span class="name">Component</span>.onCompleted: { <span class="name">fun</span>(); }
+ }
+</pre>
+<p>To fix this warning, declare <code translate="no">fun</code> as a function to be able to call it:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="keyword">function</span> <span class="name">fun</span>() {
+         <span class="name">console</span>.<span class="name">log</span>(<span class="string">&quot;Hello&quot;</span>)
+     }
+
+     <span class="name">Component</span>.onCompleted: { <span class="name">fun</span>(); }
+ }
+</pre>
+<h2 id="property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method">Property is a QJSValue property: It may or may not be a method</h2>
+<h3 id="property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-what-happened-5">What happened?</h3>
+<p>You used a property of the type <code translate="no">QJSValue</code> as if it were a callable function.</p>
+<div class="admonition note">
+<p><b>Note: </b>Properties of the type <a href="qjsvalue.html" translate="no">QJSValue</a> can only be defined in C++.</p>
+</div>
+<h3 id="property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-why-is-this-bad-6">Why is this bad?</h3>
+<p>The property was very probably not meant to be called and will make the QML engine error out at runtime.</p>
+<h3 id="property-is-a-qjsvalue-property-it-may-or-may-not-be-a-method-example-7">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+     <span class="comment">// Rectangle has a property gradient of the type QJSValue</span>
+     <span class="name">Component</span>.onCompleted: { <span class="name">console</span>.<span class="name">log</span>(<span class="name">gradient</span>()); }
+ }
+</pre>
+<p>To fix this warning, remove the call to <code translate="no">gradient</code>:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     <span class="comment">// Rectangle has a property gradient of the type QJSValue</span>
+     <span class="name">Component</span>.onCompleted: { <span class="name">console</span>.<span class="name">log</span>(<span class="name">gradient</span>); }
+ }
+</pre>
+<p>Alternatively, consider replacing the property definition with a regular <a href="../qtcore/qobject.html#Q_INVOKABLE" translate="no">Q_INVOKABLE</a> method or a <a href="../qtcore/signalsandslots.html">slot</a> if you are the author of the property. This is only possible if the function is never meant to be changed in QML. If you actually need to store a callback, you're out of luck.</p>
+<h2 id="signal-is-shadowed-by-a-property">Signal is shadowed by a property</h2>
+<h3 id="signal-is-shadowed-by-a-property-what-happened-9">What happened?</h3>
+<p>You called a signal that is shadowed by a property or you shadowed a signal with a property.</p>
+<h3 id="signal-is-shadowed-by-a-property-why-is-this-bad-10">Why is this bad?</h3>
+<p>The caller very probably expected to call a signal, and not the shadowing property. This could make the QML engine error out at runtime.</p>
+<h3 id="signal-is-shadowed-by-a-property-example-11">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component Base: <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         signal <span class="type">helloSignal</span>
+     }
+
+     <span class="type">Base</span> {
+         property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">helloSignal</span> <span class="comment">// shadows helloSignal inherited from Base</span>
+         <span class="name">Component</span>.onCompleted: { <span class="name">helloSignal</span>(); }
+     }
+ }
+</pre>
+<p>To fix this warning, rename the shadowing property:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     component Base: <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+         signal <span class="type">helloSignal</span>
+     }
+
+     <span class="type">Base</span> {
+         property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">helloSignal2</span> <span class="comment">// does not shadow anymore</span>
+         <span class="name">Component</span>.onCompleted: { <span class="name">helloSignal</span>(); }
+     }
+ }
+</pre>
+<h2 id="method-is-shadowed-by-a-property">Method is shadowed by a property</h2>
+<p>See {Signal is shadowed by a property}.</p>
+<h2 id="slot-is-shadowed-by-a-property">Slot is shadowed by a property</h2>
+<p>See {Signal is shadowed by a property}.</p>
+<h2 id="property-is-not-a-method">Property is not a method</h2>
+<h3 id="property-is-not-a-method-what-happened-15">What happened?</h3>
+<p>You used a property of a type other than <a href="qml-var.html" translate="no">var</a> or <code translate="no">QJSValue</code> as if it were a callable function.</p>
+<h3 id="property-is-not-a-method-why-is-this-bad-16">Why is this bad?</h3>
+<p>The property can't be called and will make the QML engine error out at runtime.</p>
+<h3 id="property-is-not-a-method-example-17">Example</h3>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ <span class="type"><a href="../qtquick/qml-qtquick-item.html" translate="no">Item</a></span> {
+     property <span class="type"><a href="qml-int.html" translate="no">int</a></span> <span class="name">hello</span>
+     <span class="name">Component</span>.onCompleted: { <span class="name">console</span>.<span class="name">log</span>(<span class="name">hello</span>()); }
+ }
+</pre>
+<p>To fix this warning, remove the call or make <code translate="no">hello</code> a function:</p>
+<pre class="qml" translate="no">
+ import QtQuick
+
+ Item {
+     property int hello
+     Component.onCompleted: { console.log(hello); }
+
+     // alternative:
+     function helloAlternative() { ... }
+     Component.onCompleted: { console.log(helloAlternative()); }
+ }
+</pre>
+</div>
+<!-- @@@qmllint-warnings-and-errors-use-proper-function.html -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

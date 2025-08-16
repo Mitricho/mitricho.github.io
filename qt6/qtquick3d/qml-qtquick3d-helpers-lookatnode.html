@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- lookatnode.cpp -->
+  <meta name="description" content="A helper node that is automatically kept pointing at another node.">
+  <title>LookAtNode QML Type | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="qtquick3d-qmlmodule.html" translate="no">QML Types</a></li>
+<li><a href="qtquick3d-helpers-qmlmodule.html" translate="no">QtQuick3D.Helpers</a></li>
+<li>LookAtNode</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#properties">Properties</a></li>
+<li class="level1"><a href="#details">Detailed Description</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title" translate="no">LookAtNode QML Type</h1>
+<!-- $$$LookAtNode-brief -->
+<p>A helper node that is automatically kept pointing at another node. <a href="#details">More...</a></p>
+<!-- @@@LookAtNode -->
+<div class="table"><table class="alignedsummary requisites" translate="no">
+<tr><td class="memItemLeft rightAlign topAlign"> Import Statement:</td><td class="memItemRight bottomAlign"> <code translate="no">import QtQuick3D.Helpers</code></td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Since:</td><td class="memItemRight bottomAlign"> Qt 6.4</td></tr>
+<tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <p><a href="qml-qtquick3d-node.html" translate="no">Node</a></p>
+</td></tr>
+</table></div>
+<ul>
+<li><a href="qml-qtquick3d-helpers-lookatnode-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h2 id="properties">Properties</h2>
+<ul>
+<li class="fn" translate="no"><b><a href="qml-qtquick3d-helpers-lookatnode.html#target-prop" translate="no">target</a></b> : Node</li>
+</ul>
+<!-- $$$LookAtNode-description -->
+<h2 id="details">Detailed Description</h2>
+<p>This helper implements a node that automatically rotates so that it is always pointed towards a specified node. The rotation only happens over X and Y axes.</p>
+<p>For example, the following snippet keeps the cylinder pointed at the cube.</p>
+<pre class="cpp plain" translate="no">
+ View3D {
+     anchors.fill: parent
+     camera: camera
+
+     PerspectiveCamera {
+         id: camera
+     }
+
+     DirectionalLight {}
+
+     LookAtNode {
+         target: cube
+
+         Model {
+             id: cylinder
+             source: &quot;#Cone&quot;
+             eulerRotation.x: -90
+             materials: [
+                 PrincipledMaterial {}
+             ]
+         }
+     }
+
+     Model {
+         id: cube
+         position: Qt.vector3d(300, 300, 0);
+         source: &quot;#Cube&quot;
+         materials: [ PrincipledMaterial {} ]
+     }
+ }
+</pre>
+<!-- @@@LookAtNode -->
+<h2>Property Documentation</h2>
+<!-- $$$target -->
+<div class="qmlitem"><div class="qmlproto" translate="no">
+<div class="table"><table class="qmlname">
+<tr valign="top" class="odd" id="target-prop">
+<td class="tblQmlPropNode"><p>
+<span class="name">target</span> : <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span></p></td></tr>
+</table></div></div>
+<div class="qmldoc"><p>Specifies the target node to look at. The default value is <code translate="no">null</code>.</p>
+</div></div><!-- @@@target -->
+<br/>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

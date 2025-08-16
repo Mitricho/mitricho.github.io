@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- waterpump-qmlcpp.qdoc -->
+  <meta name="description" content="Interacting with an OPC UA server to build a QML-based HMI for a simple water pump machine.">
+  <title>Water Pump | Qt OPC UA | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtopcua-index.html">Qt OPC UA</a></li>
+<li><a href="qtopcua-examples.html">Qt OPC UA Examples</a></li>
+<li>Water Pump</li>
+<li id="buildversion"><a href="qtopcua-index.html">Qt 6.9.0 Reference Documentation</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<h1 class="title">Water Pump</h1>
+<pre class="cpp" translate="no">
+ <span class="comment">// Copyright (C) 2018 basysKom GmbH, opensource@basyskom.com</span>
+ <span class="comment">// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause</span>
+
+ <span class="preprocessor">#include &quot;opcuamachinebackend.h&quot;</span>
+
+ <span class="preprocessor">#include &lt;QOpcUaProvider&gt;</span>
+ <span class="preprocessor">#include &lt;QQmlEngine&gt;</span>
+
+ <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="type"><a href="../qtcore/qt.html" translate="no">Qt</a></span><span class="operator">::</span>Literals<span class="operator">::</span>StringLiterals;
+
+ OpcUaMachineBackend<span class="operator">::</span>OpcUaMachineBackend(<span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span> <span class="operator">*</span>parent)
+     : <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span>(parent)
+     <span class="operator">,</span> m_percentFilledTank1(<span class="number">0</span>)
+     <span class="operator">,</span> m_percentFilledTank2(<span class="number">0</span>)
+     <span class="operator">,</span> m_tank2TargetPercent(<span class="number">0</span>)
+     <span class="operator">,</span> m_tank2ValveState(<span class="keyword">false</span>)
+     <span class="operator">,</span> m_machineState(MachineState<span class="operator">::</span>Idle)
+     <span class="operator">,</span> m_connected(<span class="keyword">false</span>)
+     <span class="operator">,</span> m_message(u<span class="string">&quot;Ready to connect&quot;</span>_s)
+     <span class="operator">,</span> m_successfullyCreated(<span class="keyword">false</span>)
+ {
+     <a href="../qtcore/qmetatype.html#qRegisterMetaType" translate="no">qRegisterMetaType</a><span class="operator">&lt;</span>OpcUaMachineBackend<span class="operator">::</span>MachineState<span class="operator">&gt;</span>();
+     qmlRegisterType<span class="operator">&lt;</span>OpcUaMachineBackend<span class="operator">&gt;</span>(<span class="string">&quot;OpcUaMachineBackend&quot;</span><span class="operator">,</span> <span class="number">1</span><span class="operator">,</span> <span class="number">0</span><span class="operator">,</span> <span class="string">&quot;OpcUaMachineBackend&quot;</span>);
+
+     <span class="type"><a href="qopcuaprovider.html" translate="no">QOpcUaProvider</a></span> provider;
+     setBackends(provider<span class="operator">.</span>availableBackends());
+ }
+
+ OpcUaMachineBackend<span class="operator">::</span><span class="operator">~</span>OpcUaMachineBackend()
+ {
+     <span class="keyword">if</span> (m_client <span class="operator">&amp;</span><span class="operator">&amp;</span> m_client<span class="operator">-</span><span class="operator">&gt;</span>state() <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>Connected)
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>disconnectFromEndpoint();
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>clientStateHandler(<span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState state)
+ {
+     m_connected <span class="operator">=</span> (state <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState<span class="operator">::</span>Connected);
+
+     <span class="keyword">emit</span> connectedChanged(m_connected);
+
+     <span class="keyword">if</span> (state <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState<span class="operator">::</span>Connected) {
+         setMessage(u<span class="string">&quot;Connected&quot;</span>_s);
+         <span class="comment">// Create node objects for reading, writing and subscriptions</span>
+         m_machineNode<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine&quot;</span>_s));
+         m_machineStateNode<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.State&quot;</span>_s));
+         m_percentFilledTank1Node<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.Tank1.PercentFilled&quot;</span>_s));
+         m_percentFilledTank2Node<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.Tank2.PercentFilled&quot;</span>_s));
+         m_tank2TargetPercentNode<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.Tank2.TargetPercent&quot;</span>_s));
+         m_tank2ValveStateNode<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.Tank2.ValveState&quot;</span>_s));
+         m_machineDesignationNode<span class="operator">.</span>reset(m_client<span class="operator">-</span><span class="operator">&gt;</span>node(u<span class="string">&quot;ns=2;s=Machine.Designation&quot;</span>_s));
+
+         <span class="comment">// Connect signal handlers for subscribed values</span>
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_machineStateNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>dataChangeOccurred<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>machineStateUpdated);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_percentFilledTank1Node<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>dataChangeOccurred<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>percentFilledTank1Updated);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_percentFilledTank2Node<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>dataChangeOccurred<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>percentFilledTank2Updated);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_tank2TargetPercentNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>dataChangeOccurred<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>tank2TargetPercentUpdated);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_tank2ValveStateNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>dataChangeOccurred<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>tank2ValveStateUpdated);
+
+         <span class="comment">// Subscribe to data changes</span>
+         m_machineStateNode<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(
+                 <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">100</span>));
+         m_percentFilledTank1Node<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(
+                 <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">100</span>));
+         m_percentFilledTank2Node<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(
+                 <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">100</span>));
+         m_tank2TargetPercentNode<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(
+                 <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">100</span>));
+         m_tank2ValveStateNode<span class="operator">-</span><span class="operator">&gt;</span>enableMonitoring(
+                 <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> <span class="type"><a href="qopcuamonitoringparameters.html" translate="no">QOpcUaMonitoringParameters</a></span>(<span class="number">100</span>));
+
+         <span class="comment">// Connect the handler for async reading</span>
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_machineDesignationNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>attributeRead<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>machineDesignationRead);
+
+         <span class="comment">// Request the value attribute of the machine designation node</span>
+         m_machineDesignationNode<span class="operator">-</span><span class="operator">&gt;</span>readAttributes(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value);
+
+         <span class="comment">// Add handlers for write and call results</span>
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_tank2TargetPercentNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>attributeWritten<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>setpointWritten);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_machineNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>methodCallFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>handleMethodResult);
+
+         <span class="comment">// Add handlers for enableMonitoring results</span>
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_machineStateNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>enableMonitoringFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_percentFilledTank1Node<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>enableMonitoringFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_percentFilledTank2Node<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>enableMonitoringFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_tank2TargetPercentNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>enableMonitoringFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished);
+         <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_tank2ValveStateNode<span class="operator">.</span>data()<span class="operator">,</span>
+                          <span class="operator">&amp;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span><span class="operator">::</span>enableMonitoringFinished<span class="operator">,</span>
+                          <span class="keyword">this</span><span class="operator">,</span>
+                          <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished);
+     }
+
+     <span class="keyword">if</span> (state <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState<span class="operator">::</span>Connecting)
+         setMessage(u<span class="string">&quot;Connecting&quot;</span>_s);
+
+     <span class="keyword">if</span> (state <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState<span class="operator">::</span>Disconnected) {
+         setMessage(u<span class="string">&quot;Disconnected: %1&quot;</span>_s
+                    <span class="operator">.</span>arg(<span class="type"><a href="../qtcore/qmetaenum.html" translate="no">QMetaEnum</a></span><span class="operator">::</span>fromType<span class="operator">&lt;</span><span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientError<span class="operator">&gt;</span>()<span class="operator">.</span>valueToKey(
+                             <span class="keyword">static_cast</span><span class="operator">&lt;</span><span class="type">int</span><span class="operator">&gt;</span>(m_client<span class="operator">-</span><span class="operator">&gt;</span>error()))));
+     }
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>machineStateUpdated(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value)
+ {
+     Q_UNUSED(attr);
+     MachineState newState <span class="operator">=</span> <span class="keyword">static_cast</span><span class="operator">&lt;</span>MachineState<span class="operator">&gt;</span>(value<span class="operator">.</span>toUInt());
+     <span class="keyword">if</span> (newState <span class="operator">!</span><span class="operator">=</span> m_machineState) {
+         m_machineState <span class="operator">=</span> newState;
+         <span class="keyword">emit</span> machineStateChanged(m_machineState);
+     }
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>percentFilledTank1Updated(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value)
+ {
+     Q_UNUSED(attr);
+     m_percentFilledTank1 <span class="operator">=</span> value<span class="operator">.</span>toDouble();
+     <span class="keyword">emit</span> percentFilledTank1Changed(m_percentFilledTank1);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>percentFilledTank2Updated(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value)
+ {
+     Q_UNUSED(attr);
+     m_percentFilledTank2 <span class="operator">=</span> value<span class="operator">.</span>toDouble();
+     <span class="keyword">emit</span> percentFilledTank2Changed(m_percentFilledTank2);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>tank2TargetPercentUpdated(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value)
+ {
+     Q_UNUSED(attr);
+     m_tank2TargetPercent <span class="operator">=</span> value<span class="operator">.</span>toDouble();
+     <span class="keyword">emit</span> tank2TargetPercentChanged(m_tank2TargetPercent);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>tank2ValveStateUpdated(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>value)
+ {
+     Q_UNUSED(attr);
+     m_tank2ValveState <span class="operator">=</span> value<span class="operator">.</span>toBool();
+     <span class="keyword">emit</span> tank2ValveStateChanged(m_tank2ValveState);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>machineDesignationRead(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttributes attr)
+ {
+     <span class="keyword">if</span> (attr <span class="operator">&amp;</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value) { <span class="comment">// Make sure the value attribute has been read</span>
+         <span class="keyword">if</span> (m_machineDesignationNode<span class="operator">-</span><span class="operator">&gt;</span>attributeError(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value) <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good) { <span class="comment">// Make sure there was no error</span>
+             m_machineDesignation <span class="operator">=</span> m_machineDesignationNode<span class="operator">-</span><span class="operator">&gt;</span>attribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value)<span class="operator">.</span>toString(); <span class="comment">// Get the attribute from the cache</span>
+             <span class="keyword">emit</span> machineDesignationChanged(m_machineDesignation);
+         }
+     }
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>setpointWritten(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode status)
+ {
+     <span class="keyword">if</span> (attr <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value <span class="operator">&amp;</span><span class="operator">&amp;</span> status <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+         setMessage(u<span class="string">&quot;Setpoint successfully set&quot;</span>_s);
+     <span class="keyword">else</span> <span class="keyword">if</span> (attr <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value <span class="operator">&amp;</span><span class="operator">&amp;</span> status <span class="operator">!</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+         setMessage(u<span class="string">&quot;Failed to set setpoint&quot;</span>_s);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>handleMethodResult(<span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> methodNodeId<span class="operator">,</span>
+                                              <span class="keyword">const</span> <span class="type"><a href="../qtcore/qvariant.html" translate="no">QVariant</a></span> <span class="operator">&amp;</span>result<span class="operator">,</span>
+                                              <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode statusCode)
+ {
+     Q_UNUSED(result);
+
+     <span class="keyword">if</span> (methodNodeId <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;ns=2;s=Machine.Start&quot;</span>_s) {
+         <span class="keyword">if</span> (statusCode <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+             setMessage(u<span class="string">&quot;Pump successfully started&quot;</span>_s);
+         <span class="keyword">else</span>
+             setMessage(u<span class="string">&quot;Unable to start pump&quot;</span>_s);
+     } <span class="keyword">else</span> <span class="keyword">if</span> (methodNodeId <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;ns=2;s=Machine.Stop&quot;</span>_s) {
+         <span class="keyword">if</span> (statusCode <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+             setMessage(u<span class="string">&quot;Pump successfully stopped&quot;</span>_s);
+         <span class="keyword">else</span>
+             setMessage(u<span class="string">&quot;Unable to stop pump&quot;</span>_s);
+     } <span class="keyword">else</span> <span class="keyword">if</span> (methodNodeId <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;ns=2;s=Machine.FlushTank2&quot;</span>_s) {
+         <span class="keyword">if</span> (statusCode <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+             setMessage(u<span class="string">&quot;Flushing tank 2 successfully started&quot;</span>_s);
+         <span class="keyword">else</span>
+             setMessage(u<span class="string">&quot;Unable to flush tank 2&quot;</span>_s);
+     } <span class="keyword">else</span> <span class="keyword">if</span> (methodNodeId <span class="operator">=</span><span class="operator">=</span> u<span class="string">&quot;ns=2;s=Machine.Reset&quot;</span>_s) {
+         <span class="keyword">if</span> (statusCode <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good)
+             setMessage(u<span class="string">&quot;Simulation successfully reset&quot;</span>_s);
+         <span class="keyword">else</span>
+             setMessage(u<span class="string">&quot;Unable to reset simulation&quot;</span>_s);
+     }
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>enableMonitoringFinished(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute attr<span class="operator">,</span>
+                                                    <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode status)
+ {
+     Q_UNUSED(attr);
+     <span class="keyword">if</span> (<span class="operator">!</span>sender())
+         <span class="keyword">return</span>;
+     <span class="keyword">if</span> (status <span class="operator">=</span><span class="operator">=</span> <span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>UaStatusCode<span class="operator">::</span>Good) {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Monitoring successfully enabled for&quot;</span>
+                  <span class="operator">&lt;</span><span class="operator">&lt;</span> qobject_cast<span class="operator">&lt;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(sender())<span class="operator">-</span><span class="operator">&gt;</span>nodeId();
+     } <span class="keyword">else</span> {
+         <a href="../qtcore/qtlogging.html#qDebug" translate="no">qDebug</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Failed to enable monitoring for&quot;</span>
+                  <span class="operator">&lt;</span><span class="operator">&lt;</span> qobject_cast<span class="operator">&lt;</span><span class="type"><a href="qopcuanode.html" translate="no">QOpcUaNode</a></span> <span class="operator">*</span><span class="operator">&gt;</span>(sender())<span class="operator">-</span><span class="operator">&gt;</span>nodeId() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;:&quot;</span> <span class="operator">&lt;</span><span class="operator">&lt;</span> status;
+         setMessage(u<span class="string">&quot;Failed to enable monitoring&quot;</span>_s);
+     }
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>setBackends(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> <span class="operator">&amp;</span>backends)
+ {
+     <span class="keyword">if</span> (m_backends <span class="operator">!</span><span class="operator">=</span> backends) {
+         m_backends <span class="operator">=</span> backends;
+         <span class="keyword">emit</span> backendsChanged(m_backends);
+     }
+ }
+
+ <span class="type"><a href="../qtcore/qstringlist.html" translate="no">QStringList</a></span> OpcUaMachineBackend<span class="operator">::</span>backends() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_backends;
+ }
+
+ <span class="type">double</span> OpcUaMachineBackend<span class="operator">::</span>percentFilledTank1() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_percentFilledTank1;
+ }
+
+ <span class="type">double</span> OpcUaMachineBackend<span class="operator">::</span>percentFilledTank2() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_percentFilledTank2;
+ }
+
+ OpcUaMachineBackend<span class="operator">::</span>MachineState OpcUaMachineBackend<span class="operator">::</span>machineState() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_machineState;
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>machineWriteTank2TargetPercent(<span class="type">double</span> value)
+ {
+     <span class="keyword">if</span> (m_tank2TargetPercentNode)
+         m_tank2TargetPercentNode<span class="operator">-</span><span class="operator">&gt;</span>writeAttribute(<span class="type"><a href="qopcua.html" translate="no">QOpcUa</a></span><span class="operator">::</span>NodeAttribute<span class="operator">::</span>Value<span class="operator">,</span> value);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>startPump()
+ {
+     m_machineNode<span class="operator">-</span><span class="operator">&gt;</span>callMethod(u<span class="string">&quot;ns=2;s=Machine.Start&quot;</span>_s);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>stopPump()
+ {
+     <span class="keyword">if</span> (m_machineNode)
+         m_machineNode<span class="operator">-</span><span class="operator">&gt;</span>callMethod(u<span class="string">&quot;ns=2;s=Machine.Stop&quot;</span>_s);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>flushTank2()
+ {
+     <span class="keyword">if</span> (m_machineNode)
+         m_machineNode<span class="operator">-</span><span class="operator">&gt;</span>callMethod(u<span class="string">&quot;ns=2;s=Machine.FlushTank2&quot;</span>_s);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>resetSimulation()
+ {
+     <span class="keyword">if</span> (m_machineNode)
+         m_machineNode<span class="operator">-</span><span class="operator">&gt;</span>callMethod(u<span class="string">&quot;ns=2;s=Machine.Reset&quot;</span>_s);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>requestEndpointsFinished(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qlist.html" translate="no">QList</a></span><span class="operator">&lt;</span><span class="type"><a href="qopcuaendpointdescription.html" translate="no">QOpcUaEndpointDescription</a></span><span class="operator">&gt;</span> <span class="operator">&amp;</span>endpoints)
+ {
+     <span class="keyword">if</span> (endpoints<span class="operator">.</span>isEmpty()) {
+        <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;The server did not return any endpoints&quot;</span>;
+        clientStateHandler(<span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>ClientState<span class="operator">::</span>Disconnected);
+        <span class="keyword">return</span>;
+     }
+     m_client<span class="operator">-</span><span class="operator">&gt;</span>connectToEndpoint(endpoints<span class="operator">.</span>at(<span class="number">0</span>));
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>setMessage(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>message)
+ {
+     <span class="keyword">if</span> (message <span class="operator">!</span><span class="operator">=</span> m_message) {
+         m_message <span class="operator">=</span> message;
+         <span class="keyword">emit</span> messageChanged(m_message);
+     }
+ }
+
+ <span class="type">bool</span> OpcUaMachineBackend<span class="operator">::</span>successfullyCreated() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_successfullyCreated;
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> OpcUaMachineBackend<span class="operator">::</span>message() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_message;
+ }
+
+ <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> OpcUaMachineBackend<span class="operator">::</span>machineDesignation() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_machineDesignation;
+ }
+
+ <span class="type">bool</span> OpcUaMachineBackend<span class="operator">::</span>connected() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_connected;
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>connectToEndpoint(<span class="keyword">const</span> <span class="type"><a href="../qtcore/qstring.html" translate="no">QString</a></span> <span class="operator">&amp;</span>url<span class="operator">,</span> <span class="type"><a href="../qtcore/qttypes.html#qint32-typedef" translate="no">qint32</a></span> index)
+ {
+     <span class="keyword">if</span> (m_connected)
+         <span class="keyword">return</span>;
+
+     <span class="type"><a href="qopcuaprovider.html" translate="no">QOpcUaProvider</a></span> provider;
+
+     <span class="keyword">if</span> (index <span class="operator">&lt;</span> <span class="number">0</span> <span class="operator">|</span><span class="operator">|</span> index <span class="operator">&gt;</span><span class="operator">=</span> m_backends<span class="operator">.</span>size())
+         <span class="keyword">return</span>; <span class="comment">// Invalid index</span>
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_client <span class="operator">|</span><span class="operator">|</span> (m_client <span class="operator">&amp;</span><span class="operator">&amp;</span> m_client<span class="operator">-</span><span class="operator">&gt;</span>backend() <span class="operator">!</span><span class="operator">=</span> m_backends<span class="operator">.</span>at(index))) {
+         m_client<span class="operator">.</span>reset(provider<span class="operator">.</span>createClient(m_backends<span class="operator">.</span>at(index)));
+         <span class="keyword">if</span> (m_client) {
+             <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_client<span class="operator">.</span>data()<span class="operator">,</span>
+                              <span class="operator">&amp;</span><span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>endpointsRequestFinished<span class="operator">,</span>
+                              <span class="keyword">this</span><span class="operator">,</span>
+                              <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>requestEndpointsFinished);
+             <span class="type"><a href="../qtcore/qobject.html" translate="no">QObject</a></span><span class="operator">::</span>connect(m_client<span class="operator">.</span>data()<span class="operator">,</span>
+                              <span class="operator">&amp;</span><span class="type"><a href="qopcuaclient.html" translate="no">QOpcUaClient</a></span><span class="operator">::</span>stateChanged<span class="operator">,</span>
+                              <span class="keyword">this</span><span class="operator">,</span>
+                              <span class="operator">&amp;</span>OpcUaMachineBackend<span class="operator">::</span>clientStateHandler);
+         }
+     }
+
+     <span class="keyword">if</span> (<span class="operator">!</span>m_client) {
+         <a href="../qtcore/qtlogging.html#qWarning" translate="no">qWarning</a>() <span class="operator">&lt;</span><span class="operator">&lt;</span> <span class="string">&quot;Could not create client&quot;</span>;
+         m_successfullyCreated <span class="operator">=</span> <span class="keyword">false</span>;
+         <span class="keyword">return</span>;
+     }
+
+     m_successfullyCreated <span class="operator">=</span> <span class="keyword">true</span>;
+     m_client<span class="operator">-</span><span class="operator">&gt;</span>requestEndpoints(url);
+ }
+
+ <span class="type">void</span> OpcUaMachineBackend<span class="operator">::</span>disconnectFromEndpoint()
+ {
+     <span class="keyword">if</span> (m_connected)
+         m_client<span class="operator">-</span><span class="operator">&gt;</span>disconnectFromEndpoint();
+ }
+
+ <span class="type">bool</span> OpcUaMachineBackend<span class="operator">::</span>tank2ValveState() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_tank2ValveState;
+ }
+
+ <span class="type">double</span> OpcUaMachineBackend<span class="operator">::</span>tank2TargetPercent() <span class="keyword">const</span>
+ {
+     <span class="keyword">return</span> m_tank2TargetPercent;
+ }
+</pre>

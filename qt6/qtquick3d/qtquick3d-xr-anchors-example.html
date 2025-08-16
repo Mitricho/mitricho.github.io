@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-examples-xranchors.qdoc -->
+  <meta name="description" content="Demonstrates how to use spatial anchors in Qt Quick 3D XR.">
+  <title>Qt Quick 3D - XR Spatial Anchors Example | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li><a href="quick3d-examples.html">Qt Quick 3D Examples and Tutorials</a></li>
+<li>Qt Quick 3D - XR Spatial Anchors Example</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Qt Quick 3D - XR Spatial Anchors Example</h1>
+<!-- $$$xr_anchors-brief -->
+<p>Demonstrates how to use spatial anchors in Qt Quick 3D XR.</p>
+<!-- @@@xr_anchors -->
+<!-- $$$xr_anchors-description -->
+<div class="descr" id="details">
+<p class="centerAlign"><img src="images/xranchors-example.jpg" alt="" /></p><p>This example shows how to use <a href="qml-qtquick3d-xr-xrspatialanchorlistmodel.html" translate="no">XrSpatialAnchorListModel</a> to display and interact with real physical objects in the environment. It supports both passthrough mode and fully immersive mode. The basic structure follows the <a href="qtquick3d-xr-simple-example.html">xr_simple</a> example.</p>
+<p>The most relevant part of the example is a <a href="qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a> on an <a href="qml-qtquick3d-xr-xrspatialanchorlistmodel.html" translate="no">XrSpatialAnchorListModel</a>. For each anchor, we create a box that fills the volume of the anchor with a color. The choice of color depends on the classification of the anchor. This box is invisible in passthrough mode. In addition, we visualize the position and orientation of the anchor with small boxes:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-repeater3d.html" translate="no">Repeater3D</a></span> {
+     <span class="name">id</span>: <span class="name">spatialAnchors</span>
+     <span class="name">model</span>: <span class="name">XrSpatialAnchorListModel</span> {
+     }
+     <span class="name">delegate</span>: <span class="name">Node</span> {
+         <span class="name">id</span>: <span class="name">anchorNode</span>
+         required property <span class="type"><a href="qml-qtquick3d-xr-xrspatialanchor.html" translate="no">XrSpatialAnchor</a></span> <span class="name">anchor</span>
+         required property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">index</span>
+         <span class="name">position</span>: <span class="name">anchor</span>.<span class="name">position</span>
+         <span class="name">rotation</span>: <span class="name">anchor</span>.<span class="name">rotation</span>
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="name">pickable</span>: <span class="number">true</span>
+             <span class="name">z</span>: <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">has3DBounds</span> ? <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">offset3D</span>.<span class="name">z</span> <span class="operator">/</span> <span class="number">2</span> <span class="operator">*</span> <span class="number">100</span> : <span class="number">0</span> <span class="comment">// Position is center of 2D surface also for 3D anchors</span>
+             <span class="name">scale</span>: <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">has3DBounds</span> ? <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">extent3D</span> : <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">extent2D</span>.<span class="name">x</span>, <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">extent2D</span>.<span class="name">y</span>, <span class="number">0.01</span>)
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="comment">// Make anchor objects invisible in passthrough mode</span>
+                 <span class="name">baseColor</span>: <span class="name">xrView</span>.<span class="name">passthroughEnabled</span> ? <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>) : <span class="name">anchorColor</span>(<span class="name">anchor</span>)
+                 <span class="name">alphaMode</span>: <span class="name">xrView</span>.<span class="name">passthroughEnabled</span> ? <span class="name">PrincipledMaterial</span>.<span class="name">Blend</span> : <span class="name">PrincipledMaterial</span>.<span class="name">Opaque</span>
+                 <span class="name">roughness</span>: <span class="number">0.7</span>
+             }
+             <span class="name">source</span>: <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">has3DBounds</span> ? <span class="string">&quot;#Cube&quot;</span> : <span class="string">&quot;#Rectangle&quot;</span>
+             property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">anchorInfo</span>: <span class="string">&quot;anchor #&quot;</span> <span class="operator">+</span> <span class="name">anchorNode</span>.<span class="name">index</span> <span class="operator">+</span> <span class="string">&quot;, &quot;</span> <span class="operator">+</span> <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">classificationString</span>
+         }
+
+         <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+             <span class="comment">// Visualize anchor orientation</span>
+             <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                 <span class="name">baseColor</span>: <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">has3DBounds</span> ? <span class="name">anchorNode</span>.<span class="name">anchor</span>.<span class="name">has2DBounds</span> ? <span class="string">&quot;green&quot;</span> : <span class="string">&quot;red&quot;</span> : <span class="string">&quot;blue&quot;</span>
+             }
+             <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.05</span>, <span class="number">0.05</span>, <span class="number">0.05</span>)
+             <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+
+             <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;black&quot;</span>
+                 }
+                 <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.1</span>, <span class="number">3</span>, <span class="number">0.1</span>)
+                 <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+                 <span class="name">y</span>: <span class="number">150</span>
+             }
+             <span class="type"><a href="qml-qtquick3d-model.html" translate="no">Model</a></span> {
+                 <span class="name">materials</span>: <span class="name">PrincipledMaterial</span> {
+                     <span class="name">baseColor</span>: <span class="string">&quot;white&quot;</span>
+                 }
+                 <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">3</span>, <span class="number">0.1</span>, <span class="number">0.1</span>)
+                 <span class="name">source</span>: <span class="string">&quot;#Cube&quot;</span>
+                 <span class="name">x</span>: <span class="number">150</span>
+             }
+         }
+         <span class="name">visible</span>: <span class="name">anchor</span>.<span class="name">has2DBounds</span> <span class="operator">||</span> <span class="name">anchor</span>.<span class="name">has3DBounds</span>
+     }
+ }
+</pre>
+<p>The box for the anchor is pickable and has a string property <code translate="no">anchorInfo</code> that contains the <a href="qml-qtquick3d-xr-xrspatialanchor.html#classificationString-prop" translate="no">classificationString</a> of the anchor. We then perform picking based on the controller's position. (See the <a href="qtquick3d-xr-input-example.html">xr_input example</a> for details.) If we hit one of the anchor boxes, we show a label with the anchor information:</p>
+<pre class="qml" translate="no">
+ <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+     <span class="name">id</span>: <span class="name">labelNode</span>
+     <span class="name">position</span>: <span class="name">rightController</span>.<span class="name">position</span>
+     <span class="name">rotation</span>: <span class="name">rightController</span>.<span class="name">rotation</span>
+
+     property <span class="type"><a href="../qtqml/qml-int.html" translate="no">int</a></span> <span class="name">numAnchors</span>: <span class="name">spatialAnchors</span>.<span class="name">count</span>
+     property <span class="type"><a href="../qtqml/qml-string.html" translate="no">string</a></span> <span class="name">anchorInfo</span>: <span class="string">&quot;(no anchor)&quot;</span>
+
+     <span class="type"><a href="qml-qtquick3d-node.html" translate="no">Node</a></span> {
+         <span class="name">y</span>: <span class="number">15</span>
+         <span class="name">x</span>: -<span class="number">15</span>
+         <span class="name">scale</span>: <span class="name">Qt</span>.<span class="name">vector3d</span>(<span class="number">0.1</span>, <span class="number">0.1</span>, <span class="number">0.1</span>)
+         <span class="type"><a href="../qtquick/qml-qtquick-rectangle.html" translate="no">Rectangle</a></span> {
+             <span class="name">width</span>: <span class="number">300</span>
+             <span class="name">height</span>: <span class="number">100</span>
+             <span class="name">color</span>: <span class="name">Qt</span>.<span class="name">rgba</span>(<span class="number">1</span>,<span class="number">0.9</span>,<span class="number">0.8</span>,<span class="number">0.7</span>)
+             <span class="name">radius</span>: <span class="number">10</span>
+             <span class="name">border</span>.width: <span class="number">2</span>
+             <span class="name">border</span>.color: <span class="string">&quot;blue&quot;</span>
+             <span class="type"><a href="../qtquick/qml-qtquick-text.html" translate="no">Text</a></span> {
+                 <span class="name">anchors</span>.fill: <span class="name">parent</span>
+                 <span class="name">anchors</span>.margins: <span class="number">10</span>
+                 <span class="name">textFormat</span>: <span class="name">Text</span>.<span class="name">StyledText</span>
+                 <span class="name">text</span>: <span class="string">&quot;Total anchors: &quot;</span> <span class="operator">+</span> <span class="name">labelNode</span>.<span class="name">numAnchors</span> <span class="operator">+</span> <span class="string">&quot;&lt;br&gt;&quot;</span> <span class="operator">+</span> <span class="string">&quot;Selected: &quot;</span> <span class="operator">+</span> <span class="name">labelNode</span>.<span class="name">anchorInfo</span>
+             }
+         }
+     }
+ }
+</pre>
+<p><a href="https://code.qt.io/cgit/qt/qtquick3d.git/tree/examples/quick3d/xr_anchors?h=6.9">Example project @ code.qt.io</a></p>
+</div>
+<!-- @@@xr_anchors -->
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>

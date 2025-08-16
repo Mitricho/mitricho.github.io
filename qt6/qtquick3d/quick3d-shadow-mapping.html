@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!-- qtquick3d-shadow-mapping.qdoc -->
+  <title>Shadow Mapping | Qt Quick 3D | Qt 6.9.0</title>
+  <link rel="stylesheet" type="text/css" href="style/offline-simple.css" />
+  <script type="text/javascript">
+    document.getElementsByTagName("link").item(0).setAttribute("href", "style/offline.css");
+    // loading style sheet breaks anchors that were jumped to before
+    // so force jumping to anchor again
+    setTimeout(function() {
+        var anchor = location.hash;
+        // need to jump to different anchor first (e.g. none)
+        location.hash = "#";
+        setTimeout(function() {
+            location.hash = anchor;
+        }, 0);
+    }, 0);
+  </script>
+</head>
+<body>
+<div class="header" id="qtdocheader">
+    <div class="main">
+    <div class="main-rounded">
+        <div class="navigationbar">
+        <ul>
+<li>Qt 6.9</li>
+<li><a href="qtquick3d-index.html">Qt Quick 3D</a></li>
+<li>Shadow Mapping</li>
+<li id="buildversion"><a href="qtquick3d-index.html">Qt Quick 3D | Commercial or GPLv3</a></li>
+    </ul>
+    </div>
+</div>
+<div class="content">
+<div class="line">
+<div class="content mainContent">
+  <link rel="prev" href="quick3d-lightmap.html" />
+  <link rel="next" href="qtquick3d-tool-instancer.html" />
+<p class="naviNextPrevious headerNavi">
+<a class="prevPage" href="quick3d-lightmap.html">Lightmaps and Global Illumination</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-instancer.html">Instancer Tool</a>
+</p>
+<div class="sidebar">
+<div class="toc">
+<h3 id="toc">Contents</h3>
+<ul>
+<li class="level1"><a href="#introduction">Introduction</a></li>
+<li class="level1"><a href="#directional-lights">Directional Lights</a></li>
+<li class="level2"><a href="#cascaded-shadow-maps">Cascaded Shadow Maps</a></li>
+<li class="level1"><a href="#point-light">Point Light</a></li>
+<li class="level1"><a href="#spot-light">Spot Light</a></li>
+<li class="level1"><a href="#performance-and-scene-tweaking">Performance and scene tweaking</a></li>
+<li class="level2"><a href="#shadow-bias">Shadow bias</a></li>
+<li class="level2"><a href="#shadowmap-resolution">Shadowmap resolution</a></li>
+<li class="level2"><a href="#soft-shadows-quality">Soft shadows quality</a></li>
+<li class="level2"><a href="#shadowmap-far-distance">Shadowmap far distance</a></li>
+<li class="level2"><a href="#shadowmap-bit-depth">Shadowmap bit depth</a></li>
+</ul>
+</div>
+<div class="sidebar-content" id="sidebar-content"></div></div>
+<h1 class="title">Shadow Mapping</h1>
+<!-- $$$quick3d-shadow-mapping-description -->
+<div class="descr" id="details">
+<h2 id="introduction">Introduction</h2>
+<p><a href="https://en.wikipedia.org/wiki/Shadow_mapping">Shadow-mapping</a> is a common technique for providing real time shadows to a 3D scene. It works by rendering a depth map texture from the light source's point of view. Then, when shading a pixel of a 3D model its depth value is compared to the depth map and is shaded darker if it is in shadow or lighter if it is lit by the light.</p>
+<p>Shadows add to the perceptual realism of a scene and makes it easier to judge the relative positions of objects.</p>
+<p class="centerAlign"><img src="images/shadows-shadow-no-shadow.webp" alt="" /></p><p>Notice how in the left scene in the image it is impossible to tell how far from the plane the objects are but in the right scene the shadows makes this easy.</p>
+<p>Qt provides support for shadow mapping for all our three light types, <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a>, <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> and <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a>. To activate shadows in your scene you need to first set the light to cast shadows by setting <a href="qml-qtquick3d-light.html#castsShadow-prop" translate="no">castsShadow</a> to <code translate="no">true</code>. You can then control which Model's will cast and receive shadows by setting the <a href="qml-qtquick3d-model.html#castsShadows-prop" translate="no">castsShadows</a> and <a href="qml-qtquick3d-model.html#receivesShadows-prop" translate="no">receivesShadows</a> to <code translate="no">true</code> or <code translate="no">false</code>.</p>
+<h2 id="directional-lights">Directional Lights</h2>
+<p>The directional light emits light in one direction from an unidentifiable source located infinitely far away. This is similar to the way sunlight works in real life. A directional light has infinite range and does not diminish.</p>
+<h3 id="cascaded-shadow-maps">Cascaded Shadow Maps</h3>
+<p>One problem with a <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> is that it renders the whole scene from the point of view of the light. This can lead to blocky looking shadows when the size of the shadowmap is not adequate. One option to get better rendering quality is to use Cascaded Shadow Maps (CSM). Qt supports a version of CSM called Parallell Split Shadow Maps (PSSM). PSSM works by splitting the view frustum into several parts and rendering a shadowmap for each part.</p>
+<p class="centerAlign"><img src="images/quick3d-pssm.webp" alt="" /></p><p>This picture shows an abstract image of a view frustum with PSSM splits. It has two splits ending up in three cascades.</p>
+<p>This way you can get better shadowmap resolution closer to the camera where the visual quality is more noticeable and lower resolution further from the camera where the visual quality is less noticeable.</p>
+<p class="centerAlign"><img src="images/shadows-0csm-3csm.webp" alt="" /></p><p>The above picture shows a shadowmap without any splits (left) and a shadowmap with 3 splits (right).</p>
+<p>You can control the number of cascade splits by the <a href="qml-qtquick3d-directionallight.html#csmNumSplits-prop" translate="no">csmNumSplits</a> property and where the splits are by the <a href="qml-qtquick3d-directionallight.html#csmSplit1-prop" translate="no">csmSplit1</a>, <a href="qml-qtquick3d-directionallight.html#csmSplit2-prop" translate="no">csmSplit2</a> and <a href="qml-qtquick3d-directionallight.html#csmSplit3-prop" translate="no">csmSplit3</a> properties. To get nice looking transitions between the splits you can specify a certain amount of blending between them with the <a href="qml-qtquick3d-directionallight.html#csmBlendRatio-prop" translate="no">csmBlendRatio</a> property.</p>
+<p class="centerAlign"><img src="images/shadows-seam.webp" alt="" /></p><p>The above picture shows a zoomed in view of a cascade seam with no blending active.</p>
+<p>Keep in mind that for every split you add the application has to render another shadowmap which will affect performance negatively. The size of the blend area will affect performance so keep it as small as possible.</p>
+<h2 id="point-light">Point Light</h2>
+<p>The <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> can be described as a sphere, emitting light with equal strength in all directions from the center of the light up to a given radius. This is similar to the way a light bulb emits light.</p>
+<p class="centerAlign"><img src="images/shadows-point-light.webp" alt="" /></p><p>The <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> renders its shadowmap into a cubemap which means that is does six render passes. This can be quite computationally expensive.</p>
+<h2 id="spot-light">Spot Light</h2>
+<p>The <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a> emits light towards one direction in a cone shape, which is defined by the <a href="qml-qtquick3d-spotlight.html" translate="no">coneAngle</a> property. The light intensity diminishes when approaching the <a href="qml-qtquick3d-spotlight.html" translate="no">coneAngle</a>. The angle at which the light intensity starts to diminish is defined by <a href="qml-qtquick3d-spotlight.html" translate="no">innerConeAngle</a>. This is similar to how a flashlight or a spot-light emits light.</p>
+<p class="centerAlign"><img src="images/shadows-spot-light.webp" alt="" /></p><p>Unlike the <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>, the <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a> renders its shadowmap into a single depth map.</p>
+<h2 id="performance-and-scene-tweaking">Performance and scene tweaking</h2>
+<p>While Qt tries to provide sensible default values for the properties related to shadowmapping there is usually some need to tweak them to fit the specific scene. Especially if you have a scene that is much smaller or bigger than what is expected. The following section will go into more detail of how you can tweak the values to make the shadow map look good while still maintaining as good performance as possible.</p>
+<h3 id="shadow-bias">Shadow bias</h3>
+<p><a href="qml-qtquick3d-light.html#shadowBias-prop" translate="no">Shadow bias</a> is a way to remove so-called shadow-acne which are false shadows that typically appear in certain patterns. Shadow bias offsets the shadow map depth texture in a way that shadows appear further from the shadowing object and this often fixes the shadow-acne. The draw back is that if you have too much shadow bias then you can get an effect called peter panning where the shadow is too far away from the shadowing object. It is also possible to reduce shadow acne by increasing the shadowmap resolution.</p>
+<p class="centerAlign"><img src="images/shadows-bias.webp" alt="" /></p><p>The above image shows a scene with 0 shadow bias (left) vs 10 shadow bias (right). The left scene has some false shadows on the top of the cones and cylinders.</p>
+<h3 id="shadowmap-resolution">Shadowmap resolution</h3>
+<p>The resolution/quality of the shadowmap is controlled by the <a href="qml-qtquick3d-light.html#shadowMapQuality-prop" translate="no">shadowMapQuality</a> property. A higher shadowmap quality decreases the blockiness of the shadows but is more expensive to render so set it as low as possible while still maintaining the needed visual quality.</p>
+<p class="centerAlign"><img src="images/shadows-low-high-resolution.webp" alt="" /></p><p>The above image shows a scene with a low shadowmap resolution vs a high shadowmap resolution.</p>
+<h3 id="soft-shadows-quality">Soft shadows quality</h3>
+<p>Soft shadows are a way to approximate the way shadows look in real life where they fade from being harder to softer at the edges. The soft shadow quality is controlled by the <a href="qml-qtquick3d-light.html" translate="no">softShadowQuality</a> property. It supports hard shadows with no softness as well as percentage-close filtering (PCF) soft shadows of varying quality. The hard shadows are the cheapest to render and PCF gets more and more expensive the higher quality it is. To control the radius of the soft shadow use the <a href="qml-qtquick3d-light.html#pcfFactor-prop" translate="no">pcfFactor</a> property. The value of <a href="qml-qtquick3d-light.html#pcfFactor-prop" translate="no">pcfFactor</a> does not impact the rendering speed but the higher it is the higher the soft shadow quality needs to be to look good.</p>
+<p class="centerAlign"><img src="images/shadows-hard-soft.webp" alt="" /></p><p>The above image shows a scene with a <a href="qml-qtquick3d-light.html" translate="no">softShadowQuality</a> <code translate="no">Light.Hard</code> shadow on the left and a scene with a <a href="qml-qtquick3d-light.html" translate="no">softShadowQuality</a> <code translate="no">Light.PCF32</code> and pcfRadius <code translate="no">10</code> on the right.</p>
+<h3 id="shadowmap-far-distance">Shadowmap far distance</h3>
+<p>The property <a href="qml-qtquick3d-light.html" translate="no">shadowMapFar</a> can be used to control the maximum distance of the shadow map. This property works slightly different for <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a> and <a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a> vs <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a>.</p>
+<p>For <a href="qml-qtquick3d-pointlight.html" translate="no">PointLight</a>/<a href="qml-qtquick3d-spotlight.html" translate="no">SpotLight</a> it determines how big the bounding box of the rendered shadow should be, but for the <a href="qml-qtquick3d-directionallight.html" translate="no">DirectionalLight</a> it defines how far from the scene's camera the shadow map should cover in the scene.</p>
+<p class="centerAlign"><img src="images/shadows-near-far.webp" alt="" /></p><p>The above image shows the same scene with the same directional light but two different values for <a href="qml-qtquick3d-light.html" translate="no">shadowMapFar</a>.</p>
+<h3 id="shadowmap-bit-depth">Shadowmap bit depth</h3>
+<p>There are certain scenarios where you have a very big scene causing the shadowmap to cover a big area in its depth axis. For instance if you have many objects far away from the camera view that are still casting shadows and need to be part of the shadow map bounds. What can happen in this case is that even with a higher {Light::}{shadowBias} the scene still has banding artifacts. One way of fixing this is by using 32-bit depth on the shadowmap. Setting the property {Light::}{use32BitShadowmap} to <code translate="no">true</code> will enable this on the specific light.</p>
+<p class="centerAlign"><img src="images/shadows-32bit-vs-16bit.webp" alt="" /></p><p>The above image shows the same scene with the same directional light but one using a 32-bit shadowmap and the other using a 16-bit shadowmap.</p>
+</div>
+<p><b>See also </b><a href="quick3d-asset-conditioning-ibl.html">Using Image-Based Lighting</a>, <a href="quick3d-lightmap.html">Lightmaps and Global Illumination</a>, and <a href="qtquick3d-cascadedshadowmaps-example.html">Qt Quick 3D - Cascaded Shadow Maps Example</a>.</p>
+<!-- @@@quick3d-shadow-mapping -->
+<p class="naviNextPrevious footerNavi">
+<a class="prevPage" href="quick3d-lightmap.html">Lightmaps and Global Illumination</a>
+<span class="naviSeparator">  &#9702;  </span>
+<a class="nextPage" href="qtquick3d-tool-instancer.html">Instancer Tool</a>
+</p>
+        </div>
+       </div>
+   </div>
+   </div>
+</div>
+<div class="footer">
+   <p>
+   <abbr title="Copyright">&copy;</abbr> 2024 <span translate="no">The Qt Company Ltd.</span>
+   Documentation contributions included herein are the copyrights of
+   their respective owners.<br/>    The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the <span translate="no">Free Software Foundation</span>.<br/>    <span translate="no">Qt</span> and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of <span translate="no">The Qt Company Ltd.</span> in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+</div>
+</body>
+</html>
