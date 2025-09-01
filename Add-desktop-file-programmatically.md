@@ -1,3 +1,4 @@
+```
 #include <QStandardPaths>
 #include <QFile>
 #include <QTextStream>
@@ -38,3 +39,4 @@ void createDesktopFile() {
         qDebug() << "Failed to create desktop file:" << desktopFile.errorString();
     }
 }
+```
