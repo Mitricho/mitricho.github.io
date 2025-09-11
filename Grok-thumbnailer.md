@@ -1,6 +1,5 @@
 Below is an updated version of the C++ Qt6 function to obtain a thumbnail for an image or video file on Linux, with enhanced error handling. The function now includes comprehensive error checking, logging, and a custom exception class for better error reporting. The `artifact_id` remains the same as the previous artifact since this is an update to the existing code.
-
-<xaiArtifact artifact_id="caac5bfe-189b-4e01-91b1-0d27d3c0fca6" artifact_version_id="ba9cb327-251d-4ed0-8690-732c77762619" title="thumbnailgenerator.cpp" contentType="text/x-c++src">
+```
 #include <QString>
 #include <QFileInfo>
 #include <QDir>
