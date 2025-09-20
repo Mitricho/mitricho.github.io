@@ -1,6 +1,5 @@
 The provided code is mostly compatible with FFmpeg 6.1, but I'll ensure it uses the latest FFmpeg 6.1 API conventions, particularly focusing on channel layout handling, as FFmpeg 6.1 introduced changes in `AVChannelLayout`. Below is the updated C++ class for extracting audio and generating waveform images, ensuring compatibility with FFmpeg 6.1. The QML integration and main.cpp remain unchanged, as they are not affected by FFmpeg API changes.
-
-<xaiArtifact artifact_id="32474950-48b4-49aa-a1ed-00f59bbd27e7" artifact_version_id="edc4b5ca-324c-44ff-990d-ee46ea56ac83" title="AudioWaveformExtractor.cpp" contentType="text/x-c++src">
+```
 #include <QObject>
 #include <QImage>
 #include <QPainter>
