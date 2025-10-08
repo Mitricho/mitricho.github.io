@@ -141,3 +141,22 @@
 - Измените время ожидания (сейчас 5000ms = 5 секунд)
 
 Все ресурсы самодостаточны и не требуют внешних зависимостей.
+
+
+<?php
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+$host = $_SERVER['HTTP_HOST'];
+$uri = $_SERVER['REQUEST_URI'];
+$current_url = $protocol . $host . $uri;
+?>
+
+
+    <?php
+    $search_string = "example";
+    if (strpos($current_url, $search_string) !== false) {
+        echo "The URL contains '{$search_string}'.";
+    } else {
+        echo "The URL does not contain '{$search_string}'.";
+    }
+    ?>
+
