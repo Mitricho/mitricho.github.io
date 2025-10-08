@@ -151,7 +151,7 @@ $current_url = $protocol . $host . $uri;
 ?>
 
 
-    <?php
+<?php
     $search_string = "example";
     if (strpos($current_url, $search_string) !== false) {
         echo "The URL contains '{$search_string}'.";
@@ -159,4 +159,6 @@ $current_url = $protocol . $host . $uri;
         echo "The URL does not contain '{$search_string}'.";
     }
     ?>
+
+
 
