@@ -1,4 +1,4 @@
-You're very welcome! I'm glad you like the implementation.  
+You're very welcome! I'm glad you like the implementation. 
 
 Here are a few additional tips and enhancements you might find useful:
 
