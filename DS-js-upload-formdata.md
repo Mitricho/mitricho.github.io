@@ -172,7 +172,7 @@ function sendDataSimple(text, url, imgId) {
 
 
 --------------
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
