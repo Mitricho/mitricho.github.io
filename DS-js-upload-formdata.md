@@ -223,12 +223,14 @@ function sendDataSimple(text, url, imgId) {
 </html>
 ```
 
-'POST': In PHP, this checks if the current request is a POST request, indicating a form submission.
-$_POST['name'] and $_POST['email']: These are used to access the data sent from the FormData object, using the name attributes of your form fields as keys.
-exit;: After processing the POST request, exit; prevents the rest of the HTML and JavaScript from being sent back in the AJAX response, which is crucial for handling the response correctly on the client-side.
+```'POST'```: In PHP, this checks if the current request is a POST request, indicating a form submission.
 
-```
 
+```$_POST['name']``` and ```$_POST['email']```: These are used to access the data sent from the FormData object, using the name attributes of your form fields as keys.
+
+```exit;```: After processing the POST request, exit; prevents the rest of the HTML and JavaScript from being sent back in the AJAX response, which is crucial for handling the response correctly on the client-side.
+
+```php
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the form was submitted via POST
@@ -251,4 +253,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-------------
