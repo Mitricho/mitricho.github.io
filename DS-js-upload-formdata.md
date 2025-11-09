@@ -167,3 +167,88 @@ function sendDataSimple(text, url, imgId) {
 5. **Fetch API**: Асинхронная отправка данных на сервер
 
 Выберите первую версию, если нужно отправлять изображение как файл, или вторую упрощенную версию, если достаточно отправить base64 строку как есть.
+
+
+
+
+--------------
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Submitting Form</title>
+</head>
+<body>
+    <form id="myForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+            const formData = new FormData(form); // Create FormData from the form
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.text(); // Or response.json() if your PHP returns JSON
+                document.getElementById('response').innerHTML = result;
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('response').innerHTML = `<p style="color: red;">An error occurred: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+'POST': In PHP, this checks if the current request is a POST request, indicating a form submission.
+$_POST['name'] and $_POST['email']: These are used to access the data sent from the FormData object, using the name attributes of your form fields as keys.
+exit;: After processing the POST request, exit; prevents the rest of the HTML and JavaScript from being sent back in the AJAX response, which is crucial for handling the response correctly on the client-side.
+
+```
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the form was submitted via POST
+    if (isset($_POST['name']) && isset($_POST['email'])) {
+        $name = htmlspecialchars($_POST['name']);
+        $email = htmlspecialchars($_POST['email']);
+
+        // Process the data (e.g., save to a database, send email)
+        // For this example, we'll just echo a message back
+        echo "<h3>Thank you, $name!</h3>";
+        echo "<p>Your email address ($email) has been received.</p>";
+    } else {
+        echo "<p style='color: red;'>Missing form data.</p>";
+    }
+    exit; // Important: Stop further execution after handling the AJAX request
+}
+// The HTML form and JavaScript will follow here if not a POST request
+?>
+```
+
+
+
+------------
