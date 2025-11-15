@@ -1,4 +1,4 @@
-```
+```C++
 // Saving QPainterPath to a file
 QFile file("path.dat");
 if (file.open(QIODevice::WriteOnly)) {
