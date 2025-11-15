@@ -13,7 +13,7 @@ if (file.open(QIODevice::WriteOnly)) {
 }
 ```
 
-```
+```C++
 // Loading QPainterPath from a file
 QFile file_in("path.dat");
 if (file_in.open(QIODevice::ReadOnly)) {
