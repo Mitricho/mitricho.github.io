@@ -1,3 +1,4 @@
+```
 // Saving QPainterPath to a file
 QFile file("path.dat");
 if (file.open(QIODevice::WriteOnly)) {
@@ -10,7 +11,9 @@ if (file.open(QIODevice::WriteOnly)) {
     stream << path; // Serialize the path
     file.close();
 }
+```
 
+```
 // Loading QPainterPath from a file
 QFile file_in("path.dat");
 if (file_in.open(QIODevice::ReadOnly)) {
@@ -20,3 +23,4 @@ if (file_in.open(QIODevice::ReadOnly)) {
     file_in.close();
     // Use loadedPath for drawing or further processing
 }
+```
