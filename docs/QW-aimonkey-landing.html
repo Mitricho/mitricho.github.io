@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Code Monkey</title>
+  <style>
+    :root {
+      --bg-color: #0a0a14;
+      --text-color: #f0f0ff;
+      --accent-gradient-start: #00f3ff;
+      --accent-gradient-end: #ff00c8;
+      --menu-bg: rgba(20, 20, 40, 0.95);
+      --border-color: rgba(100, 100, 255, 0.2);
+      --font-size-hero: clamp(2.5rem, 8vw, 4.5rem);
+      --font-size-h2: clamp(1.5rem, 5vw, 2.5rem);
+      --font-size-body: clamp(0.9rem, 3vw, 1.1rem);
+      --spacing-sm: 0.75rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 3rem;
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: min(90%, 1200px);
+      margin: 0 auto;
+    }
+
+    /* Header Styles */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) var(--spacing-sm);
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .logo-placeholder {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--bg-color);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hamburger {
+      width: 30px;
+      height: 24px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-left: auto;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      border-radius: 2px;
+      transition: all var(--transition-speed) ease;
+      transform-origin: center;
+    }
+
+    /* Исправленный ровный крестик */
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translateY(10.5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-10.5px);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      height: 100vh;
+      background: var(--menu-bg);
+      backdrop-filter: blur(10px);
+      border-left: 1px solid var(--border-color);
+      padding: var(--spacing-lg) var(--spacing-md);
+      transition: right var(--transition-speed) ease;
+      z-index: 2099;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .mobile-menu a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1.25rem;
+      padding: var(--spacing-sm) 0;
+      position: relative;
+      font-weight: 500;
+    }
+
+    .mobile-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      transition: width var(--transition-speed) ease;
+    }
+
+    .mobile-menu a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: var(--spacing-lg) 0;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: var(--font-size-hero);
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.1;
+      text-decoration:uppercase!important;
+    }
+
+    .hero-subtitle {
+      font-size: var(--font-size-body);
+      max-width: 700px;
+      margin: 0 auto var(--spacing-lg);
+      opacity: 0.9;
+    }
+
+    /* Features Section */
+    .features {
+      padding: var(--spacing-lg) 0;
+    }
+
+    .section-title {
+      font-size: var(--font-size-h2);
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+      background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    .feature-card {
+      background: rgba(20, 20, 40, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 243, 255, 0.15);
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-sm);
+      color: var(--text-color);
+    }
+
+    .feature-desc {
+      font-size: var(--font-size-body);
+      opacity: 0.85;
+    }
+
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: none;
+      }
+
+      .desktop-menu {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-left: auto;
+      }
+
+      .desktop-menu a {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        padding: 4px 0;
+      }
+
+      .desktop-menu a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+        transition: width var(--transition-speed) ease;
+      }
+
+      .desktop-menu a:hover::after {
+        width: 100%;
+      }
+    }
+    
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: table;
+  width: 100%;
+  height: 100%;
+  background-color: #111;  /* Background color */
+  color: #f2f2f2;  /* Text color */
+  line-height: 1.6;
+  position: relative;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+.lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: auto;
+  width: 90vw;
+  display: flex;
+  justify-content: space-between; /* Distribute lines evenly */
+}
+
+.line {
+  position: relative;
+  width: 1px;
+  height: 100%;
+  /*background: #ffffff;  /* Line color */
+  overflow: hidden;
+}
+
+.line::after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 15vh;
+  width: 100%;
+  top: -50%;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
+  animation: drop 7s 0s infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+}
+
+/* Different colors for each line's pseudo-element */
+.line:nth-child(1)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #FF4500 75%, #FF4500 100%);
+  animation-delay: 0.5s;
+}
+
+
+.line:nth-child(2)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #32CD32 75%, #32CD32 100%);
+  animation-delay: 1s;
+}
+
+.line:nth-child(3)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #1E90FF 75%, #1E90FF 100%);
+  animation-delay: 1.5s;
+}
+
+.line:nth-child(4)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #FFD700 75%, #FFD700 100%);
+  animation-delay: 2s;
+}
+
+.line:nth-child(5)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #8A2BE2 75%, #8A2BE2 100%);
+  animation-delay: 2.5s;
+}
+
+
+.line:nth-child(6)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #20B2AA 75%, #20B2AA 100%);
+  animation-delay: 3s;
+}
+
+.line:nth-child(7)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #DC143C 75%, #DC143C 100%);
+  animation-delay: 3.5s;
+}
+
+.line:nth-child(8)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #00FA9A 75%, #00FA9A 100%);
+  animation-delay: 4s;
+}
+
+.line:nth-child(9)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #FF1493 75%, #FF1493 100%);
+  animation-delay: 4.5s;
+}
+
+.line:nth-child(10)::after {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #00BFFF 75%, #00BFFF 100%);
+  animation-delay: 5s;
+}
+
+@keyframes drop {
+  0% {
+    top: -50%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
+  overflow: hidden;
+}
+
+.stars {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  background: white;
+  box-shadow: 2vw 5vh 2px white, 10vw 8vh 2px white, 15vw 15vh 1px white,
+    22vw 22vh 1px white, 28vw 12vh 2px white, 32vw 32vh 1px white,
+    38vw 18vh 2px white, 42vw 35vh 1px white, 48vw 25vh 2px white,
+    53vw 42vh 1px white, 58vw 15vh 2px white, 63vw 38vh 1px white,
+    68vw 28vh 2px white, 73vw 45vh 1px white, 78vw 32vh 2px white,
+    83vw 48vh 1px white, 88vw 20vh 2px white, 93vw 52vh 1px white,
+    98vw 35vh 2px white, 5vw 60vh 1px white, 12vw 65vh 2px white,
+    18vw 72vh 1px white, 25vw 78vh 2px white, 30vw 85vh 1px white,
+    35vw 68vh 2px white, 40vw 82vh 1px white, 45vw 92vh 2px white,
+    50vw 75vh 1px white, 55vw 88vh 2px white, 60vw 95vh 1px white,
+    65vw 72vh 2px white, 70vw 85vh 1px white, 75vw 78vh 2px white,
+    80vw 92vh 1px white, 85vw 82vh 2px white, 90vw 88vh 1px white,
+    95vw 75vh 2px white;
+  animation: twinkle 8s infinite linear;
+}
+
+  </style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="lines">
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+  <div class="line"></div>
+</div>
+
+
+<!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo-container">
+        <div class="logo-placeholder">AI</div>
+        <div class="logo-text">Code Monkey</div>
+      </div>
+      
+      <!-- Mobile Hamburger -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <!-- Desktop Menu (hidden on mobile) -->
+      <nav class="desktop-menu">
+        <a href="#download">Скачать</a>
+        <a href="#features">Функции</a>
+        <a href="#how-it-works">Как это работает</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#download">Скачать</a></li>
+      <li><a href="#features">Функции</a></li>
+      <li><a href="#how-it-works">Как это работает</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">AI Code Monkey</h1>
+      <p class="hero-subtitle">Интеллектуальный помощник для программистов: взаимодействуйте с ИИ-моделями локально и в облаке для максимальной продуктивности</p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title">Реализованные функции</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 class="feature-title">Локальные модели</h3>
+          <p class="feature-desc">Работайте с ИИ без подключения к интернету. Ваши данные остаются на вашем устройстве.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Облачные модели</h3>
+          <p class="feature-desc">Подключайтесь к самым мощным облачным ИИ для решения сложных задач.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Умная интеграция</h3>
+          <p class="feature-desc">Бесшовная интеграция с вашей IDE и рабочим процессом разработчика.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Контекстный анализ</h3>
+          <p class="feature-desc">ИИ понимает весь контекст вашего проекта для точных и релевантных ответов.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Генерация кода</h3>
+          <p class="feature-desc">Автоматическая генерация кода по описанию на естественном языке.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Отладка и рефакторинг</h3>
+          <p class="feature-desc">ИИ помогает находить ошибки и улучшать качество вашего кода.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking on links
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
