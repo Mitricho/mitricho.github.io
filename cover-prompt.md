@@ -11,6 +11,7 @@
 **Акцент на действии и игровом процессе.**
 
 > **Prompt:** Epic cinematic scene for a book cover. Overall style: night neon city lights. A young game developer's hands are held out, interacting with a massive, translucent AR hologram floating in a modern office space. The hologram shows a complex 3D level design of a fantasy game, complete with characters, trees, and enemy spawn points. The person is wearing AR glasses, and reflections of code and UI elements are visible on the lenses. In the environment, multiple devices like a smartphone and a tablet lie nearby, also displaying the same AR scene from different angles. Lighting is dramatic, with cool blue and cyan glows from the hologram. Digital painting, very detailed. No text.
+> [!](mitricho.github.io/img/1771515009ea88.png)
 
 ### Вариант 3 (Минималистичный и концептуальный)
 **Акцент на пересечении реальности и виртуальности, хорошо смотрится как абстрактная обложка.**
