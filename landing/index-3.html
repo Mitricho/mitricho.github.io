@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор промпта · Лендинг программы (сетка / index)</title>
+    <!-- Google Fonts & basic styling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="fa.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f5fa 0%, #e2e9f0 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            color: #1a2b3e;
+        }
+
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2.8rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 28, 58, 0.3), 0 2px 12px rgba(0,0,0,0.05);
+            padding: 2.6rem 3rem;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        h1 i {
+            color: #2a5f9a;
+            font-size: 2.1rem;
+        }
+
+        .subhead {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #3f556b;
+            margin-bottom: 2.4rem;
+            border-left: 5px solid #2a5f9a;
+            padding-left: 1.4rem;
+            background: rgba(42, 95, 154, 0.05);
+            border-radius: 0 16px 16px 0;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .field-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .field-group {
+            flex: 1 1 calc(50% - 1rem);
+            min-width: 240px;
+        }
+
+        .full-width {
+            flex: 1 1 100%;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #264a73;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        label i {
+            margin-right: 8px;
+            width: 1.2rem;
+            color: #2a5f9a;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem 1.3rem;
+            background: white;
+            border: 1.5px solid #d1ddee;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #2a5f9a;
+            box-shadow: 0 10px 20px -14px #1f4a7a;
+        }
+
+        /* сетка + переключатель */
+        .tech-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: flex-end;
+            background: #ecf3fa;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            border: 1.5px solid #cbd6e6;
+        }
+
+        .grid-unit {
+            flex: 2 1 200px;
+        }
+        .output-format {
+            flex: 1 1 240px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            background: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #bccde0;
+        }
+
+        .radio-group label {
+            text-transform: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0;
+            color: #1e3f60;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #8fa6c2;
+            border-radius: 50%;
+            padding: 0;
+            margin: 0;
+            background: white;
+            transition: 0.1s;
+        }
+        .radio-group input[type="radio"]:checked {
+            border: 5px solid #1d4e80;
+            background: white;
+        }
+
+        /* цвета */
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            align-items: center;
+            background: #ecf3fa;
+            padding: 1rem 1.6rem;
+            border-radius: 40px;
+            border: 1.5px solid #d1ddee;
+        }
+
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 0.2rem 1rem 0.2rem 0.4rem;
+            border-radius: 50px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+        }
+
+        .color-item input[type="color"] {
+            width: 44px;
+            height: 44px;
+            padding: 3px;
+            border: 1px solid #b8cbdf;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .color-item input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50px;
+        }
+
+        .remove-color {
+            background: none;
+            border: none;
+            color: #8d9fb5;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 6px 6px;
+            border-radius: 50%;
+        }
+        .remove-color:hover {
+            color: #c03939;
+            background: #ffe4e4;
+        }
+
+        .add-color-btn {
+            background: white;
+            border: 1.5px dashed #2a5f9a;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            color: #1f3b5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .add-color-btn:hover {
+            background: #dae7f5;
+        }
+
+        /* блоки */
+        .blocks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        .blocks-list {
+            background: #ecf3fa;
+            border-radius: 40px;
+            padding: 1.6rem 1.8rem 1.2rem 1.8rem;
+            border: 1.5px solid #d1ddee;
+        }
+        .block-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            background: white;
+            padding: 0.5rem 1rem 0.5rem 1.8rem;
+            border-radius: 60px;
+        }
+        .block-name-input { flex: 2; }
+        .block-type-select { flex: 1.5; }
+        .block-options {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: #ecf3fa;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            min-width: 280px;
+        }
+        .block-options select {
+            width: auto;
+            min-width: 120px;
+            padding: 0.5rem 1rem;
+            background: white;
+        }
+        .block-options .number-input {
+            width: 80px;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .block-options .yesno-group {
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.2rem;
+            border-radius: 40px;
+            border: 1px solid #bccde0;
+        }
+        .block-options .yesno-group label {
+            font-size: 0.8rem;
+            text-transform: none;
+            margin: 0;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .block-options .yesno-group input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+        .block-options .yesno-group label:has(input:checked) {
+            background: #2a5f9a;
+            color: white;
+        }
+        .remove-block {
+            background: none;
+            border: none;
+            color: #a2b7cf;
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .remove-block:hover {
+            background: #ffdddd;
+            color: #b12b2b;
+        }
+        .add-block-btn {
+            background: white;
+            border: 1.5px dashed #2a5f9a;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        textarea {
+            border-radius: 30px;
+        }
+        .generate-btn {
+            background: #142b44;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.3rem;
+            padding: 1.3rem 2rem;
+            border-radius: 60px;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 14px 28px -10px #10273e;
+            transition: all 0.2s;
+            margin-top: 0.8rem;
+        }
+        .generate-btn:hover {
+            background: #0b1f30;
+            transform: scale(1.01);
+        }
+
+        .output-prompt {
+            background: #0e1e2f;
+            color: #cbe4fe;
+            border-radius: 36px;
+            padding: 1.8rem 2rem;
+            margin-top: 2.2rem;
+            border: 1px solid #2b507a;
+            font-size: 0.96rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: inset 0 0 0 1px #1f3d60, 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        .output-label {
+            display: flex;
+            gap: 12px;
+            margin: 1.8rem 0 0.5rem;
+            font-weight: 600;
+            color: #1f4468;
+        }
+
+        small.hint {
+            color: #4e6f90;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            display: block;
+        }
+        hr {
+            border: 1px solid rgba(42, 95, 154, 0.25);
+            margin: 1.2rem 0 0.6rem;
+        }
+        .style-hint {
+            background: #dbe7f5;
+            padding: 0.2rem 1.3rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #1a4d7a;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>
+            <i class="fas fa-cubes"></i> 
+            Промпт-инженер лендинга
+        </h1>
+        <div class="subhead">
+            Заполните параметры — получите подробный промпт с требованиями к сетке (шаг) и формату выдачи (один index.html или компоненты).
+        </div>
+
+        <form id="promptForm" class="form-grid">
+            <!-- название программы во всю ширину -->
+            <div class="full-width">
+                <label><i class="fas fa-tag"></i> Название программы</label>
+                <input type="text" id="programName" placeholder="например: PROгрессивный фитнес" value="Мозговой штурм 3000">
+            </div>
+
+            <!-- стиль и уточнения в одной строке -->
+            <div class="field-row">
+                <div class="field-group">
+                    <label><i class="fas fa-palette"></i> Стиль</label>
+                    <select id="styleSelect">
+                        <option value="минимализм">минимализм</option>
+                        <option value="корпоративный">корпоративный</option>
+                        <option value="дерзкий/урбан">дерзкий/урбан</option>
+                        <option value="природный/органика">природный/органика</option>
+                        <option value="технологичный (нейро)">технологичный (нейро)</option>
+                        <option value="скандинавский">скандинавский</option>
+                        <option value="винтаж/ретро">винтаж/ретро</option>
+                        <option value="luxury / премиум">luxury / премиум</option>
+                        <option value="минимал-кибер">минимал-кибер</option>
+                        <option value="агрессивный гейминг">агрессивный гейминг</option>
+                        <option value="пастельный/романтичный">пастельный/романтичный</option>
+                        <option value="инфографика/чистый">инфографика/чистый</option>
+                        <option value="конструктор (лего)">конструктор (лего)</option>
+                        <option value="футуризм">футуризм</option>
+                        <option value="ар-деко">ар-деко</option>
+                        <option value="инди/хипстер">инди/хипстер</option>
+                        <option value="японский минимализм">японский минимализм</option>
+                        <option value="кантри/эко">кантри/эко</option>
+                        <option value="поп-арт">поп-арт</option>
+                        <option value="лофт/индастриал">лофт/индастриал</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label><i class="fas fa-pencil-alt"></i> Уточнения стиля</label>
+                    <select id="styleDetailsSelect">
+                        <!-- заполняется динамически из styles.md -->
+                    </select>
+                </div>
+            </div>
+            <!-- свой вариант на отдельной строке -->
+            <div class="full-width">
+                <input type="text" id="styleCustom" placeholder="свой вариант (если нужен)" style="width: 100%;">
+            </div>
+
+            <!-- цвета -->
+            <div class="full-width">
+                <label><i class="fas fa-fill-drip"></i> Базовая палитра (2–5 цветов)</label>
+                <div id="colorPaletteContainer" class="color-palette"></div>
+                <small class="hint"><i class="far fa-circle"></i> Минимум 2, максимум 5</small>
+            </div>
+
+            <!-- новые поля: модульная сетка + формат выдачи -->
+            <div class="full-width">
+                <div class="tech-options">
+                    <div class="grid-unit">
+                        <label><i class="fas fa-th"></i> Шаг модульной сетки (px)</label>
+                        <input type="number" id="gridStep" min="4" max="64" value="16" step="1">
+                    </div>
+                    <div class="output-format">
+                        <label><i class="fas fa-file-code"></i> Формат выдачи</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="outputFormat" value="single_html" checked> <i class="fas fa-file"></i> index.html</label>
+                            <label><input type="radio" name="outputFormat" value="components"> <i class="fas fa-puzzle-piece"></i> компоненты</label>
+                        </div>
+                    </div>
+                </div>
+                <small class="hint" style="margin-top: 6px;">Сетка 16px — стандарт, но можно задать другой шаг.</small>
+            </div>
+
+            <!-- динамические блоки -->
+            <div class="full-width">
+                <div class="blocks-header">
+                    <label><i class="fas fa-layer-group"></i> Элементы лендинга</label>
+                    <span class="style-hint"><i class="fas fa-arrows-alt"></i> название → тип блока → настройки</span>
+                </div>
+                <div id="blocksContainer" class="blocks-list"></div>
+                <div id="addBlockBtn" class="add-block-btn">
+                    <i class="fas fa-plus-circle"></i> Добавить блок
+                </div>
+            </div>
+
+            <!-- комментарий -->
+            <div class="full-width">
+                <label><i class="fas fa-comment"></i> Дополнительный комментарий</label>
+                <textarea id="commentField" placeholder="например: анимация при скролле, тени, бордеры...">использовать воздушность, отзывчивую типографику</textarea>
+            </div>
+
+            <button type="button" id="generateBtn" class="generate-btn">
+                <i class="fas fa-wand-magic-sparkles"></i> Собрать технический промпт
+            </button>
+        </form>
+
+        <div class="output-label">
+            <i class="fas fa-microchip"></i> <span>готовый промпт (включает сетку / формат)</span>
+        </div>
+        <div id="promptOutput" class="output-prompt">⬅️ Заполните форму и нажмите кнопку</div>
+        <hr>
+        <small style="color:#55799e; display: flex; gap: 1.5rem;">
+            <span><i class="far fa-copy" style="cursor: pointer;" id="copyTrigger"> 📋 копировать промпт</i></span>
+        </small>
+    </div>
+
+    <script>
+        (function() {
+            // ---- данные из styles.md ----
+            const styleDetails = {
+                'минимализм': ['Много негативного пространства (воздуха)', 'Ограниченная цветовая палитра (обычно 1-2 цвета + белый/черный)', 'Четкая модульная сетка и строгая иерархия', 'Крупная рубленая или гротесковая типографика без засечек', 'Отсутствие декоративных элементов (теней, градиентов, текстур)'],
+                'корпоративный': ['Строгие синие, серые или бордовые оттенки в сочетании с белым', 'Использование линий и тонких рамок для структурирования информации', 'Фотографии людей в деловой или офисной одежде (стокового качества)', 'Спокойная, удобочитаемая типографика (классические гротески вроде Helvetica, Open Sans)', 'Акцент на стабильность, надежность и профессионализм'],
+                'дерзкий/урбан': ['Эффекты граффити: теги, дриппинг (подтеки краски), трафареты', 'Рваные края, наложение слоев, будто порванный плакат на стене', 'Использование неона (кислотные цвета: розовый, зеленый) на темном фоне', 'Шрифты в стиле стрит-арт или жирные гротески с наклоном', 'Гранжевые текстуры (шум, царапины, потертости)'],
+                'природный/органика': ['Цветовая палитра: землистые тона (терракота, охра, хаки), приглушенный зеленый, песочный', 'Натуральные текстуры: дерево, лен, камень, крафт-бумага, акварельные пятна', 'Плавные, текучие линии и асимметрия (вдохновленные формами растений)', 'Использование «дышащих» пространств и матовая фактура', 'Типографика с засечками (брусковые или антиква) или рукописные шрифты'],
+                'технологичный (нейро)': ['Абстрактные 3D-формы, напоминающие нейросети и связи между нейронами', 'Футуристические градиенты (глубокая синева, фиолетовый, пурпурный)', 'Эффекты свечения (глоу), полупрозрачные слои и «мыльный пузырь» (glassmorphism)', 'Мелкие повторяющиеся паттерны (точки, линии), создающие ощущение кода или данных', 'Шрифты с геометрией или технологичными элементами (рубленые, узкие)'],
+                'скандинавский': ['Максимум света: белый фон, пастельные и приглушенные акценты (мятный, бледно-розовый, серый)', 'Простота форм, функциональность каждой детали', 'Использование реалистичных плоских иллюстраций с уютными сюжетами (hygge)', 'Натуральные текстуры, но в графическом исполнении (имитация дерева, вязаных вещей)', 'Контраст чистоты линий и «уютных», слегка несовершенных элементов'],
+                'винтаж/ретро': ['Стилизация под конкретную эпоху (50-е, 70-е, 80-е) со своей цветовой палитрой (например, ретро-оранжевый, авокадо, сепия)', 'Эффект состаренности: зернистость пленки, царапины, заломы на фотографиях', 'Винтажные шрифты (с засечками, в стиле старых вывесок или плакатов)', 'Использование рамок, орнаментов и паттернов, характерных для выбранного десятилетия', 'Трафаретная печать, типографский растр, эффект офсетной печати (сдвиг цветов)'],
+                'luxury / премиум': ['Цветовая палитра: глубокий черный, темно-синий, бордовый, изумрудный в сочетании с золотом, серебром или медью', 'Использование тонких линий, изящной каллиграфии и изысканных шрифтов (высококонтрастные антиквы)', 'Тактильность: имитация тиснения, фактуры дорогой бумаги (верже), бархата или кожи', 'Сдержанность и минимализм в деталях, но высокая детализация качества (текстуры, градиенты)', 'Крупные, дышащие изображения продуктов с идеальным светом'],
+                'минимал-кибер': ['Строгая черно-белая основа (или темный фон + белый текст)', 'Тонкие неоновые линии и обводки (хайлайты) в качестве единственного акцента', 'Четкая геометрия, часто с использованием перспективы и уходящих вдаль линий', 'Гротескные шрифты (medium или light начертания) без лишних деталей', 'Точечное использование яркого цвета (кислотного) только для важных кнопок CTA'],
+                'агрессивный гейминг': ['Динамичные диагональные линии и острые углы в композиции', 'Кислотные неоновые цвета (красный, оранжевый, желтый) на черном фоне', 'Эффекты скорости (шлейфы, размытие в движении)', 'Тяжелая, массивная типографика (широкие гротески с рублеными формами)', '3D-рендеры оружия, техники, абстрактные хай-тек структуры'],
+                'пастельный/романтичный': ['Мягкая, нежная цветовая гамма (пыльная роза, лаванда, мятный, персиковый)', 'Обилие скругленных углов, плавных линий и воздушности', 'Декоративные элементы: цветы, звездочки, сердечки, «капли» акварели', 'Типографика: каллиграфические рукописные шрифты в сочетании с тонкими округлыми гротесками', 'Текстуры мелкого зерна, матовость, эффект мягкого фокуса/размытия'],
+                'инфографика/чистый': ['Предельная ясность и информативность. Функциональность превыше эстетики', 'Яркие, контрастные, но плоские цвета для разграничения блоков и данных', 'Активное использование иконок, пиктограмм, графиков, диаграмм', 'Четкая модульная сетка, как в газете или дашборде', 'Типографика, настроенная на максимальную читаемость (нейтральные гротески)'],
+                'конструктор (лего)': ['Составная графика: объекты и иллюстрации выглядят собранными из отдельных блоков/деталей', 'Яркая, насыщенная цветовая палитра (базовые цвета: красный, синий, желтый, зеленый)', 'Эффект пластика, глянец, блочные тени (drop shadow)', 'Шрифты, напоминающие кубики или имеющие четкую геометрическую конструкцию', 'Игривость, отсутствие сложных градиентов, все цвета чистые и плоские'],
+                'футуризм': ['Цвета: металлик (хром), белый, глубокий синий, пурпурный', 'Формы: текучие, биоморфные, либо наоборот — сложные геометрические конструкции', '3D-графика высокого качества, абстрактные ландшафты и объекты', 'Типографика: сверхлегкие или сверхжирные геометрические шрифты, часто с деформацией', 'Имитация голограмм, света от экранов, "цифровой" эстетики'],
+                'ар-деко': ['Геометрические орнаменты: ступенчатые формы, зигзаги, солнечные лучи (sunburst)', 'Роскошь в деталях: золотые/серебряные вставки, зеркальные поверхности', 'Строгая симметрия и центрирование композиции', 'Шрифты: высокие, элегантные, часто с засечками (в стиле нью-йоркских небоскребов 30-х)', 'Палитра: черный, белый, золотой, насыщенный синий или изумрудный'],
+                'инди/хипстер': ['Нарочитая небрежность и "ручная работа"', 'Микс фактур: сочетание фотографий с плохой выдержкой, грубых линий и винтажной типографики', 'Акцент на винтажные канцелярские принадлежности: скрепки, машинопись, штампы', 'Приглушенные, немного «пыльные» цвета (горчичный, индиго, хаки)', 'Использование пишущих машинок, ламп, натюрмортов в стиле "уют"'],
+                'японский минимализм': ['Еще больше пустоты и строгости, чем в обычном минимализме. Асимметрия как принцип', 'Природная цветовая гамма: цвет бумаги (васи), туши (суми), приглушенный зеленый бамбука', 'Типографика: строгие гротески, иероглифы как графические элементы', 'Текстуры: рисовая бумага, легкая акварель (суми-э), циновки (татами)', 'Баланс и дзен-спокойствие в каждой композиции'],
+                'кантри/эко': ['Натуральные материалы: дерево, мешковина, крафт, лен', 'Ручная работа: неровные линии, имитация вышивки, нашивок или вязки', 'Цвета: натуральные, необработанные оттенки (лен, кора, трава)', 'Использование силуэтов животных, растений, фруктов в простой стилистике', 'Типографика с засечками, имитирующая вывески деревенских магазинов или рукописный текст мелом'],
+                'поп-арт': ['Яркие, контрастные, почти кричащие цвета (комиксная палитра)', 'Использование растровых точек (эффект Бена Дейя) для тонирования', 'Повторяющиеся паттерны и серийность изображений (как у Уорхола)', 'Жирные черные контуры вокруг иллюстраций и текста', 'Шрифты в стиле комиксов или ретро-рекламы, "пузыри" для текста'],
+                'лофт/индастриал': ['Имитация сырых поверхностей: бетон, кирпич (обычно беленый или красный), ржавый металл', 'Цветовая гамма: серый, коричневый, ржавый, белый, черный', 'Элементы инфраструктуры: трубы, балки, арматура, сетка-рабица как графические элементы', 'Контраст грубых фактур и чистых линий или современной мебели в кадре', 'Моноширинные шрифты или индустриальные гротески (в духе дорожных знаков)']
+            };
+
+            // ---- цвета ----
+            const colorContainer = document.getElementById('colorPaletteContainer');
+            const minColors = 2, maxColors = 5;
+            function initColors() {
+                colorContainer.innerHTML = '';
+                addColorPicker('#2b6c9e');
+                addColorPicker('#f3b33d');
+                addColorPicker('#e4572e'); // 3 цвета
+                updateAddButton();
+            }
+            function addColorPicker(hex) {
+                const colDiv = document.createElement('div');
+                colDiv.className = 'color-item';
+                const colorInput = document.createElement('input');
+                colorInput.type = 'color';
+                colorInput.value = hex || '#3b71ca';
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-color';
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                colDiv.appendChild(colorInput);
+                colDiv.appendChild(removeBtn);
+                colorContainer.appendChild(colDiv);
+                updateRemoveListeners();
+            }
+
+            function updateRemoveListeners() {
+                document.querySelectorAll('.remove-color').forEach(btn => {
+                    btn.removeEventListener('click', handleRemove);
+                    btn.addEventListener('click', handleRemove);
+                });
+            }
+            function handleRemove(e) {
+                e.stopPropagation();
+                const totalItems = document.querySelectorAll('.color-item').length;
+                if (totalItems <= minColors) {
+                    alert(`Минимум ${minColors} цвета. Нельзя удалить последний.`);
+                    return;
+                }
+                const colDiv = e.currentTarget.closest('.color-item');
+                if (colDiv) colDiv.remove();
+                updateAddButton();
+            }
+
+            function updateAddButton() {
+                let addBtn = document.querySelector('.add-color-btn');
+                if (!addBtn) {
+                    addBtn = document.createElement('div');
+                    addBtn.className = 'add-color-btn';
+                    addBtn.id = 'addColorBtn';
+                    addBtn.innerHTML = '<i class="fas fa-plus"></i> Добавить цвет';
+                    colorContainer.appendChild(addBtn);
+                }
+                const currentCount = document.querySelectorAll('.color-item').length;
+                if (currentCount >= maxColors) {
+                    addBtn.style.opacity = '0.4';
+                    addBtn.style.pointerEvents = 'none';
+                } else {
+                    addBtn.style.opacity = '1';
+                    addBtn.style.pointerEvents = 'auto';
+                }
+                addBtn.replaceWith(addBtn.cloneNode(true));
+                document.getElementById('addColorBtn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const count = document.querySelectorAll('.color-item').length;
+                    if (count < maxColors) {
+                        addColorPicker('#3d7eb0');
+                        updateAddButton();
+                    } else {
+                        alert(`Максимум ${maxColors} цветов.`);
+                    }
+                });
+            }
+
+            // ---- блоки с дополнительными опциями ----
+            const blocksContainer = document.getElementById('blocksContainer');
+            const addBlockBtn = document.getElementById('addBlockBtn');
+            const blockTypes = [
+                'hero (заставка)', 'карусель', 'сетка функций', 'тарифы/карточки',
+                'отзывы (слайдер)', 'CTA', 'преимущества (список)', 'команда',
+                'FAQ (аккордеон)', 'галерея', 'видео-фон', 'таймлайн',
+                'статистика', 'логотипы партнёров', 'контакты', 'форма подписки'
+            ];
+
+            function createOptionsForType(type, container) {
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'block-options';
+                
+                if (type === 'карусель') {
+                    // Автоплей
+                    const yesnoGroup = document.createElement('div');
+                    yesnoGroup.className = 'yesno-group';
+                    
+                    const yesLabel = document.createElement('label');
+                    yesLabel.innerHTML = '<input type="radio" name="autoplay" value="да" checked> да';
+                    const noLabel = document.createElement('label');
+                    noLabel.innerHTML = '<input type="radio" name="autoplay" value="нет"> нет';
+                    
+                    yesnoGroup.appendChild(yesLabel);
+                    yesnoGroup.appendChild(noLabel);
+                    optionsDiv.appendChild(yesnoGroup);
+                    
+                    // Количество карточек
+                    const cardsInput = document.createElement('input');
+                    cardsInput.type = 'number';
+                    cardsInput.className = 'number-input';
+                    cardsInput.min = 1;
+                    cardsInput.max = 3;
+                    cardsInput.value = 3;
+                    cardsInput.placeholder = 'карточек';
+                    optionsDiv.appendChild(cardsInput);
+                }
+                
+                if (type === 'отзывы (слайдер)') {
+                    const select = document.createElement('select');
+                    select.className = 'block-options-select';
+                    select.innerHTML = `
+                        <option value="афреймы">в афреймах (скриншоты телефонов)</option>
+                        <option value="карточки">стандартные карточки с фото и текстом</option>
+                    `;
+                    optionsDiv.appendChild(select);
+                }
+                
+                return optionsDiv;
+            }
+
+            function createBlockRow(name = 'Секция', type = blockTypes[0]) {
+                const row = document.createElement('div');
+                row.className = 'block-row';
+                
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.className = 'block-name-input';
+                nameInput.placeholder = 'имя блока';
+                nameInput.value = name;
+                
+                const select = document.createElement('select');
+                select.className = 'block-type-select';
+                blockTypes.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t; 
+                    opt.textContent = t;
+                    if (t === type) opt.selected = true;
+                    select.appendChild(opt);
+                });
+                
+                // Контейнер для дополнительных опций
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'block-options-container';
+                
+                // Функция обновления опций
+                const updateOptions = () => {
+                    optionsContainer.innerHTML = '';
+                    const newOptions = createOptionsForType(select.value, optionsContainer);
+                    if (newOptions.children.length > 0) {
+                        optionsContainer.appendChild(newOptions);
+                    }
+                };
+                
+                select.addEventListener('change', updateOptions);
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'remove-block';
+                removeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                removeBtn.addEventListener('click', () => {
+                    if (blocksContainer.children.length > 1) row.remove();
+                    else alert('Оставьте хотя бы один блок');
+                });
+                
+                row.appendChild(nameInput);
+                row.appendChild(select);
+                row.appendChild(optionsContainer);
+                row.appendChild(removeBtn);
+                
+                // Инициализация опций
+                updateOptions();
+                
+                return row;
+            }
+
+            // начальные блоки
+            blocksContainer.appendChild(createBlockRow('Главный экран', 'hero (заставка)'));
+            blocksContainer.appendChild(createBlockRow('Отзывы', 'отзывы (слайдер)'));
+            
+            addBlockBtn.addEventListener('click', () => {
+                blocksContainer.appendChild(createBlockRow('Новый блок', 'карусель'));
+            });
+
+            // ---- уточнения стиля ----
+            const styleSelect = document.getElementById('styleSelect');
+            const styleDetailsSelect = document.getElementById('styleDetailsSelect');
+
+            function updateStyleDetails() {
+                const selectedStyle = styleSelect.value;
+                const details = styleDetails[selectedStyle] || [];
+                styleDetailsSelect.innerHTML = '';
+                details.forEach(detail => {
+                    const option = document.createElement('option');
+                    option.value = detail;
+                    option.textContent = detail;
+                    styleDetailsSelect.appendChild(option);
+                });
+            }
+
+            styleSelect.addEventListener('change', updateStyleDetails);
+            updateStyleDetails(); // инициализация при загрузке
+
+            // ---- генерация ----
+            const generateBtn = document.getElementById('generateBtn');
+            const outputDiv = document.getElementById('promptOutput');
+            const programInput = document.getElementById('programName');
+            const styleCustom = document.getElementById('styleCustom');
+            const gridStep = document.getElementById('gridStep');
+            const formatRadios = document.getElementsByName('outputFormat');
+            const commentField = document.getElementById('commentField');
+
+            function getColors() {
+                const items = document.querySelectorAll('.color-item input[type="color"]');
+                return Array.from(items).map(i => i.value.toUpperCase());
+            }
+            function getStyle() {
+                const cust = styleCustom.value.trim();
+                return cust !== '' ? cust : styleSelect.value;
+            }
+            function getFormat() {
+                for (let r of formatRadios) if (r.checked) return r.value;
+                return 'single_html';
+            }
+
+            function generatePromptText() {
+                const prog = programInput.value.trim() || 'Без названия';
+                const style = getStyle();
+                const styleDetail = styleDetailsSelect.value || '—';
+                const colors = getColors();
+                const grid = gridStep.value || 16;
+                const format = getFormat() === 'single_html' ? 'единым index.html файлом' : 'отдельными компонентами (HTML/CSS/JS)';
+                const comment = commentField.value.trim() || '—';
+
+                let blocksDesc = '';
+                const rows = blocksContainer.querySelectorAll('.block-row');
+                if (rows.length) {
+                    blocksDesc = 'Структура лендинга с параметрами:\n';
+                    rows.forEach((r, idx) => {
+                        const n = r.querySelector('.block-name-input')?.value.trim() || `блок${idx+1}`;
+                        const t = r.querySelector('.block-type-select')?.value || 'блок';
+                        blocksDesc += `  ${idx+1}. «${n}» → тип: ${t}`;
+                        
+                        // Добавляем параметры для специальных блоков
+                        const optionsContainer = r.querySelector('.block-options-container');
+                        if (optionsContainer && optionsContainer.children.length > 0) {
+                            const options = optionsContainer.children[0];
+                            if (t === 'карусель') {
+                                const autoplayRadios = options.querySelectorAll('input[name="autoplay"]');
+                                let autoplay = 'да';
+                                for (let r of autoplayRadios) if (r.checked) autoplay = r.value;
+                                const cards = options.querySelector('.number-input')?.value || 3;
+                                blocksDesc += `\n     настройки: автоплей ${autoplay === 'да' ? 'включен' : 'отключен'}, показывать ${cards} карточ(ек/ки) одновременно`;
+                            }
+                            if (t === 'отзывы (слайдер)') {
+                                const variant = options.querySelector('select')?.value || 'карточки';
+                                blocksDesc += `\n     настройки: отображение — ${variant}`;
+                            }
+                        }
+                        blocksDesc += '\n';
+                    });
+                } else blocksDesc = '— без блоков —';
+
+                const colorStr = colors.length ? colors.join(', ') : '—';
+
+                return `УНИВЕРСАЛЬНЫЙ ТЕХНИЧЕСКИЙ ПРОМПТ ЛЕНДИНГА
+===========================================
+1. Программа: "${prog}"
+2. Визуальный стиль: ${style}
+3. Уточнение стиля: ${styleDetail}
+4. Палитра (${colors.length}): ${colorStr}
+5. МОДУЛЬНАЯ СЕТКА: шаг ${grid}px (все отступы, ширина колонок, высоты кратны этому числу)
+6. ФОРМАТ ВЫДАЧИ: ${format}
+7. Блоки: 
+${blocksDesc}
+8. Дополнительно: ${comment}
+
+💡 ВАЖНО: все предыдущие лендинги программ очень похожи, сохрани общую стилистику (каркасность, расположение CTA, контейнеры). Адаптивная вёрстка (mobile-first) с учётом модульной сетки.`;
+            }
+
+            function updateOutput() {
+                outputDiv.textContent = generatePromptText();
+            }
+            generateBtn.addEventListener('click', updateOutput);
+
+            // копирование
+            document.getElementById('copyTrigger').addEventListener('click', () => {
+                navigator.clipboard.writeText(outputDiv.textContent).then(() => alert('Промпт скопирован!'));
+            });
+
+            // стартовая инициализация
+            initColors();
+            updateOutput();
+
+            // дополнительный перехват удаления через обновление кнопки добавления
+            setInterval(() => { // не идеально, но для динамики после удаления вручную — обновит кнопку.
+                updateAddButton();
+            }, 500);
+        })();
+    </script>
+</body>
+</html>
