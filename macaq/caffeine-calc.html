@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="espresso">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caffeine Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root { --trans: 0.5s; --wave-speed: 4s; }
+    
+    /* Theme Variables */
+    [data-theme="espresso"] {
+      --bg: #121212; --text: #e8dcc5; --card: #1e1e1e; --card-hover: #2a2a2a;
+      --accent: #d4af37; --liquid: #6b4423; --warning: #ff3b30;
+      --progress-safe: #4ade80; --progress-warn: #fbbf24; --progress-over: #ef4444;
+      --glass: rgba(255,255,255,0.05);
+    }
+    [data-theme="latte"] {
+      --bg: #f4f1ea; --text: #4a3728; --card: #ffffff; --card-hover: #f9faf8;
+      --accent: #8b5a2b; --liquid: #a0714f; --warning: #ef4444;
+      --progress-safe: #22c55e; --progress-warn: #eab308; --progress-over: #dc2626;
+      --glass: rgba(0,0,0,0.03);
+    }
+    [data-theme="cyberpunk"] {
+      --bg: #050505; --text: #00ffcc; --card: #0a0a0a; --card-hover: #141414;
+      --accent: #00f3ff; --liquid: #00ff66; --warning: #ff003c;
+      --progress-safe: #10b981; --progress-warn: #f59e0b; --progress-over: #ef4444;
+      --glass: rgba(255,255,255,0.02);
+    }
+    [data-theme="matcha"] {
+      --bg: #e8f0e8; --text: #2f4f2f; --card: #ffffff; --card-hover: #f8faf8;
+      --accent: #6b8e23; --liquid: #749b52; --warning: #ef4444;
+      --progress-safe: #22c55e; --progress-warn: #eab308; --progress-over: #dc2626;
+      --glass: rgba(0,0,0,0.03);
+    }
+
+    body { background: var(--bg); color: var(--text); transition: background var(--trans), color var(--trans); }
+    
+    /* UI Components */
+    .theme-btn { @apply w-10 h-10 rounded-full border-2 transition-all duration-300 hover:scale-110; }
+    .theme-btn.active { @apply border-white shadow-lg scale-110; }
+    .card { 
+      @apply p-4 rounded-2xl shadow-lg cursor-pointer select-none transition-all duration-300;
+      background: var(--card); border: 1px solid var(--glass);
+    }
+    .card:hover { background: var(--card-hover); transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
+    
+    /* 3D Tilt Container */
+    .tilt-container { perspective: 1000px; }
+    .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+    
+    /* Caffeine Tank & Liquid */
+    .tank-wrapper { position: relative; width: 160px; height: 200px; margin: 0 auto; }
+    .tank-shape { 
+      width: 100%; height: 100%; 
+      background: var(--glass); 
+      border-radius: 40% 40% 50% 50% / 30% 30% 70% 70%;
+      border: 2px solid var(--text); position: relative; overflow: hidden;
+      transition: border-color var(--trans), box-shadow var(--trans);
+    }
+    .tank-shape.warning { border-color: var(--warning); box-shadow: 0 0 30px var(--warning); }
+    .liquid { 
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; 
+      background: var(--liquid); transition: height 0.8s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s;
+    }
+    .tank-shape.warning .liquid { background: var(--warning); }
+    .wave { 
+      position: absolute; top: -12px; left: 0; width: 200%; height: 24px; 
+      background: var(--liquid); opacity: 0.9; border-radius: 40%; 
+      animation: wave var(--wave-speed) linear infinite;
+    }
+    .tank-shape.warning .wave { background: var(--warning); animation-duration: 1.5s; }
+    @keyframes wave { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
+    
+    /* Warning Animations */
+    .tank-shape.warning { animation: shake 0.4s infinite; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0) rotate(0); }
+      25% { transform: translateX(-6px) rotate(-3deg); }
+      75% { transform: translateX(6px) rotate(3deg); }
+    }
+    .bubble {
+      position: absolute; bottom: 0; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--warning); opacity: 0; animation: bubbleUp 2s infinite;
+    }
+    @keyframes bubbleUp {
+      0% { transform: translateY(0) scale(0.5); opacity: 0.8; }
+      100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+    }
+
+    /* Staggered Entry */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .stagger-1 { animation: fadeInUp 0.6s ease-out 0.1s both; }
+    .stagger-2 { animation: fadeInUp 0.6s ease-out 0.2s both; }
+    .stagger-3 { animation: fadeInUp 0.6s ease-out 0.3s both; }
+    .stagger-4 { animation: fadeInUp 0.6s ease-out 0.4s both; }
+
+    /* Custom Range Slider */
+    input[type=range] { @apply w-full h-2 rounded-lg appearance-none cursor-pointer; background: var(--glass); }
+    input[type=range]::-webkit-slider-thumb { @apply w-6 h-6 rounded-full bg-current shadow-lg appearance-none; }
+    
+    /* Graph Container */
+    .graph-container { width: 100%; height: 120px; overflow: hidden; }
+    .graph-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .graph-area { fill: var(--accent); opacity: 0.15; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-4 md:p-8 font-sans">
+
+  <!-- Header & Theme Switcher -->
+  <header class="w-full max-w-4xl flex flex-col md:flex-row justify-between items-center mb-6 stagger-1">
+    <h1 class="text-3xl md:text-4xl font-bold tracking-tight flex items-center gap-2">
+      <i class="bi bi-cup-hot-fill text-[var(--accent)]"></i> Caffeine Calc
+    </h1>
+    <div class="flex gap-3 mt-4 md:mt-0">
+      <button class="theme-btn active" data-set-theme="espresso" style="background:#6b4423" aria-label="Espresso Theme"></button>
+      <button class="theme-btn" data-set-theme="latte" style="background:#a0714f" aria-label="Latte Theme"></button>
+      <button class="theme-btn" data-set-theme="cyberpunk" style="background:#00ff66" aria-label="Cyberpunk Theme"></button>
+      <button class="theme-btn" data-set-theme="matcha" style="background:#749b52" aria-label="Matcha Theme"></button>
+    </div>
+  </header>
+
+  <main class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- Left Column: Controls -->
+    <div class="lg:col-span-5 flex flex-col gap-6 stagger-2">
+      <!-- Drink Selector -->
+      <section class="card p-5">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2"><i class="bi bi-grid-3x3-gap-fill"></i> Select Source</h2>
+        <div id="drink-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+      </section>
+
+      <!-- Configurator -->
+      <section class="card p-5">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2"><i class="bi bi-sliders"></i> Configuration</h2>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="text-sm opacity-80">Servings</label>
+              <span id="servings-val" class="text-lg font-bold">1</span>
+            </div>
+            <input type="range" id="servings-slider" min="0" max="10" step="1" value="1">
+            <div class="flex justify-center mt-2 gap-4">
+              <button id="servings-minus" class="w-8 h-8 rounded-full bg-[var(--glass)] hover:bg-[var(--accent)] hover:text-black transition flex items-center justify-center">-</button>
+              <button id="servings-plus" class="w-8 h-8 rounded-full bg-[var(--glass)] hover:bg-[var(--accent)] hover:text-black transition flex items-center justify-center">+</button>
+            </div>
+          </div>
+          <div id="ml-control">
+            <div class="flex justify-between mb-1">
+              <label class="text-sm opacity-80">Cup Size (ml)</label>
+              <span id="ml-val" class="text-lg font-bold">30</span>
+            </div>
+            <input type="range" id="ml-slider" min="10" max="500" step="10" value="30">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column: Visualization & Analytics -->
+    <div class="lg:col-span-7 flex flex-col gap-6 stagger-3">
+      <!-- Caffeine Tank -->
+      <section class="card p-6 flex flex-col items-center">
+        <h2 class="text-lg font-semibold mb-4 w-full flex justify-between items-center">
+          <span class="flex items-center gap-2"><i class="bi bi-battery-charging"></i> Current Intake</span>
+          <span id="total-display" class="text-2xl font-mono font-bold">0 mg</span>
+        </h2>
+        <div class="tank-wrapper">
+          <div id="tank" class="tank-shape">
+            <div class="liquid" id="liquid">
+              <div class="wave"></div>
+              <div class="bubble" style="left:20%; animation-delay:0s;"></div>
+              <div class="bubble" style="left:50%; animation-delay:0.5s;"></div>
+              <div class="bubble" style="left:80%; animation-delay:1s;"></div>
+            </div>
+          </div>
+        </div>
+        <p id="tank-status" class="mt-4 text-sm font-medium opacity-70">Safe Zone</p>
+      </section>
+
+      <!-- Analytics Dashboard -->
+      <section class="card p-5 stagger-4">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2"><i class="bi bi-graph-up-arrow"></i> Analytics</h2>
+        
+        <!-- Safe Zone Progress -->
+        <div class="mb-4">
+          <div class="flex justify-between text-xs mb-1 opacity-80">
+            <span>Safe Limit (400mg)</span>
+            <span id="safe-pct">0%</span>
+          </div>
+          <div class="h-3 w-full rounded-full bg-[var(--glass)] overflow-hidden">
+            <div id="safe-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: var(--progress-safe);"></div>
+          </div>
+        </div>
+
+        <!-- Half-Life Graph -->
+        <div class="graph-container rounded-lg bg-[var(--glass)] p-2 mb-4">
+          <svg id="graph-svg" viewBox="0 0 300 100" preserveAspectRatio="none" class="w-full h-full"></svg>
+        </div>
+
+        <!-- Sleep Readiness -->
+        <div class="flex justify-between items-center p-3 rounded-xl bg-[var(--glass)]">
+          <div>
+            <p class="text-xs uppercase tracking-wider opacity-70">Sleep Readiness</p>
+            <p id="sleep-timer" class="text-sm font-bold">Calculating...</p>
+          </div>
+          <i class="bi bi-moon-stars-fill text-2xl text-[var(--accent)]"></i>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    /**
+     * Caffeine Calculator App
+     * Modular Vanilla JS implementation
+     */
+    const CaffeineApp = (() => {
+      // State Management
+      const state = {
+        theme: 'espresso',
+        selectedDrink: 'espresso',
+        servings: 1,
+        cupSizeMl: 30,
+        totalCaffeine: 63,
+        timestamps: []
+      };
+
+      // Drink Database (Caffeine per ml, except pills)
+      const DRINKS = {
+        espresso: { name: 'Espresso', base: 63, perMl: 2.1, icon: 'bi-cup-hot-fill', defaultMl: 30 },
+        drip: { name: 'Drip Coffee', base: 0, perMl: 0.05, icon: 'bi-cup', defaultMl: 240 },
+        coldbrew: { name: 'Cold Brew', base: 0, perMl: 0.083, icon: 'bi-cup-straw', defaultMl: 240 },
+        energy: { name: 'Energy Drink', base: 0, perMl: 0.33, icon: 'bi-lightning-fill', defaultMl: 250 },
+        blacktea: { name: 'Black Tea', base: 0, perMl: 0.1, icon: 'bi-cup-hot', defaultMl: 240 },
+        matcha: { name: 'Matcha', base: 0, perMl: 0.145, icon: 'bi-leaf', defaultMl: 240 },
+        pill: { name: 'Caffeine Pill', base: 200, perMl: 0, icon: 'bi-capsule', defaultMl: 0 }
+      };
+
+      // DOM References
+      const els = {
+        app: document.documentElement,
+        drinkGrid: document.getElementById('drink-grid'),
+        tank: document.getElementById('tank'),
+        liquid: document.getElementById('liquid'),
+        totalDisplay: document.getElementById('total-display'),
+        tankStatus: document.getElementById('tank-status'),
+        safeBar: document.getElementById('safe-bar'),
+        safePct: document.getElementById('safe-pct'),
+        sleepTimer: document.getElementById('sleep-timer'),
+        graphSvg: document.getElementById('graph-svg'),
+        mlControl: document.getElementById('ml-control'),
+        mlVal: document.getElementById('ml-val'),
+        mlSlider: document.getElementById('ml-slider'),
+        sVal: document.getElementById('servings-val'),
+        sSlider: document.getElementById('servings-slider'),
+        sMinus: document.getElementById('servings-minus'),
+        sPlus: document.getElementById('servings-plus')
+      };
+
+      // Initialization
+      const init = () => {
+        renderDrinkGrid();
+        bindEvents();
+        updateUI();
+        // Stagger entry handled by CSS classes
+      };
+
+      // Render Drink Grid
+      const renderDrinkGrid = () => {
+        els.drinkGrid.innerHTML = '';
+        Object.entries(DRINKS).forEach(([id, drink], i) => {
+          const btn = document.createElement('button');
+          btn.className = `card flex flex-col items-center gap-2 stagger-${Math.min(i+1, 4)}`;
+          btn.dataset.id = id;
+          btn.innerHTML = `
+            <i class="bi ${drink.icon} text-3xl text-[var(--accent)]"></i>
+            <span class="text-sm font-medium">${drink.name}</span>
+          `;
+          els.drinkGrid.appendChild(btn);
+        });
+      };
+
+      // Event Binding
+      const bindEvents = () => {
+        // Theme Switcher
+        document.querySelectorAll('[data-set-theme]').forEach(btn => {
+          btn.addEventListener('click', (e) => setTheme(e.target.dataset.setTheme));
+        });
+
+        // Drink Selection
+        els.drinkGrid.addEventListener('click', (e) => {
+          const card = e.target.closest('.card');
+          if (!card) return;
+          selectDrink(card.dataset.id);
+          triggerPourAnimation();
+        });
+
+        // 3D Tilt Effect
+        els.drinkGrid.addEventListener('mousemove', handleTilt);
+        els.drinkGrid.addEventListener('mouseleave', resetTilt);
+
+        // Configurator
+        els.mlSlider.addEventListener('input', (e) => updateConfig('ml', e.target.value));
+        els.sSlider.addEventListener('input', (e) => updateConfig('servings', e.target.value));
+        els.sMinus.addEventListener('click', () => updateConfig('servings', state.servings - 1));
+        els.sPlus.addEventListener('click', () => updateConfig('servings', state.servings + 1));
+      };
+
+      // Theme Management
+      const setTheme = (theme) => {
+        state.theme = theme;
+        els.app.dataset.theme = theme;
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`[data-set-theme="${theme}"]`).classList.add('active');
+      };
+
+      // Drink Selection
+      const selectDrink = (id) => {
+        state.selectedDrink = id;
+        const drink = DRINKS[id];
+        state.cupSizeMl = drink.defaultMl;
+        els.mlSlider.value = drink.defaultMl;
+        els.mlVal.textContent = drink.defaultMl;
+        els.mlControl.style.display = drink.perMl > 0 ? 'block' : 'none';
+        updateUI();
+      };
+
+      // Config Update
+      const updateConfig = (type, value) => {
+        value = Math.max(0, parseInt(value));
+        if (type === 'ml') {
+          state.cupSizeMl = value;
+          els.mlVal.textContent = value;
+          animateNumber(els.mlVal, value);
+        } else {
+          state.servings = value;
+          els.sVal.textContent = value;
+          els.sSlider.value = value;
+          animateNumber(els.sVal, value);
+        }
+        calculateCaffeine();
+        updateUI();
+      };
+
+      // Caffeine Calculation
+      const calculateCaffeine = () => {
+        const drink = DRINKS[state.selectedDrink];
+        const base = drink.base || 0;
+        const perMl = drink.perMl || 0;
+        const drinkCaffeine = (state.cupSizeMl * perMl) + base;
+        state.totalCaffeine = Math.round(drinkCaffeine * state.servings);
+      };
+
+      // UI Updates
+      const updateUI = () => {
+        // Tank Fill
+        const safeLimit = 400;
+        const pct = Math.min((state.totalCaffeine / safeLimit) * 100, 100);
+        els.liquid.style.height = `${pct}%`;
+        
+        // Warning State
+        if (state.totalCaffeine > safeLimit) {
+          els.tank.classList.add('warning');
+          els.tankStatus.textContent = '⚠️ Exceeded Safe Limit';
+          els.tankStatus.className = 'mt-4 text-sm font-bold text-[var(--warning)]';
+        } else {
+          els.tank.classList.remove('warning');
+          els.tankStatus.textContent = 'Safe Zone';
+          els.tankStatus.className = 'mt-4 text-sm font-medium opacity-70';
+        }
+
+        // Total Display
+        els.totalDisplay.textContent = `${state.totalCaffeine} mg`;
+
+        // Safe Bar
+        const barPct = Math.min((state.totalCaffeine / safeLimit) * 100, 100);
+        els.safeBar.style.width = `${barPct}%`;
+        els.safePct.textContent = `${Math.round(barPct)}%`;
+        if (barPct > 100) els.safeBar.style.background = 'var(--progress-over)';
+        else if (barPct > 75) els.safeBar.style.background = 'var(--progress-warn)';
+        else els.safeBar.style.background = 'var(--progress-safe)';
+
+        // Analytics
+        renderGraph();
+        updateSleepTimer();
+      };
+
+      // Liquid Pour Animation
+      const triggerPourAnimation = () => {
+        els.liquid.style.transition = 'height 0.2s ease-out';
+        els.liquid.style.height = '110%';
+        setTimeout(() => {
+          els.liquid.style.transition = 'height 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+          updateUI();
+        }, 200);
+      };
+
+      // 3D Tilt Logic
+      const handleTilt = (e) => {
+        const cards = document.querySelectorAll('.tilt-container');
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -8;
+          const rotateY = ((x - centerX) / centerX) * 8;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+      };
+      const resetTilt = () => {
+        document.querySelectorAll('.tilt-container').forEach(card => {
+          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+      };
+
+      // Animated Number Counter
+      const animateNumber = (el, newVal) => {
+        const oldVal = parseInt(el.textContent) || 0;
+        const diff = newVal - oldVal;
+        const steps = 10;
+        let step = 0;
+        const interval = setInterval(() => {
+          step++;
+          const progress = step / steps;
+          const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+          el.textContent = Math.round(oldVal + diff * eased);
+          if (step >= steps) {
+            clearInterval(interval);
+            el.textContent = newVal;
+          }
+        }, 20);
+      };
+
+      // Half-Life Graph Generator
+      const renderGraph = () => {
+        const halfLife = 5; // hours
+        const points = [];
+        const maxH = 100;
+        const maxW = 300;
+        const maxCaff = Math.max(state.totalCaffeine, 100); // scale reference
+
+        for (let t = 0; t <= 24; t += 0.5) {
+          const level = state.totalCaffeine * Math.pow(0.5, t / halfLife);
+          const x = (t / 24) * maxW;
+          const y = maxH - (level / maxCaff) * maxH;
+          points.push({ x, y });
+        }
+
+        // Build SVG Path
+        let pathD = `M ${points[0].x} ${points[0].y}`;
+        let areaD = `M ${points[0].x} ${maxH} L ${points[0].x} ${points[0].y}`;
+        
+        for (let i = 1; i < points.length; i++) {
+          // Simple cubic bezier for smoothness
+          const prev = points[i-1];
+          const curr = points[i];
+          const cpx = (prev.x + curr.x) / 2;
+          pathD += ` C ${cpx} ${prev.y}, ${cpx} ${curr.y}, ${curr.x} ${curr.y}`;
+          areaD += ` L ${curr.x} ${curr.y}`;
+        }
+        areaD += ` L ${points[points.length-1].x} ${maxH} Z`;
+
+        els.graphSvg.innerHTML = `
+          <path d="${areaD}" class="graph-area" />
+          <path d="${pathD}" class="graph-line" />
+        `;
+      };
+
+      // Sleep Readiness Calculator
+      const updateSleepTimer = () => {
+        if (state.totalCaffeine <= 25) {
+          els.sleepTimer.textContent = 'Ready for sleep';
+          els.sleepTimer.className = 'text-sm font-bold text-[var(--progress-safe)]';
+          return;
+        }
+        const halfLife = 5;
+        const threshold = 25;
+        const hoursNeeded = halfLife * Math.log2(state.totalCaffeine / threshold);
+        const now = new Date();
+        const sleepTime = new Date(now.getTime() + hoursNeeded * 60 * 60 * 1000);
+        
+        const timeString = sleepTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        els.sleepTimer.textContent = `Safe to sleep: ${timeString} (${Math.round(hoursNeeded)}h)`;
+        els.sleepTimer.className = 'text-sm font-bold';
+      };
+
+      // Expose
+      return { init };
+    })();
+
+    // Start App
+    document.addEventListener('DOMContentLoaded', CaffeineApp.init);
+  </script>
+</body>
+</html>
+
